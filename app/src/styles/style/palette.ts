@@ -20,6 +20,37 @@ const colors: obj = {
   black: '#000000',
 };
 
+const aligns: object = {
+  left: css`
+    text-align: left;
+  `,
+  center: css`
+    text-align: center;
+  `,
+  right: css`
+    text-align: right;
+  `,
+};
+
+const sort: object = {
+  row: css`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  `,
+  col: css`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  `,
+  center: css`
+    justify-content: center;
+  `,
+  between: css`
+    justify-content: space-between;
+  `,
+};
+
 const radius: object = {
   5: css`
     border-radius: 5px;
@@ -35,4 +66,4 @@ const radius: object = {
   `,
 };
 
-export { colors, radius };
+export { colors, aligns, sort, radius };

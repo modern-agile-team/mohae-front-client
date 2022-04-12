@@ -1,6 +1,6 @@
 import { css } from '@emotion/css';
 
-const colors: obj = {
+const colors: object = {
   main: '#ff445e',
   darker: '#D12A41',
   lighter: '#FFA1AF',

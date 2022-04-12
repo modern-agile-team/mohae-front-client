@@ -4,7 +4,6 @@ import './App.css';
 
 function App() {
   return (
-    <div>{"한글"}</div>
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />

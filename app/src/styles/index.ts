@@ -1,3 +1,3 @@
-import { colors, aligns, sort, radius, font } from './style/palette';
+import { colors, aligns, sort, radius, font, shadows } from './style/palette';
 
-export { colors, aligns, sort, radius, font };
+export { colors, aligns, sort, radius, font, shadows };

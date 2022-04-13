@@ -20,6 +20,30 @@ const colors: object = {
   black: '#000000',
 };
 
+const shadows: object = {
+  normal: css`
+    box-shadow: 0px 0px 8px rgba(132, 131, 141, 0.5);
+  `,
+  button: css`
+    box-shadow: 0px 0px 4px rgba(132, 131, 141, 0.25);
+  `,
+  SmallmainColor: css`
+    box-shadow: 0px 0px 4px rgba(255, 68, 94, 0.25);
+  `,
+  bigMainColor: css`
+    box-shadow: 0px 0px 8px rgba(255, 68, 94, 0.25);
+  `,
+  click: css`
+    box-shadow: 0px 0px 8px rgba(255, 68, 94, 0.8);
+  `,
+  inputGray: css`
+    box-shadow: inset 0px 0px 8px rgba(132, 131, 141, 0.2);
+  `,
+  inputMain: css`
+    box-shadow: inset 0px 0px 8px rgba(255, 68, 94, 0.2);
+  `,
+};
+
 const aligns: object = {
   left: css`
     text-align: left;
@@ -113,4 +137,4 @@ const font = {
   },
 };
 
-export { colors, aligns, sort, radius, font };
+export { colors, aligns, sort, radius, font, shadows };

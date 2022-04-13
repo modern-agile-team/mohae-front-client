@@ -66,4 +66,51 @@ const radius: object = {
   `,
 };
 
-export { colors, aligns, sort, radius };
+const font = {
+  size: {
+    44: css`
+      font-size: 44;
+    `,
+    46: css`
+      font-size: 36;
+    `,
+    28: css`
+      font-size: 28;
+    `,
+    24: css`
+      font-size: 24;
+    `,
+    22: css`
+      font-size: 22;
+    `,
+    20: css`
+      font-size: 20;
+    `,
+    16: css`
+      font-size: 16;
+    `,
+    14: css`
+      font-size: 14;
+    `,
+    12: css`
+      font-size: 12;
+    `,
+    10: css`
+      font-size: 10;
+    `,
+  },
+
+  wieght: {
+    Regular: css`
+      font-weight: regular;
+    `,
+    Bold: css`
+      font-weight: bold;
+    `,
+    Light: css`
+      font-weight: lighter;
+    `,
+  },
+};
+
+export { colors, aligns, sort, radius, font };

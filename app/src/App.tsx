@@ -1,14 +1,25 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-// import Layout from './styles/Layout/index';
+import { Layout } from './styles';
 
 function App() {
+  const name: string = 'hg';
+
   return (
     <Router>
       <Routes>
-        <Route path="/hg" element={<div>123</div>} />
-        <Route path="/hl" element={<div>{'하람 테스트 페이지'}</div>} />
-        <Route path="/sj" element={<div>{'성제 테스트 페이지'}</div>} />
+        <Route
+          path="/hg"
+          element={<Layout component={<div>{'테스트 페이지'}</div>} />}
+        />
+        <Route
+          path="/hl"
+          element={<Layout component={<div>{'테스트 페이지'}</div>} />}
+        />
+        <Route
+          path="/sj"
+          element={<Layout component={<div>{'테스트 '}</div>} />}
+        />
       </Routes>
     </Router>
   );

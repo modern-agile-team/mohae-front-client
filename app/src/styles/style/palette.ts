@@ -1,6 +1,26 @@
 import { css } from '@emotion/css';
 
-const colors: object = {
+type Colors = {
+  main: string;
+  darker: string;
+  lighter: string;
+  subtle: string;
+  error: string;
+  info: string;
+  success: string;
+  dark1: string;
+  dark2: string;
+  dark3: string;
+  dark4: string;
+  light1: string;
+  light2: string;
+  light3: string;
+  light4: string;
+  white: string;
+  black: string;
+};
+
+const colors: Colors = {
   main: '#ff445e',
   darker: '#D12A41',
   lighter: '#FFA1AF',
@@ -75,7 +95,14 @@ const sort: object = {
   `,
 };
 
-const radius: object = {
+type Radius = {
+  5: any;
+  6: any;
+  24: any;
+  circle: any;
+};
+
+const radius: Radius = {
   5: css`
     border-radius: 5px;
   `,
@@ -90,7 +117,29 @@ const radius: object = {
   `,
 };
 
-const font = {
+type Size = {
+  44: any;
+  46: any;
+  28: any;
+  24: any;
+  22: any;
+  20: any;
+  16: any;
+  14: any;
+  12: any;
+  10: any;
+};
+type Weight = {
+  light: any;
+  regular: any;
+  bold: any;
+};
+type Font = {
+  size: Size;
+  weight: Weight;
+};
+
+const font: Font = {
   size: {
     44: css`
       font-size: 44;
@@ -123,15 +172,14 @@ const font = {
       font-size: 10;
     `,
   },
-
-  wieght: {
-    Light: css`
+  weight: {
+    light: css`
       font-weight: 300;
     `,
-    Regular: css`
+    regular: css`
       font-weight: 400;
     `,
-    Bold: css`
+    bold: css`
       font-weight: 700;
     `,
   },

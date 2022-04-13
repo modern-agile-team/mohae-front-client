@@ -22,7 +22,5 @@ type Props = {
 };
 
 export default function Main(props: Props): ReactElement {
-  // console.log('palette :>> ', palette.colors);
-
   return <div className={cx(main)}>{props.children}</div>;
 }

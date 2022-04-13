@@ -27,10 +27,10 @@ const shadows: object = {
   button: css`
     box-shadow: 0px 0px 4px rgba(132, 131, 141, 0.25);
   `,
-  SmallmainColor: css`
+  SmallMain: css`
     box-shadow: 0px 0px 4px rgba(255, 68, 94, 0.25);
   `,
-  bigMainColor: css`
+  bigMain: css`
     box-shadow: 0px 0px 8px rgba(255, 68, 94, 0.25);
   `,
   click: css`
@@ -125,14 +125,14 @@ const font = {
   },
 
   wieght: {
+    Light: css`
+      font-weight: 300;
+    `,
     Regular: css`
-      font-weight: regular;
+      font-weight: 400;
     `,
     Bold: css`
-      font-weight: bold;
-    `,
-    Light: css`
-      font-weight: lighter;
+      font-weight: 700;
     `,
   },
 };

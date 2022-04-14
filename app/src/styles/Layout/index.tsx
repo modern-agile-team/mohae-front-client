@@ -4,14 +4,20 @@ import Footer from './footer/Footer';
 import Main from './main/Main';
 import { ReactElement } from 'react';
 
-const grid = css`
-  display: grid;
-  width: 100vw;
-  min-width: 1200px;
+const wrapper = css`
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  grid-gap: 0.5px;
-  grid-template-columns: repeat(24, 1fr);
-  background-color: #f9f9f8;
+  position: relative;
+  background-color: #ffa1af;
+  /* height: 100vh; */
+  @media (max-width: 1200px) {
+    width: 1200px;
+  }
+  @media (min-width: 1200px) {
+    width: 100vw;
+    background-color: #ff445e;
+  }
 `;
 
 type Props = {
@@ -22,10 +28,10 @@ type Props = {
 
 export default function Layout(props: Props): ReactElement {
   return (
-    <div className={cx(grid)}>
+    <div className={cx(wrapper)}>
       <Header>{'Header'}</Header>
       <Main>{props.component}</Main>
-      <Footer>{'Footer'}</Footer>
+      {/* <Footer>{'Footer'}</Footer> */}
     </div>
   );
 }

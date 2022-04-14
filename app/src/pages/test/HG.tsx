@@ -4,18 +4,28 @@ import Category from '../../components/category/Category';
 
 export default function HG() {
   const pad = css`
-    * {
-      margin-bottom: 30px;
-    }
+    margin-bottom: 30px;
   `;
   return (
     <>
-      <Category largeCircle>{'카테고리'}</Category>
-      {/* <Category mediumCircle>{'카테고리'}</Category>
-      <Category smallCircle>{'카테고리'}</Category>
-      <Category smallSquare>{'카테고리'}</Category>
-      <Category mediumSquare>{'카테고리'}</Category>
-      <Category largeSquare>{'카테고리'}</Category> */}
+      <Category largeCircle className={cx(pad)}>
+        {'카테고리'}
+      </Category>
+      <Category mediumCircle className={cx(pad)}>
+        {'카테고리'}
+      </Category>
+      <Category smallCircle className={cx(pad)}>
+        {'카테고리'}
+      </Category>
+      <Category smallSquare className={cx(pad)}>
+        {'카테고리'}
+      </Category>
+      <Category mediumSquare className={cx(pad)}>
+        {'카테고리'}
+      </Category>
+      <Category largeSquare className={cx(pad)}>
+        {'카테고리'}
+      </Category>
     </>
   );
 }

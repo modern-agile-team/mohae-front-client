@@ -1,23 +1,8 @@
-import { css } from '@emotion/css';
+import { css, CSSObject } from '@emotion/css';
+import { CSSProperties } from 'react';
 
 type Colors = {
-  main: string;
-  darker: string;
-  lighter: string;
-  subtle: string;
-  error: string;
-  info: string;
-  success: string;
-  dark1: string;
-  dark2: string;
-  dark3: string;
-  dark4: string;
-  light1: string;
-  light2: string;
-  light3: string;
-  light4: string;
-  white: string;
-  black: string;
+  [key: string]: string;
 };
 
 const colors: Colors = {
@@ -36,11 +21,13 @@ const colors: Colors = {
   light2: '#F5F5F5',
   light3: '#EDEDEF',
   light4: '#E7E7E8',
-  white: '#FFFFFF',
-  black: '#000000',
 };
 
-const shadows: object = {
+type Shadows = {
+  [key: string]: any;
+};
+
+const shadows: Shadows = {
   normal: css`
     box-shadow: 0px 0px 8px rgba(132, 131, 141, 0.5);
   `,
@@ -64,7 +51,11 @@ const shadows: object = {
   `,
 };
 
-const aligns: object = {
+type Aligns = {
+  [key: string]: any;
+};
+
+const aligns: Aligns = {
   left: css`
     text-align: left;
   `,
@@ -76,7 +67,11 @@ const aligns: object = {
   `,
 };
 
-const sort: object = {
+type Sort = {
+  [key: string]: any;
+};
+
+const sort: Sort = {
   row: css`
     display: flex;
     flex-direction: row;
@@ -96,9 +91,7 @@ const sort: object = {
 };
 
 type Radius = {
-  5: any;
-  6: any;
-  24: any;
+  [key: number]: any;
   circle: any;
 };
 
@@ -118,21 +111,10 @@ const radius: Radius = {
 };
 
 type Size = {
-  44: any;
-  46: any;
-  28: any;
-  24: any;
-  22: any;
-  20: any;
-  16: any;
-  14: any;
-  12: any;
-  10: any;
+  [key: number]: any;
 };
 type Weight = {
-  light: any;
-  regular: any;
-  bold: any;
+  [key: string]: any;
 };
 type Font = {
   size: Size;

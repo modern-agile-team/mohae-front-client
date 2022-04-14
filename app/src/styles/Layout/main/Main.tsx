@@ -15,14 +15,14 @@ const main = css`
 
   @media (max-height: 675px) {
     height: calc(675px - 59px);
-    background-color: teal;
+    /* background-color: teal; */
   }
   @media (min-height: 600px) and (max-height: 1000px) {
     height: calc(100vh - 59px);
-    background-color: blue;
+    /* background-color: blue; */
   }
   @media (min-height: 1000px) {
-    background-color: lightblue;
+    /* background-color: lightblue; */
     height: calc(1000px - 59px);
   }
 `;

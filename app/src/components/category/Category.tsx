@@ -14,7 +14,7 @@ type Props = {
 };
 
 function Basic(props: Props): ReactElement {
-  return <> </>;
+  return <div>13</div>;
 }
 
 export default Basic;

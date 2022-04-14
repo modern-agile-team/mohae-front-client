@@ -1,4 +1,4 @@
-import { colors, aligns, sort, radius, font, shadows } from './style/palette';
 import Layout from './Layout';
+import { color, radius, font, shadow } from './style/palette';
 
-export { colors, aligns, sort, radius, font, shadows, Layout };
+export { Layout, color, radius, font, shadow };

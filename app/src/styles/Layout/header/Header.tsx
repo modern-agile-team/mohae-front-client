@@ -2,37 +2,31 @@ import { css, cx } from '@emotion/css';
 import { ReactElement } from 'react';
 
 const header = css`
-  grid-column-start: 1;
-  grid-column-end: 25;
-  max-height: 59px;
-  box-shadow: 0px 0px 8px rgba(132, 131, 141, 0.5);
-  background-color: white;
-  height: 59px;
-
-  display: grid;
-  grid-template-columns: repeat(24, 1fr);
-`;
-
-const content = css`
-  grid-column-start: 5;
-  grid-column-end: 21;
-  height: 100%;
+  background-color: black;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-
-  height: 100%;
+  @media (max-width: 1200px) {
+    width: calc(1200px / 24 * 16);
+  }
+  @media (min-width: 1200px) and (max-width: 1600px) {
+    width: calc(100vw / 24 * 16);
+  }
+  @media (min-width: 1600px) {
+    width: calc(1600px / 24 * 16);
+  }
+  height: 59px;
 `;
+
 type Props = {
   name?: string;
   children?: any;
 };
+
 export default function Header(props: Props): ReactElement {
   return (
     <>
-      <div className={cx(header)}>
-        <div className={cx(content)}>{props.children}</div>
-      </div>
+      <div className={cx(header)}>{props.children}</div>
     </>
   );
 }

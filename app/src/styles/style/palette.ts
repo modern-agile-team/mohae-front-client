@@ -1,11 +1,10 @@
 import { css, CSSObject } from '@emotion/css';
-import { CSSProperties } from 'react';
 
-type Colors = {
+interface Color {
   [key: string]: string;
-};
+}
 
-const colors: Colors = {
+const color: Color = {
   main: '#ff445e',
   darker: '#D12A41',
   lighter: '#FFA1AF',
@@ -23,11 +22,11 @@ const colors: Colors = {
   light4: '#E7E7E8',
 };
 
-type Shadows = {
+type Shadow = {
   [key: string]: any;
 };
 
-const shadows: Shadows = {
+const shadow: Shadow = {
   normal: css`
     box-shadow: 0px 0px 8px rgba(132, 131, 141, 0.5);
   `,
@@ -48,45 +47,6 @@ const shadows: Shadows = {
   `,
   inputMain: css`
     box-shadow: inset 0px 0px 8px rgba(255, 68, 94, 0.2);
-  `,
-};
-
-type Aligns = {
-  [key: string]: any;
-};
-
-const aligns: Aligns = {
-  left: css`
-    text-align: left;
-  `,
-  center: css`
-    text-align: center;
-  `,
-  right: css`
-    text-align: right;
-  `,
-};
-
-type Sort = {
-  [key: string]: any;
-};
-
-const sort: Sort = {
-  row: css`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-  `,
-  col: css`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  `,
-  center: css`
-    justify-content: center;
-  `,
-  between: css`
-    justify-content: space-between;
   `,
 };
 
@@ -167,4 +127,4 @@ const font: Font = {
   },
 };
 
-export { colors, aligns, sort, radius, font, shadows };
+export { color, radius, font, shadow };

@@ -1,5 +1,5 @@
 import { css, cx } from '@emotion/css';
-import { colors, font, radius } from '../../styles';
+import { color, font, radius } from '../../styles';
 import { ReactElement } from 'react';
 
 type Props = {

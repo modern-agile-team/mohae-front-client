@@ -1,6 +1,5 @@
 import { css, cx } from '@emotion/css';
 import { ReactElement } from 'react';
-import {} from '../index';
 
 const main = css`
   /* position: absolute;

@@ -17,14 +17,16 @@ const header = css`
   }
   height: 59px;
 `;
+
 type Props = {
   name?: string;
   children?: any;
 };
+
 export default function Header(props: Props): ReactElement {
   return (
     <>
-      <div className={cx(header)}></div>
+      <div className={cx(header)}>{props.children}</div>
     </>
   );
 }

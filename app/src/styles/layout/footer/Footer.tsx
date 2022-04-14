@@ -1,21 +1,25 @@
 import { ReactElement } from 'react';
+import { color, radius, font, shadow } from '../../style/palette';
 import { css, cx } from '@emotion/css';
 
 const footer = css`
-  grid-column-start: 1;
-  grid-column-end: 25;
-  box-shadow: 0px 0px 8px rgba(132, 131, 141, 0.5);
-
   height: 150px;
-
-  display: grid;
-  grid-template-columns: repeat(24, 1fr);
+  width: 100%;
   background-color: white;
+  ${shadow.normal}
+  @media (max-width: 1200px) {
+    padding: 0 calc(1200px / 24 * 4);
+  }
+  @media (min-width: 1200px) and (max-width: 1600px) {
+    padding: 0 calc(100vw / 24 * 4);
+  }
+  @media (min-width: 1600px) {
+    padding: 0 calc((100vw - calc(1600px / 24 * 16)) / 2);
+    /* 전체 - 1600 기준 가로길이 / 2 */
+  }
 `;
 
 const content = css`
-  grid-column-start: 5;
-  grid-column-end: 21;
   height: 100%;
   display: flex;
   justify-content: center;

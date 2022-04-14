@@ -19,8 +19,6 @@ injectGlobal`
 `;
 
 function App() {
-  const name: string = 'hg';
-
   return (
     <Router>
       <Routes>

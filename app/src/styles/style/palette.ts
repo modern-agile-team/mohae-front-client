@@ -1,26 +1,10 @@
 import { css } from '@emotion/css';
 
-type Colors = {
-  main: string;
-  darker: string;
-  lighter: string;
-  subtle: string;
-  error: string;
-  info: string;
-  success: string;
-  dark1: string;
-  dark2: string;
-  dark3: string;
-  dark4: string;
-  light1: string;
-  light2: string;
-  light3: string;
-  light4: string;
-  white: string;
-  black: string;
-};
+interface paletteType {
+  [styles: string]: string;
+}
 
-const colors: Colors = {
+const colors: paletteType = {
   main: '#ff445e',
   darker: '#D12A41',
   lighter: '#FFA1AF',
@@ -40,7 +24,7 @@ const colors: Colors = {
   black: '#000000',
 };
 
-const shadows: object = {
+const shadows: paletteType = {
   normal: css`
     box-shadow: 0px 0px 8px rgba(132, 131, 141, 0.5);
   `,
@@ -64,7 +48,7 @@ const shadows: object = {
   `,
 };
 
-const aligns: object = {
+const aligns: paletteType = {
   left: css`
     text-align: left;
   `,
@@ -76,7 +60,7 @@ const aligns: object = {
   `,
 };
 
-const sort: object = {
+const sort: paletteType = {
   row: css`
     display: flex;
     flex-direction: row;
@@ -95,14 +79,7 @@ const sort: object = {
   `,
 };
 
-type Radius = {
-  5: any;
-  6: any;
-  24: any;
-  circle: any;
-};
-
-const radius: Radius = {
+const radius: paletteType = {
   5: css`
     border-radius: 5px;
   `,
@@ -117,29 +94,13 @@ const radius: Radius = {
   `,
 };
 
-type Size = {
-  44: any;
-  46: any;
-  28: any;
-  24: any;
-  22: any;
-  20: any;
-  16: any;
-  14: any;
-  12: any;
-  10: any;
-};
-type Weight = {
-  light: any;
-  regular: any;
-  bold: any;
-};
-type Font = {
-  size: Size;
-  weight: Weight;
-};
+interface fontType {
+  [style: string]: {
+    [key: number | string]: string;
+  };
+}
 
-const font: Font = {
+const font: fontType = {
   size: {
     44: css`
       font-size: 44;

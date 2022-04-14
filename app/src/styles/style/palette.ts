@@ -1,7 +1,7 @@
 import { css, CSSObject } from '@emotion/css';
 
 interface Color {
-  [key: string]: string;
+  [key: string]: any;
 }
 
 const color: Color = {
@@ -70,16 +70,16 @@ const radius: Radius = {
   `,
 };
 
-type Size = {
+interface Size {
   [key: number]: any;
-};
-type Weight = {
+}
+interface Weight {
   [key: string]: any;
-};
-type Font = {
+}
+interface Font {
   size: Size;
   weight: Weight;
-};
+}
 
 const font: Font = {
   size: {

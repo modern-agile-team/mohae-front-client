@@ -12,20 +12,24 @@ const main = css`
   @media (min-width: 1600px) {
     width: calc(1600px / 24 * 16);
   }
+  height: 675px;
 
   @media (max-height: 675px) {
     height: calc(675px - 59px);
-    /* background-color: teal; */
   }
-  @media (min-height: 600px) and (max-height: 1000px) {
+  @media (min-height: 675px) and (max-height: 900px) {
     height: calc(100vh - 59px);
-    /* background-color: blue; */
   }
-  @media (min-height: 1000px) {
-    /* background-color: lightblue; */
-    height: calc(1000px - 59px);
+  @media (min-height: 900px) {
+    height: calc(100vh - 59px);
   }
 `;
+
+const colors = {
+  gray: css`
+    background-color: ${color.light2};
+  `,
+};
 
 type Props = {
   name?: string;
@@ -36,8 +40,8 @@ type Props = {
 export default function Main(props: Props): ReactElement {
   return (
     <>
+      <div className={cx(main, colors.gray)}>{props.children}</div>
       <div className={cx(main)}>{props.children}</div>
-      {/* <div className={cx(main)}>{props.children}</div> */}
     </>
   );
 }

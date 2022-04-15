@@ -29,13 +29,8 @@ type Props = {
 export default function Layout(props: Props): ReactElement {
   return (
     <div className={cx(wrapper)}>
-      <Header>
-        {
-          'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nostrum laboriosam atque mollitia veritatis distinctio doloremque molestias aliquid, in incidunt numquam quasi amet architecto similique a iusto id fugit consectetur itaque!'
-        }
-      </Header>
+      <Header>{'Header'}</Header>
       <Main>{props.component}</Main>
-      <Footer>{'Footer'}</Footer>
     </div>
   );
 }

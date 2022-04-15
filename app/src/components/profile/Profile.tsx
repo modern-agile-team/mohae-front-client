@@ -70,32 +70,24 @@ function Profile(props: Props) {
   `;
 
   const show = () => {
-    let result = undefined;
     switch (props.place) {
       case 'inHeader':
-        result = <div className={cx(size[43], hover)}></div>;
-        break;
+        return <div className={cx(size[43], hover)}></div>;
       case 'inReview':
-        result = <div className={cx(size[45], hover)}></div>;
-        break;
+        return <div className={cx(size[45], hover)}></div>;
       case 'inWriterInfo':
-        result = <div className={cx(size[60], hover)}></div>;
-        break;
+        return <div className={cx(size[60], hover)}></div>;
       case 'inMyPage':
-        result = <div className={cx(size[146])}></div>;
-        break;
+        return <div className={cx(size[146])}></div>;
       case 'inOtherProfile':
-        result = <div className={cx(size[150])}></div>;
-        break;
+        return <div className={cx(size[150])}></div>;
       case 'inMyPageEdit':
-        result = (
+        return (
           <div className={cx(size[160])}>
             <div className={cx(imgUpdateBtn, hover)}></div>
           </div>
         );
-        break;
     }
-    return result;
   };
   return <>{show()}</>;
 }

@@ -2,7 +2,7 @@ import { css, cx } from '@emotion/css';
 import { shadow, radius } from '../../styles';
 
 interface Props {
-  [key: string]: boolean;
+  [key: string]: boolean | string;
 }
 
 function Profile(props: Props) {
@@ -69,20 +69,35 @@ function Profile(props: Props) {
     bottom: 0;
   `;
 
-  return (
-    <>
-      {props.size43 && <div className={cx(size[43], hover)}></div>}
-      {props.size45 && <div className={cx(size[45], hover)}></div>}
-      {props.size60 && <div className={cx(size[60], hover)}></div>}
-      {props.size146 && <div className={cx(size[146])}></div>}
-      {props.size150 && <div className={cx(size[150])}></div>}
-      {props.size160 && (
-        <div className={cx(size[160])}>
-          <div className={cx(imgUpdateBtn, hover)}></div>
-        </div>
-      )}
-    </>
-  );
+  const show = () => {
+    let result = undefined;
+    switch (props.place) {
+      case 'inHeader':
+        result = <div className={cx(size[43], hover)}></div>;
+        break;
+      case 'inReview':
+        result = <div className={cx(size[45], hover)}></div>;
+        break;
+      case 'inWriterInfo':
+        result = <div className={cx(size[60], hover)}></div>;
+        break;
+      case 'inMyPage':
+        result = <div className={cx(size[146])}></div>;
+        break;
+      case 'inOtherProfile':
+        result = <div className={cx(size[150])}></div>;
+        break;
+      case 'inMyPageEdit':
+        result = (
+          <div className={cx(size[160])}>
+            <div className={cx(imgUpdateBtn, hover)}></div>
+          </div>
+        );
+        break;
+    }
+    return result;
+  };
+  return <>{show()}</>;
 }
 
 export default Profile;

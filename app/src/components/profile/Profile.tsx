@@ -51,11 +51,11 @@ function Profile(props: Props) {
       width:150px;
       height: 150px;
     `,
+
     '160': css`
       ${commonStyle}
       width:160px;
       height: 160px;
-      position: relative;
     `,
   };
 
@@ -63,32 +63,45 @@ function Profile(props: Props) {
     width: 30px;
     height: 30px;
     ${radius.circle};
+    ${shadow.normal};
     background-color: red;
-    position: absolute;
-    right: 2px;
-    bottom: 0;
+    margin-top: -30px;
+    margin-left: 128px;
   `;
 
-  const show = () => {
-    switch (props.place) {
-      case 'inHeader':
-        return <div className={cx(size[43], hover)}></div>;
-      case 'inReview':
-        return <div className={cx(size[45], hover)}></div>;
-      case 'inWriterInfo':
-        return <div className={cx(size[60], hover)}></div>;
-      case 'inMyPage':
-        return <div className={cx(size[146])}></div>;
-      case 'inOtherProfile':
-        return <div className={cx(size[150])}></div>;
-      case 'inMyPageEdit':
-        return (
-          <div className={cx(size[160])}>
-            <div className={cx(imgUpdateBtn, hover)}></div>
-          </div>
-        );
-    }
+  const inMyPageEdit = () => {
+    return (
+      <>
+        <div className={cx(size[160])}></div>
+        <div className={cx(imgUpdateBtn, hover)}></div>
+      </>
+    );
   };
+
+  interface Check {
+    [key: string]: string | string[];
+  }
+
+  const check: Check = {
+    inHeader: [size[43], hover],
+    inReview: [size[45], hover],
+    inWriterInfo: [size[60], hover],
+    inMyPage: size[146],
+    inOtherProfile: size[150],
+  };
+
+  const finalStyle = Object.keys(props)
+    .filter((prop) => Object.keys(check).includes(prop))
+    .map((attr) => check[attr]);
+
+  const show = () => {
+    return Object.keys(props).includes('inMyPageEdit') ? (
+      inMyPageEdit()
+    ) : (
+      <div className={cx(...finalStyle)}></div>
+    );
+  };
+
   return <>{show()}</>;
 }
 

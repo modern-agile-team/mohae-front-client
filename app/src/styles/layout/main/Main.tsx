@@ -5,7 +5,6 @@ import { ReactElement } from 'react';
 const main = css`
   width: 1128px;
   height: 675px;
-  overflow: hidden;
 
   @media (max-height: 675px) {
     height: calc(675px - 59px);

@@ -51,9 +51,8 @@ function Category(props: Props): ReactElement {
     & > :first-child {
       margin: 0;
       :hover {
-        width: 184px;
-        height: 184px;
-        margin: 0 -8px 0;
+        transition: all 0.2s ease-in-out;
+        transform: scale(1.09523);
       }
     }
   `;

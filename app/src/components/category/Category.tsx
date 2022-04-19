@@ -39,6 +39,8 @@ function Category(props: Props): ReactElement {
     display: flex;
     align-items: flex-start;
     overflow: visible;
+    transition: all 0.2s ease-in-out;
+    transform: scale(1);
     & > * {
       margin-left: 24px;
       :hover {
@@ -50,10 +52,6 @@ function Category(props: Props): ReactElement {
     }
     & > :first-child {
       margin: 0;
-      :hover {
-        transition: all 0.2s ease-in-out;
-        transform: scale(1.09523);
-      }
     }
   `;
 

@@ -21,8 +21,6 @@ const wrapper: string = css`
 
 type Props = {
   component: any;
-  name?: string;
-  className?: string;
   [props: string]: boolean | undefined | string | JSX.Element;
 };
 

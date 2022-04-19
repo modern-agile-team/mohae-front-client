@@ -14,8 +14,14 @@ injectGlobal`
   }
   button {
     cursor: pointer;
-
+  } 
+  ul {
+    list-style: none;
   }
+  a, a:visited, a:link {
+    text-decoration: none;
+  }
+
 `;
 
 function App() {

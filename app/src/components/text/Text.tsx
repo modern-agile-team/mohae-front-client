@@ -8,19 +8,21 @@ type Props = {
 };
 
 export default function Text(props: Props): ReactElement {
+  const fontSize =
+    (Number(props.warnning) >= 10 && `${props.warnning}px`) ||
+    (Number(props.star) >= 10 && `${props.star}px`) ||
+    '14px';
+  console.log(`fontSize`, fontSize);
+
   const commonStyle = css`
-    ${font.weight.regular}
-  `;
-  const warnning: string = css`
-    ${commonStyle}
     color: ${color.error};
-    ${font.size[14]}
+    ${font.weight.regular}
+    font-size: ${fontSize};
   `;
+  const warnning: string = css``;
 
   const star: string = css`
-    ${commonStyle}
     color: ${color.dark1};
-    ${font.size[16]}
     position: relative;
     :after {
       content: '*';
@@ -41,7 +43,11 @@ export default function Text(props: Props): ReactElement {
     undefined: warnning,
   };
 
-  const finalStyles = Object.keys(props).map((prop) => check[prop]);
+  const finalStyles = Object.keys(props).map((prop) => {
+    return check[prop];
+  });
 
-  return <span className={cx([...finalStyles])}>{props.children}</span>;
+  return (
+    <span className={cx(commonStyle, [...finalStyles])}>{props.children}</span>
+  );
 }

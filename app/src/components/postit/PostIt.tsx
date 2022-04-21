@@ -3,6 +3,8 @@ import { color, font } from '../../styles/index';
 import { Props } from '../button';
 
 function PostIt(props: Props) {
+  const { small, children } = props;
+
   const commonStyle = css`
     ${font.weight.regular}
     background-color: white;
@@ -11,14 +13,14 @@ function PostIt(props: Props) {
     outline: none;
   `;
 
-  const small = css`
+  const smallBox = css`
     width: 501px;
     height: 210px;
     color: ${color.dark1};
     ${font.size[16]}
   `;
 
-  const big = css`
+  const bigBox = css`
     width: 600px;
     height: 470px;
     display: flex;
@@ -41,7 +43,7 @@ function PostIt(props: Props) {
       #e7e7e8 0% 71.5%,
       rgb(215, 215, 215) 75%
     );
-    margin: -233px 0px 0px 474px;
+    margin: -227.8px 0px 0px 483.8px;
   `;
 
   const foldForBig = css`
@@ -56,17 +58,17 @@ function PostIt(props: Props) {
   `;
 
   const show = () =>
-    props.small ? (
+    small ? (
       <>
-        <div className={cx(commonStyle, small)}>
+        <div className={cx(commonStyle, smallBox)}>
           <div className={cx(title)}>한 줄 요약</div>
-          {props.children}
+          {children}
         </div>
         <div className={cx(foldForSmall)} />
       </>
     ) : (
       <>
-        <div className={cx(commonStyle, big)}>{props.children}</div>
+        <div className={cx(commonStyle, bigBox)}>{children}</div>
         <div className={cx(foldForBig)} />
       </>
     );

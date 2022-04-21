@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { css, cx } from '@emotion/css';
 import { keyframes } from '@emotion/react';
 import { color, radius, font, shadow } from '../../styles';
@@ -10,54 +10,81 @@ interface Props {
 }
 
 function Category(props: Props): ReactElement {
+  const importURL = 'img/logo192.png';
   const [categories, setCategories] = useState([
-    { name: '카테고리1', img: 'img/logo192.png' },
-    { name: '카테고리2', img: 'img/logo192.png' },
-    { name: '카테고리3', img: 'img/logo192.png' },
-    { name: '카테고리4', img: 'img/logo192.png' },
-    { name: '카테고리5', img: 'img/logo192.png' },
-    { name: '카테고리6', img: 'img/logo192.png' },
-    { name: '카테고리7', img: 'img/logo192.png' },
-    { name: '카테고리8', img: 'img/logo192.png' },
-    { name: '카테고리9', img: 'img/logo192.png' },
-  ]);
-  const [sector, setSector] = useState(0);
-
-  const FadeIn = keyframes`
-    from {
-      opacity: 1;
+      { name: '카테고리1', img: importURL },
+      { name: '카테고리2', img: importURL },
+      { name: '카테고리3', img: importURL },
+      { name: '카테고리4', img: importURL },
+      { name: '카테고리5', img: importURL },
+      { name: '카테고리6', img: importURL },
+      // { name: '카테고리9', img: importURL },
+      // { name: '카테고리10', img: importURL },
+      // { name: '카테고리11', img: importURL },
+    ]),
+    [sector, setSector] = useState(0),
+    [move, setMove] = useState(0),
+    boxLength = (168 + 24) * categories.length * 3,
+    [cycle, setCycle] = useState(0);
+  useEffect(() => {
+    if (sector === 6) {
+      setCycle(cycle + 1);
     }
-    to {
-      width: 184px;
-      height: 184px;
-      margin: 0 -8px 0 16px;
-      transform: translateY(-8px);
-    }
-  `;
-
+  }, [sector]);
   const wrapper = css`
     width: 100%;
-    height: 168px;
-
-    background-color: teal;
-    display: flex;
-    align-items: flex-start;
-    overflow: visible;
-    & > * {
-      margin-left: 24px;
-      :hover {
-        transition: all 0.2s ease-in-out;
-        transform: scale(1.09523);
-      }
-    }
-    & > :first-child {
-      margin: 0;
-    }
+    overflow: hidden;
+    overflow-y: visible;
+    height: 200px;
+    padding: 16px 0;
+    margin: -16px 0;
   `;
 
-  const box = css`
+  const box = () => {
+    let initTransition = 'none';
+    console.log('index :>> ', sector);
+    console.log('cycle :>> ', cycle);
+    if (sector !== 0 && Math.abs(sector) % categories.length === 0) {
+      initTransition = 'all 0.2s ease-out';
+      // final move
+      setTimeout(() => {
+        setSector(0);
+        setMove(0);
+        initTransition = 'none';
+      }, 250);
+    } else if (!cycle) {
+      initTransition = 'all 0.2s ease-out';
+    } else {
+      initTransition = 'all 0.2s ease-out';
+      // else move
+    }
+    const firstSector = `translateX(-${boxLength / 3 + move}px)`;
+    const col = `${boxLength}px`;
+    return css`
+      width: ${col};
+      transition: ${initTransition};
+      transform: ${firstSector};
+      overflow-y: visible;
+      height: 168px;
+      display: flex;
+      align-items: flex-start;
+      & > * {
+        margin-left: 24px;
+        :hover {
+          transition: all 0.2s ease-in-out;
+          transform: scale(1.09523);
+        }
+      }
+      & > :first-child {
+        margin: 0;
+      }
+    `;
+  };
+
+  const item = css`
     width: 168px;
     height: 100%;
+    overflow-y: visible;
 
     border-radius: 50%;
   `;
@@ -67,30 +94,30 @@ function Category(props: Props): ReactElement {
     height: 30px;
   `;
 
-  const bigCategories = () => {
-    const firstIndex = sector % categories.length;
-    const indexNumber = Array(6)
-      .fill(0)
-      .map(function (each, index) {
-        return (firstIndex + index) % categories.length;
-      });
-    const arr = indexNumber.map((num) =>
-      num < 0 ? categories[categories.length + num] : categories[num]
-    );
-    return arr.map((each, index) => (
-      <div key={index} className={cx(box)}>
-        <Basic name={each.name} img={each.img} />
-      </div>
-    ));
-  };
+  const bigCategories = categories.map((each, index) => (
+    <div key={index} className={cx(item)}>
+      <Basic name={each.name} img={each.img} />
+    </div>
+  ));
+
+  const show = () => (
+    <>
+      {bigCategories}
+      {bigCategories}
+      {bigCategories}
+    </>
+  );
 
   return (
     <>
-      <div className={cx(wrapper)}>{bigCategories()}</div>
+      <div className={cx(wrapper)}>
+        <div className={cx(box())}>{show()}</div>
+      </div>
       <button
         className={cx(arrow)}
         onClick={() => {
           setSector(sector - 1);
+          setMove(move - 192);
         }}
       >
         {'<'}
@@ -99,6 +126,7 @@ function Category(props: Props): ReactElement {
         className={cx(arrow)}
         onClick={() => {
           setSector(sector + 1);
+          setMove(move + 192);
         }}
       >
         {'>'}

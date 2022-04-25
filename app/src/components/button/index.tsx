@@ -30,7 +30,7 @@ export {
 };
 
 export interface Props {
-  [props: string]: boolean | undefined | string | number[] | JSX.Element;
+  [props: string]: React.ReactNode;
 }
 
 export const btnStyle = {

@@ -10,6 +10,7 @@ injectGlobal`
     padding: 0;
     outline: none;
     border: none;
+    -webkit-box-sizing: border-box;
     box-sizing: border-box; 
   }
   button {

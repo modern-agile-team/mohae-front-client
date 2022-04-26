@@ -1,3 +1,4 @@
-import Layout from './Layout';
+import DefaultLayout from './DefaultLayout';
+import MainLayout from './MainLayout';
 
-export default Layout;
+export { DefaultLayout, MainLayout };

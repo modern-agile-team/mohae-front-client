@@ -84,34 +84,34 @@ interface Font {
 const font: Font = {
   size: {
     44: css`
-      font-size: 44;
+      font-size: 44px;
     `,
     46: css`
-      font-size: 36;
+      font-size: 36px;
     `,
     28: css`
-      font-size: 28;
+      font-size: 28px;
     `,
     24: css`
-      font-size: 24;
+      font-size: 24px;
     `,
     22: css`
-      font-size: 22;
+      font-size: 22px;
     `,
     20: css`
-      font-size: 20;
+      font-size: 20px;
     `,
     16: css`
-      font-size: 16;
+      font-size: 16px;
     `,
     14: css`
-      font-size: 14;
+      font-size: 14px;
     `,
     12: css`
-      font-size: 12;
+      font-size: 12px;
     `,
     10: css`
-      font-size: 10;
+      font-size: 10px;
     `,
   },
   weight: {

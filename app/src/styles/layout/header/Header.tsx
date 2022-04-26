@@ -12,14 +12,10 @@ const header = css`
   width: 100%;
   ${shadow.normal}
   @media (max-width: 1200px) {
-    padding: 0 calc(1200px / 24 * 4);
+    padding: 0 calc(calc(1200px - 1128px) / 2);
   }
-  @media (min-width: 1200px) and (max-width: 1600px) {
-    padding: 0 calc(100vw / 24 * 4);
-  }
-  @media (min-width: 1600px) {
-    padding: 0 calc((100vw - calc(1600px / 24 * 16)) / 2);
-    /* 전체 - 1600 기준 가로길이 / 2 */
+  @media (min-width: 1200px) {
+    padding: 0 calc((100vw - 1128px) / 2);
   }
   height: 59px;
   overflow: hidden;

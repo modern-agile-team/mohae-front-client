@@ -1,4 +1,4 @@
-import Layout from './layout';
+import { DefaultLayout, MainLayout } from './layout';
 import { color, radius, font, shadow } from './style/palette';
 
-export { Layout, color, radius, font, shadow };
+export { DefaultLayout, MainLayout, color, radius, font, shadow };

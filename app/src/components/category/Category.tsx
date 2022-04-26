@@ -20,7 +20,7 @@ export default function Category(props: Props) {
       { name: '카테고리8', img: imgURL },
     ]),
     [arr, setArr] = useState(categories.map((category, index) => index)),
-    itemsize = 140,
+    itemsize = 168,
     margin = 24,
     [sector, setSector] = useState(0),
     move = itemsize + margin;
@@ -37,7 +37,7 @@ export default function Category(props: Props) {
       width: ${itemsize};
       height: ${row};
       display: flex;
-      /* overflow: hidden; */
+      overflow: hidden;
       align-items: center;
       transform: translateX(-15px);
     `;
@@ -59,8 +59,8 @@ export default function Category(props: Props) {
   };
 
   const each = css`
-    width: 140px;
-    height: 140px;
+    width: 168px;
+    height: 168px;
     border-radius: 50%;
     margin-right: 24px;
     :hover {
@@ -138,16 +138,6 @@ export default function Category(props: Props) {
 
   return (
     <>
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
       <div className={cx(categoryBox)}>
         <div className={cx(wrapper())}>{show}</div>
         <button className={cx(prevBtn)} onClick={click} name="-" />

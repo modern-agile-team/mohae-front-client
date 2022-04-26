@@ -4,7 +4,7 @@ import { ReactElement } from 'react';
 import { Link } from 'react-router-dom';
 
 interface Props {
-  [key: string]: boolean | any | string;
+  [key: string]: any;
 }
 
 function Basic(props: Props): ReactElement {
@@ -21,6 +21,7 @@ function Basic(props: Props): ReactElement {
     & + & {
       margin-bottom: 12px;
     }
+    overflow-y: visible;
   `;
 
   const text = css`
@@ -37,12 +38,6 @@ function Basic(props: Props): ReactElement {
     `,
   };
 
-  const size = {
-    big: css`
-      width: 100%;
-      height: 100%;
-    `,
-  };
   const eventStyle = {
     big: css`
       :hover {
@@ -57,8 +52,7 @@ function Basic(props: Props): ReactElement {
   return (
     <Link
       to={`/board/${props.name}`}
-      // url 이동 경로
-      className={cx(commonStyle, size.big, eventStyle.big)}
+      className={cx(commonStyle, eventStyle.big)}
     >
       <div className={cx(img.big)} />
       <span className={cx(text)}>{props.name || 'Category'}</span>

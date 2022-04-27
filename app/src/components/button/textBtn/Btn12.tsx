@@ -2,14 +2,14 @@ import { css, cx } from '@emotion/css';
 import { color, btnStyle, font, shadow, Props } from '../index';
 
 function Btn12(props: Props) {
-  const { children } = props;
+  const { big, small, disable, children } = props;
 
   const commonStyle = css`
     ${btnStyle.square}
     height: 44px;
     background-color: white;
     color: ${color.dark1};
-    font-size: 14px; /* font.size[14] */
+    ${font.size[14]}
     ${font.weight.regular}
     ${shadow.button}
     &:hover {
@@ -29,8 +29,8 @@ function Btn12(props: Props) {
     big: css`
       width: 138px;
       display: flex;
-      justify-content: space-between;
-      padding: 10px 24px;
+      justify-content: space-evenly;
+      padding: 0px 22px;
     `,
     small: css`
       width: 87px;
@@ -50,7 +50,7 @@ function Btn12(props: Props) {
     `,
   };
 
-  const attrProps = [...Object.keys(props).map(attr => attrs[attr])];
+  const attrProps = Object.keys(props).map(attr => attrs[attr]);
 
   const show = () => (
     <button className={cx(commonStyle, attrProps)}>{children}</button>

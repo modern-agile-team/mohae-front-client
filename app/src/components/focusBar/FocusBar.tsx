@@ -80,7 +80,7 @@ function FocusBar(props: Props) {
 
   const result = <div className={cx(...finalStyle)}></div>;
 
-  return <>{result}</>;
+  return result;
 }
 
 export default FocusBar;

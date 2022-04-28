@@ -149,7 +149,7 @@ export default function OrderedImg(props: Props) {
         onClick={click}
       >
         <div className={cx(img(each.img))} />
-        <div className={cx(number, order)}>{index}</div>
+        <div className={cx(number, order)}>{index + 1}</div>
       </button>
     );
   });

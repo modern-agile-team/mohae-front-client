@@ -9,10 +9,10 @@ function Profile(props: Props) {
   //  더미 사용
   const profileImg = props.isLogin
     ? 'https://i.ibb.co/qjtcKYZ/profile.png'
-    : '/dummyUser.png';
+    : '/img/profile.png';
 
   const commonStyle = css`
-    background: no-repeat center/cover;
+    background: white no-repeat center/cover;
     background-image: url(${profileImg});
     ${radius.circle};
     ${shadow.normal};
@@ -64,16 +64,32 @@ function Profile(props: Props) {
     height: 30px;
     ${radius.circle};
     ${shadow.normal};
-    background-color: red;
+    background: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin-top: -30px;
     margin-left: 128px;
+  `;
+
+  const editPhotoImg = css`
+    width: 20px;
+    height: 20px;
   `;
 
   const inMyPageEdit = () => {
     return (
       <>
         <div className={cx(size[160])}></div>
-        <div className={cx(imgUpdateBtn, hover)}></div>
+        <div
+          className={cx(imgUpdateBtn, hover)}
+          onClick={() => alert('이미지 수정 버튼 클릭')}>
+          <img
+            className={cx(editPhotoImg)}
+            alt="editPhoto"
+            src="/img/camera.png"
+          />
+        </div>
       </>
     );
   };
@@ -102,7 +118,7 @@ function Profile(props: Props) {
     );
   };
 
-  return <>{show()}</>;
+  return show();
 }
 
 export default Profile;

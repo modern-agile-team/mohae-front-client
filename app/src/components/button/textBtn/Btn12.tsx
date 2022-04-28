@@ -2,6 +2,8 @@ import { css, cx } from '@emotion/css';
 import { color, btnStyle, font, shadow, Props } from '../index';
 
 function Btn12(props: Props) {
+  const { big, small, disable, children } = props;
+
   const commonStyle = css`
     ${btnStyle.square}
     height: 44px;
@@ -19,13 +21,16 @@ function Btn12(props: Props) {
     }
   `;
 
-  interface DifStyles {
+  interface Attrs {
     [attr: string]: string;
   }
 
-  const difStyles: DifStyles = {
+  const attrs: Attrs = {
     big: css`
       width: 138px;
+      display: flex;
+      justify-content: space-evenly;
+      padding: 0px 22px;
     `,
     small: css`
       width: 87px;
@@ -34,6 +39,7 @@ function Btn12(props: Props) {
       cursor: unset;
       color: ${color.light4};
       background-color: white;
+
       &:hover {
         background-color: white;
       }
@@ -44,12 +50,10 @@ function Btn12(props: Props) {
     `,
   };
 
-  const attrProps = [...Object.keys(props).map(attr => difStyles[attr])];
+  const attrProps = Object.keys(props).map(attr => attrs[attr]);
 
   const show = () => (
-    <>
-      <button className={cx(commonStyle, attrProps)}>{props.children}</button>
-    </>
+    <button className={cx(commonStyle, attrProps)}>{children}</button>
   );
 
   return show();

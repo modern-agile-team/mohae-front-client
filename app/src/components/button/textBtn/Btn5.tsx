@@ -2,6 +2,7 @@ import { css, cx } from '@emotion/css';
 import { color, btnStyle, font, shadow, Props } from '../index';
 
 function Btn5(props: Props) {
+  const { disable, children } = props;
   const commonStyle = css`
     ${btnStyle.square}
     width: 74px;
@@ -17,7 +18,7 @@ function Btn5(props: Props) {
     }
   `;
 
-  const disable = css`
+  const disableState = css`
     cursor: unset;
     background-color: ${color.light4};
     &:active {
@@ -26,10 +27,10 @@ function Btn5(props: Props) {
   `;
 
   const show = () =>
-    props.disable ? (
-      <button className={cx(commonStyle, disable)}>{props.children}</button>
+    disable ? (
+      <button className={cx(commonStyle, disableState)}>{children}</button>
     ) : (
-      <button className={cx(commonStyle)}>{props.children}</button>
+      <button className={cx(commonStyle)}>{children}</button>
     );
 
   return show();

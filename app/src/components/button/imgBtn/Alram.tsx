@@ -2,16 +2,19 @@ import { css, cx } from '@emotion/css';
 import { color, btnStyle, shadow, Props } from '../index';
 
 function Alram(props: Props) {
+  const { disable, msg } = props;
   const commonStyle = css`
     ${btnStyle.circle}
     width: 50px;
     height: 50px;
     padding: 10px;
     ${shadow.normal}
-    background-color: white;
+    background: no-repeat center/contain url('img/alarm-bell.png');
+    background-size: 27.5px 30px;
     position: fixed;
     bottom: 187px;
     right: 83px;
+    z-index: 1;
   `;
 
   const alram = css`
@@ -25,7 +28,8 @@ function Alram(props: Props) {
     left: 33px;
   `;
 
-  const able = css`
+  const ableState = css`
+    background-color: white;
     &:hover {
       background-color: ${color.subtle};
     }
@@ -34,7 +38,7 @@ function Alram(props: Props) {
     }
   `;
 
-  const disable = css`
+  const disableState = css`
     background-color: ${color.light4};
     &:hover {
       background-color: ${color.light4};
@@ -45,14 +49,11 @@ function Alram(props: Props) {
   `;
 
   const show = () =>
-    props.disable ? (
-      <button className={cx(commonStyle, able, disable)}>
-        {props.children}
-      </button>
+    disable ? (
+      <button className={cx(commonStyle, disableState)}></button>
     ) : (
-      <button className={cx(commonStyle, able)}>
-        {props.children}
-        <div className={cx(alram)}>{props.msg}</div>
+      <button className={cx(commonStyle, ableState)}>
+        <div className={cx(alram)}>{msg}</div>
       </button>
     );
 

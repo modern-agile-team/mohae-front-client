@@ -1,9 +1,9 @@
 import { css, cx } from '@emotion/css';
-import { url } from 'inspector';
 import { Props } from '../button';
 
 function ArrowBtn(props: Props) {
-  const { big, small, up, right, down, left, main, light, dark } = props;
+  const { big, small, up, right, down, left, main, light, dark, onClick } =
+    props;
 
   interface Imgs {
     [shape: string]: {
@@ -69,6 +69,7 @@ function ArrowBtn(props: Props) {
 
   const show = () => (
     <div
+      onClick={onClick}
       className={cx(!(up || down || dark) ? rowNation() : colNation(), size())}
     />
   );

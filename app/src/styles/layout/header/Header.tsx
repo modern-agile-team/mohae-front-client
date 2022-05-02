@@ -5,7 +5,9 @@ import { ReactElement } from 'react';
 const wrapper = css`
   background-color: white;
   position: sticky;
+  /* z-index: 10; */
   top: 0;
+  left: 0;
   width: 100%;
   ${shadow.normal}
   @media (max-width: 1200px) {
@@ -22,7 +24,7 @@ const content = css`
   width: 100%;
   height: 100%;
   padding: 8px 0;
-  background-color: gray;
+  background-color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;

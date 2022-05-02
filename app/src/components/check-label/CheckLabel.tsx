@@ -52,13 +52,13 @@ export default function CheckBox(props: Props) {
   const directInput = css`
     width: 100%;
     height: 96px;
-    box-shadow: inset 0px 0px 4px rgba(132, 131, 141, 0.2);
+
     border-radius: 2px;
     display: flex;
     justify-content: center;
     color: ${color.dark1};
     font-size: 12px;
-    padding: 8px 16px 8px 8px;
+    padding: 0 8px 0 0;
     resize: none;
     &::-webkit-scrollbar {
       margin-right: 20px;
@@ -95,6 +95,7 @@ export default function CheckBox(props: Props) {
 
   const clickReport = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.stopPropagation();
+
     const newReportList = [...reportValue.list];
     const targetValue = newReportList[Number(e.currentTarget.id)];
     const checkedList = reportValue.list.reduce((acc, cur) => {
@@ -146,6 +147,11 @@ export default function CheckBox(props: Props) {
     });
   };
 
+  const textareaContainer = css`
+    box-shadow: inset 0px 0px 4px rgba(132, 131, 141, 0.2);
+    padding: 8px;
+  `;
+
   const showList = (
     <div>
       {reportValue.list.map((report, index) => (
@@ -154,11 +160,13 @@ export default function CheckBox(props: Props) {
           {report.title}
         </label>
       ))}
-      <textarea
-        className={cx(directInput)}
-        placeholder="직접 입력 (최대 100자)"
-        onChange={inputValue}
-      />
+      <div className={cx(textareaContainer)}>
+        <textarea
+          className={cx(directInput)}
+          placeholder="직접 입력 (최대 100자)"
+          onChange={inputValue}
+        />
+      </div>
     </div>
   );
 

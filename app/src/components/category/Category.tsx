@@ -98,17 +98,19 @@ export default function Category(props: Props) {
     </div>
   );
 
-  const updateItem = (array: number[]) => {
-    setTimeout(() => {
-      setArr(array);
-      setSector(0);
-    }, 500);
-  };
-
   const click = (e: React.MouseEvent<HTMLButtonElement>) => {
-    setSector(sector + eval(`${e.currentTarget.name}1`));
+    const target = e.currentTarget;
+    const updateItem = (array: number[]) => {
+      setTimeout(() => {
+        setArr(array);
+        setSector(0);
+        target.disabled = false;
+      }, 500);
+    };
+    target.disabled = true;
+    setSector(sector + eval(`${target.name}1`));
     const updatedArr = [...arr];
-    if (e.currentTarget.name === '+') {
+    if (target.name === '+') {
       updatedArr.push(updatedArr[0]);
       updatedArr.shift();
       updateItem(updatedArr);

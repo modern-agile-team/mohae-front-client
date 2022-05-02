@@ -40,10 +40,10 @@ function PostIt(props: Props) {
     height: 35px;
     background: linear-gradient(
       to bottom left,
-      #e7e7e8 0% 71.5%,
-      rgb(215, 215, 215) 75%
+      #f9f9f9 0% 71.5%,
+      rgb(219, 219, 219) 77%
     );
-    margin: -227.8px 0px 0px 483.8px;
+    margin: -228.8px 0px 0px 484.2px;
   `;
 
   const foldForBig = css`
@@ -51,10 +51,10 @@ function PostIt(props: Props) {
     height: 40px;
     background: linear-gradient(
       to bottom left,
-      #e7e7e8 0% 71.5%,
-      rgb(215, 215, 215) 75%
+      #f9f9f9 0% 71.5%,
+      rgb(219, 219, 219) 77%
     );
-    margin: -490px 0px 0px 580px;
+    margin: -491.2px 0px 0px 581.2px;
   `;
 
   const show = () =>

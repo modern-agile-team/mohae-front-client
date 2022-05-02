@@ -6,7 +6,8 @@ export default function Home() {
 
   const style = css`
     height: calc(100vh - 59px);
-    background-color: gray;
+    scroll-snap-align: start;
+    text-align: center;
   `;
 
   const show = section.map((i, index) => {
@@ -16,7 +17,7 @@ export default function Home() {
             background-color: ${color.light1};
           `
         : css`
-            background-color: ${color.light2};
+            background-color: ${color.light4};
           `;
     return (
       <div className={cx(style, backColor)}>
@@ -24,5 +25,14 @@ export default function Home() {
       </div>
     );
   });
-  return <>{show} </>;
+
+  const container = css`
+    overflow: auto;
+    height: calc(100vh - 59px);
+    scroll-snap-type: y;
+    scroll-snap-points-y: repeat(300px);
+    scroll-snap-type: y mandatory;
+  `;
+
+  return <div className={cx(container)}>{show}</div>;
 }

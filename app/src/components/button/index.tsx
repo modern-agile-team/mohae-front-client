@@ -11,6 +11,7 @@ import Btn11 from './textBtn/Btn11';
 import Btn12 from './textBtn/Btn12';
 
 import { color, radius, font, shadow } from '../../styles/index';
+import { ReactNode } from 'react';
 
 export {
   color,
@@ -31,6 +32,7 @@ export {
 
 export interface Props {
   [props: string]: React.ReactNode;
+  onClick?: (e: React.MouseEvent) => any | ReactNode;
 }
 
 export const btnStyle = {

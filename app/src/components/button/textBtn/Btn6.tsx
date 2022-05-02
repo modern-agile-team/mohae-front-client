@@ -2,6 +2,7 @@ import { css, cx } from '@emotion/css';
 import { color, btnStyle, font, shadow, Props } from '../index';
 
 function Btn6(props: Props) {
+  const { main, white, write, disable, children } = props;
   const commonStyle = css`
     ${btnStyle.square}
     width: 100px;
@@ -11,13 +12,13 @@ function Btn6(props: Props) {
     ${shadow.normal}
   `;
 
-  interface difStyle {
+  interface Attrs {
     [style: string]: {
       [color: string]: string;
     };
   }
 
-  const difStyle: difStyle = {
+  const attrs: Attrs = {
     main: {
       able: css`
         background-color: ${color.main};
@@ -61,25 +62,53 @@ function Btn6(props: Props) {
         }
       `,
     },
+    write: {
+      able: css`
+        background: no-repeat url('img/write.png');
+        background-size: 15px;
+        background-position: 74% 45%;
+        background-color: ${color.main};
+        padding-right: 20px;
+        color: white;
+        &:active {
+          background-color: ${color.darker};
+        }
+      `,
+      disable: css`
+        cursor: unset;
+        background: no-repeat url('img/write.png');
+        background-size: 15px;
+        background-position: 74% 45%;
+        background-color: ${color.light4};
+        padding-right: 20px;
+        color: white;
+        &:hover {
+          background-color: ${color.light4};
+        }
+        &:active {
+          background-color: ${color.light4};
+        }
+      `,
+    },
   };
 
-  const attrProps = (color: string) =>
-    props.disable === undefined
-      ? difStyle[color].able
-      : difStyle[color].disable;
+  const attrProps = (attr: string) =>
+    disable === undefined ? attrs[attr].able : attrs[attr].disable;
 
   const show = () =>
-    props.main ? (
-      <button className={cx(commonStyle, attrProps('main'))}>
-        {props.children}
-      </button>
+    main ? (
+      <button className={cx(commonStyle, attrProps('main'))}>{children}</button>
     ) : (
       <button className={cx(commonStyle, attrProps('white'))}>
-        {props.children}
+        {children}
       </button>
     );
 
-  return show();
+  return write ? (
+    <button className={cx(commonStyle, attrProps('write'))}>{children}</button>
+  ) : (
+    show()
+  );
 }
 
 export default Btn6;

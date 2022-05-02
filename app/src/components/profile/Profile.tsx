@@ -12,8 +12,7 @@ function Profile(props: Props) {
     : '/img/profile.png';
 
   const commonStyle = css`
-    background: white no-repeat center/cover;
-    background-image: url(${profileImg});
+    background: white url(${profileImg}) no-repeat center/cover;
     ${radius.circle};
     ${shadow.normal};
   `;

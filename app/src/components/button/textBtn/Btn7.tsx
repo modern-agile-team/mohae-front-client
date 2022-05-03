@@ -1,8 +1,9 @@
 import { css, cx } from '@emotion/css';
-import { color, btnStyle, font, shadow, Props } from '../index';
+import { color, shadow, font } from '../../../styles';
+import { btnStyle, Props } from '../index';
 
 function Btn7(props: Props) {
-  const { disable, children } = props;
+  const { disable, children, onClick } = props;
   const commonStyle = css`
     ${btnStyle.square}
     width: 170px;
@@ -34,12 +35,12 @@ function Btn7(props: Props) {
 
   const show = () =>
     disable ? (
-      <button className={cx(commonStyle, disableState)}>
+      <button onClick={onClick} className={cx(commonStyle, disableState)}>
         {children}
         <img src={'img/move.png'} className={cx(imgStyle)} />
       </button>
     ) : (
-      <button className={cx(commonStyle)}>
+      <button onClick={onClick} className={cx(commonStyle)}>
         {children}
         <img src={'img/move.png'} className={cx(imgStyle)} />
       </button>

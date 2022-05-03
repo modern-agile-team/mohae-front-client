@@ -1,8 +1,9 @@
 import { css, cx } from '@emotion/css';
-import { color, btnStyle, font, shadow, Props } from '../index';
+import { color, shadow, font } from '../../../styles';
+import { btnStyle, Props } from '../index';
 
 function Btn6(props: Props) {
-  const { main, white, write, disable, children } = props;
+  const { main, white, write, disable, children, onClick } = props;
   const commonStyle = css`
     ${btnStyle.square}
     width: 100px;
@@ -97,7 +98,9 @@ function Btn6(props: Props) {
 
   const show = () =>
     main ? (
-      <button className={cx(commonStyle, attrProps('main'))}>{children}</button>
+      <button onClick={onClick} className={cx(commonStyle, attrProps('main'))}>
+        {children}
+      </button>
     ) : (
       <button className={cx(commonStyle, attrProps('white'))}>
         {children}
@@ -105,7 +108,9 @@ function Btn6(props: Props) {
     );
 
   return write ? (
-    <button className={cx(commonStyle, attrProps('write'))}>{children}</button>
+    <button onClick={onClick} className={cx(commonStyle, attrProps('write'))}>
+      {children}
+    </button>
   ) : (
     show()
   );

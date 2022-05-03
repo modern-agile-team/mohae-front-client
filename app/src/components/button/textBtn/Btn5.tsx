@@ -1,8 +1,9 @@
 import { css, cx } from '@emotion/css';
-import { color, btnStyle, font, shadow, Props } from '../index';
+import { color, shadow, font } from '../../../styles';
+import { btnStyle, Props } from '../index';
 
 function Btn5(props: Props) {
-  const { disable, children } = props;
+  const { disable, children, onClick } = props;
   const commonStyle = css`
     ${btnStyle.square}
     width: 74px;
@@ -28,9 +29,13 @@ function Btn5(props: Props) {
 
   const show = () =>
     disable ? (
-      <button className={cx(commonStyle, disableState)}>{children}</button>
+      <button onClick={onClick} className={cx(commonStyle, disableState)}>
+        {children}
+      </button>
     ) : (
-      <button className={cx(commonStyle)}>{children}</button>
+      <button onClick={onClick} className={cx(commonStyle)}>
+        {children}
+      </button>
     );
 
   return show();

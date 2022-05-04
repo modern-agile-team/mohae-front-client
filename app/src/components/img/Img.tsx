@@ -1,9 +1,5 @@
 import { css, cx } from '@emotion/css';
-
-interface Props {
-  src: string;
-  onClick: (e: React.MouseEvent<HTMLDivElement>) => any;
-}
+import { Props } from '../button';
 
 function Img(props: Props) {
   const { src, onClick } = props;

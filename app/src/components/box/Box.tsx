@@ -1,5 +1,5 @@
 import { css, cx } from '@emotion/css';
-import { shadow, radius, color } from '../../styles';
+import * as palette from '../../styles';
 
 interface Props {
   [key: string]: any;
@@ -9,7 +9,7 @@ interface StyleObj {
   [index: string]: string;
 }
 
-function Box({ colorType, radiusType, shadowType, children }: Props) {
+function Box({ color, radius, shadow, children }: Props) {
   const commonStyle = css`
     width: fit-content;
     height: fit-content;
@@ -20,7 +20,7 @@ function Box({ colorType, radiusType, shadowType, children }: Props) {
       background-color: white;
     `,
     light: css`
-      background-color: ${color.light1};
+      background-color: ${palette.color.light1};
     `,
   };
 
@@ -29,10 +29,10 @@ function Box({ colorType, radiusType, shadowType, children }: Props) {
       border-radius: 0px;
     `,
     normal: css`
-      ${radius[6]}
+      ${palette.radius[6]}
     `,
     big: css`
-      ${radius[24]}
+      ${palette.radius[24]}
     `,
   };
 
@@ -41,7 +41,7 @@ function Box({ colorType, radiusType, shadowType, children }: Props) {
       box-shadow: none;
     `,
     normal: css`
-      ${shadow.normal}
+      ${palette.shadow.normal}
     `,
   };
 
@@ -49,9 +49,9 @@ function Box({ colorType, radiusType, shadowType, children }: Props) {
     return (
       <div
         className={cx(
-          colorStyle[colorType],
-          radiusStyle[radiusType],
-          shadowStyle[shadowType],
+          colorStyle[color],
+          radiusStyle[radius],
+          shadowStyle[shadow],
           commonStyle
         )}>
         {children}

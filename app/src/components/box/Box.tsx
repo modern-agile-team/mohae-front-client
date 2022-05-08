@@ -13,6 +13,7 @@ function Box({ color, radius, shadow, children }: Props) {
   const commonStyle = css`
     width: fit-content;
     height: fit-content;
+    overflow: hidden;
   `;
 
   const colorStyle: StyleObj = {

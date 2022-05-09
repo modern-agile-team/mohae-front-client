@@ -1,8 +1,8 @@
 import React, { ReactElement } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { injectGlobal } from '@emotion/css';
-import { DefaultLayout, MainLayout } from './styles';
-import { HG } from './pages/test';
+import { Layout } from './styles';
+import { HG, Home } from './pages';
 
 injectGlobal`
   * {
@@ -29,16 +29,10 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<MainLayout component={<HG />} />} />
-        <Route path="/hg" element={<DefaultLayout component={<HG />} />} />
-        <Route
-          path="/hl"
-          element={<DefaultLayout component={<div>{'테스트 페이지'}</div>} />}
-        />
-        <Route
-          path="/sj"
-          element={<DefaultLayout component={<div>{'테스트 '}</div>} />}
-        />
+        <Route path="/" element={<Layout main component={<Home />} />} />
+        <Route path="/hg" element={<Layout component={<HG />} />} />
+        <Route path="/hl" element={<Layout component={<div />} />} />
+        <Route path="/sj" element={<Layout component={<div />} />} />
       </Routes>
     </Router>
   );

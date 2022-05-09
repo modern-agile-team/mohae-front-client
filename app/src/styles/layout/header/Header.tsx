@@ -5,7 +5,7 @@ import { ReactElement } from 'react';
 const wrapper = css`
   background-color: white;
   position: sticky;
-  /* z-index: 10; */
+  z-index: 10;
   top: 0;
   left: 0;
   width: 100%;

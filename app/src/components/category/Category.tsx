@@ -18,6 +18,7 @@ export default function Category(props: Props) {
       { name: '카테고리6', img: imgURL },
       { name: '카테고리7', img: imgURL },
       { name: '카테고리8', img: imgURL },
+      { name: '카테고리9', img: imgURL },
     ]),
     [arr, setArr] = useState(categories.map((category, index) => index)),
     itemsize = 168,
@@ -26,6 +27,7 @@ export default function Category(props: Props) {
     move = itemsize + margin;
 
   const categoryBox = css`
+    width: 100%;
     position: relative;
   `;
 
@@ -139,12 +141,10 @@ export default function Category(props: Props) {
   `;
 
   return (
-    <>
-      <div className={cx(categoryBox)}>
-        <div className={cx(wrapper())}>{show}</div>
-        <button className={cx(prevBtn)} onClick={click} name="-" />
-        <button className={cx(nextBtn)} onClick={click} name="+" />
-      </div>
-    </>
+    <div className={cx(categoryBox)}>
+      <div className={cx(wrapper())}>{show}</div>
+      <button className={cx(prevBtn)} onClick={click} name="-" />
+      <button className={cx(nextBtn)} onClick={click} name="+" />
+    </div>
   );
 }

@@ -1,9 +1,11 @@
 import { css, cx } from '@emotion/css';
 import { useState } from 'react';
-import { color, btnStyle, shadow, Props } from '../index';
+import { color, shadow } from '../../../styles';
+import { btnStyle, Props } from '../index';
 
 function Btn4(props: Props) {
-  const { report, bookMark, like, chatting, big, small, disable } = props;
+  const { report, bookMark, like, chatting, big, small, disable, onClick } =
+    props;
   const [liked, setLiked] = useState(false);
 
   const commonStyle = css`
@@ -85,6 +87,7 @@ function Btn4(props: Props) {
       [state: string]: string;
     };
   }
+
   const imgs: Imgs = {
     report: {
       able: css`
@@ -106,20 +109,6 @@ function Btn4(props: Props) {
         ${btnState.white.disable}
       `,
     },
-    like: {
-      able: css`
-        background: no-repeat center/contain url('img/heart-main.png');
-        ${btnState.white.able}
-      `,
-      disable: css`
-        background: no-repeat center/contain url('img/heart-light1.png');
-        ${btnState.white.disable}
-      `,
-      clicked: css`
-        background: no-repeat center/contain url('img/heart-filled-main.png');
-        ${btnState.white.able}
-      `,
-    },
     chatting: {
       able: css`
         background: no-repeat url('img/chatting.png');
@@ -134,26 +123,41 @@ function Btn4(props: Props) {
     },
   };
 
+  const likeBtn = () =>
+    disable
+      ? css`
+          background: no-repeat center/contain url('img/heart-light1.png');
+          ${btnState.white.disable}
+        `
+      : liked
+      ? css`
+          background: no-repeat center/contain url('img/heart-filled-main.png');
+          ${btnState.white.able}
+        `
+      : css`
+          background: no-repeat center/contain url('img/heart-main.png');
+          ${btnState.white.able}
+        `;
+
+  const clickLikeBtn = (e: React.MouseEvent) => {
+    //axios
+    onClick && onClick(e);
+    setLiked(!liked);
+  };
+
   const contentImg = Object.keys(props)
     .map(attr => imgs[attr])
     .filter(el => el)
     .map(el => (disable ? [...[el.disable], size()] : [...[el.able], size()]));
 
-  const clickLikeBtn = () => (liked ? imgs.like.clicked : imgs.like.able);
-
   const show = () =>
     like ? (
       <button
-        onClick={() => setLiked(!liked)}
-        className={cx(
-          commonStyle,
-          contentImg,
-          !disable && clickLikeBtn(),
-          size()
-        )}
+        onClick={clickLikeBtn}
+        className={cx(commonStyle, likeBtn(), size())}
       />
     ) : (
-      <button className={cx(commonStyle, contentImg)} />
+      <button onClick={onClick} className={cx(commonStyle, contentImg)} />
     );
 
   return show();

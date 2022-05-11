@@ -1,15 +1,15 @@
 import { css, cx } from '@emotion/css';
-import { color, btnStyle, shadow, Props } from '../index';
+import { color, shadow } from '../../../styles';
+import { btnStyle, Props } from '../index';
 
 function Alram(props: Props) {
-  const { disable, msg } = props;
+  const { disable, msg, onClick } = props;
   const commonStyle = css`
     ${btnStyle.circle}
     width: 50px;
     height: 50px;
     padding: 10px;
     ${shadow.normal}
-    background: no-repeat center/contain url('img/alarm-bell.png');
     background-size: 27.5px 30px;
     position: fixed;
     bottom: 187px;
@@ -29,6 +29,7 @@ function Alram(props: Props) {
   `;
 
   const ableState = css`
+    background: no-repeat center/contain url('img/alarm-bell.png');
     background-color: white;
     &:hover {
       background-color: ${color.subtle};
@@ -39,6 +40,7 @@ function Alram(props: Props) {
   `;
 
   const disableState = css`
+    background: no-repeat center/contain url('img/alram-bell-white.png');
     background-color: ${color.light4};
     &:hover {
       background-color: ${color.light4};
@@ -50,9 +52,9 @@ function Alram(props: Props) {
 
   const show = () =>
     disable ? (
-      <button className={cx(commonStyle, disableState)}></button>
+      <button className={cx(disableState, commonStyle)}></button>
     ) : (
-      <button className={cx(commonStyle, ableState)}>
+      <button onClick={onClick} className={cx(ableState, commonStyle)}>
         <div className={cx(alram)}>{msg}</div>
       </button>
     );

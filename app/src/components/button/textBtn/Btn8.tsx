@@ -1,8 +1,9 @@
 import { css, cx } from '@emotion/css';
-import { color, btnStyle, font, shadow, Props } from '../index';
+import { color, shadow, font } from '../../../styles';
+import { btnStyle, Props } from '../index';
 
 function Btn8(props: Props) {
-  const { big, small, disable, children } = props;
+  const { big, small, disable, children, onClick } = props;
   const commonStyle = css`
     ${btnStyle.square}
     height: 52px;
@@ -40,7 +41,9 @@ function Btn8(props: Props) {
   const attrProps = [...Object.keys(props).map(attr => attrs[attr])];
 
   const show = () => (
-    <button className={cx(commonStyle, attrProps)}>{children}</button>
+    <button onClick={onClick} className={cx(commonStyle, attrProps)}>
+      {children}
+    </button>
   );
 
   return show();

@@ -10,25 +10,10 @@ import Btn10 from './textBtn/Btn10';
 import Btn11 from './textBtn/Btn11';
 import Btn12 from './textBtn/Btn12';
 
-import { color, radius, font, shadow } from '../../styles/index';
+import { radius } from '../../styles/index';
 import { ReactNode } from 'react';
 
-export {
-  color,
-  radius,
-  font,
-  shadow,
-  Alram,
-  Btn4,
-  Btn5,
-  Btn6,
-  Btn7,
-  Btn8,
-  Btn9,
-  Btn10,
-  Btn11,
-  Btn12,
-};
+export { Alram, Btn4, Btn5, Btn6, Btn7, Btn8, Btn9, Btn10, Btn11, Btn12 };
 
 export interface Props {
   [props: string]: React.ReactNode;

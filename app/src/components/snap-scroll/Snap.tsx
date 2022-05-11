@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { css, cx } from '@emotion/css';
 import { color, radius, font, shadow } from '../../styles';
 
@@ -6,29 +6,99 @@ interface Props {
   [key: string]: any;
 }
 
-export default function Snap({
-  number = 4,
-  // 스크롤 할 페이지 수
-  size = 'calc(100vh - 59px)',
-  // 높이
-  children,
-  colors = [color.light1, color.light3],
-  // 반복할 배경 색상
-  part,
-  onWheel,
-}: // 페이지네이션 서클 사용 시 받을 위치
-Props) {
-  const section = Array(number).fill(undefined);
+export default function Snap({ contents }: Props) {
+  const section = [1, 2, 3, 4],
+    size = 'calc(100vh - 59px)',
+    // 높이
+    colors = [color.light1, color.light3],
+    // 반복할 배경 색상
+    [part, setPart] = useState(0);
 
   const container = css`
-    overflow: hidden;
-    height: ${size};
-    /* scroll-snap-type: y mandatory; */
+    overflow: auto;
+    height: fit-content;
+    background-color: blue;
+    scroll-snap-type: y;
+    scroll-snap-type: y mandatory;
     &::-webkit-scrollbar {
       display: none;
     }
     position: relative;
+
+    .snap-container {
+      overflow: hidden;
+      height: ${size};
+      &::-webkit-scrollbar {
+        display: none;
+      }
+      position: relative;
+    }
   `;
+
+  const circleWrapper = css`
+    position: fixed;
+    z-index: 3;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 27px;
+    height: 74px;
+  `;
+
+  const circle = css`
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: ${color.light4};
+    transition: all 0.5s;
+  `;
+
+  const clickCircle = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setPart(Number(e.currentTarget.name));
+  };
+
+  const wheelHandler = useCallback(
+    (e: React.WheelEvent<HTMLDivElement>) => {
+      const move = e.deltaY;
+      section.forEach((sector, index) => {
+        if (move > 10 && part === index && !(index === section.length - 1)) {
+          setTimeout(() => {
+            setPart(part + 1);
+          }, 200);
+        } else if (move < -10 && part === index && !(index === 0)) {
+          setTimeout(() => {
+            setPart(part - 1);
+          }, 200);
+        }
+      });
+    },
+    [section]
+  );
+
+  const pageCircles = section.map((i, index) => {
+    const target =
+      part === index
+        ? css`
+            background-color: ${color.main};
+            width: 14px;
+            height: 14px;
+          `
+        : null;
+    return index ? (
+      <button
+        key={index}
+        className={cx(circle, target)}
+        name={`${index}`}
+        onClick={clickCircle}
+      />
+    ) : (
+      <></>
+    );
+  });
 
   const box = () => {
     const row = `calc(${size} * ${section.length})`;
@@ -42,36 +112,37 @@ Props) {
 
   const pageStyle = css`
     height: ${size};
-    /* scroll-snap-align: start; */
     text-align: center;
   `;
 
-  const show = section.map((i, index) => {
+  const showSnap = section.map((i, index) => {
     const backColor = css`
       background-color: ${colors[index % colors.length]};
     `;
     return (
       <div key={`${index}`} className={cx(pageStyle, backColor)}>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque facilis
+        {contents[index]}
       </div>
     );
   });
 
-  const wheelHandler = (e: React.WheelEvent<HTMLDivElement>) => {
-    console.log('scroll >> ', window.scrollY);
-  };
-
   return (
-    <>
-      <div className={cx(container)}>
-        <div
-          className={cx(box())}
-          onWheel={onWheel}
-          // onWheel={wheelHandler}
-        >
-          {show}
-        </div>
+    <div className={cx(container)}>
+      <div
+        className={cx(
+          circleWrapper,
+          !part
+            ? css`
+                display: none;
+              `
+            : null
+        )}
+      >
+        {pageCircles}
       </div>
-    </>
+      <div className={'snap-container'} onWheel={wheelHandler}>
+        <div className={cx(box())}>{showSnap}</div>
+      </div>
+    </div>
   );
 }

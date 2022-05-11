@@ -1,10 +1,9 @@
 import { css, cx } from '@emotion/css';
 import { color, radius, font, shadow } from '../../styles';
 import { ReactElement } from 'react';
-import { start } from 'repl';
 
 type Props = {
-  [props: string]: boolean | undefined | string | number[] | JSX.Element;
+  [props: string]: any;
 };
 
 export default function Text(props: Props): ReactElement {
@@ -12,23 +11,21 @@ export default function Text(props: Props): ReactElement {
     (Number(props.warnning) >= 10 && `${props.warnning}px`) ||
     (Number(props.star) >= 10 && `${props.star}px`) ||
     '14px';
-  console.log(`fontSize`, fontSize);
+  // const size = `${props.warnning}px` || `${props.star}px` || '14px';
 
   const commonStyle = css`
     color: ${color.error};
     ${font.weight.regular}
     font-size: ${fontSize};
   `;
-  const warnning: string = css``;
 
   const star: string = css`
     color: ${color.dark1};
     position: relative;
     :after {
       content: '*';
-      position: absolute;
+      position: relative;
       top: -4px;
-      right: -8px;
       color: ${color.error};
     }
   `;
@@ -38,9 +35,7 @@ export default function Text(props: Props): ReactElement {
   }
 
   const check: Check = {
-    warnning: warnning,
     star: star,
-    undefined: warnning,
   };
 
   const finalStyles = Object.keys(props).map((prop) => {

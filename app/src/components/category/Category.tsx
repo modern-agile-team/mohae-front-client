@@ -8,28 +8,29 @@ interface Props {
 }
 
 export default function Category(props: Props) {
-  const imgURL = 'img/logo192.png';
-  const [categories, setCategories] = useState([
-      { name: '카테고리1', img: imgURL },
-      { name: '카테고리2', img: imgURL },
-      { name: '카테고리3', img: imgURL },
-      { name: '카테고리4', img: imgURL },
-      { name: '카테고리5', img: imgURL },
-      { name: '카테고리6', img: imgURL },
-      { name: '카테고리7', img: imgURL },
-      { name: '카테고리8', img: imgURL },
-      { name: '카테고리9', img: imgURL },
-    ]),
+  const imgURL = '/img/study.png';
+  const categories = [
+      { name: '디자인', img: imgURL },
+      { name: 'IT / 개발', img: imgURL },
+      { name: '사진 / 영상', img: imgURL },
+      { name: '기획 / 마케팅', img: imgURL },
+      { name: '번역 / 통역', img: imgURL },
+      { name: '문서작업', img: imgURL },
+      { name: '컨설팅', img: imgURL },
+      { name: '법률', img: imgURL },
+      { name: '과외 / 레슨', img: imgURL },
+      { name: '상담 / 운세', img: imgURL },
+      { name: '이벤트', img: imgURL },
+      { name: '핸드메이드', img: imgURL },
+      { name: '취미', img: imgURL },
+      { name: '생활서비스', img: imgURL },
+      { name: '기타', img: imgURL },
+    ],
     [arr, setArr] = useState(categories.map((category, index) => index)),
-    itemsize = 168,
-    margin = 24,
+    itemsize = 120,
+    margin = 48,
     [sector, setSector] = useState(0),
     move = itemsize + margin;
-
-  const categoryBox = css`
-    width: 100%;
-    position: relative;
-  `;
 
   const wrapper = () => {
     const row = `${itemsize * 1.09523 + 16}px`;
@@ -51,7 +52,7 @@ export default function Category(props: Props) {
     const col = `${(itemsize + 24) * (arr.length + 2)}px`;
     return css`
       width: ${col};
-      height: 168px;
+      height: 120px;
 
       display: flex;
       align-items: center;
@@ -60,33 +61,71 @@ export default function Category(props: Props) {
     `;
   };
 
-  const each = css`
-    width: 168px;
-    height: 168px;
-    border-radius: 50%;
-    margin-right: 24px;
-    :hover {
-      transition: all 0.2s ease-out;
-      transform: scale(1.09523);
+  const style = css`
+    @media (max-width: 1200px) {
+      width: 1200px;
+      transform: translateX(-36px);
     }
-    :active {
-      background-color: ${color.lighter};
+    @media (min-width: 1200px) {
+      transform: translateX(calc(-1 * calc(calc(100vw - 1128px) / 2)));
+      width: 100vw;
+    }
+    background-color: ${color.subtle};
+    position: relative;
+
+    .wrapper {
+      ${wrapper()}
+    }
+
+    .box {
+      ${box()}
+    }
+
+    .each {
+      width: 120px;
+      height: 120px;
+      margin-right: 48px;
+      :hover {
+        transition: all 0.2s ease-out;
+        transform: scale(1.09523);
+        /* transform: translateY(-10px); */
+      }
+      :active {
+        background-color: ${color.lighter};
+      }
+    }
+
+    .btn-arrow {
+      width: 48px;
+      height: 48px;
+      position: absolute;
+      top: calc(50% - 24px);
+    }
+
+    .prev {
+      background: url('img/arrow-left-main.png') no-repeat center/contain;
+      left: calc(calc(calc(100% - 1128px) / 2) - 52px);
+    }
+
+    .next {
+      background: url('img/arrow-right-main.png') no-repeat center/contain;
+      right: calc(calc(calc(100% - 1128px) / 2) - 26px);
     }
   `;
 
   const show = (
-    <div className={cx(box())}>
-      <div className={cx(each)}>
+    <div className={'box'}>
+      <div className={'each'}>
         <Basic
           key={'first'}
           name={categories[arr[arr.length - 1]].name}
           img={imgURL}
         />
       </div>
-      {Array(6)
+      {Array(7)
         .fill(undefined)
         .map((item, index) => (
-          <div className={cx(each)}>
+          <div className={'each'}>
             <Basic
               key={index}
               name={categories[arr[index]].name}
@@ -94,8 +133,8 @@ export default function Category(props: Props) {
             />
           </div>
         ))}
-      <div className={cx(each)}>
-        <Basic key={'last'} name={categories[arr[6]].name} img={imgURL} />
+      <div className={'each'}>
+        <Basic key={'last'} name={categories[arr[7]].name} img={imgURL} />
       </div>
     </div>
   );
@@ -123,28 +162,11 @@ export default function Category(props: Props) {
     }
   };
 
-  const btnCommonStyle = css`
-    width: 48px;
-    height: 48px;
-    position: absolute;
-    top: calc(50% - 24px);
-  `;
-  const prevBtn = css`
-    ${btnCommonStyle}
-    background: url('img/arrow-left-main.png') no-repeat center/contain;
-    left: -48px;
-  `;
-  const nextBtn = css`
-    ${btnCommonStyle}
-    background: url('img/arrow-right-main.png') no-repeat center/contain;
-    right: -48px;
-  `;
-
   return (
-    <div className={cx(categoryBox)}>
-      <div className={cx(wrapper())}>{show}</div>
-      <button className={cx(prevBtn)} onClick={click} name="-" />
-      <button className={cx(nextBtn)} onClick={click} name="+" />
+    <div className={cx(style)}>
+      <div className={'wrapper'}>{show}</div>
+      <button className={'btn-arrow prev'} onClick={click} name="-" />
+      <button className={'btn-arrow next'} onClick={click} name="+" />
     </div>
   );
 }

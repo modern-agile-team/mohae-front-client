@@ -1,6 +1,6 @@
 import { css, cx } from '@emotion/css';
-import { color, shadow } from '../../../styles';
-import { btnStyle, Props } from '../index';
+import { color, shadow, btnStyle } from '../../../styles';
+import { Props } from '../index';
 
 function Alram(props: Props) {
   const { disable, msg, onClick } = props;

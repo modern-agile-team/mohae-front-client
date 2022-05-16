@@ -1,4 +1,5 @@
 import { cx, css } from '@emotion/css';
+import { keyframes } from '@emotion/react';
 import { useState } from 'react';
 import { color, radius, font, shadow } from '../../styles';
 import Basic from './Basic';
@@ -7,59 +8,98 @@ interface Props {
   [key: string]: any;
 }
 
-export default function Category(props: Props) {
-  const imgURL = '/img/study.png';
-  const categories = [
-      { name: '디자인', img: imgURL },
-      { name: 'IT / 개발', img: imgURL },
-      { name: '사진 / 영상', img: imgURL },
-      { name: '기획 / 마케팅', img: imgURL },
-      { name: '번역 / 통역', img: imgURL },
-      { name: '문서작업', img: imgURL },
-      { name: '컨설팅', img: imgURL },
-      { name: '법률', img: imgURL },
-      { name: '과외 / 레슨', img: imgURL },
-      { name: '상담 / 운세', img: imgURL },
-      { name: '이벤트', img: imgURL },
-      { name: '핸드메이드', img: imgURL },
-      { name: '취미', img: imgURL },
-      { name: '생활서비스', img: imgURL },
-      { name: '기타', img: imgURL },
+export default function Category({ num }: Props) {
+  const categoryList = [
+      '디자인',
+      'IT / 개발',
+      '사진 / 영상',
+      '기획 / 마케팅',
+      '번역 / 통역',
+      '문서작업',
+      '컨설팅',
+      '법률',
+      '과외 / 레슨',
+      '상담 / 운세',
+      '이벤트',
+      '핸드메이드',
+      '취미',
+      '생활서비스',
+      '기타',
     ],
-    [arr, setArr] = useState(categories.map((category, index) => index)),
+    list = categoryList.map((category: string, index: number) => ({
+      name: category,
+      img: `/img/category-${index}.png`,
+    })),
+    [arr, setArr] = useState(list.map((category, index) => index)),
     itemsize = 120,
-    margin = 48,
+    margin = num === 7 ? 48 : 24,
+    showNumber = num || 7,
     [sector, setSector] = useState(0),
     move = itemsize + margin;
 
   const wrapper = () => {
     const row = `${itemsize * 1.09523 + 16}px`;
+    const focus =
+      num === 7
+        ? css`
+            :after {
+              content: '';
+              width: 120px;
+              height: 120px;
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              ${radius[6]}
+              ${shadow.normal}
+            }
+          `
+        : null;
     return css`
       width: calc(1128px + 30px);
-      margin: -16px auto;
+      margin: 0 auto;
       width: ${itemsize};
       height: ${row};
       display: flex;
       overflow: hidden;
       align-items: center;
       transform: translateX(-15px);
+      ${focus}
     `;
   };
 
   const box = () => {
     const translate = `translateX(${-1 * (move + move * sector) + 15}px)`;
     const time = sector ? '0.5s' : '0';
-    const col = `${(itemsize + 24) * (arr.length + 2)}px`;
+    const col = `${move * (8 + 2)}px`;
     return css`
       width: ${col};
-      height: 120px;
-
       display: flex;
+      justify-content: space-between;
       align-items: center;
       transition: ${time};
       transform: ${translate};
+      position: relative;
     `;
   };
+
+  const shake = keyframes`
+    0% {
+      transform: translateY(0);
+    }
+    10%{
+      transform: translateY(-15px);
+    }
+    20% {
+      transform: translateY(0);
+    }
+    45% {
+      transform: translateY(-10px);
+    }
+    50% {
+      transform: translateY(0);
+    }
+  `;
 
   const style = css`
     @media (max-width: 1200px) {
@@ -70,7 +110,7 @@ export default function Category(props: Props) {
       transform: translateX(calc(-1 * calc(calc(100vw - 1128px) / 2)));
       width: 100vw;
     }
-    background-color: ${color.subtle};
+    background-color: ${num % 2 === 1 ? 'none' : color.subtle};
     position: relative;
 
     .wrapper {
@@ -84,11 +124,9 @@ export default function Category(props: Props) {
     .each {
       width: 120px;
       height: 120px;
-      margin-right: 48px;
+      margin-right: ${`${margin}px`};
       :hover {
-        transition: all 0.2s ease-out;
-        transform: scale(1.09523);
-        /* transform: translateY(-10px); */
+        animation: ${shake} 1.5s infinite;
       }
       :active {
         background-color: ${color.lighter};
@@ -113,33 +151,37 @@ export default function Category(props: Props) {
     }
   `;
 
-  const show = (
+  const categories = (
     <div className={'box'}>
       <div className={'each'}>
         <Basic
           key={'first'}
-          name={categories[arr[arr.length - 1]].name}
-          img={imgURL}
+          name={list[arr[arr.length - 1]].name}
+          img={list[arr[arr.length - 1]].img}
         />
       </div>
-      {Array(7)
+      {Array(showNumber)
         .fill(undefined)
         .map((item, index) => (
           <div className={'each'}>
             <Basic
               key={index}
-              name={categories[arr[index]].name}
-              img={imgURL}
+              name={list[arr[index]].name}
+              img={list[arr[index]].img}
             />
           </div>
         ))}
       <div className={'each'}>
-        <Basic key={'last'} name={categories[arr[7]].name} img={imgURL} />
+        <Basic
+          key={'last'}
+          name={list[arr[showNumber]].name}
+          img={list[arr[showNumber]].img}
+        />
       </div>
     </div>
   );
 
-  const click = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const clickArrowBtn = (e: React.MouseEvent<HTMLButtonElement>) => {
     const target = e.currentTarget;
     const updateItem = (array: number[]) => {
       setTimeout(() => {
@@ -164,9 +206,9 @@ export default function Category(props: Props) {
 
   return (
     <div className={cx(style)}>
-      <div className={'wrapper'}>{show}</div>
-      <button className={'btn-arrow prev'} onClick={click} name="-" />
-      <button className={'btn-arrow next'} onClick={click} name="+" />
+      <div className={'wrapper'}>{categories}</div>
+      <button className={'btn-arrow prev'} onClick={clickArrowBtn} name="-" />
+      <button className={'btn-arrow next'} onClick={clickArrowBtn} name="+" />
     </div>
   );
 }

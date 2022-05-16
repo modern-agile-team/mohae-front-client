@@ -115,7 +115,7 @@ function Input(props: InputProps) {
           <Img src='img/close-dark2.png' />
         </div>
         <hr />
-        <div className={cx(search)} onClick={handleSearch}>
+        <div className={cx(search)} onClick={onClick}>
           <Img src='img/search.png' />
         </div>
         <div className={cx(filter)}>
@@ -128,11 +128,12 @@ function Input(props: InputProps) {
         </div>
       </>
     ) : (
-      <Img className={cx(search)} onClick={handleSearch} src='img/search.png' />
+      <Img className={cx(search)} onClick={onClick} src='img/search.png' />
     );
   };
 
   const onKeyPress = (e: React.KeyboardEvent) => {
+    setValue('');
     return (
       e.key === 'Enter' &&
       // value.length > 2 &&
@@ -143,7 +144,8 @@ function Input(props: InputProps) {
     );
   };
 
-  const handleSearch = () => {
+  const onClick = () => {
+    setValue('');
     return localStorage.setItem(
       'currentSearch',
       JSON.stringify([...localValue, value])

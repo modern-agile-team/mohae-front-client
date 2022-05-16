@@ -1,7 +1,7 @@
 import { css, cx } from '@emotion/css';
 import React, { ReactChild } from 'react';
-import { color, font, radius, shadow } from '../../styles';
-import { btnStyle, Props } from '../button';
+import { color, font, radius, shadow, btnStyle } from '../../styles';
+import { Props } from '../button';
 
 function MarkBox(props: Props) {
   const { helpMeAble, helpMeDisable, big, small, hover, disable } = props;
@@ -98,7 +98,7 @@ function MarkBox(props: Props) {
   };
 
   const attrProps = [
-    ...Object.keys(props).map(attr => attrs[attr]),
+    ...Object.keys(props).map((attr) => attrs[attr]),
     markBoxSize(),
   ];
 

@@ -127,4 +127,22 @@ const font: Font = {
   },
 };
 
-export { color, radius, font, shadow };
+interface BtnStyle {
+  [key: string]: any;
+}
+
+const btnStyle: BtnStyle = {
+  square: css`
+    ${radius[6]}
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  `,
+  circle: css`
+    ${radius.circle}
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  `,
+};
+export { color, radius, font, shadow, btnStyle };

@@ -1,6 +1,7 @@
 import { css, cx } from '@emotion/css';
 import { color, radius, font, shadow } from '../../styles';
 import { ReactElement } from 'react';
+import Img from '../img/Img';
 import { Link } from 'react-router-dom';
 
 interface Props {
@@ -8,40 +9,34 @@ interface Props {
 }
 
 function Basic(props: Props): ReactElement {
-  const commonStyle = css`
-    ${radius.circle};
+  const style = css`
+    ${radius[6]}
     width: 100%;
     height: 100%;
     display: inline-flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background: white;
-    ${shadow.normal}
-    & + & {
-      margin-bottom: 12px;
-    }
     overflow-y: visible;
+
+    .icon {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 4px;
+    }
+
+    span {
+      height: 16px;
+      color: ${color.dark1};
+      ${font.size[16]}
+      ${font.weight.regular}
+    }
   `;
 
-  const text = css`
-    height: 16px;
-    color: ${color.dark1};
-    ${font.size[16]}
-    ${font.weight.regular}
-  `;
-  const img = {
-    big: css`
-      background: url(${props.img}) no-repeat center/contain;
-      width: 25%;
-      height: 25%;
-    `,
-  };
-
-  const eventStyle = {
+  const event_style = {
     big: css`
       :hover {
-        background-color: ${color.subtle};
+        background-color: white;
       }
       :active {
         background-color: ${color.lighter};
@@ -50,12 +45,11 @@ function Basic(props: Props): ReactElement {
   };
 
   return (
-    <Link
-      to={`/board/${props.name}`}
-      className={cx(commonStyle, eventStyle.big)}
-    >
-      <div className={cx(img.big)} />
-      <span className={cx(text)}>{props.name || 'Category'}</span>
+    <Link to={`/board/${props.name}`} className={cx(style, event_style.big)}>
+      <div className={'icon'}>
+        <Img src={props.img} />
+      </div>
+      <span>{props.name || 'Category'}</span>
     </Link>
   );
 }

@@ -10,7 +10,7 @@ import Btn10 from './textBtn/Btn10';
 import Btn11 from './textBtn/Btn11';
 import Btn12 from './textBtn/Btn12';
 
-import { radius } from '../../styles/index';
+import { radius } from '../../styles';
 import { ReactNode } from 'react';
 
 export { Alram, Btn4, Btn5, Btn6, Btn7, Btn8, Btn9, Btn10, Btn11, Btn12 };
@@ -19,18 +19,3 @@ export interface Props {
   [props: string]: React.ReactNode;
   onClick?: (e: React.MouseEvent) => any | ReactNode;
 }
-
-export const btnStyle = {
-  square: css`
-    ${radius[6]}
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  `,
-  circle: css`
-    ${radius.circle}
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  `,
-};

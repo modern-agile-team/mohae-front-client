@@ -1,6 +1,7 @@
 import { css, cx } from '@emotion/css';
 import { useState } from 'react';
 import { color, radius, font, shadow } from '../../styles';
+import Img from '../img/Img';
 
 interface Props {
   [key: string]: any;
@@ -23,60 +24,62 @@ export default function OrderedImg(props: Props) {
     })
   );
 
-  const box = css`
+  const style = css`
     width: 100%;
     height: 100%;
     padding: 8px 0 4px 8px;
-  `;
 
-  const wrapper = css`
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    &::-webkit-scrollbar {
-      display: none;
-    }
-    :hover {
+    .wrapper {
+      width: 100%;
+      height: 100%;
+      overflow: auto;
       &::-webkit-scrollbar {
-        display: block;
-        background-color: rgba(0, 0, 0, 0);
-        height: 5px;
-        width: 0%;
-        cursor: pointer;
+        display: none;
       }
-      &::-webkit-scrollbar-thumb {
-        background-color: ${color.main};
-        height: 5px;
-        border-radius: 10px;
-        cursor: pointer;
+      :hover {
+        &::-webkit-scrollbar {
+          display: block;
+          background-color: rgba(0, 0, 0, 0);
+          height: 5px;
+          width: 0%;
+          cursor: pointer;
+        }
+        &::-webkit-scrollbar-thumb {
+          background-color: ${color.main};
+          height: 5px;
+          border-radius: 10px;
+          cursor: pointer;
+        }
+        &::-webkit-scrollbar-track {
+          background-color: ${color.light4};
+          height: 5px;
+          border-radius: 10px;
+          box-shadow: inset 0px 0px 5px white;
+          cursor: pointer;
+        }
       }
-      &::-webkit-scrollbar-track {
-        background-color: ${color.light4};
-        height: 5px;
-        border-radius: 10px;
-        box-shadow: inset 0px 0px 5px white;
-        cursor: pointer;
-      }
+    }
+    .container {
+      width: ${`${(138 + 8) * IMAGES.length - 8}px`};
+      height: 115px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .item-box {
+      width: 138px;
+      height: 100%;
+      border-radius: 6px;
+      background-color: white;
+      position: relative;
+    }
+
+    .sequence {
     }
   `;
 
-  const container = css`
-    width: ${`${(138 + 8) * IMAGES.length - 8}px`};
-    height: 115px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  `;
-
-  const item = css`
-    width: 138px;
-    height: 100%;
-    border-radius: 6px;
-    background-color: lightgoldenrodyellow;
-    position: relative;
-  `;
-
-  const number = css`
+  const sequence = css`
     width: 20px;
     height: 20px;
     display: flex;
@@ -90,7 +93,7 @@ export default function OrderedImg(props: Props) {
     right: 4px;
   `;
 
-  const ordered = css`
+  const selected = css`
     background-color: ${color.main};
     color: white;
   `;
@@ -129,38 +132,33 @@ export default function OrderedImg(props: Props) {
     }
   };
 
-  const axios = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const clickRequest = (e: React.MouseEvent<HTMLButtonElement>) => {
     console.log('clone :>> ', clone);
   };
 
-  const img = (url: string) => css`
-    width: 100%;
-    height: 100%;
-    background: white url(${url}) no-repeat center/contain;
-  `;
-
-  const show = clone.map((each, index) => {
-    const order = each.checked ? ordered : '';
+  const images = clone.map((each, index) => {
+    const order = each.checked ? selected : '';
     return (
       <button
         key={index}
-        className={cx(item)}
+        className={'item-box'}
         name={`${index}`}
         onClick={click}
       >
-        <div className={cx(img(each.img))} />
-        <div className={cx(number, order)}>{index + 1}</div>
+        <Img src={each.img} />
+        <div className={cx(sequence, order)}>{index + 1}</div>
       </button>
     );
   });
+
   return (
     <>
-      <div className={cx(box)}>
-        <div className={cx(wrapper)}>
-          <div className={cx(container)}>{show}</div>
+      <div className={cx(style)}>
+        <div className={'wrapper'}>
+          <div className={'container'}>{images}</div>
         </div>
       </div>
-      <button onClick={axios}>{'호출'}</button>
+      <button onClick={clickRequest}>{'호출'}</button>
     </>
   );
 }

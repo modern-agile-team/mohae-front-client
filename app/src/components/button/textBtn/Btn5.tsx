@@ -1,6 +1,6 @@
 import { css, cx } from '@emotion/css';
-import { color, shadow, font } from '../../../styles';
-import { btnStyle, Props } from '../index';
+import { color, shadow, font, btnStyle } from '../../../styles';
+import { Props } from '../index';
 
 function Btn5(props: Props) {
   const { disable, children, onClick } = props;

@@ -1,7 +1,7 @@
 import { css, cx } from '@emotion/css';
-import { color, shadow, font } from '../../../styles';
+import { color, shadow, font, btnStyle } from '../../../styles';
 import MarkBox from '../../markbox/MarkBox';
-import { btnStyle, Props } from '../index';
+import { Props } from '../index';
 
 function Btn12(props: Props) {
   const { big, small, disable, children, onClick } = props;
@@ -52,7 +52,7 @@ function Btn12(props: Props) {
     `,
   };
 
-  const attrProps = Object.keys(props).map(attr => attrs[attr]);
+  const attrProps = Object.keys(props).map((attr) => attrs[attr]);
 
   const show = () => (
     <button onClick={onClick} className={cx(commonStyle, attrProps)}>

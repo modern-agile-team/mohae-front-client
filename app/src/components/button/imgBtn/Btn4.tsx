@@ -1,11 +1,19 @@
 import { css, cx } from '@emotion/css';
 import { useState } from 'react';
-import { color, shadow } from '../../../styles';
-import { btnStyle, Props } from '../index';
+import { color, shadow, btnStyle } from '../../../styles';
+import { Props } from '../index';
 
 function Btn4(props: Props) {
-  const { report, bookMark, like, chatting, big, small, disable, onClick } =
-    props;
+  const {
+    report,
+    bookMark,
+    like,
+    chatting,
+    big,
+    small,
+    disable,
+    onClick,
+  } = props;
   const [liked, setLiked] = useState(false);
 
   const commonStyle = css`
@@ -146,9 +154,11 @@ function Btn4(props: Props) {
   };
 
   const contentImg = Object.keys(props)
-    .map(attr => imgs[attr])
-    .filter(el => el)
-    .map(el => (disable ? [...[el.disable], size()] : [...[el.able], size()]));
+    .map((attr) => imgs[attr])
+    .filter((el) => el)
+    .map((el) =>
+      disable ? [...[el.disable], size()] : [...[el.able], size()]
+    );
 
   const show = () =>
     like ? (

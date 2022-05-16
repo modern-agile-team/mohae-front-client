@@ -24,9 +24,7 @@ export default function Layout({ main, component }: Props): ReactElement {
   `;
 
   const show = main ? (
-    <>
-      <Main main>{component}</Main>
-    </>
+    <Main main>{component}</Main>
   ) : (
     <>
       <Main>{component}</Main>
@@ -36,7 +34,7 @@ export default function Layout({ main, component }: Props): ReactElement {
 
   return (
     <div className={cx(wrapper)}>
-      <Header>{'Header'}</Header>
+      <Header />
       {show}
     </div>
   );

@@ -1,9 +1,13 @@
 import { css, cx } from '@emotion/css';
 import { color, radius, font, shadow } from '../../style/palette';
 import { ReactElement } from 'react';
+import { Img, Btn6 } from '../../../components';
 
 const wrapper = css`
-  background-color: white;
+  * {
+    background-color: inherit;
+  }
+  background-color: ${color.light1};
   position: sticky;
   z-index: 10;
   top: 0;
@@ -16,37 +20,66 @@ const wrapper = css`
   @media (min-width: 1200px) {
     padding: 0 calc((100vw - 1128px) / 2);
   }
-  min-height: 59px;
-  overflow: hidden;
-`;
-
-const content = css`
-  width: 100%;
-  height: 100%;
-  padding: 8px 0;
-  background-color: white;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
 
-const logo = css`
-  width: 40px;
-  height: 43px;
+  justify-content: space-between;
+  height: 59px;
+  overflow: hidden;
+
+  .logo {
+    width: 57px;
+    height: 100%;
+  }
+
+  .button-wrapper {
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    & > :not(:last-child) {
+      margin-right: 40px;
+    }
+  }
+
+  .button {
+    height: 100%;
+    font-size: 14px;
+  }
+
+  .square-buttons {
+    display: flex;
+    & > :not(:last-child) {
+      margin-right: 8px;
+    }
+  }
 `;
 
 type Props = {
-  name?: string;
-  children?: any;
-  [props: string]: boolean | undefined | string | number[] | JSX.Element;
+  [key: string]: any;
 };
 
 export default function Header(props: Props): ReactElement {
+  const text = {
+    boards: '게시판',
+    notice: '공지사항',
+    inquire: '문의하기',
+    regist: '회원가입',
+    login: '로그인',
+  };
+
   return (
     <div className={cx(wrapper)}>
-      <div className={content}>
-        {props.children}
-        <button className={cx(logo)}>{'로그인'}</button>
+      <div className={'logo'}>
+        <Img src={'/img/logo.png'} />
+      </div>
+      <div className={'button-wrapper'}>
+        <button className={'button'}>{text.boards}</button>
+        <button className={'button'}>{text.notice}</button>
+        <button className={'button'}>{text.inquire}</button>
+        <div className={'square-buttons'}>
+          <Btn6>{text.regist}</Btn6>
+          <Btn6 main>{text.login}</Btn6>
+        </div>
       </div>
     </div>
   );

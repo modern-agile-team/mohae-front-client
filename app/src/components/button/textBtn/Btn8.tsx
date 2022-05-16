@@ -1,6 +1,6 @@
 import { css, cx } from '@emotion/css';
-import { color, shadow, font } from '../../../styles';
-import { btnStyle, Props } from '../index';
+import { color, shadow, font, btnStyle } from '../../../styles';
+import { Props } from '../index';
 
 function Btn8(props: Props) {
   const { big, small, disable, children, onClick } = props;
@@ -38,7 +38,7 @@ function Btn8(props: Props) {
     `,
   };
 
-  const attrProps = [...Object.keys(props).map(attr => attrs[attr])];
+  const attrProps = [...Object.keys(props).map((attr) => attrs[attr])];
 
   const show = () => (
     <button onClick={onClick} className={cx(commonStyle, attrProps)}>

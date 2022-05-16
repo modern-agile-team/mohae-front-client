@@ -1,40 +1,54 @@
 import { ReactElement } from 'react';
 import { color, radius, font, shadow } from '../../style/palette';
 import { css, cx } from '@emotion/css';
+import { Img } from '../../../components';
 
-const footer = css`
+const style = css`
   height: 120px;
   width: 100%;
   background-color: white;
-  /* position: fixed;
-  bottom: 0;
-  left: 0; */
   ${shadow.normal}
 
   @media (max-width: 1200px) {
-    padding: 0 calc(calc(1200px - 1128px) / 2);
+    padding: 20px calc(calc(1200px - 1128px) / 2);
   }
   @media (min-width: 1200px) {
-    padding: 0 calc((100vw - 1128px) / 2);
+    padding: 20px calc((100vw - 1128px) / 2);
+  }
+  color: ${color.dark1};
+  &,
+  * {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .icon-wrapper {
+    height: 24px;
+    width: 72px;
+    flex-direction: row;
+    justify-content: space-between;
+    & > :not(:last-child) {
+      margin-right: 24px;
+    }
   }
 `;
 
-const content = css`
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-`;
+export default function Footer(): ReactElement {
+  const text = {
+    introduce: '© 2022 Modern Agile',
+    others: '아이두 마켓 | 동그라미',
+  };
 
-type Props = {
-  [key: string]: any;
-};
-
-export default function Footer(props: Props): ReactElement {
   return (
-    <div className={cx(footer)}>
-      <div className={cx(content)}>{props.children}</div>
+    <div className={cx(style)}>
+      <div className={'icon-wrapper'}>
+        <Img src={'/img/camera.png'} />
+        <Img src={'/img/study.png'} />
+      </div>
+      <div>{text.introduce}</div>
+      <div>{text.others}</div>
     </div>
   );
 }

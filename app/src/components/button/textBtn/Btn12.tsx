@@ -1,5 +1,5 @@
 import { css, cx } from '@emotion/css';
-import { color, shadow, font, btnStyle } from '../../../styles';
+import { color, shadow, font, btnStyle, radius } from '../../../styles';
 import MarkBox from '../../markbox/MarkBox';
 import { Props } from '../index';
 
@@ -8,18 +8,30 @@ function Btn12(props: Props) {
 
   const commonStyle = css`
     ${btnStyle.square}
-    height: 44px;
     background-color: white;
-    color: ${color.dark1};
-    ${font.size[14]}
-    ${font.weight.regular}
     ${shadow.button}
+    position: relative;
+    cursor: pointer;
     &:hover {
       background-color: ${color.subtle};
     }
-    &:active {
+
+    span {
+      color: ${color.dark1};
+      ${font.size[14]}
+      ${font.weight.regular}
+      position: absolute;
+    }
+    input[type='checkbox'] {
+      height: 44px;
+      ${radius[6]}
+      -webkit-appearance: none;
+    }
+    input[type='checkbox']:checked {
       background-color: ${color.main};
-      color: white;
+      + span {
+        color: white;
+      }
     }
   `;
 
@@ -29,35 +41,38 @@ function Btn12(props: Props) {
 
   const attrs: Attrs = {
     big: css`
-      width: 138px;
-      display: flex;
-      justify-content: space-evenly;
-      padding: 0px 22px;
+      input[type='checkbox'] {
+        width: 138px;
+      }
+      span {
+        width: 90px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
     `,
     small: css`
-      width: 87px;
+      input[type='checkbox'] {
+        width: 87px;
+      }
     `,
     disable: css`
       cursor: unset;
       color: ${color.light4};
       background-color: white;
-
       &:hover {
         background-color: white;
-      }
-      &:active {
-        background-color: white;
-        color: ${color.light4};
       }
     `,
   };
 
-  const attrProps = Object.keys(props).map((attr) => attrs[attr]);
+  const attrProps = Object.keys(props).map(attr => attrs[attr]);
 
   const show = () => (
-    <button onClick={onClick} className={cx(commonStyle, attrProps)}>
-      {children}
-    </button>
+    <label className={cx(commonStyle, attrProps)}>
+      <input type='checkbox' onClick={onClick} />
+      <span>{children}</span>
+    </label>
   );
 
   return show();

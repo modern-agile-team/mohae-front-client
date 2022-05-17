@@ -5,7 +5,7 @@ interface Props {
   [key: string]: any;
 }
 
-function Popup({ text1, text2, rightBtn, leftBtn, visible }: Props) {
+function Popup({ text1, text2, visible, children }: Props) {
   const container = css`
     visibility: ${visible ? 'visible' : 'hidden'};
   `;
@@ -39,14 +39,14 @@ function Popup({ text1, text2, rightBtn, leftBtn, visible }: Props) {
   `;
 
   const btnWrapper = css`
+    width: 156px;
     margin-top: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
-  `;
-
-  const left = css`
-    margin-right: 8px;
+    & :not(:first-child) {
+      margin-left: 8px;
+    }
   `;
 
   const overlay = css`
@@ -66,10 +66,7 @@ function Popup({ text1, text2, rightBtn, leftBtn, visible }: Props) {
           <br />
           {text2}
         </div>
-        <div className={cx(btnWrapper)}>
-          {leftBtn && <div className={cx(left)}>{leftBtn}</div>}
-          <div>{rightBtn}</div>
-        </div>
+        <div className={cx(btnWrapper)}>{children}</div>
       </div>
       <div className={cx(overlay)}></div>
     </div>

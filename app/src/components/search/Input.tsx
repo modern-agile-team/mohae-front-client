@@ -6,12 +6,13 @@ import { Props } from '../button';
 import { color, font, radius, shadow } from '../../styles';
 
 interface InputProps extends Props {
+  searchList?: () => React.ReactNode;
   setShowFilter?: Dispatch<SetStateAction<boolean>>;
   showFilter?: boolean;
 }
 
 function Input(props: InputProps) {
-  const { board, main, showFilter, setShowFilter } = props;
+  const { board, main, showFilter, setShowFilter, searchList } = props;
   const [value, setValue] = useState('');
   const localValue = JSON.parse(localStorage.getItem('currentSearch') || '[]');
 
@@ -94,9 +95,13 @@ function Input(props: InputProps) {
       height: 15px;
     `;
     const search = css`
-      width: 18px;
-      height: 18px;
-      margin-top: 12px;
+      width: 43px;
+      height: 43px;
+      padding: 12px 0px 0px 16px;
+      div {
+        width: 18px;
+        height: 18px;
+      }
     `;
     const filter = css`
       width: 47px;
@@ -133,15 +138,12 @@ function Input(props: InputProps) {
   };
 
   const onKeyPress = (e: React.KeyboardEvent) => {
-    setValue('');
-    return (
-      e.key === 'Enter' &&
-      // value.length > 2 &&
-      localStorage.setItem(
-        'currentSearch',
-        JSON.stringify([...localValue, value])
-      )
+    // value.length > 2 &&
+    localStorage.setItem(
+      'currentSearch',
+      JSON.stringify([...localValue, value])
     );
+    setValue('');
   };
 
   const onClick = () => {
@@ -161,7 +163,7 @@ function Input(props: InputProps) {
       <div
         id='inputWrap'
         className={cx(commonStyle)}
-        onKeyPress={e => onKeyPress(e)}
+        onKeyPress={e => e.key === 'Enter' && onKeyPress(e)}
       >
         <input
           type='text'

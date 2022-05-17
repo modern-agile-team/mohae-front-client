@@ -8,7 +8,6 @@ import Img from './img/Img';
 import Box from './box/Box';
 import { Btn6 } from './button';
 import FocusBar from './focusBar/FocusBar';
-import Logo from './logo/Logo';
 import Profile from './profile/Profile';
 import { AlarmModal, BasicModal, ReportModal } from './modal';
 import Popup from './popup/Popup';
@@ -25,7 +24,6 @@ export {
   Btn6,
   Box,
   FocusBar,
-  Logo,
   Profile,
   AlarmModal,
   BasicModal,

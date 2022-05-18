@@ -1,5 +1,6 @@
 import { css, cx } from '@emotion/css';
-import { radius, shadow, font } from '../../styles';
+import { font } from '../../styles';
+import { Box } from '../../components';
 
 interface Props {
   [key: string]: any;
@@ -11,15 +12,10 @@ function Popup({ text1, text2, visible, children }: Props) {
   `;
 
   const box = css`
-    background-color: white;
-    ${radius[6]}
-    ${shadow.normal}
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 360px;
-    height: 205px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -60,14 +56,14 @@ function Popup({ text1, text2, visible, children }: Props) {
 
   return (
     <div className={cx(container)}>
-      <div className={cx(box)}>
+      <Box size={[360, 205]} className={box}>
         <div className={cx(text)}>
           {text1}
           <br />
           {text2}
         </div>
         <div className={cx(btnWrapper)}>{children}</div>
-      </div>
+      </Box>
       <div className={cx(overlay)}></div>
     </div>
   );

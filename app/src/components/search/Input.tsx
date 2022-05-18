@@ -137,13 +137,15 @@ function Input(props: InputProps) {
     );
   };
 
-  const onKeyPress = (e: React.KeyboardEvent) => {
-    // value.length > 2 &&
-    localStorage.setItem(
-      'currentSearch',
-      JSON.stringify([...localValue, value])
-    );
-    setValue('');
+  const onKeyPress = () => {
+    const checkValue = () => {
+      localStorage.setItem(
+        'currentSearch',
+        JSON.stringify([...localValue, value])
+      );
+      setValue('');
+    };
+    value.length > 2 ? checkValue() : alert('두 글자 이상');
   };
 
   const onClick = () => {
@@ -163,7 +165,7 @@ function Input(props: InputProps) {
       <div
         id='inputWrap'
         className={cx(commonStyle)}
-        onKeyPress={e => e.key === 'Enter' && onKeyPress(e)}
+        onKeyPress={e => e.key === 'Enter' && onKeyPress()}
       >
         <input
           type='text'

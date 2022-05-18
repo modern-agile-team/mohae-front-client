@@ -3,7 +3,7 @@ import { color, shadow, font, btnStyle, radius } from '../../../styles';
 import MarkBox from '../../markbox/MarkBox';
 import { Props } from '../index';
 
-function Btn12(props: Props) {
+function FilterBtn(props: Props) {
   const { big, small, disable, children, onClick } = props;
 
   const commonStyle = css`
@@ -26,11 +26,11 @@ function Btn12(props: Props) {
       height: 44px;
       ${radius[6]}
       -webkit-appearance: none;
-    }
-    input[type='checkbox']:checked {
-      background-color: ${color.main};
-      + span {
-        color: white;
+      :checked {
+        background-color: ${color.main};
+        + span {
+          color: white;
+        }
       }
     }
   `;
@@ -78,4 +78,4 @@ function Btn12(props: Props) {
   return show();
 }
 
-export default Btn12;
+export default FilterBtn;

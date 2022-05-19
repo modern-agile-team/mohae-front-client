@@ -11,7 +11,6 @@ function FilterBtn(props: Props) {
     background-color: white;
     ${shadow.button}
     position: relative;
-    cursor: pointer;
     &:hover {
       background-color: ${color.subtle};
     }
@@ -25,6 +24,7 @@ function FilterBtn(props: Props) {
     input[type='checkbox'] {
       height: 44px;
       ${radius[6]}
+      cursor: pointer;
       -webkit-appearance: none;
       :checked {
         background-color: ${color.main};

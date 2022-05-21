@@ -46,10 +46,7 @@ function FocusBar(props: Props) {
 
   const finalStyle = Object.keys(props).map((attr) => check[attr]);
 
-  const result = (
-    <div className={cx(commonStyle, ...finalStyle, className)}></div>
-  );
-  return result;
+  return <div className={cx(commonStyle, ...finalStyle, className)}></div>;
 }
 
 export default FocusBar;

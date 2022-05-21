@@ -7,7 +7,7 @@ import Snap from './snap-scroll/Snap';
 import Img from './img/Img';
 import Box from './box/Box';
 import { Btn6 } from './button';
-import FocusBar from './focusBar/FocusBar';
+import { FocusBar, HalfBar } from './focusBar';
 import Profile from './profile/Profile';
 import { AlarmModal, BasicModal, ReportModal } from './modal';
 import Popup from './popup/Popup';
@@ -24,6 +24,7 @@ export {
   Btn6,
   Box,
   FocusBar,
+  HalfBar,
   Profile,
   AlarmModal,
   BasicModal,

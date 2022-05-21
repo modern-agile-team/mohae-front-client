@@ -1,6 +1,5 @@
-import ReactDOM from 'react-dom';
 import { css, cx } from '@emotion/css';
-import { radius, shadow, font, color } from '../../styles';
+import { Box } from '../../components';
 import ArrowBtn from '../arrowbtn/ArrowBtn';
 import Img from '../img/Img';
 
@@ -8,26 +7,19 @@ interface Props {
   [key: string]: any;
 }
 
-function BasicModal({ state, close, big, preBtn, closeBtn, contents }: Props) {
-  const size = {
-    big: css`
-      width: 1128px;
-      height: 630px;
-    `,
-    medium: css`
-      width: 936px;
-      height: 540px;
-    `,
-  };
-
+function BasicModal({
+  visible,
+  close,
+  big,
+  preBtn,
+  noCloseBtn,
+  contents,
+}: Props) {
   const modalWrapper = css`
-    visibility: ${state ? 'visible' : 'hidden'};
+    visibility: ${visible ? 'visible' : 'hidden'};
   `;
 
-  const wrapper = css`
-    background-color: ${color.light1};
-    ${radius[24]}
-    ${big ? size.big : size.medium}
+  const box = css`
     position: fixed;
     top: 50%;
     left: 50%;
@@ -36,7 +28,21 @@ function BasicModal({ state, close, big, preBtn, closeBtn, contents }: Props) {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    z-index: 999;
+    z-index: 12;
+  `;
+
+  const arrowBtn = css`
+    top: 24px;
+    left: 24px;
+    position: absolute;
+  `;
+
+  const closeBtn = css`
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    top: 24px;
+    right: 24px;
   `;
 
   const cursor = css`
@@ -50,47 +56,30 @@ function BasicModal({ state, close, big, preBtn, closeBtn, contents }: Props) {
     height: 100%;
     width: 100%;
     background-color: rgba(0, 0, 0, 0.3);
-    z-index: 888;
+    z-index: 11;
   `;
 
-  const modal = document.getElementById('modal')!;
-
-  return ReactDOM.createPortal(
+  return (
     <div className={cx(modalWrapper)}>
-      <div className={cx(wrapper)}>
+      <Box
+        light
+        bigRadius
+        size={big ? [1128, 630] : [936, 560]}
+        className={box}>
         {preBtn && (
-          <div
-            className={cx(
-              css`
-                top: 24px;
-                left: 24px;
-                position: absolute;
-              `,
-              cursor
-            )}>
+          <div className={cx(arrowBtn, cursor)}>
             <ArrowBtn left dark onClick={() => alert('이전')} />
           </div>
         )}
-        {closeBtn && (
-          <div
-            className={cx(
-              css`
-                width: 24px;
-                height: 24px;
-                position: absolute;
-                top: 24px;
-                right: 24px;
-              `,
-              cursor
-            )}>
+        {noCloseBtn || (
+          <div className={cx(closeBtn, cursor)}>
             <Img src={'img/close.png'} onClick={close} />
           </div>
         )}
         {contents}
-      </div>
+      </Box>
       <div onClick={close} className={cx(overlay)}></div>
-    </div>,
-    modal
+    </div>
   );
 }
 

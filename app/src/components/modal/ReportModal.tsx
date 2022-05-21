@@ -2,22 +2,18 @@ import ReactDOM from 'react-dom';
 import { css, cx } from '@emotion/css';
 import { radius, shadow, color } from '../../styles';
 import CheckBox from '../check-label/CheckLabel';
+import { Box } from '../../components';
 
 interface Props {
   [key: string]: any;
 }
 
-function ReportModal({ state, close }: Props) {
+function ReportModal({ visible, close }: Props) {
   const modalWrapper = css`
-    visibility: ${state ? 'visible' : 'hidden'};
+    visibility: ${visible ? 'visible' : 'hidden'};
   `;
 
-  const wrapper = css`
-    background-color: ${color.light1};
-    ${radius[6]}
-    ${shadow.normal}
-    width: 360px;
-    height: 470px;
+  const box = css`
     position: fixed;
     top: 50%;
     left: 50%;
@@ -26,7 +22,7 @@ function ReportModal({ state, close }: Props) {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    z-index: 9999;
+    z-index: 14;
   `;
 
   const overlay = css`
@@ -36,19 +32,16 @@ function ReportModal({ state, close }: Props) {
     height: 100%;
     width: 100%;
     background-color: rgba(0, 0, 0, 0.3);
-    z-index: 8888;
+    z-index: 13;
   `;
 
-  const modal = document.getElementById('modal')!;
-
-  return ReactDOM.createPortal(
+  return (
     <div className={modalWrapper}>
-      <div className={cx(wrapper)}>
+      <Box light size={[360, 470]} className={box}>
         <CheckBox />
-      </div>
+      </Box>
       <div onClick={close} className={cx(overlay)}></div>
-    </div>,
-    modal
+    </div>
   );
 }
 

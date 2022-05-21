@@ -1,20 +1,18 @@
-import ReactDOM from 'react-dom';
 import { css, cx } from '@emotion/css';
-import { radius, shadow, color } from '../../styles';
 import ArrowBtn from '../arrowbtn/ArrowBtn';
 import Img from '../img/Img';
+import { Box } from '../../components';
 
 interface Props {
   [key: string]: any;
 }
 
-function AlarmModal({ leftBtn, close, contents }: Props) {
-  const wrapper = css`
-    background-color: ${color.light1};
-    ${radius[24]}
-    ${shadow.normal}
-    width: 364px;
-    height: 500px;
+function AlarmModal({ visible, preBtn, close, contents }: Props) {
+  const modalWrapper = css`
+    visibility: ${visible ? 'visible' : 'hidden'};
+  `;
+
+  const box = css`
     position: fixed;
     right: 40px;
     bottom: 40px;
@@ -22,64 +20,53 @@ function AlarmModal({ leftBtn, close, contents }: Props) {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    z-index: 999;
-    overflow: hidden;
+    z-index: 11;
+  `;
+
+  const alarmBtn = css`
+    width: 27.5px;
+    height: 30.5px;
+    top: 11px;
+    left: 11px;
+    position: absolute;
+  `;
+
+  const arrowBtn = css`
+    top: 16px;
+    left: 16px;
+    position: absolute;
+  `;
+
+  const closeBtn = css`
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    top: 16px;
+    right: 16px;
   `;
 
   const cursor = css`
     cursor: pointer;
   `;
 
-  const modal = document.getElementById('modal')!;
-
-  return ReactDOM.createPortal(
-    <>
-      <div className={cx(wrapper)}>
-        {leftBtn === 'alarm' ? (
-          <div
-            className={cx(
-              css`
-                width: 27.5px;
-                height: 30.5px;
-                top: 11px;
-                left: 11px;
-                position: absolute;
-              `,
-              cursor
-            )}>
-            <Img src={'img/alarm-bell.png'} onClick={() => alert('알람로고')} />
-          </div>
-        ) : (
-          <div
-            className={cx(
-              css`
-                top: 16px;
-                left: 16px;
-                position: absolute;
-              `,
-              cursor
-            )}>
+  return (
+    <div className={cx(modalWrapper)}>
+      <Box light bigRadius size={[364, 500]} className={box}>
+        {preBtn ? (
+          <div className={cx(arrowBtn, cursor)}>
             <ArrowBtn left dark onClick={() => alert('이전')} />
           </div>
+        ) : (
+          <div className={cx(alarmBtn, cursor)}>
+            <Img src={'img/alarm-bell.png'} onClick={() => alert('알람로고')} />
+          </div>
         )}
-
-        <div
-          className={cx(
-            css`
-              width: 24px;
-              height: 24px;
-              position: absolute;
-              top: 16px;
-              right: 16px;
-            `,
-            cursor
-          )}>
+        <div className={cx(closeBtn, cursor)}>
           <Img src={'img/close.png'} onClick={close} />
         </div>
         {contents}
-      </div>
-    </>,
-    modal
+      </Box>
+    </div>
   );
 }
 

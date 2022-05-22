@@ -11,7 +11,7 @@ import { FocusBar, HalfBar } from './focusBar';
 import Profile from './profile/Profile';
 import { AlarmModal, BasicModal, ReportModal } from './modal';
 import Popup from './popup/Popup';
-import { PagePoster, UserPoster } from './poster';
+import { Poster } from './poster';
 
 export {
   Category,
@@ -30,6 +30,5 @@ export {
   BasicModal,
   ReportModal,
   Popup,
-  PagePoster,
-  UserPoster,
+  Poster,
 };

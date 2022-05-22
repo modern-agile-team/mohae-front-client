@@ -1,4 +1,3 @@
-import PagePoster from './page-poster/PagePoster';
-import UserPoster from './user-poster/UserPoster';
+import Poster from './Poster';
 
-export { PagePoster, UserPoster };
+export { Poster };

@@ -6,6 +6,7 @@ import { color, font, radius, shadow } from '../../styles';
 function Btn(props: Props) {
   const { children, main, white, disable, big, small, regular, bold, onClick } =
     props;
+
   const common = css`
     width: 100%;
     height: 100%;
@@ -17,8 +18,8 @@ function Btn(props: Props) {
     ${radius[6]}
     ${small ? font.size[12] : font.size[14]}
     ${bold ? font.weight.bold : font.weight.regular}
-    div:nth-child(1):not(div>div) {
-      margin-left: 8px;
+    *:not(:last-child) {
+      margin-right: 8px;
     }
   `;
 

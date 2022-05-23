@@ -8,9 +8,7 @@ interface Props {
 function Profile(props: Props) {
   const { isLogin, size, smallShadow, noneClick } = props;
   //  더미 사용
-  const profileImg = isLogin
-    ? 'https://i.ibb.co/qjtcKYZ/profile.png'
-    : '/img/profile.png';
+  const profileImg = isLogin ? '/dummyUser.png' : '/img/profile.png';
 
   const editBtn = size === 160 ? true : false;
 

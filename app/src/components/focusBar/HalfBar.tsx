@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { css, cx } from '@emotion/css';
-import { color } from '../../styles';
+import { color, font } from '../../styles';
 
 interface Props {
   [key: string]: any;
@@ -26,6 +26,8 @@ function HalfBar({ alarm, focus }: Props) {
     display: flex;
     justify-content: space-around;
     span {
+      font-size: ${alarm ? 18 : 24}px;
+      ${font.weight.regular};
       padding-bottom: ${alarm ? 8 : 16}px;
       padding-left: 30px;
       padding-right: 30px;

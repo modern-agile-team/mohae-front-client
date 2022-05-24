@@ -50,7 +50,7 @@ function Profile(props: Props) {
   return (
     <>
       <div
-        onClick={noneClick || (() => alert('프로필 클릭'))}
+        onClick={!noneClick ? () => alert('프로필 클릭') : undefined}
         className={cx(commonStyle, smallShadow && smallShadowStyle)}></div>
       {editBtn && (
         <div

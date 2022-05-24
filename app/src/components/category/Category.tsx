@@ -1,6 +1,7 @@
 import { cx, css } from '@emotion/css';
 import { keyframes } from '@emotion/react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { color, radius, font, shadow } from '../../styles';
 import Basic from './Basic';
 
@@ -10,6 +11,7 @@ interface Props {
 
 export default function Category({ num }: Props) {
   const categoryList = [
+      '전체',
       '디자인',
       'IT / 개발',
       '사진 / 영상',
@@ -26,8 +28,10 @@ export default function Category({ num }: Props) {
       '생활서비스',
       '기타',
     ],
+    param = useParams().no,
     list = categoryList.map((category: string, index: number) => ({
       name: category,
+      no: index + 1,
       img: `/img/category-${index}.png`,
     })),
     [arr, setArr] = useState(list.map((category, index) => index)),
@@ -39,22 +43,6 @@ export default function Category({ num }: Props) {
 
   const wrapper = () => {
     const row = `${itemsize * 1.09523 + 16}px`;
-    const focus =
-      num === 7
-        ? css`
-            :after {
-              content: '';
-              width: 120px;
-              height: 120px;
-              position: absolute;
-              top: 50%;
-              left: 50%;
-              transform: translate(-50%, -50%);
-              ${radius[6]}
-              ${shadow.normal}
-            }
-          `
-        : null;
     return css`
       width: calc(1128px + 30px);
       margin: 0 auto;
@@ -64,7 +52,6 @@ export default function Category({ num }: Props) {
       overflow: hidden;
       align-items: center;
       transform: translateX(-15px);
-      ${focus}
     `;
   };
 
@@ -141,12 +128,12 @@ export default function Category({ num }: Props) {
     }
 
     .prev {
-      background: url('img/arrow-left-main.png') no-repeat center/contain;
+      background: url('/img/arrow-left-main.png') no-repeat center/contain;
       left: calc(calc(calc(100% - 1128px) / 2) - 52px);
     }
 
     .next {
-      background: url('img/arrow-right-main.png') no-repeat center/contain;
+      background: url('/img/arrow-right-main.png') no-repeat center/contain;
       right: calc(calc(calc(100% - 1128px) / 2) - 26px);
     }
   `;
@@ -157,6 +144,7 @@ export default function Category({ num }: Props) {
         <Basic
           key={'first'}
           name={list[arr[arr.length - 1]].name}
+          id={list[arr[arr.length - 1]].no}
           img={list[arr[arr.length - 1]].img}
         />
       </div>
@@ -166,6 +154,7 @@ export default function Category({ num }: Props) {
           <div className={'each'}>
             <Basic
               key={index}
+              id={list[arr[index]].no}
               name={list[arr[index]].name}
               img={list[arr[index]].img}
             />
@@ -174,12 +163,28 @@ export default function Category({ num }: Props) {
       <div className={'each'}>
         <Basic
           key={'last'}
+          id={list[arr[showNumber]].no}
           name={list[arr[showNumber]].name}
           img={list[arr[showNumber]].img}
         />
       </div>
     </div>
   );
+
+  useEffect(() => {
+    const originArray = list.map((category, index) => index);
+    setArr(originArray);
+    const updatedArr = [...originArray];
+    for (
+      let count = 0;
+      count < (Number(param) + categoryList.length - 4) % categoryList.length;
+      count++
+    ) {
+      updatedArr.push(updatedArr[0]);
+      updatedArr.shift();
+      setArr(updatedArr);
+    }
+  }, [param]);
 
   const clickArrowBtn = (e: React.MouseEvent<HTMLButtonElement>) => {
     const target = e.currentTarget;

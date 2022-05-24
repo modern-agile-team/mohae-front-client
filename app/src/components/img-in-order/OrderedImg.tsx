@@ -1,3 +1,5 @@
+/** @format */
+
 import { css, cx } from '@emotion/css';
 import { useState, useEffect } from 'react';
 import { color, radius, font, shadow } from '../../styles';
@@ -22,6 +24,7 @@ export default function OrderedImg({ imgs, edit, inline }: Props) {
         checked: false,
       }))
   );
+  const [alarm, setAlarm] = useState(true);
   const [myImage, setMyImage] = useState<IMAGE[]>(clone || []);
   const addImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.currentTarget.files || [];
@@ -38,6 +41,12 @@ export default function OrderedImg({ imgs, edit, inline }: Props) {
       }
     }
   };
+
+  useEffect(() => {
+    setTimeout(() => {
+      setAlarm(false);
+    }, 4000);
+  }, []);
 
   const style = Style({ inline: inline });
 
@@ -190,6 +199,11 @@ export default function OrderedImg({ imgs, edit, inline }: Props) {
     return (
       <>
         <div className={cx(style)}>
+          {alarm && (
+            <div className="alarm">
+              {'사진을 클릭하여 순서설정 및 삭제를 할 수 있습니다'}
+            </div>
+          )}
           {!inline && (
             <div className={cx(countStyle)}>
               <span className={cx(maxNumberStyle)}>{`${myImage.length}`}</span>

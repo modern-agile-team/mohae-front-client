@@ -70,7 +70,7 @@ function Input(props: InputProps) {
 
   const commonStyle = css`
     ${shadow.normal}
-    ${radius[6]}
+    border-radius: ${showFilter ? '6px 6px 0px 0px' : '6px'};
     display: flex;
     background-color: white;
     cursor: pointer;
@@ -94,46 +94,52 @@ function Input(props: InputProps) {
       width: 15px;
       height: 15px;
     `;
-    const search = css`
-      width: 43px;
-      height: 43px;
-      padding: 12px 0px 0px 16px;
-      div {
-        width: 18px;
-        height: 18px;
-      }
-    `;
-    const filter = css`
-      width: 47px;
-      height: 43px;
-      display: flex;
-      align-items: center;
-      padding-left: 16px;
-      #filter {
-        width: 18px;
-        height: 18px;
-      }
-    `;
+
+    const iconStyle = (filter?: string) => {
+      const common = css`
+        width: 47px;
+        height: 43px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        div {
+          width: 18px;
+          height: 18px;
+        }
+      `;
+      return filter
+        ? css`
+            ${common}
+            ${radius[6]}
+            background-color: ${showFilter && color.subtle};
+            ${showFilter && shadow.inputMain};
+          `
+        : css`
+            ${common}
+            ${radius[6]}
+          `;
+    };
+
     return board ? (
       <>
         <div className={cx(cancle)} onClick={() => setValue('')}>
           <Img src='img/close-dark2.png' />
         </div>
         <hr />
-        <div className={cx(search)} onClick={onClick}>
+        <div className={cx(iconStyle())} onClick={onClick}>
           <Img src='img/search.png' />
         </div>
-        <div className={cx(filter)}>
-          <div
-            id='filter'
-            onClick={() => setShowFilter && setShowFilter(!showFilter)}
-          >
+        <div
+          className={cx(iconStyle('filter'))}
+          onClick={() => setShowFilter && setShowFilter(!showFilter)}
+        >
+          <div id='filter'>
             <Img src='img/filter.png' />
           </div>
         </div>
       </>
     ) : (
-      <Img className={cx(search)} onClick={onClick} src='img/search.png' />
+      <Img className={cx(iconStyle())} onClick={onClick} src='img/search.png' />
     );
   };
 

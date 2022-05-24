@@ -1,17 +1,32 @@
 import ReactDOM from 'react-dom';
+import { useState, useEffect } from 'react';
 import { css, cx } from '@emotion/css';
-import { radius, shadow, color } from '../../styles';
 import CheckBox from '../check-label/CheckLabel';
 import { Box } from '../../components';
+import { animation } from './modalAnimation';
+import { Btn5 } from '../../components/button';
 
 interface Props {
   [key: string]: any;
 }
 
 function ReportModal({ visible, close }: Props) {
-  const modalWrapper = css`
-    visibility: ${visible ? 'visible' : 'hidden'};
-  `;
+  const [modalState, setModalState] = useState(false);
+
+  useEffect(() => {
+    let timer: any;
+    if (visible) {
+      setModalState(true);
+    } else {
+      timer = setTimeout(() => setModalState(false), 800);
+    }
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [visible]);
+
+  if (!modalState) return null;
 
   const box = css`
     position: fixed;
@@ -23,6 +38,17 @@ function ReportModal({ visible, close }: Props) {
     justify-content: center;
     align-items: center;
     z-index: 14;
+    ${visible ? animation.basicAppear : animation.basicDissappear}
+  `;
+
+  const btnWrapper = css`
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    justify-content: center;
+    & > :not(:last-child) {
+      margin-right: 8px;
+    }
   `;
 
   const overlay = css`
@@ -33,12 +59,19 @@ function ReportModal({ visible, close }: Props) {
     width: 100%;
     background-color: rgba(0, 0, 0, 0.3);
     z-index: 13;
+    ${modalState || animation.dissappearOverlay};
   `;
 
   return (
-    <div className={modalWrapper}>
+    <div>
       <Box light size={[360, 470]} className={box}>
         <CheckBox />
+        <div className={cx(btnWrapper)}>
+          <Btn5 main>전송</Btn5>
+          <Btn5 onClick={close} main>
+            취소
+          </Btn5>
+        </div>
       </Box>
       <div onClick={close} className={cx(overlay)}></div>
     </div>

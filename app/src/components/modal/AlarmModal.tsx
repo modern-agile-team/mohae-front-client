@@ -1,16 +1,31 @@
+import { useState, useEffect } from 'react';
 import { css, cx } from '@emotion/css';
 import ArrowBtn from '../arrowbtn/ArrowBtn';
 import Img from '../img/Img';
 import { Box } from '../../components';
+import { animation } from './modalAnimation';
 
 interface Props {
   [key: string]: any;
 }
 
 function AlarmModal({ visible, preBtn, close, contents }: Props) {
-  const modalWrapper = css`
-    visibility: ${visible ? 'visible' : 'hidden'};
-  `;
+  const [modalState, setModalState] = useState(false);
+
+  useEffect(() => {
+    let timer: any;
+    if (visible) {
+      setModalState(true);
+    } else {
+      timer = setTimeout(() => setModalState(false), 800);
+    }
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [visible]);
+
+  if (!modalState) return null;
 
   const box = css`
     position: fixed;
@@ -21,6 +36,7 @@ function AlarmModal({ visible, preBtn, close, contents }: Props) {
     justify-content: center;
     align-items: center;
     z-index: 11;
+    ${visible ? animation.alarmAppear : animation.alarmDisappear}
   `;
 
   const alarmBtn = css`
@@ -50,7 +66,7 @@ function AlarmModal({ visible, preBtn, close, contents }: Props) {
   `;
 
   return (
-    <div className={cx(modalWrapper)}>
+    <div>
       <Box light bigRadius size={[364, 500]} className={box}>
         {preBtn ? (
           <div className={cx(arrowBtn, cursor)}>

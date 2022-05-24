@@ -1,7 +1,9 @@
+import { useState, useEffect } from 'react';
 import { css, cx } from '@emotion/css';
 import { Box } from '../../components';
 import ArrowBtn from '../arrowbtn/ArrowBtn';
 import Img from '../img/Img';
+import { animation } from './modalAnimation';
 
 interface Props {
   [key: string]: any;
@@ -15,9 +17,22 @@ function BasicModal({
   noCloseBtn,
   contents,
 }: Props) {
-  const modalWrapper = css`
-    visibility: ${visible ? 'visible' : 'hidden'};
-  `;
+  const [modalState, setModalState] = useState(false);
+
+  useEffect(() => {
+    let timer: any;
+    if (visible) {
+      setModalState(true);
+    } else {
+      timer = setTimeout(() => setModalState(false), 800);
+    }
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [visible]);
+
+  if (!modalState) return null;
 
   const box = css`
     position: fixed;
@@ -29,6 +44,7 @@ function BasicModal({
     justify-content: center;
     align-items: center;
     z-index: 12;
+    ${visible ? animation.basicAppear : animation.basicDissappear}
   `;
 
   const arrowBtn = css`
@@ -57,10 +73,11 @@ function BasicModal({
     width: 100%;
     background-color: rgba(0, 0, 0, 0.3);
     z-index: 11;
+    ${modalState || animation.dissappearOverlay};
   `;
 
   return (
-    <div className={cx(modalWrapper)}>
+    <div>
       <Box
         light
         bigRadius

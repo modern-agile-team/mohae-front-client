@@ -1,4 +1,6 @@
-import { css, CSSObject } from '@emotion/css';
+/** @format */
+
+import { css } from '@emotion/css';
 
 interface Color {
   [key: string]: any;
@@ -115,14 +117,23 @@ const font: Font = {
     `,
   },
   weight: {
-    light: css`
-      font-weight: 300;
+    100: css`
+      font-family: 'Thin';
     `,
-    regular: css`
-      font-weight: 400;
+    300: css`
+      font-family: 'Light';
     `,
-    bold: css`
-      font-weight: 700;
+    400: css`
+      font-family: 'Regular';
+    `,
+    500: css`
+      font-family: 'Medium';
+    `,
+    700: css`
+      font-family: 'Bold';
+    `,
+    900: css`
+      font-family: 'Black';
     `,
   },
 };
@@ -145,4 +156,5 @@ const btnStyle: BtnStyle = {
     align-items: center;
   `,
 };
+
 export { color, radius, font, shadow, btnStyle };

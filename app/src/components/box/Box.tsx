@@ -5,62 +5,42 @@ interface Props {
   [key: string]: any;
 }
 
-interface StyleObj {
-  [index: string]: string;
+interface Attrs {
+  [attr: string]: string | [string];
 }
 
-function Box({ color, radius, shadow, children }: Props) {
+function Box(props: Props) {
+  const { light, noRadius, bigRadius, noShadow, size, children, className } =
+    props;
   const commonStyle = css`
-    width: fit-content;
-    height: fit-content;
+    width: ${size[0]}px;
+    height: ${size[1]}px;
     overflow: hidden;
+    background-color: white;
+    ${palette.radius[6]}
+    ${palette.shadow.normal}
   `;
 
-  const colorStyle: StyleObj = {
-    white: css`
-      background-color: white;
-    `,
+  const attrs: Attrs = {
     light: css`
       background-color: ${palette.color.light1};
     `,
-  };
-
-  const radiusStyle: StyleObj = {
-    none: css`
+    noRadius: css`
       border-radius: 0px;
     `,
-    normal: css`
-      ${palette.radius[6]}
-    `,
-    big: css`
+    bigRadius: css`
       ${palette.radius[24]}
     `,
-  };
-
-  const shadowStyle: StyleObj = {
-    none: css`
+    noShadow: css`
       box-shadow: none;
     `,
-    normal: css`
-      ${palette.shadow.normal}
-    `,
   };
 
-  const show = () => {
-    return (
-      <div
-        className={cx(
-          colorStyle[color],
-          radiusStyle[radius],
-          shadowStyle[shadow],
-          commonStyle
-        )}>
-        {children}
-      </div>
-    );
-  };
+  const finalStyle = Object.keys(props).map((attr) => attrs[attr]);
 
-  return show();
+  return (
+    <div className={cx(commonStyle, ...finalStyle, className)}>{children}</div>
+  );
 }
 
 export default Box;

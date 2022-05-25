@@ -2,61 +2,25 @@ import { css, cx } from '@emotion/css';
 import { shadow, radius } from '../../styles';
 
 interface Props {
-  [key: string]: boolean | string;
+  [key: string]: boolean | number | any;
 }
 
 function Profile(props: Props) {
-  //  더미 사용
-  const profileImg = props.isLogin
-    ? 'https://i.ibb.co/qjtcKYZ/profile.png'
-    : '/img/profile.png';
+  const { img, size, smallShadow, noneClick } = props;
+  const profileImg = img !== null ? img : '/img/profile.png';
 
-  const commonStyle = css`
+  const editBtn = size === 160 ? true : false;
+
+  const image = css`
     background: white url(${profileImg}) no-repeat center/cover;
     ${radius.circle};
-    ${shadow.normal};
-  `;
-
-  const hover = css`
-    &:hover {
-      cursor: pointer;
+    ${smallShadow ? shadow.button : shadow.normal};
+    width: ${size}px;
+    height: ${size}px;
+    :hover {
+      cursor: ${noneClick || 'pointer'};
     }
   `;
-
-  const size = {
-    '43': css`
-      ${commonStyle}
-      width:43px;
-      height: 43px;
-    `,
-    '45': css`
-      ${commonStyle}
-      ${shadow.button}
-      width:45px;
-      height: 45px;
-    `,
-    '60': css`
-      ${commonStyle}
-      width:60px;
-      height: 60px;
-    `,
-    '146': css`
-      ${commonStyle}
-      width:146px;
-      height: 146px;
-    `,
-    '150': css`
-      ${commonStyle}
-      width:150px;
-      height: 150px;
-    `,
-
-    '160': css`
-      ${commonStyle}
-      width:160px;
-      height: 160px;
-    `,
-  };
 
   const imgUpdateBtn = css`
     width: 30px;
@@ -69,6 +33,9 @@ function Profile(props: Props) {
     align-items: center;
     margin-top: -30px;
     margin-left: 128px;
+    :hover {
+      cursor: pointer;
+    }
   `;
 
   const editPhotoImg = css`
@@ -76,12 +43,14 @@ function Profile(props: Props) {
     height: 20px;
   `;
 
-  const inMyPageEdit = () => {
-    return (
-      <>
-        <div className={cx(size[160])}></div>
+  return (
+    <>
+      <div
+        onClick={!noneClick ? () => alert('프로필 클릭') : undefined}
+        className={cx(image)}></div>
+      {editBtn && (
         <div
-          className={cx(imgUpdateBtn, hover)}
+          className={cx(imgUpdateBtn)}
           onClick={() => alert('이미지 수정 버튼 클릭')}>
           <img
             className={cx(editPhotoImg)}
@@ -89,35 +58,9 @@ function Profile(props: Props) {
             src="/img/camera.png"
           />
         </div>
-      </>
-    );
-  };
-
-  interface Check {
-    [key: string]: string | string[];
-  }
-
-  const check: Check = {
-    inHeader: [size[43], hover],
-    inReview: [size[45], hover],
-    inWriterInfo: [size[60], hover],
-    inMyPage: size[146],
-    inOtherProfile: size[150],
-  };
-
-  const finalStyle = Object.keys(props)
-    .filter((prop) => Object.keys(check).includes(prop))
-    .map((attr) => check[attr]);
-
-  const show = () => {
-    return Object.keys(props).includes('inMyPageEdit') ? (
-      inMyPageEdit()
-    ) : (
-      <div className={cx(...finalStyle)}></div>
-    );
-  };
-
-  return show();
+      )}
+    </>
+  );
 }
 
 export default Profile;

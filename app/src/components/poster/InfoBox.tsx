@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { css, cx, keyframes } from '@emotion/css';
-import { shadow, radius, color, font } from '../../styles';
+import { css, cx } from '@emotion/css';
+import { color, font } from '../../styles';
 import { Box } from '../../components';
 
 interface Props {
@@ -47,25 +47,25 @@ function InfoBox({ place, title, writer, price, location, dDay }: Props) {
   const titleStyles: CheckSize = {
     inMain: css`
       ${font.size[14]}
-      ${font.weight.bold}
+      ${font.weight[700]}
       width: 194px;
       height: 24px;
     `,
     inBoard: css`
       ${font.size[12]}
-      ${font.weight.bold}
+      ${font.weight[700]}
       width: 154px;
       height: 20px;
     `,
     inSpec: css`
       ${font.size[14]}
-      ${font.weight.bold}
+      ${font.weight[700]}
       width: 196px;
       height: 25px;
     `,
     inReview: css`
       ${font.size[12]}
-      ${font.weight.bold}
+      ${font.weight[700]}
       width: 157px;
       height: 17px;
     `,
@@ -74,13 +74,13 @@ function InfoBox({ place, title, writer, price, location, dDay }: Props) {
   const priceStyles: CheckSize = {
     inMain: css`
       ${font.size[16]}
-      ${font.weight.bold}
+      ${font.weight[700]}
       width: 92px;
       height: 27px;
     `,
     inBoard: css`
       ${font.size[14]}
-      ${font.weight.bold}
+      ${font.weight[700]}
       width: 78px;
       height: 24px;
     `,
@@ -89,13 +89,13 @@ function InfoBox({ place, title, writer, price, location, dDay }: Props) {
   const writerStyles: CheckSize = {
     inMain: css`
       ${font.size[12]}
-      ${font.weight.regular}
+      ${font.weight[400]}
       width: 78px;
       height: 20px;
     `,
     inBoard: css`
       ${font.size[12]}
-      ${font.weight.regular}
+      ${font.weight[400]}
       width: 90px;
       height: 20px;
     `,

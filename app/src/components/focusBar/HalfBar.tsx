@@ -27,7 +27,7 @@ function HalfBar({ alarm, focus }: Props) {
     justify-content: space-around;
     span {
       font-size: ${alarm ? 18 : 24}px;
-      ${font.weight.regular};
+      ${font.weight[400]};
       padding-bottom: ${alarm ? 8 : 16}px;
       padding-left: 30px;
       padding-right: 30px;

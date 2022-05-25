@@ -1,5 +1,5 @@
 import { css, cx, keyframes } from '@emotion/css';
-import { shadow, radius, color, font } from '../../styles';
+import { color } from '../../styles';
 import { Box } from '../../components';
 
 interface Props {

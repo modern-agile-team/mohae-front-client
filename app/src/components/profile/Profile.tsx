@@ -11,19 +11,15 @@ function Profile(props: Props) {
 
   const editBtn = size === 160 ? true : false;
 
-  const commonStyle = css`
+  const image = css`
     background: white url(${profileImg}) no-repeat center/cover;
     ${radius.circle};
-    ${shadow.normal};
+    ${smallShadow ? shadow.button : shadow.normal};
     width: ${size}px;
     height: ${size}px;
     :hover {
       cursor: ${noneClick || 'pointer'};
     }
-  `;
-
-  const smallShadowStyle = css`
-    ${shadow.button}
   `;
 
   const imgUpdateBtn = css`
@@ -51,7 +47,7 @@ function Profile(props: Props) {
     <>
       <div
         onClick={!noneClick ? () => alert('프로필 클릭') : undefined}
-        className={cx(commonStyle, smallShadow && smallShadowStyle)}></div>
+        className={cx(image)}></div>
       {editBtn && (
         <div
           className={cx(imgUpdateBtn)}

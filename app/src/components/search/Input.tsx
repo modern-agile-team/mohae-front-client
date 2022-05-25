@@ -166,10 +166,6 @@ function Input(props: InputProps) {
     );
   };
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.value);
-  };
-
   return (
     <>
       <div
@@ -181,7 +177,7 @@ function Input(props: InputProps) {
           type='text'
           src='/img/search.png'
           placeholder='검색어를 입력해 주세요.'
-          onChange={onChange}
+          onChange={e => setValue(e.target.value)}
           value={value}
         />
         {contents()}

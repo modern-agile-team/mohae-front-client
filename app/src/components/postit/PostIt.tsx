@@ -6,23 +6,29 @@ function PostIt(props: Props) {
   const { small, children } = props;
 
   const commonStyle = css`
-    ${font.weight.regular}
     background-color: white;
     box-shadow: 0px 0px 5px 0 rgb(193, 193, 197);
-    padding: 16px 35px 16px 16px;
     outline: none;
+    position: relative;
   `;
 
   const smallBox = css`
-    width: 501px;
-    height: 210px;
+    width: 736px;
+    height: 194px;
+    padding: 16px;
     color: ${color.dark1};
-    ${font.size[16]}
+    p {
+      ${font.size[16]}
+      ${font.weight.regular}
+      width: 704px;
+      max-height: 127px;
+    }
   `;
 
   const bigBox = css`
     width: 600px;
     height: 470px;
+    padding: 16px 8px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -43,7 +49,9 @@ function PostIt(props: Props) {
       #f9f9f9 0% 71.5%,
       rgb(219, 219, 219) 77%
     );
-    margin: -228.8px 0px 0px 484.2px;
+    position: absolute;
+    top: -18.6px;
+    right: -18.6px;
   `;
 
   const foldForBig = css`
@@ -54,23 +62,26 @@ function PostIt(props: Props) {
       #f9f9f9 0% 71.5%,
       rgb(219, 219, 219) 77%
     );
-    margin: -491.2px 0px 0px 581.2px;
+    position: absolute;
+    top: -20.9px;
+    right: -20.9px;
   `;
+
+  const textContent = () =>
+    children ? <p>{children}</p> : <p>한 줄 요약이 존재하지 않습니다.</p>;
 
   const show = () =>
     small ? (
-      <>
-        <div className={cx(commonStyle, smallBox)}>
-          <div className={cx(title)}>한 줄 요약</div>
-          {children}
-        </div>
+      <div className={cx(commonStyle, smallBox)}>
         <div className={cx(foldForSmall)} />
-      </>
+        <div className={cx(title)}>한 줄 요약</div>
+        {textContent()}
+      </div>
     ) : (
-      <>
-        <div className={cx(commonStyle, bigBox)}>{children}</div>
+      <div className={cx(commonStyle, bigBox)}>
         <div className={cx(foldForBig)} />
-      </>
+        {children}
+      </div>
     );
 
   return show();

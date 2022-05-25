@@ -14,6 +14,7 @@ function FilterBtn(props: Props) {
     &:hover {
       background-color: ${color.subtle};
     }
+    cursor: pointer;
 
     span {
       color: ${color.dark1};

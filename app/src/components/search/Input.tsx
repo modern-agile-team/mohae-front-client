@@ -36,7 +36,7 @@ function Input(props: InputProps) {
           }
           hr {
             visibility: ${value ? 'visible' : 'hidden'};
-            margin: 7px 16px 0px 0px;
+            margin-top: 7px;
             width: 0;
             height: 28px;
             border-left: 2px solid ${color.light3};
@@ -123,23 +123,27 @@ function Input(props: InputProps) {
     return board ? (
       <>
         <div className={cx(cancle)} onClick={() => setValue('')}>
-          <Img src='img/close-dark2.png' />
+          <Img src='/img/close-dark2.png' />
         </div>
         <hr />
         <div className={cx(iconStyle())} onClick={onClick}>
-          <Img src='img/search.png' />
+          <Img src='/img/search.png' />
         </div>
         <div
           className={cx(iconStyle('filter'))}
           onClick={() => setShowFilter && setShowFilter(!showFilter)}
         >
           <div id='filter'>
-            <Img src='img/filter.png' />
+            <Img src='/img/filter.png' />
           </div>
         </div>
       </>
     ) : (
-      <Img className={cx(iconStyle())} onClick={onClick} src='img/search.png' />
+      <Img
+        className={cx(iconStyle())}
+        onClick={onClick}
+        src='/img/search.png'
+      />
     );
   };
 
@@ -175,7 +179,7 @@ function Input(props: InputProps) {
       >
         <input
           type='text'
-          src='img/search.png'
+          src='/img/search.png'
           placeholder='검색어를 입력해 주세요.'
           onChange={onChange}
           value={value}

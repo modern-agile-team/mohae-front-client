@@ -85,10 +85,10 @@ function MarkBox(props: MarkBoxProps) {
   }
 
   const attrs: Attrs = {
-    '!able': 'img/exclamation-mark-main.png',
-    '!disable': 'img/exclamation-mark-dark1.png',
-    '?able': 'img/question-mark-main.png',
-    '?disable': 'img/question-mark-dark1.png',
+    '!able': '/img/exclamation-mark-main.png',
+    '!disable': '/img/exclamation-mark-dark1.png',
+    '?able': '/img/question-mark-main.png',
+    '?disable': '/img/question-mark-dark1.png',
   };
 
   const attrProps = () => {

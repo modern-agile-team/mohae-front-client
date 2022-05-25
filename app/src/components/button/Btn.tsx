@@ -17,7 +17,7 @@ function Btn(props: Props) {
     ${shadow.normal}
     ${radius[6]}
     ${small ? font.size[12] : font.size[14]}
-    ${bold ? font.weight.bold : font.weight.regular}
+    ${bold ? font.weight[700] : font.weight[400]}
     *:not(:last-child) {
       margin-right: 8px;
     }
@@ -96,3 +96,7 @@ function Btn(props: Props) {
 }
 
 export default Btn;
+
+Btn.defaultProps = {
+  main: true,
+};

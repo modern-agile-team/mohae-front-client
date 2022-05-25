@@ -39,9 +39,9 @@ function Poster(props: Props) {
     inReview: [173, 130],
   };
 
-  const [place] = Object.keys(props).filter((prop) =>
+  const place = Object.keys(props).filter((prop) =>
     Object.keys(checkSize).includes(prop)
-  );
+  )[0];
 
   const size = checkSize[place];
 

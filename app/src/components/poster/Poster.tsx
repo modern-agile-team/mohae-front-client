@@ -30,6 +30,7 @@ function Poster(props: Props) {
     location,
     dDay,
     state,
+    type,
   } = props;
 
   const checkSize: CheckSize = {
@@ -64,11 +65,16 @@ function Poster(props: Props) {
     right: ${place === 'inReview' ? 8 : 16}px;
   `;
 
+  const markHover =
+    place === 'inMain' || place === 'inBoard' ? { hover: true } : null;
+  const markSize = place === 'inReview' ? { small: true } : { big: true };
+  const markStyle = { shape: type, state: state };
+
   return (
     <div className={cx(wrapper)}>
       {markVisible && (
         <div className={cx(markBox)}>
-          <MarkBox hover big helpMeAble />
+          <MarkBox {...markHover} {...markSize} style={markStyle} />
         </div>
       )}
       <div onClick={() => alert('clicked!')}>

@@ -13,7 +13,6 @@ import PostIt from './postit/PostIt';
 import Search from './search/Search';
 import Input from './search/Input';
 import Slider from './search/Silder';
-import { Btn6 } from './button';
 import { FocusBar, HalfBar } from './focusBar';
 import Profile from './profile/Profile';
 import { AlarmModal, BasicModal, ReportModal } from './modal';
@@ -36,5 +35,4 @@ export {
   Btn,
   Box,
   MarkBox,
-  Btn6,
 };

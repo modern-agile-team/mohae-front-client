@@ -1,7 +1,7 @@
 import { css, cx } from '@emotion/css';
-import { color, shadow, font, btnStyle, radius } from '../../../styles';
-import MarkBox from '../../markbox/MarkBox';
-import { Props } from '../index';
+import { color, shadow, font, btnStyle, radius } from '../../styles';
+import MarkBox from '../markbox/MarkBox';
+import { Props } from './index';
 
 function FilterBtn(props: Props) {
   const { big, small, disable, children, onClick } = props;

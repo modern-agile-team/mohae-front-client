@@ -1,3 +1,5 @@
+/** @format */
+
 import Category from './category/Category';
 import Text from './text/Text';
 import Report from './check-label/CheckLabel';
@@ -7,11 +9,13 @@ import Snap from './snap-scroll/Snap';
 import Img from './img/Img';
 import Box from './box/Box';
 import { Btn6 } from './button';
+import TextEditor from './text-editor/Editor';
 import { FocusBar, HalfBar } from './focusBar';
 import Profile from './profile/Profile';
 import { AlarmModal, BasicModal, ReportModal } from './modal';
 import Popup from './popup/Popup';
 import { Poster } from './poster';
+import NewPost from './newPost/NewPost';
 
 export {
   Category,
@@ -23,6 +27,7 @@ export {
   Img,
   Btn6,
   Box,
+  TextEditor,
   FocusBar,
   HalfBar,
   Profile,
@@ -31,4 +36,5 @@ export {
   ReportModal,
   Popup,
   Poster,
+  NewPost,
 };

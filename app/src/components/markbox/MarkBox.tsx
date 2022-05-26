@@ -1,15 +1,19 @@
 import { css, cx } from '@emotion/css';
 import React, { ReactChild } from 'react';
 import { color, font, radius, shadow, btnStyle } from '../../styles';
-import { Props } from '../button';
 import Img from '../img/Img';
 
-interface MarkBoxProps extends Props {
-  style?: { [key: string]: string };
+interface MarkBoxProps {
+  // shape?: number;
+  // state?: number;
+  // big?: boolean;
+  // small?: boolean;
+  // hover?: boolean;
+  [key: string]: number | boolean | string;
 }
 
 function MarkBox(props: MarkBoxProps) {
-  const { style, big, small, hover } = props;
+  const { shape, state, big, small, hover } = props;
 
   const commonStyle = () => {
     const common = css`
@@ -25,7 +29,7 @@ function MarkBox(props: MarkBoxProps) {
         background-color: white;
         color: ${color.dark1};
         ${font.size[14]}
-        ${font.weight.regular}
+        ${font.weight[400]}
         line-height: 23.8px;
         text-align: center;
         visibility: hidden;
@@ -34,14 +38,14 @@ function MarkBox(props: MarkBoxProps) {
       }
     `;
 
-    return style && style.shape === '?'
+    return shape
       ? css`
           ${common}
           ::after {
             content: '재능을 가지고 있는 사람들에게 도움을 요청할래요.';
             bottom: ${big ? '124px' : '120px'};
             left: ${big ? '20px' : '16px'};
-            padding: 9px;
+            padding: 12px;
           }
         `
       : css`
@@ -50,7 +54,7 @@ function MarkBox(props: MarkBoxProps) {
             content: '재능을 가지고 사람들에게 도움을 줄래요.';
             bottom: ${big ? '124px' : '120px'};
             left: ${big ? '20px' : '16px'};
-            padding: 23px;
+            padding: 28px;
           }
         `;
   };
@@ -85,14 +89,14 @@ function MarkBox(props: MarkBoxProps) {
   }
 
   const attrs: Attrs = {
-    '!able': '/img/exclamation-mark-main.png',
-    '!disable': '/img/exclamation-mark-dark1.png',
-    '?able': '/img/question-mark-main.png',
-    '?disable': '/img/question-mark-dark1.png',
+    '00': '/img/exclamation-mark-main.png',
+    '01': '/img/exclamation-mark-dark1.png',
+    '10': '/img/question-mark-main.png',
+    '11': '/img/question-mark-dark1.png',
   };
 
   const attrProps = () => {
-    const prop = style && style.shape + style.state;
+    const prop = String(shape) + String(state);
 
     return Object.keys(attrs)
       .map(shape => prop === shape && attrs[shape])
@@ -109,7 +113,3 @@ function MarkBox(props: MarkBoxProps) {
 }
 
 export default MarkBox;
-
-MarkBox.defaultProps = {
-  style: { shape: '!', state: 'able' },
-};

@@ -1,7 +1,7 @@
 import { css, cx } from '@emotion/css';
-import { color, shadow, font, btnStyle, radius } from '../../../styles';
-import MarkBox from '../../markbox/MarkBox';
-import { Props } from '../index';
+import { color, shadow, font, btnStyle, radius } from '../../styles';
+import MarkBox from '../markbox/MarkBox';
+import { Props } from './index';
 
 function FilterBtn(props: Props) {
   const { big, small, disable, children, onClick } = props;
@@ -69,14 +69,12 @@ function FilterBtn(props: Props) {
 
   const attrProps = Object.keys(props).map(attr => attrs[attr]);
 
-  const show = () => (
+  return (
     <label className={cx(commonStyle, attrProps)}>
       <input type='checkbox' onClick={onClick} />
       <span>{children}</span>
     </label>
   );
-
-  return show();
 }
 
 export default FilterBtn;

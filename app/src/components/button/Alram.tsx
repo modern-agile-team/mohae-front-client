@@ -1,7 +1,7 @@
 import { css, cx } from '@emotion/css';
-import { color, shadow, btnStyle } from '../../../styles';
-import Img from '../../img/Img';
-import { Props } from '../index';
+import { color, shadow, btnStyle } from '../../styles';
+import Img from '../img/Img';
+import { Props } from './index';
 
 interface AlramProps extends Props {
   num: string | number;

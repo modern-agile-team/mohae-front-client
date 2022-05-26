@@ -86,13 +86,11 @@ function Btn(props: Props) {
       .map(el => (disable ? el.disable : el.able));
   };
 
-  const show = () => (
+  return (
     <button className={cx(common, attrs())} onClick={onClick}>
       {children}
     </button>
   );
-
-  return show();
 }
 
 export default Btn;

@@ -19,7 +19,7 @@ function PostIt(props: Props) {
     color: ${color.dark1};
     p {
       ${font.size[16]}
-      ${font.weight.regular}
+      ${font.weight[400]}
       width: 704px;
       max-height: 127px;
     }
@@ -37,7 +37,7 @@ function PostIt(props: Props) {
   const title = css`
     height: 27px;
     ${font.size[18]}
-    ${font.weight.bold}
+    ${font.weight[700]}
     padding: 0px 0px 8px 0px;
   `;
 

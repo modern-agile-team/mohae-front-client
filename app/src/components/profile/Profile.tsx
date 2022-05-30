@@ -2,7 +2,7 @@ import { css, cx } from '@emotion/css';
 import { shadow, radius } from '../../styles';
 
 interface Props {
-  [key: string]: any;
+  [key: string]: boolean | number | any;
 }
 
 function Profile(props: Props) {

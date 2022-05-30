@@ -14,13 +14,10 @@ code {
     monospace;
 }
 
-/* U+0030-0039, U+0020-002F, U+003A-0040, U+005B-0060, U+007B-007E */
-
 @font-face {
   font-family: 'Black';
   font-weight: 900;
   src: url(./asset/Roboto-Black.ttf);
-  src: url(./asset/NotoSansKR-Thin.otf);
   src: url(./asset/NotoSansKR-Black.otf);
   unicode-range: U+0041-005A, U+0061-007A, U+0030-0039, U+0020-002F, U+003A-0040,
     U+005B-0060, U+007B-007E, U+AC00-D7A3;

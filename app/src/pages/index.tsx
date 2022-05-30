@@ -1,3 +1,7 @@
+/** @format */
+
 import HG from './test/HG';
 import Home from './home/Home';
-export { HG, Home };
+import MyPage from './mypage/MyPage';
+import OtherPage from './other-page/OtherPage';
+export { HG, Home, MyPage, OtherPage };

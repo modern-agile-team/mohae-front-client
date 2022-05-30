@@ -15,7 +15,6 @@ function Box(props: Props) {
   const commonStyle = css`
     width: ${size[0]}px;
     height: ${size[1]}px;
-    overflow: hidden;
     background-color: white;
     ${palette.radius[6]}
     ${palette.shadow.normal}

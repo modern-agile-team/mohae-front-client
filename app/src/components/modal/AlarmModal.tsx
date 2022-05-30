@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { css, cx } from '@emotion/css';
+import { css } from '@emotion/css';
 import ArrowBtn from '../arrowbtn/ArrowBtn';
 import Img from '../img/Img';
 import { Box } from '../../components';
@@ -37,52 +37,49 @@ function AlarmModal({ visible, preBtn, close, contents }: Props) {
     align-items: center;
     z-index: 11;
     ${visible ? animation.alarmAppear : animation.alarmDisappear}
-  `;
 
-  const alarmBtn = css`
-    width: 27.5px;
-    height: 30.5px;
-    top: 11px;
-    left: 11px;
-    position: absolute;
-  `;
+    .alarmBtn {
+      width: 27.5px;
+      height: 30.5px;
+      top: 11px;
+      left: 11px;
+      position: absolute;
+      cursor: pointer;
+    }
 
-  const arrowBtn = css`
-    top: 16px;
-    left: 16px;
-    position: absolute;
-  `;
+    .arrowBtn {
+      top: 16px;
+      left: 16px;
+      position: absolute;
+      cursor: pointer;
+    }
 
-  const closeBtn = css`
-    width: 24px;
-    height: 24px;
-    position: absolute;
-    top: 16px;
-    right: 16px;
-  `;
-
-  const cursor = css`
-    cursor: pointer;
+    .closeBtn {
+      width: 24px;
+      height: 24px;
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      cursor: pointer;
+    }
   `;
 
   return (
-    <div>
-      <Box light bigRadius size={[364, 500]} className={box}>
-        {preBtn ? (
-          <div className={cx(arrowBtn, cursor)}>
-            <ArrowBtn left dark onClick={() => alert('이전')} />
-          </div>
-        ) : (
-          <div className={cx(alarmBtn, cursor)}>
-            <Img src={'img/alarm-bell.png'} onClick={() => alert('알람로고')} />
-          </div>
-        )}
-        <div className={cx(closeBtn, cursor)}>
-          <Img src={'img/close.png'} onClick={close} />
+    <Box light bigRadius size={[364, 500]} className={box}>
+      {preBtn ? (
+        <div className={'arrowBtn'}>
+          <ArrowBtn left dark onClick={() => alert('이전')} />
         </div>
-        {contents}
-      </Box>
-    </div>
+      ) : (
+        <div className={'alarmBtn'}>
+          <Img src={'img/alarm-bell.png'} onClick={() => alert('알람로고')} />
+        </div>
+      )}
+      <div className={'closeBtn'}>
+        <Img src={'img/close.png'} onClick={close} />
+      </div>
+      {contents}
+    </Box>
   );
 }
 

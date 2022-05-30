@@ -1,15 +1,18 @@
+/** @format */
+
 import React, { useState } from 'react';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import { EditorState, convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
+import { color } from '../../styles';
 import { css, cx } from '@emotion/css';
 
 interface Props {
   [key: string]: any;
 }
 
-export default function TextEditor(props: Props) {
+export default function TextEditor({ size }: Props) {
   const style = css`
     .wrapper-class {
       width: 50%;
@@ -29,8 +32,67 @@ export default function TextEditor(props: Props) {
       border: none !important;
     }
 
-    .rdw-dropdown-carettoopen {
-      display: none !important;
+    .rdw-fontsize-wrapper {
+      width: 60px;
+      & > * > * > * {
+        right: 5px !important;
+      }
+      position: relative;
+      :after {
+        content: '';
+        width: 1px;
+        height: 21px;
+        position: absolute;
+        top: 5px;
+        right: -1px;
+        background-color: ${color.dark2};
+      }
+      .rdw-dropdown-wrapper {
+        width: 100%;
+      }
+    }
+
+    .rdw-inline-wrapper {
+      margin-right: 4px;
+      position: relative;
+      :after {
+        content: '';
+        width: 1px;
+        height: 21px;
+        position: absolute;
+        top: 5px;
+        right: -3px;
+        background-color: ${color.dark2};
+      }
+    }
+
+    .rdw-dropdown-carettoopen,
+    .rdw-dropdown-carettoclose {
+      width: 21px;
+      height: 21px;
+      margin-top: -5px;
+      border: none !important;
+      background: url('/img/text-editor-arrow.png') no-repeat center/contain;
+    }
+
+    .editor,
+    .rdw-editor-main {
+      padding: 16px !important;
+    }
+
+    .editor,
+    .rdw-editor-main,
+    .notranslate {
+      height: ${`${size}px`} !important;
+
+      .public-DraftEditor-content {
+        height: ${`${size - 30}px`} !important;
+      }
+    }
+
+    .public-DraftStyleDefault-block {
+      margin: 0;
+      line-height: 23.8px;
     }
 
     img {
@@ -50,11 +112,11 @@ export default function TextEditor(props: Props) {
 
   const onEditorStateChange = (e: any) => {
     setEditorState(e);
-    // console.log('e :>> ', e);
     setText(editorToHtml(editorState));
-    // console.log('  ', editorToHtml(editorState));
   };
+
   console.log('text :>> ', text);
+
   return (
     <>
       <div className={cx(style)}>
@@ -64,97 +126,55 @@ export default function TextEditor(props: Props) {
           editorClassName="editor"
           toolbar={{
             options: [
+              'blockType',
+              'fontSize',
               'inline',
-              // 'blockType',
-              // 'fontSize',
               // 'fontFamily',
-              'list',
+              // 'list',
               'textAlign',
-              'colorPicker',
-              'link',
-              // 'emoji',
-              // 'image',
-              // 'textIndent',
+              // 'colorPicker',
+              // 'link',
+              'emoji',
             ],
             inline: {
-              options: [
-                'bold',
-                'italic',
-                'underline',
-                'strikethrough',
-                'monospace',
-                // 'superscript',
-              ],
-              inDropdown: true,
+              options: ['bold', 'italic', 'underline', 'strikethrough'],
+              inDropdown: false,
               bold: {
-                icon: '/img/hello.png',
+                icon: '/img/text-editor-1.png',
               },
               italic: {
                 visible: false,
-                // icon: 'xxx.png'
+                icon: '/img/text-editor-2.png',
               },
               underline: {
                 visible: false,
-                // icon: 'xxx.png'
+                icon: '/img/text-editor-3.png',
               },
-              strikeThrough: {
+              strikethrough: {
                 visible: false,
-                // icon: 'xxx.png'
-              },
-              monospace: {
-                visible: false,
-                // icon: 'xxx.png'
-              },
-            },
-            fontSize: {
-              // icon: 'xxx.png'
-            },
-            list: {
-              inDropdown: true,
-              unordered: {
-                // icon: 'xxx.png'
-              },
-              ordered: {
-                // icon: 'xxx.png'
-              },
-              indent: {
-                // icon: 'xxx.png'
-              },
-              outdent: {
-                // icon: 'xxx.png'
+                icon: '/img/text-editor-4.png',
               },
             },
             textAlign: {
-              inDropdown: true,
+              inDropdown: false,
               left: {
-                // icon: 'xxx.png'
+                icon: '/img/text-editor-5.png',
               },
               center: {
-                // icon: 'xxx.png'
+                icon: '/img/text-editor-6.png',
               },
               right: {
-                // icon: 'xxx.png'
+                icon: '/img/text-editor-7.png',
               },
               justify: {
-                // icon: 'xxx.png'
+                icon: '/img/text-editor-8.png',
               },
             },
-            colorPicker: {
-              // icon: 'xxx.png'
-            },
-            link: {
-              inDropdown: true,
-              addLink: {
-                // icon: 'xxx.png'
-              },
-              removeLink: {
-                // icon: 'xxx.png'
-              },
-            },
+            emoji: { icon: '/img/text-editor-9.png' },
           }}
         />
       </div>
-      <div dangerouslySetInnerHTML={{ __html: text }}></div>
+      {/* <div dangerouslySetInnerHTML={{ __html: text }}></div> */}
     </>
   );
 }

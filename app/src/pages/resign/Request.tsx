@@ -16,8 +16,10 @@ import {
   MarkBox,
   Btn,
 } from '../../components';
+import Title from './Title';
+import Completion from './Completion';
 
-export default function OtherPage() {
+export default function Request() {
   const text: { [key: string]: any } = {
     title: '회원 탈퇴',
     description: {
@@ -32,78 +34,8 @@ export default function OtherPage() {
     cancel: '취소',
   };
 
-  const style = css`
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    ${radius[24]}
-    .logo {
-      width: 66.4px;
-      height: 50px;
-      margin-bottom: 24px;
-    }
-    .main {
-      color: ${color.main};
-    }
-    .bold {
-      ${font.weight[700]};
-      font-size: 24px;
-    }
-    .description {
-      font-size: 24px;
-      color: ${color.dark1};
-      margin-bottom: 16px;
-    }
-    .lightgray {
-      color: ${color.dark3};
-    }
-    .row {
-      display: flex;
-      justify-content: center;
-    }
-    .sub {
-      margin-bottom: 40px;
-    }
-    .write {
-      display: flex;
-      align-items: center;
-      margin-bottom: 40px;
-      label {
-        color: ${color.dark1};
-        width: 97px;
-        text-align: center;
-      }
-      input {
-        width: 350px;
-        color: ${color.dark2};
-        padding: 16px;
-        font-size: 14px;
-        ${radius[6]};
-        ${shadow.inputGray};
-      }
-    }
-    .btns {
-      display: flex;
-      > div {
-        width: 74px;
-        height: 43px;
-      }
-      > :not(:last-child) {
-        margin-right: 8px;
-      }
-      align-items: center;
-    }
-  `;
-
-  const component = (
-    <div className={cx(style)}>
-      <div className={'logo'}>
-        <Img src={'/img/logo.png'} />
-      </div>
-      <div className={'bold'}>{text.title}</div>
+  return (
+    <>
       <div className={'description'}>
         <span className={'bold main'}>{'닉네임~'}</span>
         <span> {text.description[1]}</span>
@@ -133,8 +65,6 @@ export default function OtherPage() {
           <Btn>{text.cancel}</Btn>
         </div>
       </div>
-    </div>
+    </>
   );
-
-  return <BasicModal small visible={true} contents={component} />;
 }

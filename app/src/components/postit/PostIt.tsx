@@ -42,16 +42,16 @@ function PostIt(props: Props) {
   `;
 
   const foldForSmall = css`
-    width: 35px;
-    height: 35px;
+    width: 32px;
+    height: 32px;
     background: linear-gradient(
       to bottom left,
       #f9f9f9 0% 71.5%,
       rgb(219, 219, 219) 77%
     );
     position: absolute;
-    top: -18.6px;
-    right: -18.6px;
+    top: -17px;
+    right: -17px;
   `;
 
   const foldForBig = css`

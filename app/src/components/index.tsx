@@ -1,3 +1,5 @@
+/** @format */
+
 import Category from './category/Category';
 import Text from './text/Text';
 import Report from './check-label/CheckLabel';
@@ -13,11 +15,13 @@ import PostIt from './postit/PostIt';
 import Search from './search/Search';
 import Input from './search/Input';
 import Slider from './search/Silder';
+import TextEditor from './text-editor/Editor';
 import { FocusBar, HalfBar } from './focusBar';
 import Profile from './profile/Profile';
 import { AlarmModal, BasicModal, ReportModal } from './modal';
 import Popup from './popup/Popup';
 import { Poster } from './poster';
+import NewPost from './newPost/NewPost';
 
 export {
   Category,
@@ -35,4 +39,14 @@ export {
   Btn,
   Box,
   MarkBox,
+  TextEditor,
+  FocusBar,
+  HalfBar,
+  Profile,
+  AlarmModal,
+  BasicModal,
+  ReportModal,
+  Popup,
+  Poster,
+  NewPost,
 };

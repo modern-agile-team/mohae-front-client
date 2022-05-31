@@ -10,7 +10,7 @@ interface Check {
 }
 
 function FocusBar(props: Props) {
-  const { thin, thick, dark4, light3, className } = props;
+  const { thin, thick, dark, light, className } = props;
 
   const commonStyle = css`
     width: 100%;
@@ -29,10 +29,10 @@ function FocusBar(props: Props) {
   };
 
   const backColor = {
-    dark4: css`
+    dark: css`
       background-color: ${color.dark4};
     `,
-    light3: css`
+    light: css`
       background-color: ${color.light3};
     `,
   };
@@ -40,8 +40,8 @@ function FocusBar(props: Props) {
   const check: Check = {
     thin: weight.thin,
     thick: weight.thick,
-    dark4: backColor.dark4,
-    light3: backColor.light3,
+    dark: backColor.dark,
+    light: backColor.light,
   };
 
   const finalStyle = Object.keys(props).map((attr) => check[attr]);

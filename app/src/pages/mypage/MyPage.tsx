@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { css, cx } from '@emotion/css';
 import { keyframes } from '@emotion/react';
 import { color, radius, font, shadow } from '../../styles';
+import Review from './Review';
 import {
   Img,
   Poster,
@@ -302,62 +303,7 @@ export default function MyPage() {
           </div>
         </div>
       </div>
-      <div className={'review'}>
-        <div className={'title'}>
-          <div className={'star'}>
-            <Img src={'/img/star-filled.png'} />
-          </div>
-          <div className={'rating'}>{text.rating}</div>
-          <div className={'score'}>{'3.0'}</div>
-          <div className={'number'}>{`(${3})`}</div>
-        </div>
-        <FocusBar thin light3 />
-        <div className={'each'}>
-          <div className={'column'}>
-            <div className={'profile'}>
-              <Profile size={45} isLogin={false} />
-              <div className={'info-box'}>
-                <div className={'name'}>{'이름입니다'}</div>
-                <div className={'stars'}>
-                  <Img src={'/img/star-filled.png'} />
-                  <Img src={'/img/star-filled.png'} />
-                  <Img src={'/img/star-filled.png'} />
-                  <Img src={'/img/star-filled.png'} />
-                  <Img src={'/img/star-filled.png'} />
-                </div>
-              </div>
-            </div>
-            <div className={'description'}></div>
-          </div>
-          <Poster inReview title={'123'} />
-        </div>
-        <FocusBar thin light3 />
-        <div className={'each'}>
-          <div className={'column'}>
-            <div className={'profile'}>
-              <Profile size={45} isLogin={false} />
-              <div className={'info-box'}>
-                <div className={'name'}>{'이름입니다'}</div>
-                <div className={'stars'}>
-                  <Img src={'/img/star-filled.png'} />
-                  <Img src={'/img/star-filled.png'} />
-                  <Img src={'/img/star-filled.png'} />
-                  <Img src={'/img/star-filled.png'} />
-                  <Img src={'/img/star-filled.png'} />
-                </div>
-              </div>
-            </div>
-
-            <div className={'description'}>
-              {
-                'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Obcaecati quaerat et nesciunt suscipit quis iusto, aperiam harum iste, excepturi illum officia facilis modi debitis esse provident consequatur, similique quasi ipsum.or sit amet consectetur adipisicing elit. Obcaecati quaerat et nesciunt suscipit quis iusto, aperiam harum iste, excepturi illum officia facilis modi debitis esse provident consequatur, similique quasi ipsum'
-              }
-            </div>
-          </div>
-          <Poster inReview title={'123'} />
-        </div>
-        <FocusBar thin light3 />
-      </div>
+      <Review />
     </div>
   );
 }

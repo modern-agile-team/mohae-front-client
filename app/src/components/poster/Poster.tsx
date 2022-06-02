@@ -68,7 +68,7 @@ function Poster(props: Props) {
     <div className={cx(wrapper)}>
       {markVisible && (
         <div className={cx(markBox)}>
-          <MarkBox hover big helpMeAble />
+          {/* <MarkBox {...markHover} {...markSize} style={markStyle} /> */}
         </div>
       )}
       <div onClick={() => alert('clicked!')}>

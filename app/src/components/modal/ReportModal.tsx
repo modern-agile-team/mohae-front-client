@@ -4,7 +4,7 @@ import { css, cx } from '@emotion/css';
 import CheckBox from '../check-label/CheckLabel';
 import { Box } from '../../components';
 import { animation } from './modalAnimation';
-import { Btn5 } from '../../components/button';
+import { Btn } from '../button';
 
 interface Props {
   [key: string]: any;
@@ -66,11 +66,17 @@ function ReportModal({ visible, close }: Props) {
     <div>
       <Box light size={[360, 470]} className={box}>
         <CheckBox />
-        <div className={cx(btnWrapper)}>
-          <Btn5 main>전송</Btn5>
-          <Btn5 onClick={close} main>
-            취소
-          </Btn5>
+        <div className={btnWrapper}>
+          <div className={'send-btn'}>
+            <Btn main able>
+              {'전송'}
+            </Btn>
+          </div>
+          <div className={'close-btn'}>
+            <Btn main able onClick={close}>
+              {'취소'}
+            </Btn>
+          </div>
         </div>
       </Box>
       <div onClick={close} className={cx(overlay)}></div>

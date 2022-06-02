@@ -54,13 +54,12 @@ export default function SelectBox({
       ${radius[6]};
       ${shadow.normal};
       width: 100%;
-      /* height: fit-content; */
       height: ${isOpen ? `${240}px` : '100%'};
       overflow: hidden;
-      ${isOpen &&
+      /* ${isOpen &&
       css`
         overflow: scroll;
-      `};
+      `}; */
       ${noneScroll &&
       css`
         &::-webkit-scrollbar {

@@ -36,24 +36,36 @@ export default function Options({
   if (blocks) {
     const style = css`
       width: calc(100% - 2px);
+      height: fit-content;
+      height: 100%;
       position: absolute;
       z-index: 5;
       top: 52px;
       left: 0;
-      padding: 0 40px 0 8px;
-      height: fit-content;
       display: flex;
-      flex-wrap: wrap;
-      flex-direction: row;
-      justify-content: flex-start;
+      flex-direction: column;
+      align-items: center;
+      /* padding: 0 40px 0 8px; */
       .sub {
-        margin: 4px 0;
         width: 100%;
+        padding: 2px 8px 0;
         display: flex;
+        height: fit-content;
         justify-content: space-between;
       }
-      > :not(:nth-child(3n + 1)) {
-        margin: 0 14px 8px 0;
+      .list {
+        width: 100%;
+        padding: 8px 8px;
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        justify-content: flex-start;
+        height: 168px;
+        background-color: white;
+        overflow: scroll;
+        > :not(:nth-child(3n)) {
+          margin: 0 14px 8px 0;
+        }
       }
     `;
     return (
@@ -65,16 +77,18 @@ export default function Options({
             <span>{'/3'}</span>
           </div>
         </div>
-        {list.map((each: any, index: number) => (
-          <Category
-            shape={'row'}
-            key={index}
-            name={each}
-            id={'block'}
-            className={targets.includes(each) && mainColor}
-            onClick={onClick}
-          />
-        ))}
+        <div className={'list'}>
+          {list.map((each: any, index: number) => (
+            <Category
+              shape={'row'}
+              key={index}
+              name={each}
+              id={'block'}
+              className={targets.includes(each) && mainColor}
+              onClick={onClick}
+            />
+          ))}
+        </div>
       </div>
     );
   } else {
@@ -85,14 +99,20 @@ export default function Options({
       top: 52px;
       left: 0;
       padding: 8px 0 0 0;
-      height: fit-content;
+      height: 180px;
       display: flex;
       flex-direction: column;
-      > :nth-child(2n-1) {
-        background-color: ${color.light1};
+      .list {
+        width: 100%;
+        padding: 8px 8px;
+        height: 100%;
+        background-color: white;
+        overflow: scroll;
+        > :nth-child(2n-1) {
+          background-color: ${color.light1};
+        }
       }
       button {
-        background-color: white;
         width: 100%;
         display: flex;
         line-height: 20px;
@@ -104,17 +124,19 @@ export default function Options({
 
     return (
       <div className={cx(style)}>
-        {list.map((each: any, index: number) => (
-          <button
-            id={'text'}
-            key={index}
-            name={each}
-            className={cx(each === target && mainColor)}
-            onClick={onClick}
-          >
-            {each}
-          </button>
-        ))}
+        <div className={'list'}>
+          {list.map((each: any, index: number) => (
+            <button
+              id={'text'}
+              key={index}
+              name={each}
+              className={cx(each === target && mainColor)}
+              onClick={onClick}
+            >
+              {each}
+            </button>
+          ))}
+        </div>
       </div>
     );
   }

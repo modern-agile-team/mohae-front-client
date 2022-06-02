@@ -1,7 +1,6 @@
 import { css, cx } from '@emotion/css';
 import { useEffect, useState } from 'react';
 import { font, radius } from '../../styles';
-import ArrowBtn from '../arrowbtn/ArrowBtn';
 import { Props } from '../button';
 import Img from '../img/Img';
 
@@ -64,7 +63,6 @@ function Mosaic(props: Props) {
     <div className={cx(bodyMosaic)} />
   ) : (
     <div className={cx(imgsMosaic)}>
-      <ArrowBtn left light big />
       <div id='centerWrap'>
         <div>
           <Img src='img/lock-white.png' />
@@ -74,7 +72,6 @@ function Mosaic(props: Props) {
           서비스를 이용해 주세요.
         </p>
       </div>
-      <ArrowBtn right light big />
     </div>
   );
 }

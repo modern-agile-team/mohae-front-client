@@ -1,5 +1,7 @@
+/** @format */
+
 import { convertToRaw } from 'draft-js';
-import { color, shadow, radius } from '../../styles';
+import { color, shadow, radius, font } from '../../styles';
 import { css } from '@emotion/css';
 import { keyframes } from '@emotion/react';
 
@@ -69,7 +71,7 @@ export default function Style({ inline }: Props) {
           0% {
             opacity: 1;
           }
-          70% {
+          80% {
             opacity: 1;
           }
           100% {
@@ -78,16 +80,20 @@ export default function Style({ inline }: Props) {
         }
 
         position: absolute;
-        z-index: 10;
+        z-index: 20;
         width: 250px;
         height: 50px;
+        font-size: 13px;
+        ${font.weight[400]}
         top: -30px;
         padding: 4px 16px;
         display: flex;
         justify-content: center;
         align-items: center;
-        background-color: lightblue;
-        animation: fadeout 4s ease-in-out forwards;
+        ${radius[6]}
+        ${shadow.normal}
+        background-color: white;
+        animation: fadeout 5s ease-in-out forwards;
       }
 
       .wrapper {

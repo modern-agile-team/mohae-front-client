@@ -15,8 +15,10 @@ export default function Category({
   name,
   img,
   id,
+  className,
+  onClick,
 }: Props): ReactElement {
-  const size: { [key: string]: any } = {
+  const style: { [key: string]: any } = {
     circle: css`
       ${radius[6]}
       width: 100%;
@@ -81,50 +83,29 @@ export default function Category({
       }
     `,
     row: css`
-      ${radius[6]}
-      position: relative;
-      width: 100%;
-      height: 100%;
+      ${radius[6]};
+      ${shadow.normal};
+      width: 100px;
+      height: 36px;
       display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
-      :hover {
-        :after {
-          content: '123';
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          position: absolute;
-          font-size: 12px;
-          line-height: 170%;
-          width: 100%;
-          height: 100%;
-          ${radius[6]}
-          line-height: 170%;
-          background-color: white;
-          top: 0;
-          left: 0;
-          color: ${color.dark1};
-
-          ${font.weight[700]}
-        }
-      }
-      .icon {
-        width: 32px;
-        height: 32px;
-      }
+      ${className};
     `,
   };
 
-  return (
-    <Link to={`/boards/${id}`} className={cx(size[shape])}>
+  return !(shape === 'row') ? (
+    <Link to={`/boards/${id}`} className={cx(style[shape])}>
       {!(shape === 'row') && (
         <div className={'icon'}>
           <Img src={img} />
         </div>
       )}
-      {shape === 'circle' && <span>{name || 'Category'}</span>}
+      {!(shape === 'square') && <div>{name || 'Category'}</div>}
     </Link>
+  ) : (
+    <button id={id} name={name} onClick={onClick} className={cx(style[shape])}>
+      {name || 'Category'}
+    </button>
   );
 }

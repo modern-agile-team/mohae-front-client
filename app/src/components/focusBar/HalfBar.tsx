@@ -77,10 +77,12 @@ function HalfBar({ alarm, focus }: Props) {
 
   const clickedFirst = () => {
     setFocusMenu(true);
+    focus(true);
   };
 
   const clickedSecond = () => {
     setFocusMenu(false);
+    focus(false);
   };
 
   return (

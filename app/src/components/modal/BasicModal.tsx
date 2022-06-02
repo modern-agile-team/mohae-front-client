@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { css, cx } from '@emotion/css';
 import { Box } from '../../components';
-import ArrowBtn from '../arrowbtn/ArrowBtn';
+// import ArrowBtn from '../arrowbtn/ArrowBtn';
 import Img from '../img/Img';
 import { animation } from './modalAnimation';
 
@@ -15,7 +15,7 @@ function BasicModal({
   big,
   preBtn,
   noCloseBtn,
-  contents,
+  children,
 }: Props) {
   const [modalState, setModalState] = useState(false);
 
@@ -81,11 +81,15 @@ function BasicModal({
       <Box
         light
         bigRadius
-        size={big ? [1128, 630] : [936, 560]}
+        size={big ? [1128, 630] : [936, 540]}
         className={box}>
         {preBtn && (
-          <div className={cx(arrowBtn, cursor)}>
-            <ArrowBtn left dark onClick={() => alert('이전')} />
+          <div className={'arrowBtn'}>
+            <Img
+              src={'img/arrow-left-dark1.png'}
+              onClick={() => alert('이전')}
+            />
+            {/* <ArrowBtn left dark onClick={() => alert('이전')} /> */}
           </div>
         )}
         {noCloseBtn || (
@@ -93,7 +97,7 @@ function BasicModal({
             <Img src={'img/close.png'} onClick={close} />
           </div>
         )}
-        {contents}
+        {children}
       </Box>
       <div onClick={close} className={cx(overlay)}></div>
     </div>

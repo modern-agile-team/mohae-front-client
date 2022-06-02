@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { css, cx } from '@emotion/css';
-import ArrowBtn from '../arrowbtn/ArrowBtn';
 import Img from '../img/Img';
 import { Box } from '../../components';
 import { animation } from './modalAnimation';
@@ -70,7 +69,7 @@ function AlarmModal({ visible, preBtn, close, contents }: Props) {
       <Box light bigRadius size={[364, 500]} className={box}>
         {preBtn ? (
           <div className={cx(arrowBtn, cursor)}>
-            <ArrowBtn left dark onClick={() => alert('이전')} />
+            {/* <ArrowBtn left dark onClick={() => alert('이전')} /> */}
           </div>
         ) : (
           <div className={cx(alarmBtn, cursor)}>

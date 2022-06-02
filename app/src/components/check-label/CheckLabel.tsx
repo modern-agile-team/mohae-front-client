@@ -1,13 +1,14 @@
+/** @format */
+
 import { css, cx } from '@emotion/css';
 import { color, radius, font, shadow } from '../../styles';
 import { useState, useRef } from 'react';
-import Btn5 from '../button/textBtn/Btn5';
 
 interface Props {
   [key: string]: any;
 }
 
-export default function Report(props: Props) {
+export default function Report({ list }: Props) {
   const style = css`
     label {
       display: flex;
@@ -100,7 +101,7 @@ export default function Report(props: Props) {
   `;
 
   const [reportValue, setReportValue] = useState({
-    list: [
+    list: list.map((i: string) => ({ title: i, checked: false })) || [
       { title: '욕설 / 비방', checked: false },
       { title: '개인정보 요구', checked: false },
       { title: '사기', checked: false },
@@ -117,7 +118,7 @@ export default function Report(props: Props) {
 
     const newReportValue = [...reportValue.list];
     const targetValue = newReportValue[Number(e.currentTarget.id)];
-    const selectedList = reportValue.list.reduce((acc, cur) => {
+    const selectedList = reportValue.list.reduce((acc: number, cur: any) => {
       if (cur.checked) {
         return acc + 1;
       } else return acc;
@@ -143,17 +144,21 @@ export default function Report(props: Props) {
   };
 
   const report = (e: React.MouseEvent<Element, MouseEvent>) => {
+    // use this function at request API
     e.stopPropagation();
 
     let init: Array<number> = [];
 
     const requestData = {
-      checkedIndex: reportValue.list.reduce((acc, cur, index) => {
-        if (cur.checked) {
-          acc.push(index + 1);
-        }
-        return acc;
-      }, init),
+      checkedIndex: reportValue.list.reduce(
+        (acc: any, cur: any, index: number) => {
+          if (cur.checked) {
+            acc.push(index + 1);
+          }
+          return acc;
+        },
+        init
+      ),
       text: reportValue.text,
     };
 
@@ -170,7 +175,7 @@ export default function Report(props: Props) {
 
   const showReportList = (
     <div>
-      {reportValue.list.map((report, index) => (
+      {reportValue.list.map((report: any, index: number) => (
         <label key={index}>
           <input type="checkbox" onChange={selectList} id={`${index}`} />
           {report.title}
@@ -185,12 +190,7 @@ export default function Report(props: Props) {
   return (
     <div className={cx(style)}>
       {showReportList}
-      <div className={'btn-wrapper'}>
-        <Btn5 onClick={report} main>
-          전송
-        </Btn5>
-        <Btn5 main>취소</Btn5>
-      </div>
+      <div className={'btn-wrapper'}></div>
     </div>
   );
 }

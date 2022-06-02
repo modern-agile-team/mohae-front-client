@@ -1,3 +1,5 @@
+/** @format */
+
 import { cx, css } from '@emotion/css';
 import { useState } from 'react';
 import Img from '../img/Img';
@@ -7,17 +9,16 @@ interface Props {
   [key: string]: any;
 }
 
-export default function Carousel({ onClick, images }: Props) {
-  const IMAGES =
-    [
-      'img/camera.png',
-      'img/edit.png',
-      'img/filter.png',
-      'img/heart-main.png',
-      'img/study.png',
-      'img/send.png',
-      'img/star-unfilled.png',
-    ] || images;
+export default function Carousel({ onClick, imgs }: Props) {
+  const IMAGES = imgs || [
+    'img/camera.png',
+    'img/edit.png',
+    'img/filter.png',
+    'img/heart-main.png',
+    'img/study.png',
+    'img/send.png',
+    'img/star-unfilled.png',
+  ];
 
   const [sector, setSector] = useState(0);
 
@@ -90,7 +91,6 @@ export default function Carousel({ onClick, images }: Props) {
       justify-content: center;
       align-items: center;
       font-size: 400px;
-      /* color: white; */
     }
   `;
 
@@ -125,17 +125,16 @@ export default function Carousel({ onClick, images }: Props) {
     }
   };
 
-  const iamges = IMAGES.map((img, index) => (
+  const images = IMAGES.map((img: string, index: number) => (
     <div className={'img'} key={index}>
       <Img src={img} />
     </div>
   ));
-
   const circleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     setSector(Number(e.currentTarget.id));
   };
 
-  const circles = IMAGES.map((img, index) => (
+  const circles = IMAGES.map((img: string, index: number) => (
     <button
       key={index}
       id={`${index}`}
@@ -147,10 +146,11 @@ export default function Carousel({ onClick, images }: Props) {
   return (
     <div className={cx(style)}>
       <div className={'box'}>
-        <div className={'container'}>{iamges}</div>
+        <div className={'container'}>{images}</div>
       </div>
       <button className={'btn prev'} onClick={clickArrowBtn} name="-" />
       <button className={'btn next'} onClick={clickArrowBtn} name="+" />
+      {/* arrowBtn comp */}
       <div className={'circles-container'}>{circles}</div>
     </div>
   );

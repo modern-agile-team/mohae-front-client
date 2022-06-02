@@ -11,7 +11,7 @@ interface Props {
 
 export default function NewPost({ page, no }: Props) {
   const D_Day = '마감';
-  const img = '/img/crown.png';
+  const img = 'img/heart-filled-main.png';
   const check: { [key: string]: any } = {
     inMain: {
       size: '208',
@@ -55,11 +55,12 @@ export default function NewPost({ page, no }: Props) {
       `,
     },
   };
+
   const style = css`
-    display: inline-block;
     width: 100%;
     height: 100%;
     position: relative;
+    overflow: visible;
 
     .mark-box {
       position: absolute;
@@ -75,19 +76,23 @@ export default function NewPost({ page, no }: Props) {
       transition: 0.3s all ease-in-out;
       transform: scale(1);
       :hover {
-        transition: 0.3s all ease-in-out;
-        transform: scale(1.2);
+        & > * {
+          transition: 0.3s all ease-in-out;
+          transform: scale(1.2);
+        }
       }
     }
 
     .info {
       ${shadow.normal}
-      height: fit-content;
+      height: ${`calc(100% - ${check[page].size}px)`};
       padding: 14px 16px;
+      /* ${radius[6]} */
       ${check[page].padding}
       display: flex;
       justify-content: space-between;
       align-items: center;
+
       * {
         font-size: ${`${check[page].fontSize}px`};
         line-height: 170%;
@@ -104,6 +109,7 @@ export default function NewPost({ page, no }: Props) {
           align-items: flex-start;
         }
         .title {
+          ${font.weight[700]}
           max-width: 168px;
           margin: 0;
         }
@@ -138,11 +144,15 @@ export default function NewPost({ page, no }: Props) {
     </div>
   );
 
+  const markBox =
+    page === 'inMain' || page === 'inBoard' ? (
+      <MarkBox small hover style={{ shape: '?', state: 'disable' }} />
+    ) : (
+      <MarkBox small style={{ shape: '?', state: 'able' }} />
+    );
+
   return (
     <div className={cx(style)}>
-      <div className={'mark-box'}>
-        {<MarkBox small style={{ shape: '!', state: 'able' }} />}
-      </div>
       <div className={'img'}>
         <Img src={img || 'img/logo.png'} />
       </div>
@@ -153,6 +163,7 @@ export default function NewPost({ page, no }: Props) {
         </div>
         {price}
       </div>
+      <div className={'mark-box'}>{markBox}</div>
     </div>
   );
 }

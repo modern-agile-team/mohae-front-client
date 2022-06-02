@@ -94,7 +94,3 @@ function Btn(props: Props) {
 }
 
 export default Btn;
-
-Btn.defaultProps = {
-  main: true,
-};

@@ -81,7 +81,7 @@ function InfoBox({ place, title, writer, price, location, dDay }: Props) {
     inBoard: css`
       ${font.size[14]}
       ${font.weight[700]}
-      width: 80px;
+      width: 78px;
       height: 24px;
     `,
   };
@@ -103,32 +103,25 @@ function InfoBox({ place, title, writer, price, location, dDay }: Props) {
 
   const size = [checkSize[place][0][0], checkSize[place][0][1]];
 
-  const padding = checkSize[place][1];
+  const [padding] = [checkSize[place][1]];
 
   const box = css`
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: ${padding[0]}px ${padding[1]}px;
+  `;
 
-    .leftInfoContainer {
-      display: flex;
-      flex-direction: column;
-    }
+  const leftInfoContainer = css`
+    display: flex;
+    flex-direction: column;
+  `;
 
-    .titleStyle {
-      display: flex;
-      justify-content: start;
-      align-items: center;
-      ${titleStyles[place]}
-    }
-
-    .writerStyle {
-      display: flex;
-      justify-content: start;
-      align-items: center;
-      ${writerStyles[place]}
-    }
+  const titleStyle = css`
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    ${titleStyles[place]}
   `;
 
   const priceStyle = css`
@@ -139,6 +132,13 @@ function InfoBox({ place, title, writer, price, location, dDay }: Props) {
     color: ${price === '나눔' ? color.main : color.dark1};
   `;
 
+  const writerStyle = css`
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    ${writerStyles[place]}
+  `;
+
   const dDayColor = css`
     color: ${dDay === 'D - 0' ? color.main : color.dark1};
   `;
@@ -147,29 +147,25 @@ function InfoBox({ place, title, writer, price, location, dDay }: Props) {
 
   const placeCondition = place === 'inMain' || place === 'inBoard';
 
-  const hoverEvent = (
-    <>
-      <div className={'leftInfoContainer'}>
-        <div className={'titleStyle'}>{location}</div>
-      </div>
-      <div className={cx(priceStyle, dDayColor)}>{dDay}</div>
-    </>
-  );
-
-  const noneHoverEvent = (
-    <>
-      <div className={'leftInfoContainer'}>
-        <div className={'titleStyle'}>{title}</div>
-        <div className={'writerStyle'}>{writer}</div>
-      </div>
-      <div className={cx(priceStyle)}>{price}</div>
-    </>
-  );
-
   return (
     <div onMouseEnter={mouseIn} onMouseLeave={mouseOut}>
       <Box noRadius size={size} className={box}>
-        {placeCondition && mouseHover ? hoverEvent : noneHoverEvent}
+        {placeCondition && mouseHover ? (
+          <>
+            <div className={cx(leftInfoContainer)}>
+              <div className={cx(titleStyle)}>{location}</div>
+            </div>
+            <div className={cx(priceStyle, dDayColor)}>{dDay}</div>
+          </>
+        ) : (
+          <>
+            <div className={cx(leftInfoContainer)}>
+              <div className={cx(titleStyle)}>{title}</div>
+              <div className={cx(writerStyle)}>{writer}</div>
+            </div>
+            <div className={cx(priceStyle)}>{price}</div>
+          </>
+        )}
       </Box>
     </div>
   );

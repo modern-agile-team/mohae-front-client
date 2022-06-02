@@ -33,14 +33,14 @@ export default function Style({ inline }: Props) {
       }
     `,
     undefined: css`
-      padding: 8px;
+      /* padding: 8px; */
       .container {
         flex-wrap: wrap;
-      }
-      .item-box {
-        width: 130px;
-        height: 130px;
-        margin: 8px 8px;
+        .item-box {
+          width: 130px;
+          height: 130px;
+          margin: 8px;
+        }
       }
       .add {
         ${shadow.normal}
@@ -129,6 +129,8 @@ export default function Style({ inline }: Props) {
             transition: 0.2s;
             transform: scale(1.2);
           }
+          /* background-color: #ffa1af11; */
+          box-shadow: 0px 0px 4px 2px rgba(255, 161, 175, 0.3);
         }
         background-color: white;
       }
@@ -171,9 +173,5 @@ export default function Style({ inline }: Props) {
       ${diffStyle};
     `;
   };
-  if (!inline) {
-    return style();
-  } else {
-    return style();
-  }
+  return style();
 }

@@ -44,8 +44,8 @@ export default function Footer(): ReactElement {
   return (
     <div className={cx(style)}>
       <div className={'icon-wrapper'}>
-        <Img src={'/img/camera.png'} />
-        <Img src={'/img/study.png'} />
+        <Img src={'/img/notion.png'} />
+        <Img src={'/img/medium.png'} />
       </div>
       <div>{text.introduce}</div>
       <div>{text.others}</div>

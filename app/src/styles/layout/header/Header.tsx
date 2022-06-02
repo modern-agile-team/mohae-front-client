@@ -1,3 +1,5 @@
+/** @format */
+
 import { css, cx } from '@emotion/css';
 import { color, radius, font, shadow } from '../../style/palette';
 import { ReactElement } from 'react';

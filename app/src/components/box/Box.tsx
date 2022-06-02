@@ -13,8 +13,8 @@ function Box(props: Props) {
   const { light, noRadius, bigRadius, noShadow, size, children, className } =
     props;
   const commonStyle = css`
-    width: ${size[0]}px;
-    height: ${size[1]}px;
+    height: ${size && size.length === 2 ? `${size[1]}px` : 'fit-content'};
+    width: ${size ? `${size[0]}px` : 'fit-content'};
     background-color: white;
     ${palette.radius[6]}
     ${palette.shadow.normal}

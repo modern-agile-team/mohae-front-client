@@ -39,17 +39,18 @@ function ReportModal({ visible, close }: Props) {
     align-items: center;
     z-index: 14;
     ${visible ? animation.basicAppear : animation.basicDissappear}
+  `;
 
-    .btnWrapper {
-      width: 100%;
-      height: fit-content;
-      display: flex;
-      justify-content: center;
-      & > :not(:last-child) {
-        margin-right: 8px;
-      }
+  const btnWrapper = css`
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    justify-content: center;
+    & > :not(:last-child) {
+      margin-right: 8px;
     }
   `;
+
   const overlay = css`
     position: fixed;
     top: 0;
@@ -62,10 +63,10 @@ function ReportModal({ visible, close }: Props) {
   `;
 
   return (
-    <>
+    <div>
       <Box light size={[360, 470]} className={box}>
         <CheckBox />
-        <div className={'btnWrapper'}>
+        <div className={cx(btnWrapper)}>
           <Btn5 main>전송</Btn5>
           <Btn5 onClick={close} main>
             취소
@@ -73,7 +74,7 @@ function ReportModal({ visible, close }: Props) {
         </div>
       </Box>
       <div onClick={close} className={cx(overlay)}></div>
-    </>
+    </div>
   );
 }
 

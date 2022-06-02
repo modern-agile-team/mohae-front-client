@@ -19,7 +19,7 @@ function PostIt(props: Props) {
     color: ${color.dark1};
     p {
       ${font.size[16]}
-      ${font.weight.regular}
+      ${font.weight[400]}
       width: 704px;
       max-height: 127px;
     }
@@ -37,21 +37,21 @@ function PostIt(props: Props) {
   const title = css`
     height: 27px;
     ${font.size[18]}
-    ${font.weight.bold}
+    ${font.weight[700]}
     padding: 0px 0px 8px 0px;
   `;
 
   const foldForSmall = css`
-    width: 35px;
-    height: 35px;
+    width: 32px;
+    height: 32px;
     background: linear-gradient(
       to bottom left,
       #f9f9f9 0% 71.5%,
       rgb(219, 219, 219) 77%
     );
     position: absolute;
-    top: -18.6px;
-    right: -18.6px;
+    top: -17px;
+    right: -17px;
   `;
 
   const foldForBig = css`

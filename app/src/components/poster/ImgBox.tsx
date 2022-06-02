@@ -47,7 +47,7 @@ function ImgBox({ place, img, state }: Props) {
     ${img !== null && hover}
   `;
 
-  const disableBox = css`
+  const endBox = css`
     height: inherit;
     background: ${color.dark1};
     opacity: 0.5;
@@ -55,7 +55,7 @@ function ImgBox({ place, img, state }: Props) {
 
   return (
     <Box noRadius size={size} className={box}>
-      {state === 'disable' && <div className={cx(disableBox)}></div>}
+      {state === 'end' && <div className={cx(endBox)}></div>}
     </Box>
   );
 }

@@ -5,7 +5,6 @@ import { useState, useEffect } from 'react';
 import { color, radius, font, shadow } from '../../styles';
 import Img from '../img/Img';
 import Style from './style';
-import { removeTodo } from '../../redux/modules/todos';
 
 interface Props {
   [key: string]: any;
@@ -45,7 +44,7 @@ export default function OrderedImg({ imgs, edit, inline }: Props) {
   useEffect(() => {
     setTimeout(() => {
       setAlarm(false);
-    }, 4000);
+    }, 5000);
   }, []);
 
   const style = Style({ inline: inline });

@@ -3,7 +3,7 @@
 import { css, cx } from '@emotion/css';
 import { color, radius, font, shadow } from '../../style/palette';
 import { ReactElement } from 'react';
-import { Img, Btn6 } from '../../../components';
+import { Img } from '../../../components';
 
 const wrapper = css`
   * {
@@ -79,8 +79,8 @@ export default function Header(props: Props): ReactElement {
         <button className={'button'}>{text.notice}</button>
         <button className={'button'}>{text.inquire}</button>
         <div className={'square-buttons'}>
-          <Btn6>{text.regist}</Btn6>
-          <Btn6 main>{text.login}</Btn6>
+          {/* <Btn6>{text.regist}</Btn6>
+          <Btn6 main>{text.login}</Btn6> */}
         </div>
       </div>
     </div>

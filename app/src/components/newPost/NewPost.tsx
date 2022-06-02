@@ -87,7 +87,6 @@ export default function NewPost({ page, no }: Props) {
       ${shadow.normal}
       height: ${`calc(100% - ${check[page].size}px)`};
       padding: 14px 16px;
-      /* ${radius[6]} */
       ${check[page].padding}
       display: flex;
       justify-content: space-between;
@@ -146,9 +145,9 @@ export default function NewPost({ page, no }: Props) {
 
   const markBox =
     page === 'inMain' || page === 'inBoard' ? (
-      <MarkBox small hover style={{ shape: '?', state: 'disable' }} />
+      <MarkBox small hover shape={'?'} state={'disable'} />
     ) : (
-      <MarkBox small style={{ shape: '?', state: 'able' }} />
+      <MarkBox small shape={'?'} state={'able'} />
     );
 
   return (

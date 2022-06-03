@@ -60,8 +60,8 @@ export default function OrderedImg({ imgs, edit, inline }: Props) {
     color: ${color.main};
     border-radius: 50%;
     position: absolute;
-    bottom: ${inline ? `2px` : `55px`};
-    right: ${inline ? `2px` : `55px`};
+    bottom: ${inline ? `${56 / 2 - 15 / 2}px` : `8px`};
+    right: ${inline ? `${56 / 2 - 15 / 2}px` : `8px`};
   `;
 
   const selected = css`
@@ -189,8 +189,8 @@ export default function OrderedImg({ imgs, edit, inline }: Props) {
     const countStyle = css`
       color: ${color.dark1};
       position: absolute;
-      top: 32px;
-      left: 16px;
+      bottom: 32px;
+      right: 16px;
     `;
     const maxNumberStyle = css`
       color: ${full ? color.dark1 : color.main};

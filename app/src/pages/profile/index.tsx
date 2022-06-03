@@ -19,6 +19,8 @@ import {
 import SelectBox from './SelectBox';
 
 export default function Edit() {
+  const [openSelectBox, setOpenSelectBox] = useState(false);
+
   const text: { [key: string]: any } = {
     sir: '님',
     changePW: '비밀번호 변경',
@@ -152,10 +154,6 @@ export default function Edit() {
     }
   `;
 
-  const inputTag = (label: string) => {
-    return;
-  };
-
   const contents = (
     <div className={cx(style)}>
       <div className={'wrapper'}>
@@ -196,6 +194,7 @@ export default function Edit() {
             <div className={'input'}>
               <div className={'btn white'}>
                 <SelectBox
+                  open={openSelectBox}
                   noneScroll
                   list={['010', '011', '016', '017', '031']}
                 >
@@ -215,6 +214,7 @@ export default function Edit() {
             <div className={'label'}>{text.label.school}</div>
             <div className={'input white'}>
               <SelectBox
+                open={openSelectBox}
                 list={[
                   '광운',
                   '인덕',
@@ -234,7 +234,22 @@ export default function Edit() {
           <div className={'line'}>
             <div className={'label'}>{text.label.major}</div>
             <div className={'input white'}>
-              <SelectBox list={['컴전', '시디', '컴소', '디산디', '정통']}>
+              <SelectBox
+                open={openSelectBox}
+                list={[
+                  '컴전',
+                  '시디',
+                  '컴소',
+                  '디산디',
+                  '정통',
+                  '읏덕',
+                  '망덕',
+                  'aa',
+                  'bb',
+                  'cc',
+                  'dd',
+                ]}
+              >
                 {text.placeholder.major}
               </SelectBox>
             </div>
@@ -243,6 +258,7 @@ export default function Edit() {
             <div className={'label'}>{text.label.interested}</div>
             <div className={'input white'}>
               <SelectBox
+                open={openSelectBox}
                 blocks
                 list={[
                   '카테고리1',
@@ -256,6 +272,15 @@ export default function Edit() {
                   '카테고리9',
                   '카테고리10',
                   '카테고리11',
+                  '광운',
+                  '인덕',
+                  'ㅈ덕',
+                  '읏덕',
+                  '망덕',
+                  'aa',
+                  'bb',
+                  'cc',
+                  'dd',
                 ]}
               >
                 {text.placeholder.interested}
@@ -266,11 +291,15 @@ export default function Edit() {
       </div>
       <div className={'footer'}>
         <div className={'btn'}>
-          <Btn>{'저장'}</Btn>
+          <Btn main>{'저장'}</Btn>
         </div>
       </div>
     </div>
   );
 
-  return <BasicModal small visible={true} contents={contents} />;
+  return (
+    <BasicModal small visible={true}>
+      {contents}
+    </BasicModal>
+  );
 }

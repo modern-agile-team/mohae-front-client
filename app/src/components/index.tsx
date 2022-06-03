@@ -1,8 +1,10 @@
 /** @format */
 
+import Categories from './category/Categories';
 import Category from './category/Category';
 import Text from './text/Text';
 import Report from './check-label/CheckLabel';
+
 import Carousel from './img-carousel/Img-carousel';
 import OrderedImg from './img-in-order/OrderedImg';
 import Snap from './snap-scroll/Snap';
@@ -25,6 +27,7 @@ import NewPost from './newPost/NewPost';
 
 export {
   Category,
+  Categories,
   PostIt,
   Slider,
   Input,

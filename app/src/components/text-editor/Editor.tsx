@@ -19,6 +19,11 @@ export default function TextEditor({ size }: Props) {
       margin: 0 auto;
       margin-bottom: 4rem;
     }
+    .rdw-editor-toolbar {
+      border: none;
+      background-color: ${color.light2};
+      margin: 0;
+    }
     .editor {
       height: 500px !important;
       border: 1px solid #f1f1f1 !important;
@@ -30,6 +35,7 @@ export default function TextEditor({ size }: Props) {
     .rdw-inline-dropdown,
     .rdw-option-wrapper {
       border: none !important;
+      background-color: #0000;
     }
 
     .rdw-fontsize-wrapper {
@@ -77,6 +83,7 @@ export default function TextEditor({ size }: Props) {
 
     .editor,
     .rdw-editor-main {
+      border: none !important;
       padding: 16px !important;
     }
 

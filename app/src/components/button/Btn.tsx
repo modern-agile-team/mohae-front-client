@@ -4,8 +4,18 @@ import { Props } from '.';
 import { color, font, radius, shadow } from '../../styles';
 
 function Btn(props: Props) {
-  const { children, main, white, disable, big, small, regular, bold, onClick } =
-    props;
+  const {
+    children,
+    main,
+    white,
+    disable,
+    big,
+    small,
+    regular,
+    bold,
+    category,
+    onClick,
+  } = props;
 
   const common = css`
     width: 100%;
@@ -86,8 +96,21 @@ function Btn(props: Props) {
       .map(el => (disable ? el.disable : el.able));
   };
 
+  const categoryBtn = () => {
+    return category
+      ? css`
+          &:hover {
+            background-color: white;
+          }
+          &:active {
+            background-color: white;
+          }
+        `
+      : css``;
+  };
+
   return (
-    <button className={cx(common, attrs())} onClick={onClick}>
+    <button className={cx(common, attrs(), categoryBtn())} onClick={onClick}>
       {children}
     </button>
   );

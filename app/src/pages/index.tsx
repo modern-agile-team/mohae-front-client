@@ -6,4 +6,5 @@ import { MyPage, OtherPage } from './mypage';
 import Resign from './resign';
 import Profile from './profile';
 import Spec from './spec';
-export { HG, Home, MyPage, OtherPage, Resign, Profile, Spec };
+import Login from './login';
+export { HG, Home, MyPage, OtherPage, Resign, Profile, Spec, Login };

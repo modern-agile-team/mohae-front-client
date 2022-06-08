@@ -189,7 +189,7 @@ export default function OrderedImg({ imgs, edit, inline }: Props) {
     const countStyle = css`
       color: ${color.dark1};
       position: absolute;
-      bottom: 32px;
+      bottom: 16px;
       right: 16px;
     `;
     const maxNumberStyle = css`

@@ -13,13 +13,15 @@ export default function Resign() {
       preBtn
       small
       visible={true}
-      contents={
-        <Wrapper>
-          <Title />
-          {/* <Request /> */}
-          <Completion />
-        </Wrapper>
-      }
-    />
+      // contents={
+
+      // }
+    >
+      <Wrapper>
+        <Title />
+        {/* <Request /> */}
+        <Completion />
+      </Wrapper>
+    </BasicModal>
   );
 }

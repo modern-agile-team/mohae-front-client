@@ -3,19 +3,17 @@ import { color, shadow, font, btnStyle, radius } from '../../styles';
 import MarkBox from '../markbox/MarkBox';
 import { Props } from './index';
 
-function FilterBtn(props: Props) {
-  const { big, small, disable, children, onClick } = props;
+function SelectBtn(props: Props) {
+  const { large, medium, small, disable, children, onClick } = props;
 
   const commonStyle = css`
-    ${btnStyle.square}
     background-color: white;
-    ${shadow.button}
     position: relative;
+    cursor: pointer;
+
     &:hover {
       background-color: ${color.subtle};
     }
-    cursor: pointer;
-
     span {
       color: ${color.dark1};
       ${font.size[14]}
@@ -23,8 +21,6 @@ function FilterBtn(props: Props) {
       position: absolute;
     }
     input[type='checkbox'] {
-      height: 44px;
-      ${radius[6]}
       cursor: pointer;
       -webkit-appearance: none;
       :checked {
@@ -41,9 +37,29 @@ function FilterBtn(props: Props) {
   }
 
   const attrs: Attrs = {
-    big: css`
+    large: css`
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      input[type='checkbox'] {
+        width: 182px;
+        height: 60px;
+      }
+      span {
+        width: 84px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+    `,
+
+    medium: css`
+      ${btnStyle.square}
+      ${shadow.button}
       input[type='checkbox'] {
         width: 138px;
+        height: 44px;
+        ${radius[6]}
       }
       span {
         width: 90px;
@@ -53,8 +69,12 @@ function FilterBtn(props: Props) {
       }
     `,
     small: css`
+      ${btnStyle.square}
+      ${shadow.button}
       input[type='checkbox'] {
         width: 87px;
+        height: 44px;
+        ${radius[6]}
       }
     `,
     disable: css`
@@ -77,4 +97,4 @@ function FilterBtn(props: Props) {
   );
 }
 
-export default FilterBtn;
+export default SelectBtn;

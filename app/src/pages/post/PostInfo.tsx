@@ -1,7 +1,7 @@
 import React from 'react';
 import { css, cx } from '@emotion/css';
-import { Props } from '../../../components/button';
-import { color, font, radius } from '../../../styles';
+import { Props } from '../../components/button';
+import { color, font, radius } from '../../styles';
 
 // target, 카테고리, 제목, d-day, 지역, 작성자여부, 좋아요, 조회수, 가격
 

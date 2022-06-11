@@ -1,9 +1,9 @@
 import React from 'react';
 import { css, cx } from '@emotion/css';
-import Profile from '../../../components/profile/Profile';
-import { Btn, Img, PostIt } from '../../../components';
-import { color, font } from '../../../styles';
-import { Props } from '../../../components/button';
+import Profile from '../../components/profile/Profile';
+import { Btn, Img, PostIt } from '../../components';
+import { color, font } from '../../styles';
+import { Props } from '../../components/button';
 
 // 프로필 이미지, 닉네임, 전공, 로그인 상태(버튼 그려줘야 함),
 

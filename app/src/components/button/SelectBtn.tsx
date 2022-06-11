@@ -41,6 +41,8 @@ function SelectBtn(props: Props) {
       display: flex;
       justify-content: center;
       align-items: center;
+      width: 182px;
+      height: 60px;
       input[type='checkbox'] {
         width: 182px;
         height: 60px;
@@ -56,6 +58,8 @@ function SelectBtn(props: Props) {
     medium: css`
       ${btnStyle.square}
       ${shadow.button}
+      width: 138px;
+      height: 44px;
       input[type='checkbox'] {
         width: 138px;
         height: 44px;
@@ -71,6 +75,8 @@ function SelectBtn(props: Props) {
     small: css`
       ${btnStyle.square}
       ${shadow.button}
+      width: 87px;
+      height: 44px;
       input[type='checkbox'] {
         width: 87px;
         height: 44px;

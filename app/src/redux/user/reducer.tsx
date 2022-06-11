@@ -1,6 +1,6 @@
 /** @format */
 
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 const initialState = {
   var: { isLoading: false },
@@ -15,13 +15,13 @@ export const userSlice = createSlice({
   // reducer function
   reducers: {
     // create reducers
-    login: (state, action) => {
+    login: (state, action: PayloadAction<any>) => {
       state.value = action.payload;
     },
-    addAge: (state, action) => {
+    addAge: (state, action: PayloadAction<any>) => {
       state.value.age = action.payload;
     },
-    updateToken: (state, action) => {
+    updateToken: (state, action: PayloadAction<any>) => {
       state.token = action.payload;
     },
   },

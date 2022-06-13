@@ -7,7 +7,7 @@ import Slider from './Silder';
 import SelectBox from '../selectbox/SelectBox';
 import Img from '../img/Img';
 
-function Filter(props: Props) {
+function Filter() {
   const [minValue, setMinValue] = useState(0);
   const [maxValue, setMaxValue] = useState(1000000);
   const areaList = {

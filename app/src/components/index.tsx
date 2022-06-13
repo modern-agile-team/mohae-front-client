@@ -13,7 +13,7 @@ import Btn from './button/Btn';
 import MarkBox from './markbox/MarkBox';
 import Mosaic from './mosaic/Mosaic';
 import PostIt from './postit/PostIt';
-import Search from './search/Container';
+import { Search } from './search/Container';
 import Input from './search/Input';
 import TextEditor from './text-editor/Editor';
 import { FocusBar, HalfBar } from './focusBar';

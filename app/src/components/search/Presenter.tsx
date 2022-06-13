@@ -1,65 +1,38 @@
-import React, { useEffect, useState } from 'react';
+import React, { Dispatch, useEffect, useState } from 'react';
 import { css, cx } from '@emotion/css';
 import { Props } from '../button';
 import { color, font, radius } from '../../styles';
 import Img from '../img/Img';
 import Input from './Input';
 import Filter from '../filter/Presenter';
+import type { DataList } from './Container';
 
 interface InputProps extends Props {
   value?: string | number;
   style: string;
   onChange?: () => any;
+  showFilter: boolean;
+  setShowFilter: Dispatch<React.SetStateAction<boolean>>;
+  dataList: DataList;
+  setDataList: Dispatch<React.SetStateAction<DataList>>;
+  localValue: string[];
+  deleteAll: () => void;
+  deleteList: (i: number) => void;
+  hotKeyClick: (e: React.MouseEvent) => void;
 }
 
-interface DataList {
-  hotKey: {
-    statusCode: number;
-    msg: string;
-    response: [
-      { no: number; name: string },
-      { no: number; name: string },
-      { no: number; name: string },
-      { no: number; name: string },
-      { no: number; name: string }
-    ];
-  };
-}
 // 리덕스로 바꾸게 되면 서로 연결 되야 하는 데이터나 코드가 리덕스에 저장이 되어야 함
 function Presenter(props: InputProps) {
-  const { style } = props;
-  const [localValue, setLocalValue] = useState<string[]>(
-    JSON.parse(localStorage.getItem('currentSearch') || '[]')
-  );
-  const [showFilter, setShowFilter] = useState(false);
-  const [dataList, setDataList] = useState<DataList>({
-    hotKey: {
-      statusCode: 200,
-      msg: '',
-      response: [
-        {
-          no: 1,
-          name: '개발',
-        },
-        {
-          no: 2,
-          name: '디자인',
-        },
-        {
-          no: 3,
-          name: '일상',
-        },
-        {
-          no: 4,
-          name: '응애',
-        },
-        {
-          no: 5,
-          name: '프론트',
-        },
-      ],
-    },
-  });
+  const {
+    style,
+    showFilter,
+    setShowFilter,
+    dataList,
+    localValue,
+    deleteAll,
+    deleteList,
+    hotKeyClick,
+  } = props;
 
   const realBoxStyle = () => {
     const common = css`
@@ -159,17 +132,6 @@ function Presenter(props: InputProps) {
         `;
   };
 
-  const deleteAll = () => {
-    localStorage.removeItem('currentSearch');
-    setLocalValue([]);
-  };
-
-  const deleteList = (i: number) => {
-    const newLocal = localValue.reverse().filter((el, index) => index != i);
-    localStorage.setItem('currentSearch', JSON.stringify(newLocal.reverse()));
-    setLocalValue(newLocal);
-  };
-
   const searchList = () => {
     const list: string[] = localValue.reverse().slice(0, 5);
 
@@ -257,17 +219,12 @@ function Presenter(props: InputProps) {
       }
     `;
 
-    const onClick = (e: React.MouseEvent) =>
-      console.log(
-        'e.target',
-        e.currentTarget.textContent?.slice(
-          1,
-          e.currentTarget.textContent.length
-        )
-      );
-
     return list.map(el => (
-      <div key={el.no} className={cx(hotKeyStyle)} onClick={e => onClick(e)}>
+      <div
+        key={el.no}
+        className={cx(hotKeyStyle)}
+        onClick={e => hotKeyClick(e)}
+      >
         <div id='no'>{el.no}</div>
         <div id='categoryName'>{el.name}</div>
       </div>

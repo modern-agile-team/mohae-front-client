@@ -10,9 +10,7 @@ import Img from '../img/Img';
 function Filter() {
   const [minValue, setMinValue] = useState(0);
   const [maxValue, setMaxValue] = useState(1000000);
-  const areaList = {
-    지역: ['강남구', '논현동', '남양주시', '도농동'],
-  };
+  const [view, setView] = useState<{ [key: number]: boolean }>({ 0: false });
 
   interface type {
     [title: string]: string[] | React.ReactNode[];
@@ -179,7 +177,13 @@ function Filter() {
             <div className='row'>{selectBtnText('기간')}</div>
             <div className='rowLeft'>
               <div className='selectBox'>
-                <SelectBox content={areaList} small />
+                <SelectBox
+                  view={view[0]}
+                  onClick={() => setView({ 0: !view[0] })}
+                  size='small'
+                  placeholder='지역'
+                  style='text'
+                />
               </div>
             </div>
           </div>

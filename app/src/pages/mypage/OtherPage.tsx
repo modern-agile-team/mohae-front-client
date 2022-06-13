@@ -204,9 +204,5 @@ export default function OtherPage() {
     </div>
   );
 
-  return (
-    <BasicModal preBtn big visible={true} contents={component}>
-      {component}
-    </BasicModal>
-  );
+  return <BasicModal preBtn big visible={true} contents={component} />;
 }

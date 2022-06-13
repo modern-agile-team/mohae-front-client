@@ -22,6 +22,7 @@ function PostIt(props: Props) {
       ${font.weight[400]}
       width: 704px;
       max-height: 127px;
+      word-break: break-all;
     }
   `;
 

@@ -1,159 +1,216 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { css, cx } from '@emotion/css';
-import { FilterBtn } from '../button';
+import { Btn, Props, SelectBtn } from '../button';
 import MarkBox from '../markbox/MarkBox';
 import { color, font } from '../../styles';
 import Slider from './Silder';
 import SelectBox from '../selectbox/SelectBox';
+import Img from '../img/Img';
 
-function Filter() {
+function Filter(props: Props) {
   const [minValue, setMinValue] = useState(0);
   const [maxValue, setMaxValue] = useState(1000000);
+  const areaList = {
+    지역: ['강남구', '논현동', '남양주시', '도농동'],
+  };
 
-  const commonStyle = css`
+  interface type {
+    [title: string]: string[] | React.ReactNode[];
+  }
+  const selectBtnText = (list: string) => {
+    const contents: type = {
+      정렬: ['인기순', '최신순', '오래된순'],
+      대상: [
+        <>
+          <MarkBox shape={1} state={0} />
+          해줄래요
+        </>,
+        <>
+          <MarkBox shape={0} state={0} />
+          구할래요
+        </>,
+      ],
+      기간: ['1주일', '1개월', '3개월', '상시'],
+      무료: ['무료'],
+    };
+
+    return contents[list].map((text, i) =>
+      list !== '대상' ? (
+        <SelectBtn key={i} small>
+          {text}
+        </SelectBtn>
+      ) : (
+        <SelectBtn key={i} medium>
+          {text}
+        </SelectBtn>
+      )
+    );
+  };
+
+  const title = (section: string) => {
+    const texts: type = {
+      top: ['정렬', '대상'],
+      mid: ['기간', '지역'],
+    };
+
+    return (
+      <div className='title'>
+        {texts[section].map((text, i) => (
+          <p className='filterTitle' key={i}>
+            {text}
+          </p>
+        ))}
+      </div>
+    );
+  };
+
+  const parentWrap = css`
     position: absolute;
     top: 42.5px;
     left: 0px;
+
+    .filterTitle {
+      ${font.size[14]}
+      ${font.weight[700]}
+      margin-bottom: 8px;
+    }
 
     #realBox {
       width: 812px;
       height: 391px;
       display: flex;
-      justify-content: space-between;
+      gap: 16px;
       flex-direction: column;
       background-color: white;
       border-radius: 0px 0px 6px 6px;
       box-shadow: 0px 8px 8px rgba(132, 131, 141, 0.5);
-      padding: 0px 32px 68px 32px;
+      padding: 16px 32px 24px 32px;
       color: ${color.dark1};
       ${font.weight.bold}
       ${font.size[14]}
     }
-  `;
 
-  const sectionWrap = css`
-    display: flex;
-    justify-content: space-between;
-    width: auto;
-    height: 92px;
-    border-bottom: 1px solid ${color.light4};
-    label {
-      margin-right: 8px;
+    .title {
+      display: flex;
+      gap: 428px;
+    }
+
+    .selectBox {
+      margin-right: 146px;
+    }
+
+    .row,
+    .rowLeft {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .rowLeft {
+      width: 334px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .wrap {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .top,
+    .mid {
+      border-bottom: 2px solid ${color.light4};
+    }
+
+    .bottom {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .bottomBtn {
+      display: flex;
+      align-items: center;
+      margin-top: 12px;
+    }
+
+    .reset {
+      width: 40px;
+      height: 40px;
+      .resetImg {
+        width: 20px;
+        height: 20px;
+      }
+    }
+
+    .compliteBtn {
+      width: 300px;
+      height: 40px;
+      margin: 0 16px 0 224px;
     }
   `;
 
-  const titleWrap = css`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  `;
+  const priceArea = () => {
+    if (0 < minValue && maxValue < 1000000) {
+      return `${minValue.toLocaleString()} 원 ~ ${maxValue.toLocaleString()} 원`;
+    }
+    if (minValue > 0) {
+      return `${minValue.toLocaleString()} 원 이상`;
+    }
+    if (maxValue < 1000000) {
+      return `${maxValue.toLocaleString()} 원 이하`;
+    }
 
-  const showPrice = (min?: string) => {
-    const common = css`
-      width: 98px;
-      height: 43px;
-      color: ${color.dark1};
-      padding: 8px 16px;
-      text-align: center;
-    `;
-
-    return min
-      ? css`
-          ${common}
-          margin-right: 16px;
-        `
-      : css`
-          ${common}
-          margin-left: 16px;
-          margin-right: 8px;
-        `;
-  };
-
-  const create = {
-    btn: (i: number) => {
-      const textContents = [
-        ['최신순', '인기순', '오래된순'],
-        ['1주일', '1개월', '3개월', '상시'],
-        ['초기화', '무료'],
-      ];
-
-      return textContents[i].map((el, key) => (
-        <FilterBtn small key={key}>
-          {el}
-        </FilterBtn>
-      ));
-    },
-
-    title: (text: string) => {
-      const style = css`
-        margin-right: 24px;
-      `;
-      return <span className={cx(style)}>{text}</span>;
-    },
+    return '모든 가격대';
   };
 
   return (
-    <div className={cx(commonStyle)} id='wrap'>
+    <div className={cx(parentWrap)}>
       <div id='realBox'>
-        <div className={cx(sectionWrap)}>
-          <div className={cx(titleWrap)}>
-            {create.title('정렬')}
-            {create.btn(0)}
-          </div>
-          <div className={cx(titleWrap)}>
-            {create.title('대상')}
-            <FilterBtn big id='bigBtn'>
-              <MarkBox shape={0} state={0} />
-              해줄래요
-            </FilterBtn>
-            <FilterBtn big>
-              <MarkBox shape={1} state={0} />
-              구할래요
-            </FilterBtn>
+        <div className='top'>
+          {title('top')}
+          <div className='wrap'>
+            <div className='row'>{selectBtnText('정렬')}</div>
+            <div className='rowLeft'>{selectBtnText('대상')}</div>
           </div>
         </div>
-        <div className={cx(sectionWrap)}>
-          <div className={cx(titleWrap)}>
-            {create.title('기간')}
-            {create.btn(1)}
-          </div>
-          <div className={cx(titleWrap)}>
-            {create.title('지역')}
-            <SelectBox
-              content={{
-                지역: [
-                  '서울시',
-                  '부산시',
-                  '남양주시',
-                  '구리시',
-                  '하남시',
-                  '논현동',
-                ],
-              }}
-              small
-            />
-          </div>
-        </div>
-        <div className={cx(sectionWrap)}>
-          <div className={cx(titleWrap)}>
-            {create.title('가격')}
-            <div className={cx(showPrice('min'))}>
-              {minValue.toLocaleString()}
+        <div className='mid'>
+          {title('mid')}
+          <div className='wrap'>
+            <div className='row'>{selectBtnText('기간')}</div>
+            <div className='rowLeft'>
+              <div className='selectBox'>
+                <SelectBox content={areaList} small />
+              </div>
             </div>
-            <span>~</span>
-            <div className={cx(showPrice())}>{maxValue.toLocaleString()}</div>원
           </div>
-          <div className={cx(titleWrap)}>{create.btn(2)}</div>
+        </div>
+        <div className='bottom'>
+          <div>
+            <p className='filterTitle'>가격</p>
+            <p>{priceArea()}</p>
+          </div>
+          {selectBtnText('무료')}
         </div>
         <Slider
           min={0}
           max={1000000}
-          setMinValue={setMinValue}
-          setMaxValue={setMaxValue}
           minValue={minValue}
           maxValue={maxValue}
+          setMinValue={setMinValue}
+          setMaxValue={setMaxValue}
         />
-        {/* <Btn></Btn> */}
+        <div className='bottomBtn'>
+          <div className='compliteBtn'>
+            <Btn main>설정 완료</Btn>
+          </div>
+          <div className='reset'>
+            <Btn white>
+              <div className='resetImg'>
+                <Img src={'/img/alarm-bell.png'} />
+              </div>
+            </Btn>
+          </div>
+        </div>
       </div>
     </div>
   );

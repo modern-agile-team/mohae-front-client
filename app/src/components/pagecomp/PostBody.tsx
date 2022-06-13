@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { css, cx } from '@emotion/css';
-import { Box, Btn, Img, TextEditor } from '../../../components';
-import { Props } from '../../../components/button';
-import { color, font, radius } from '../../../styles';
-import PostWriteInput from '../../createpost/PostWriteInput';
+import { Box, Btn, Img, TextEditor } from '..';
+import { Props } from '../button';
+import { color, font, radius } from '../../styles';
+import PostWriteInput from '../../pages/createpost/PostWriteInput';
 
 // 본문, 거래 참고 사항
 
@@ -72,7 +72,7 @@ function PostBody(props: Props) {
       view ? (
         <p className='sectionTitle' key={index}>
           {el}
-          <p className='textBox'>
+          <span className='textBox'>
             최대 100자 5줄 이내 초과시 작성이 안됨 이칸이 5줄인 상태로 최대 칸
             크기 내용 작성 없이 엔터는 안됨.최대 100자 5줄 이내 초과시 작성이
             안됨 이칸이 5줄인 상태로 최대 칸 크기 내용 작성 없이 엔터는 안됨
@@ -81,7 +81,7 @@ function PostBody(props: Props) {
             oqewfnoqiejfoiwendckilnwehifjiwe,.wemokcjowejlams.
             {/* 거래 참고 사항 받을 곳 */}
             kqdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddjwncliqnwc,salj
-          </p>
+          </span>
         </p>
       ) : (
         <div key={index}>

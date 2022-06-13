@@ -7,4 +7,19 @@ import Resign from './resign';
 import Profile from './profile';
 import Spec from './spec';
 import Login from './login/Container';
-export { HG, Home, MyPage, OtherPage, Resign, Profile, Spec, Login };
+import CreatePost from './createpost/CreatePost';
+import Board from './board/Board';
+import Post from './post/Post';
+export {
+  HG,
+  Home,
+  MyPage,
+  OtherPage,
+  Resign,
+  Profile,
+  CreatePost,
+  Board,
+  Post,
+  Spec,
+  Login,
+};

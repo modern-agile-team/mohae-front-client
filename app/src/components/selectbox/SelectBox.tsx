@@ -3,6 +3,7 @@ import { css, cx } from '@emotion/css';
 import { color, radius, shadow, font } from '../../styles';
 import Img from '../img/Img';
 import SelectList from './SelectList';
+import { Btn } from '../button';
 
 interface Props {
   big?: boolean;
@@ -20,17 +21,6 @@ function SelectBox(props: Props) {
     list: Object.entries(content)[0][1],
     able: false,
   });
-
-  const common = css`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    .img {
-      width: 16px;
-      height: 16px;
-      cursor: pointer;
-    }
-  `;
 
   interface SizeList {
     [size: string]: string[];
@@ -63,52 +53,42 @@ function SelectBox(props: Props) {
     .map(el => sizeList[el])
     .filter(el => el)[0];
 
-  const difStyle = {
-    small: css`
-      ${common}
-      ${size[0]}
-      ${!show.able ? radius[6] : 'border-radius: 6px 6px 0px 0px;'}
-      ${shadow.button}
-      color: ${color.dark2};
-      padding: 10px 16px 10px 40px;
-      ${font.weight.regular}
-      ${className}
-    `,
-    big: css``,
-  };
+  const common = css`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: ${color.dark2};
+    ${font.weight[400]}
+    ${size[0]}
+    
+    .palceholder {
+      width: 100px;
+      height: 36px;
+    }
 
-  const listWraper = {
-    small: css`
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      ${font.weight.regular}
-      div {
-        ${size[1]}
-        position: absolute;
-        top: 23px;
-        right: 0px;
-        overflow-y: scroll;
-        text-align: center;
-        border-radius: 0px 0px 6px 6px;
-        background-color: white;
-        z-index: 5;
-        border-right: 2px solid transparent;
-        ${shadow.button}
-        ::-webkit-scrollbar {
-          width: 4px;
-          height: 30px;
-        }
-        ::-webkit-scrollbar-thumb {
-          background-color: ${color.main};
-          ${radius[6]}
-        }
-        ::-webkit-scrollbar-track {
-          background-color: ${color.light4};
-          ${radius[6]}
-        }
-      }
-    `,
+    .img {
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+  `;
+
+  const difStyle = () => {
+    return small
+      ? css`
+          ${common}
+          ${!show.able ? radius[6] : 'border-radius: 6px 6px 0px 0px;'}
+          ${shadow.button}
+          padding: 10px 16px 10px 40px;
+        `
+      : css`
+          ${common}
+          ${show.able && shadow.normal}
+          padding: ${!category
+            ? '10px 16px 10px 154px'
+            : '10px 16px 10px 116px'};
+          border-bottom: 2px solid ${color.light4};
+        `;
   };
 
   const listWrap = css`
@@ -119,9 +99,10 @@ function SelectBox(props: Props) {
     .realBox {
       ${size[1]}
       position: absolute;
-      top: 23px;
+      top: 0px;
       right: 0px;
       overflow-y: scroll;
+      overflow-x: hidden;
       text-align: center;
       border-radius: 0px 0px 6px 6px;
       background-color: white;
@@ -145,8 +126,16 @@ function SelectBox(props: Props) {
 
   return (
     <>
-      <div className={cx(difStyle.small)}>
-        {show.title}
+      <div className={cx(difStyle())}>
+        {!category ? (
+          show.title
+        ) : (
+          <div className='palceholder'>
+            <Btn white category>
+              {show.title}
+            </Btn>
+          </div>
+        )}
         <div
           className='img'
           onClick={() => setShow({ ...show, able: !show.able })}
@@ -158,9 +147,9 @@ function SelectBox(props: Props) {
         {show.able && (
           <div className='realBox'>
             {category ? (
-              <SelectList content={show.list} category />
+              <SelectList content={show.list} category size={size[0]} />
             ) : (
-              <SelectList content={show.list} />
+              <SelectList content={show.list} size={size[0]} />
             )}
           </div>
         )}

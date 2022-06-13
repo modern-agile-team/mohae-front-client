@@ -120,7 +120,6 @@ export default function Style({ inline }: Props) {
         width: 56px;
         height: 56px;
         position: relative;
-        transition: 0.2s all;
         :hover {
           & > :nth-child(2) {
             transition: 0.2s;

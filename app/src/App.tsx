@@ -27,13 +27,13 @@ injectGlobal`
     list-style: none;
   }
   a, a:visited, a:link {
+    color: inherit;
     text-decoration: none;
   }
   &::-webkit-scrollbar {
         margin-right: 20px;
         background-color: rgba(0, 0, 0, 0);
         width: 4px;
-        /* height: 4px; */
         height: 0;
         cursor: pointer;
       }

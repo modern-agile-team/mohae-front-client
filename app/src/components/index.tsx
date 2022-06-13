@@ -22,6 +22,7 @@ import { AlarmModal, BasicModal, ReportModal } from './modal';
 import Popup from './popup/Popup';
 import { Poster } from './poster';
 import NewPost from './newPost/NewPost';
+import SelectBox from './selectbox/SelectBox';
 
 export {
   Category,
@@ -49,4 +50,5 @@ export {
   Popup,
   Poster,
   NewPost,
+  SelectBox,
 };

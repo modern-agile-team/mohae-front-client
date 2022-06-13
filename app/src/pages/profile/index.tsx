@@ -18,28 +18,8 @@ import {
 } from '../../components';
 import SelectBox from './SelectBox';
 
-interface Object {
-  [key: string]: any;
-}
-
 export default function Edit() {
-  const [open, setOpen] = useState<Object>({
-    one: false,
-    two: false,
-    three: false,
-    four: false,
-  });
-
-  const toggleSelectBox = (e: React.MouseEvent<HTMLDialogElement>) => {
-    const target = e.currentTarget.id;
-    setOpen({
-      one: false,
-      two: false,
-      three: false,
-      four: false,
-      [target]: !open[target],
-    });
-  };
+  const [openSelectBox, setOpenSelectBox] = useState(false);
 
   const text: { [key: string]: any } = {
     sir: '님',
@@ -66,53 +46,6 @@ export default function Edit() {
   const style = css`
     width: 100%;
     height: 100%;
-    #one,
-    #two,
-    #three,
-    #four {
-      ${radius[6]};
-      width: 100%;
-      transition: 0.3s all ease-in-out;
-      overflow: hidden;
-      display: flex;
-      align-items: start;
-    }
-    #one {
-      ${open.one
-        ? css`
-            height: 240px;
-          `
-        : css`
-            height: 52px;
-          `}
-    }
-    #two {
-      ${open.two
-        ? css`
-            height: 240px;
-          `
-        : css`
-            height: 52px;
-          `}
-    }
-    #three {
-      ${open.three
-        ? css`
-            height: 240px;
-          `
-        : css`
-            height: 52px;
-          `}
-    }
-    #four {
-      ${open.four
-        ? css`
-            height: 240px;
-          `
-        : css`
-            height: 52px;
-          `}
-    }
     > .wrapper {
       width: 100%;
       height: fit-content;
@@ -175,7 +108,7 @@ export default function Edit() {
             ${radius[6]}
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
+            align-items: center;
             color: ${color.dark2};
             > .box {
               width: 100%;
@@ -260,15 +193,13 @@ export default function Edit() {
             <div className={'label'}>{text.label.phone}</div>
             <div className={'input'}>
               <div className={'btn white'}>
-                <div id="one" onClick={toggleSelectBox}>
-                  <SelectBox
-                    open={open.one}
-                    noneScroll
-                    list={['010', '011', '016', '017', '031']}
-                  >
-                    {'선택'}
-                  </SelectBox>
-                </div>
+                <SelectBox
+                  open={openSelectBox}
+                  noneScroll
+                  list={['010', '011', '016', '017', '031']}
+                >
+                  {'선택'}
+                </SelectBox>
               </div>
               <div className={'inset text'}>
                 <input
@@ -282,84 +213,78 @@ export default function Edit() {
           <div className={'line'}>
             <div className={'label'}>{text.label.school}</div>
             <div className={'input white'}>
-              <div id="two" onClick={toggleSelectBox}>
-                <SelectBox
-                  open={open.two}
-                  list={[
-                    '광운',
-                    '인덕',
-                    'ㅈ덕',
-                    '읏덕',
-                    '망덕',
-                    'aa',
-                    'bb',
-                    'cc',
-                    'dd',
-                  ]}
-                >
-                  {text.placeholder.school}
-                </SelectBox>
-              </div>
+              <SelectBox
+                open={openSelectBox}
+                list={[
+                  '광운',
+                  '인덕',
+                  'ㅈ덕',
+                  '읏덕',
+                  '망덕',
+                  'aa',
+                  'bb',
+                  'cc',
+                  'dd',
+                ]}
+              >
+                {text.placeholder.school}
+              </SelectBox>
             </div>
           </div>
           <div className={'line'}>
             <div className={'label'}>{text.label.major}</div>
             <div className={'input white'}>
-              <div id="three" onClick={toggleSelectBox}>
-                <SelectBox
-                  open={open.three}
-                  list={[
-                    '컴전',
-                    '시디',
-                    '컴소',
-                    '디산디',
-                    '정통',
-                    '읏덕',
-                    '망덕',
-                    'aa',
-                    'bb',
-                    'cc',
-                    'dd',
-                  ]}
-                >
-                  {text.placeholder.major}
-                </SelectBox>
-              </div>
+              <SelectBox
+                open={openSelectBox}
+                list={[
+                  '컴전',
+                  '시디',
+                  '컴소',
+                  '디산디',
+                  '정통',
+                  '읏덕',
+                  '망덕',
+                  'aa',
+                  'bb',
+                  'cc',
+                  'dd',
+                ]}
+              >
+                {text.placeholder.major}
+              </SelectBox>
             </div>
           </div>
           <div className={'line'}>
             <div className={'label'}>{text.label.interested}</div>
             <div className={'input white'}>
-              <div id="four" onClick={toggleSelectBox}>
-                <SelectBox
-                  open={open.four}
-                  blocks
-                  list={[
-                    '카테고리1',
-                    '카테고리2',
-                    '카테고리3',
-                    '카테고리4',
-                    '카테고리5',
-                    '카테고리6',
-                    '카테고리7',
-                    '카테고리8',
-                    '카테고리9',
-                    '카테고리10',
-                    '카테고리11',
-                    '광운',
-                    '인덕',
-                    'ㅈ덕',
-                    '읏덕',
-                    '망덕',
-                    'aa',
-                    'bb',
-                    'cc',
-                    'dd',
-                  ]}
-                >
-                  {text.placeholder.interested}
-                </SelectBox>
-              </div>
+              <SelectBox
+                open={openSelectBox}
+                blocks
+                list={[
+                  '카테고리1',
+                  '카테고리2',
+                  '카테고리3',
+                  '카테고리4',
+                  '카테고리5',
+                  '카테고리6',
+                  '카테고리7',
+                  '카테고리8',
+                  '카테고리9',
+                  '카테고리10',
+                  '카테고리11',
+                  '광운',
+                  '인덕',
+                  'ㅈ덕',
+                  '읏덕',
+                  '망덕',
+                  'aa',
+                  'bb',
+                  'cc',
+                  'dd',
+                ]}
+              >
+                {text.placeholder.interested}
+              </SelectBox>
             </div>
           </div>
         </div>

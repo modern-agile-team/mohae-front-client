@@ -34,7 +34,6 @@ export default function SelectBox({
   blocks,
   open,
   list,
-  onClick,
 }: Props) {
   const [isOpen, setIsOpen] = useState(open),
     [target, setTarget] = useState(children),
@@ -55,8 +54,12 @@ export default function SelectBox({
       ${radius[6]};
       ${shadow.normal};
       width: 100%;
-      height: 240px;
+      height: ${isOpen ? `${240}px` : '100%'};
       overflow: hidden;
+      /* ${isOpen &&
+      css`
+        overflow: scroll;
+      `}; */
       ${noneScroll &&
       css`
         &::-webkit-scrollbar {
@@ -66,6 +69,7 @@ export default function SelectBox({
       background-color: white;
       display: flex;
       flex-direction: column;
+      transition: 0.3s all ease-in-out;
       position: relative;
     }
     .target {
@@ -95,6 +99,10 @@ export default function SelectBox({
       }
     }
   `;
+
+  const view = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setIsOpen(!isOpen);
+  };
 
   const select = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (e.currentTarget.id === 'text') {
@@ -147,7 +155,7 @@ export default function SelectBox({
   return (
     <div className={cx(style)}>
       <div className={'wrapper'}>
-        <button className={'target'}>
+        <button className={'target'} onClick={view}>
           <div className={'placeholder'}>{placeholder}</div>
           <div className={'arrow'}>
             <Img src={'/img/arrow-down-dark3.png'} />

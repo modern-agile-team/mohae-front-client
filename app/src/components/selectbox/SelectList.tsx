@@ -56,9 +56,11 @@ function SelectList(props: Props) {
   const lists = () =>
     contents.map((el, i) =>
       style === 'text' ? (
-        <ul onClick={e => onClick(e)}>{el}</ul>
+        <ul key={i} onClick={e => onClick(e)}>
+          {el}
+        </ul>
       ) : (
-        <ul>
+        <ul key={i}>
           <div className='category' onClick={e => onClick(e)}>
             <Btn white category>
               {el}

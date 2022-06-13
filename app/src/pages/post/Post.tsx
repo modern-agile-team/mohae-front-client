@@ -7,6 +7,8 @@ import PostInfo from './PostInfo';
 import PostWriter from './PostWriter';
 import { Props } from '../../components/button';
 import axios from 'axios';
+import QuickMenu from './QuickMenu';
+import useScroll from '../../customhook/useScroll';
 
 function Post(props: Props) {
   const [state, setState] = useState('');
@@ -43,6 +45,16 @@ function Post(props: Props) {
 
   const wrap = css`
     margin-top: 40px;
+    @keyframes fadeInDown {
+      0% {
+        opacity: 0;
+        transform: translate3d(0, -8px, 0);
+      }
+      to {
+        opacity: 1;
+        transform: translateZ(0);
+      }
+    }
 
     .topflexWrap {
       display: flex;
@@ -60,11 +72,16 @@ function Post(props: Props) {
       margin-left: 1028px;
       margin-bottom: 64px;
     }
+    .quickMenu {
+      position: fixed;
+      top: 59px;
+      animation: fadeInDown 1s;
+    }
   `;
 
-  axios(`http://localhost:8000/list`).then(response =>
-    console.log(response.data)
-  );
+  // axios(`http://localhost:8000/list`).then(response =>
+  //   console.log(response.data)
+  // );
 
   return (
     <div className={cx(wrap)}>
@@ -82,6 +99,11 @@ function Post(props: Props) {
       <div className='cancelCloseBtn'>
         <Btn main>마감 취소</Btn>
       </div>
+      {useScroll().scrollY > 490 && (
+        <div className='quickMenu'>
+          <QuickMenu />
+        </div>
+      )}
     </div>
   );
 }

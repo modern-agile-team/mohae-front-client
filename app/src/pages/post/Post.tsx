@@ -6,6 +6,7 @@ import PostImgs from '../../components/pagecomp/PostImgs';
 import PostInfo from './PostInfo';
 import PostWriter from './PostWriter';
 import { Props } from '../../components/button';
+import axios from 'axios';
 
 function Post(props: Props) {
   const [state, setState] = useState('');
@@ -61,10 +62,14 @@ function Post(props: Props) {
     }
   `;
 
+  axios(`http://localhost:8000/list`).then(response =>
+    console.log(response.data)
+  );
+
   return (
     <div className={cx(wrap)}>
       <div className='topflexWrap'>
-        <PostImgs />
+        <PostImgs view />
         <div className='sectionWrap'>
           <PostInfo />
           <PostWriter />

@@ -33,11 +33,6 @@ function Input(props: Props) {
         padding: 18px 32px;
         border-radius: 6px 0px 0px 0px;
 
-        input::-webkit-input-placeholder {
-          background: no-repeat 80.5% 25% / contain url('/img/essential.png');
-          background-size: 6px;
-        }
-
         input {
           width: 304px;
           height: 24px;
@@ -57,13 +52,9 @@ function Input(props: Props) {
           }
         }
 
-        input::-webkit-input-placeholder {
-          background: no-repeat 77% 25% / contain url('/img/essential.png');
-          background-size: 6px;
-        }
-
         ::after {
           content: '원';
+          color: ${color.dark1};
           margin: 2px 0px 0px 18px;
         }
       }

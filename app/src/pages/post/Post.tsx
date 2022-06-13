@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { css, cx } from '@emotion/css';
 import { PostIt, Btn } from '../../components';
-import PostBody from './pagecomp/PostBody';
-import PostImgs from './pagecomp/PostImgs';
-import PostInfo from './pagecomp/PostInfo';
-import PostWriter from './pagecomp/PostWriter';
+import PostBody from '../../components/pagecomp/PostBody';
+import PostImgs from '../../components/pagecomp/PostImgs';
+import PostInfo from './PostInfo';
+import PostWriter from './PostWriter';
 import { Props } from '../../components/button';
 
 function Post(props: Props) {

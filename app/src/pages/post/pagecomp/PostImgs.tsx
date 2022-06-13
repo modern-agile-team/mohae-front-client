@@ -1,8 +1,8 @@
 import React from 'react';
 import { css, cx } from '@emotion/css';
-import { Box, Carousel, MarkBox, OrderedImg, Btn } from '..';
-import { radius } from '../../styles';
-import { Props } from '../button';
+import { Box, Carousel, MarkBox, OrderedImg, Btn } from '../../../components';
+import { radius } from '../../../styles';
+import { Props } from '../../../components/button';
 
 // 이미지s
 
@@ -69,7 +69,7 @@ function PostImgs(props: Props) {
   // 작성일 때 이미지 캐러셀 props 또는 오더 이미지 props
   // 띄워주는 것 다르게 하는 함수 만들기.
 
-  return view ? (
+  return (
     <div className={cx(style)}>
       <Box className='carouselBox' size={[360, 360]}>
         <Carousel images={imgs} />
@@ -86,15 +86,6 @@ function PostImgs(props: Props) {
         <OrderedImg imgs={imgs} inline />
       </Box>
     </div>
-  ) : (
-    <>
-      <Box size={[360, 360]}>
-        <Carousel />
-      </Box>
-      <Box size={[360, 72]}>
-        <OrderedImg inline edit />
-      </Box>
-    </>
   );
 }
 

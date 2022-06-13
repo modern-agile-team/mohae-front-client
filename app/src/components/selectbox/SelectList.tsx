@@ -2,23 +2,21 @@ import React, { useState } from 'react';
 import { css, cx } from '@emotion/css';
 import { color, radius, shadow, font } from '../../styles';
 import Img from '../img/Img';
-import { Btn } from '../button';
 
 interface Props {
   category?: boolean;
   content: string[];
-  size: string;
 }
 
 function SelectList(props: Props) {
-  const { content, category, size } = props;
+  const { content, category } = props;
   const [show, setShow] = useState({
     list: content,
     able: false,
   });
 
   const listStyle = css`
-    ${size}
+    height: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -38,25 +36,12 @@ function SelectList(props: Props) {
     setShow({ ...show, able: false });
   };
 
-  const selectList = () => {
-    const btnSize = css`
-      width: 100px;
-      height: 36px;
-    `;
-    return show.list.map((el, i) => (
+  const selectList = () =>
+    show.list.map((el, i) => (
       <li className={cx(listStyle)} key={i} onClick={onClick}>
-        {!category ? (
-          <span>{el}</span>
-        ) : (
-          <div className={cx(btnSize)}>
-            <Btn white category>
-              {el}
-            </Btn>
-          </div>
-        )}
+        <span>{el}</span>
       </li>
     ));
-  };
 
   return <>{selectList()}</>;
 }

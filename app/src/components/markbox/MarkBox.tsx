@@ -4,6 +4,11 @@ import { color, font, radius, shadow, btnStyle } from '../../styles';
 import Img from '../img/Img';
 
 interface MarkBoxProps {
+  // shape?: number;
+  // state?: number;
+  // big?: boolean;
+  // small?: boolean;
+  // hover?: boolean;
   [key: string]: number | boolean | string;
 }
 
@@ -13,11 +18,13 @@ function MarkBox(props: MarkBoxProps) {
   const commonStyle = () => {
     const common = css`
       border-radius: 1px;
+      clear: both;
       position: relative;
-      ::after {
+      :after {
         width: 212px;
         height: 104px;
         box-sizing: border-box;
+        display: block;
         ${btnStyle.square}
         background-color: white;
         color: ${color.dark1};
@@ -27,9 +34,7 @@ function MarkBox(props: MarkBoxProps) {
         text-align: center;
         visibility: hidden;
         ${shadow.normal}
-        position: absolute;
-        top: -94px;
-        z-index: 11;
+        position: relative;
       }
     `;
 
@@ -38,6 +43,7 @@ function MarkBox(props: MarkBoxProps) {
           ${common}
           ::after {
             content: '재능을 가지고 있는 사람들에게 도움을 요청할래요.';
+            bottom: ${big ? '124px' : '120px'};
             left: ${big ? '20px' : '16px'};
             padding: 12px;
           }
@@ -46,12 +52,12 @@ function MarkBox(props: MarkBoxProps) {
           ${common}
           ::after {
             content: '재능을 가지고 사람들에게 도움을 줄래요.';
+            bottom: ${big ? '124px' : '120px'};
             left: ${big ? '20px' : '16px'};
             padding: 28px;
           }
         `;
   };
-
   const markBoxSize = () =>
     big
       ? css`

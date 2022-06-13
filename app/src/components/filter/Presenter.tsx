@@ -3,7 +3,7 @@ import { css, cx } from '@emotion/css';
 import { Btn, Props, SelectBtn } from '../button';
 import MarkBox from '../markbox/MarkBox';
 import { color, font } from '../../styles';
-import Slider from '../search/Silder';
+import Slider from './Silder';
 import SelectBox from '../selectbox/SelectBox';
 import Img from '../img/Img';
 

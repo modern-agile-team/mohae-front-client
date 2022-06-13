@@ -15,7 +15,6 @@ import Mosaic from './mosaic/Mosaic';
 import PostIt from './postit/PostIt';
 import Search from './search/Container';
 import Input from './search/Input';
-import Slider from './search/Silder';
 import TextEditor from './text-editor/Editor';
 import { FocusBar, HalfBar } from './focusBar';
 import Profile from './profile/Profile';
@@ -28,7 +27,6 @@ import SelectBox from './selectbox/SelectBox';
 export {
   Category,
   PostIt,
-  Slider,
   Input,
   Search,
   Mosaic,

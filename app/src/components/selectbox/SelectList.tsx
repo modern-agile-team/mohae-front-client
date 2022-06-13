@@ -1,64 +1,78 @@
-import React, { useState } from 'react';
+import React, { Dispatch } from 'react';
 import { css, cx } from '@emotion/css';
-import { color, radius, shadow, font } from '../../styles';
-import Img from '../img/Img';
 import { Btn } from '../button';
+import { color, shadow } from '../../styles';
 
 interface Props {
-  category?: boolean;
-  content: string[];
-  size: string;
+  setPlaceholder: Dispatch<React.SetStateAction<string>>;
+  size: string[];
+  contents: string[];
+  style: string;
 }
 
 function SelectList(props: Props) {
-  const { content, category, size } = props;
-  const [show, setShow] = useState({
-    list: content,
-    able: false,
-  });
+  const { setPlaceholder, size, contents, style } = props;
 
-  const listStyle = css`
-    ${size}
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding-right: 30px;
-    color: ${color.dark3};
-    :hover {
-      background-color: ${color.subtle};
-      color: ${color.dark1};
+  const wrap = css`
+    position: relative;
+    background-color: white;
+    z-index: 5;
+    .container {
+      ${size[1]}
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      overflow-y: scroll;
+      background-color: white;
+      border-radius: 0px 0px 6px 6px;
+      ${shadow.button}
     }
-    span {
+    .category {
+      width: 100px;
+      height: 36px;
+    }
+    ul {
+      ${size[0]}
+      padding-right: 20px;
       cursor: pointer;
+      background-color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: ${color.dark3};
+      :hover {
+        background-color: ${color.subtle};
+        color: ${color.dark1};
+      }
     }
   `;
 
   const onClick = (e: React.MouseEvent) => {
-    console.log('e.target :>> ', e.currentTarget.textContent);
-    setShow({ ...show, able: false });
+    setPlaceholder(
+      e.currentTarget.textContent === null ? '' : e.currentTarget.textContent
+    );
   };
 
-  const selectList = () => {
-    const btnSize = css`
-      width: 100px;
-      height: 36px;
-    `;
-    return show.list.map((el, i) => (
-      <li className={cx(listStyle)} key={i} onClick={onClick}>
-        {!category ? (
-          <span>{el}</span>
-        ) : (
-          <div className={cx(btnSize)}>
+  const lists = () =>
+    contents.map((el, i) =>
+      style === 'text' ? (
+        <ul onClick={e => onClick(e)}>{el}</ul>
+      ) : (
+        <ul>
+          <div className='category' onClick={e => onClick(e)}>
             <Btn white category>
               {el}
             </Btn>
           </div>
-        )}
-      </li>
-    ));
-  };
+        </ul>
+      )
+    );
 
-  return <>{selectList()}</>;
+  return (
+    <div className={cx(wrap)}>
+      <div className='container'>{lists()}</div>
+    </div>
+  );
 }
 
 export default SelectList;

@@ -1,6 +1,7 @@
 /** @format */
 
 import Category from './category/Category';
+import Categories from './category/Categories';
 import Text from './text/Text';
 import Report from './check-label/CheckLabel';
 import Carousel from './img-carousel/Img-carousel';
@@ -51,4 +52,5 @@ export {
   Poster,
   NewPost,
   SelectBox,
+  Categories,
 };

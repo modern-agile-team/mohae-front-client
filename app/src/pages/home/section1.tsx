@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { css, cx } from '@emotion/css';
 import { color, radius, font, shadow } from '../../styles';
-import { Snap, Category, Img } from '../../components';
+import { Snap, Categories, Img } from '../../components';
 
 interface Props {
   [key: string]: any;
@@ -113,7 +113,7 @@ export default function Part1(props: Props) {
           />
         </div>
       </div>
-      <Category num={8} />
+      <Categories num={8} />
       <div
         className={cx(css`
           margin: 32px auto 0;

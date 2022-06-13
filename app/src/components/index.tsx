@@ -13,7 +13,7 @@ import Btn from './button/Btn';
 import MarkBox from './markbox/MarkBox';
 import Mosaic from './mosaic/Mosaic';
 import PostIt from './postit/PostIt';
-import Search from './search/Search';
+import Search from './search/Container';
 import Input from './search/Input';
 import Slider from './search/Silder';
 import TextEditor from './text-editor/Editor';

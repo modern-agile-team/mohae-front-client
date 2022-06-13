@@ -3,11 +3,11 @@ import { css, cx } from '@emotion/css';
 import { Btn, Props, SelectBtn } from '../button';
 import MarkBox from '../markbox/MarkBox';
 import { color, font } from '../../styles';
-import Slider from './Silder';
+import Slider from '../search/Silder';
 import SelectBox from '../selectbox/SelectBox';
 import Img from '../img/Img';
 
-function Filter() {
+function Presenter(props: Props) {
   const [minValue, setMinValue] = useState(0);
   const [maxValue, setMaxValue] = useState(1000000);
   const [view, setView] = useState<{ [key: number]: boolean }>({ 0: false });
@@ -147,7 +147,7 @@ function Filter() {
     }
   `;
 
-  const priceArea = () => {
+  const priceArea = (minValue: number, maxValue: number) => {
     if (0 < minValue && maxValue < 1000000) {
       return `${minValue.toLocaleString()} 원 ~ ${maxValue.toLocaleString()} 원`;
     }
@@ -191,7 +191,7 @@ function Filter() {
         <div className='bottom'>
           <div>
             <p className='filterTitle'>가격</p>
-            <p>{priceArea()}</p>
+            <p>{priceArea(minValue, maxValue)}</p>
           </div>
           {selectBtnText('무료')}
         </div>
@@ -220,4 +220,4 @@ function Filter() {
   );
 }
 
-export default Filter;
+export default Presenter;

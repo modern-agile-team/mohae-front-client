@@ -4,10 +4,11 @@ import { Props } from '../button';
 import { color, font, radius } from '../../styles';
 import Img from '../img/Img';
 import Input from './Input';
-import Filter from './Filter';
+import Filter from '../filter/Presenter';
 
 interface InputProps extends Props {
   value?: string | number;
+  style: string;
   onChange?: () => any;
 }
 
@@ -25,8 +26,8 @@ interface DataList {
   };
 }
 // 리덕스로 바꾸게 되면 서로 연결 되야 하는 데이터나 코드가 리덕스에 저장이 되어야 함
-function Search(props: InputProps) {
-  const { board, main } = props;
+function Presenter(props: InputProps) {
+  const { style } = props;
   const [localValue, setLocalValue] = useState<string[]>(
     JSON.parse(localStorage.getItem('currentSearch') || '[]')
   );
@@ -82,7 +83,7 @@ function Search(props: InputProps) {
       }
     `;
 
-    return board
+    return style === 'board'
       ? css`
           ${common}
           #dataListWrap {
@@ -141,7 +142,7 @@ function Search(props: InputProps) {
       }
     `;
 
-    return board
+    return style === 'board'
       ? css`
           width: 376px;
           ${common}
@@ -163,14 +164,14 @@ function Search(props: InputProps) {
     setLocalValue([]);
   };
 
+  const deleteList = (i: number) => {
+    const newLocal = localValue.reverse().filter((el, index) => index != i);
+    localStorage.setItem('currentSearch', JSON.stringify(newLocal.reverse()));
+    setLocalValue(newLocal);
+  };
+
   const searchList = () => {
     const list: string[] = localValue.reverse().slice(0, 5);
-
-    const deleteList = (i: number) => {
-      const newLocal = localValue.reverse().filter((el, index) => index != i);
-      localStorage.setItem('currentSearch', JSON.stringify(newLocal.reverse()));
-      setLocalValue(newLocal);
-    };
 
     const searchStyle = css`
       display: flex;
@@ -181,7 +182,7 @@ function Search(props: InputProps) {
       color: ${color.dark2};
       ${font.size[14]}
       padding: 0px 8px;
-      width: ${board ? '352px' : '276px'};
+      width: ${style === 'board' ? '352px' : '276px'};
       #list {
         height: 32px;
         ${radius[6]}
@@ -257,7 +258,13 @@ function Search(props: InputProps) {
     `;
 
     const onClick = (e: React.MouseEvent) =>
-      console.log('e.target', e.currentTarget.textContent);
+      console.log(
+        'e.target',
+        e.currentTarget.textContent?.slice(
+          1,
+          e.currentTarget.textContent.length
+        )
+      );
 
     return list.map(el => (
       <div key={el.no} className={cx(hotKeyStyle)} onClick={e => onClick(e)}>
@@ -268,7 +275,7 @@ function Search(props: InputProps) {
   };
 
   const show = () =>
-    board ? (
+    style === 'board' ? (
       <Input board showFilter={showFilter} setShowFilter={setShowFilter} />
     ) : (
       <Input main showFilter={showFilter} setShowFilter={setShowFilter} />
@@ -297,4 +304,4 @@ function Search(props: InputProps) {
   );
 }
 
-export default Search;
+export default Presenter;

@@ -130,15 +130,14 @@ function CreatePost() {
     };
 
     return placeholders.map((el, i) => (
-      <></>
-      // <SelectBox
-      //   size='big'
-      //   placeholder={el}
-      //   view={view[i]}
-      //   key={i}
-      //   onClick={() => onClick(i)}
-      //   style={!i ? 'category' : 'text'}
-      // />
+      <SelectBox
+        size='big'
+        placeholder={el}
+        view={view[i]}
+        key={i}
+        onClick={() => onClick(i)}
+        style={!i ? 'category' : 'text'}
+      />
     ));
   };
 

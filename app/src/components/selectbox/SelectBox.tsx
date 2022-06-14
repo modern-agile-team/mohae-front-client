@@ -1,32 +1,44 @@
 import React, { useState } from 'react';
 import { css, cx } from '@emotion/css';
-import { color, radius, shadow, font } from '../../styles';
-import Img from '../img/Img';
 import SelectList from './SelectList';
+import { color, font, radius, shadow } from '../../styles';
+import Img from '../img/Img';
 import { Btn } from '../button';
 
 interface Props {
-  big?: boolean;
-  small?: boolean;
-  category?: boolean;
-  content: { [key: string]: string[] };
-  className?: string;
+  view: boolean;
+  onClick: () => void;
+  size: string;
+  placeholder: string;
+  style: string;
 }
 
 function SelectBox(props: Props) {
-  const { content, big, small, category, className } = props;
+  const { view, onClick, size, placeholder, style } = props;
+  const [value, setValue] = useState(placeholder);
+  const list: { [placeholder: string]: string[] } = {
+    카테고리: [
+      '카테고리',
+      '카테고리',
+      '응애',
+      '애기',
+      '성제',
+      '미안',
+      '한결이형',
+    ],
+    지역: [
+      '강남구',
+      '논현동',
+      '남양주시',
+      '도농동',
+      '노원구',
+      '한남동',
+      '해방촌',
+    ],
+    기간: ['일주일', '1개월', '3개월', '상시'],
+  };
 
-  const [show, setShow] = useState({
-    title: Object.entries(content)[0][0],
-    list: Object.entries(content)[0][1],
-    able: false,
-  });
-
-  interface SizeList {
-    [size: string]: string[];
-  }
-
-  const sizeList: SizeList = {
+  const sizeList: { [size: string]: string[] } = {
     big: [
       css`
         width: 368px;
@@ -39,121 +51,98 @@ function SelectBox(props: Props) {
     ],
     small: [
       css`
-        width: 146px;
+        width: 138px;
         height: 44px;
       `,
       css`
-        width: 146px;
+        width: 138px;
         height: 176px;
       `,
     ],
   };
 
-  const size = Object.keys(props)
-    .map(el => sizeList[el])
-    .filter(el => el)[0];
+  const sizeStyle: { [style: string]: string } = {
+    big: css`
+      ${view && shadow.normal}
+      border-bottom: 2px solid ${color.light4};
+      padding: 0px 32px;
+      .placeholderWrap {
+        width: 336px;
+        display: flex;
+        justify-content: center;
+      }
+    `,
+    small: css`
+      ${shadow.button}
+      ${view ? 'border-radius: 6px 6px 0px 0px;' : radius[6]}
+      padding: 0px 8px;
+      .placeholderWrap {
+        width: 106px;
+        display: flex;
+        justify-content: center;
+      }
+    `,
+  };
 
-  const common = css`
+  const wrap = css`
+    position: relative;
+    ${sizeStyle[size]}
+    ${sizeList[size][0]}
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    color: ${color.dark2};
+    ${font.size[14]}
     ${font.weight[400]}
-    ${size[0]}
-    
-    .palceholder {
+    cursor: pointer;
+    .opener {
+      width: 24px;
+      height: 24px;
+    }
+    .category {
       width: 100px;
       height: 36px;
     }
-
-    .img {
-      width: 16px;
-      height: 16px;
-      cursor: pointer;
+    .placeholderWrap {
+      width: ${size === 'big' ? '344px' : '114px'};
+      display: flex;
+      align-items: center;
+    }
+    .placeholder {
+      color: ${color.dark3};
     }
   `;
 
-  const difStyle = () => {
-    return small
-      ? css`
-          ${common}
-          ${!show.able ? radius[6] : 'border-radius: 6px 6px 0px 0px;'}
-          ${shadow.button}
-          padding: 10px 16px 10px 40px;
-        `
-      : css`
-          ${common}
-          ${show.able && shadow.normal}
-          padding: ${!category
-            ? '10px 16px 10px 154px'
-            : '10px 16px 10px 116px'};
-          border-bottom: 2px solid ${color.light4};
-        `;
+  const contentsStyle = () => {
+    return style === 'text' ? (
+      <div className='placeholderWrap'>
+        <div className='placeholder'>{value}</div>
+      </div>
+    ) : (
+      <div className='placeholderWrap'>
+        <div className='category'>
+          <Btn white category>
+            {value}
+          </Btn>
+        </div>
+      </div>
+    );
   };
-
-  const listWrap = css`
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    ${font.weight.regular}
-    .realBox {
-      ${size[1]}
-      position: absolute;
-      top: 0px;
-      right: 0px;
-      overflow-y: scroll;
-      overflow-x: hidden;
-      text-align: center;
-      border-radius: 0px 0px 6px 6px;
-      background-color: white;
-      z-index: 5;
-      border-right: 2px solid transparent;
-      ${shadow.button}
-      ::-webkit-scrollbar {
-        width: 4px;
-        height: 30px;
-      }
-      ::-webkit-scrollbar-thumb {
-        background-color: ${color.main};
-        ${radius[6]}
-      }
-      ::-webkit-scrollbar-track {
-        background-color: ${color.light4};
-        ${radius[6]}
-      }
-    }
-  `;
 
   return (
     <>
-      <div className={cx(difStyle())}>
-        {!category ? (
-          show.title
-        ) : (
-          <div className='palceholder'>
-            <Btn white category>
-              {show.title}
-            </Btn>
-          </div>
-        )}
-        <div
-          className='img'
-          onClick={() => setShow({ ...show, able: !show.able })}
-        >
+      <div className={cx(wrap)} onClick={onClick}>
+        {contentsStyle()}
+        <div className='opener'>
           <Img src='/img/arrow-down-dark3.png' />
         </div>
       </div>
-      <ul className={cx(listWrap)}>
-        {show.able && (
-          <div className='realBox'>
-            {category ? (
-              <SelectList content={show.list} category size={size[0]} />
-            ) : (
-              <SelectList content={show.list} size={size[0]} />
-            )}
-          </div>
-        )}
-      </ul>
+      {view && (
+        <SelectList
+          setPlaceholder={setValue}
+          size={sizeList[size]}
+          contents={list[placeholder]}
+          style={style}
+        />
+      )}
     </>
   );
 }

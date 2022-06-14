@@ -7,12 +7,10 @@ import Slider from './Silder';
 import SelectBox from '../selectbox/SelectBox';
 import Img from '../img/Img';
 
-function Filter() {
+function Presenter(props: Props) {
   const [minValue, setMinValue] = useState(0);
   const [maxValue, setMaxValue] = useState(1000000);
-  const areaList = {
-    지역: ['강남구', '논현동', '남양주시', '도농동'],
-  };
+  const [view, setView] = useState<{ [key: number]: boolean }>({ 0: false });
 
   interface type {
     [title: string]: string[] | React.ReactNode[];
@@ -149,7 +147,7 @@ function Filter() {
     }
   `;
 
-  const priceArea = () => {
+  const priceArea = (minValue: number, maxValue: number) => {
     if (0 < minValue && maxValue < 1000000) {
       return `${minValue.toLocaleString()} 원 ~ ${maxValue.toLocaleString()} 원`;
     }
@@ -179,7 +177,13 @@ function Filter() {
             <div className='row'>{selectBtnText('기간')}</div>
             <div className='rowLeft'>
               <div className='selectBox'>
-                <SelectBox content={areaList} small />
+                <SelectBox
+                  view={view[0]}
+                  onClick={() => setView({ 0: !view[0] })}
+                  size='small'
+                  placeholder='지역'
+                  style='text'
+                />
               </div>
             </div>
           </div>
@@ -187,7 +191,7 @@ function Filter() {
         <div className='bottom'>
           <div>
             <p className='filterTitle'>가격</p>
-            <p>{priceArea()}</p>
+            <p>{priceArea(minValue, maxValue)}</p>
           </div>
           {selectBtnText('무료')}
         </div>
@@ -216,4 +220,4 @@ function Filter() {
   );
 }
 
-export default Filter;
+export default Presenter;

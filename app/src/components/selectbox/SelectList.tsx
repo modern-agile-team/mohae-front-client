@@ -48,20 +48,18 @@ function SelectList(props: Props) {
   `;
 
   const onClick = (e: React.MouseEvent) => {
-    setPlaceholder(
-      e.currentTarget.textContent === null ? '' : e.currentTarget.textContent
-    );
+    setPlaceholder(e.currentTarget.id === null ? '' : e.currentTarget.id);
   };
 
   const lists = () =>
     contents.map((el, i) =>
       style === 'text' ? (
-        <ul key={i} onClick={e => onClick(e)}>
+        <ul key={i} id={el} onClick={e => onClick(e)}>
           {el}
         </ul>
       ) : (
-        <ul key={i}>
-          <div className='category' onClick={e => onClick(e)}>
+        <ul key={i} id={el} onClick={e => onClick(e)}>
+          <div className='category'>
             <Btn white category>
               {el}
             </Btn>

@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { ReactElement } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { injectGlobal } from '@emotion/css';
 import { color, Layout } from './styles';
@@ -15,6 +15,7 @@ injectGlobal`
     -webkit-box-sizing: border-box;
     box-sizing: border-box; 
     line-height: 170%;
+    color: ${color.dark1};
   }
   textarea {
     resize: none;
@@ -58,10 +59,6 @@ function App() {
         <Route path="/sj" element={<Layout component={<div />} />} />
         <Route path="/boards/:no" element={<Layout component={<HG />} />} />
         <Route path="/mypage/:no" element={<Layout component={<MyPage />} />} />
-        <Route
-          path="/otherpage/:no"
-          element={<Layout component={<OtherPage />} />}
-        />
         <Route
           path="/otherpage/:no"
           element={<Layout component={<OtherPage />} />}

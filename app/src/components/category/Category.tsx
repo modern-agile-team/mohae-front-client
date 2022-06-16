@@ -85,6 +85,8 @@ export default function Category({
     row: css`
       ${radius[6]};
       ${shadow.normal};
+      font-size: 14px;
+      color: ${color.main} !important;
       width: 100px;
       height: 36px;
       display: flex;
@@ -104,8 +106,14 @@ export default function Category({
       {!(shape === 'square') && <div>{name || 'Category'}</div>}
     </Link>
   ) : (
-    <button id={id} name={name} onClick={onClick} className={cx(style[shape])}>
+    <Link
+      to={`/${name}`}
+      id={id}
+      // name={name}
+      onClick={onClick}
+      className={cx(style[shape])}
+    >
       {name || 'Category'}
-    </button>
+    </Link>
   );
 }

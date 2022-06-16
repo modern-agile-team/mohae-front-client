@@ -4,18 +4,19 @@ import { color, radius, font, shadow } from '../../styles';
 import { css, cx } from '@emotion/css';
 import Img from '../img/Img';
 import MarkBox from '../markbox/MarkBox';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../../redux/root';
 
 interface Props {
   [key: string]: any;
 }
 
-export default function NewPost({ page, no }: Props) {
-  const D_Day = '마감';
-  const img = 'img/heart-filled-main.png';
+export default function NewPost({ page, board }: Props) {
   const check: { [key: string]: any } = {
     inMain: {
       size: '208',
       fontSize: '14',
+      titleSize: '24',
     },
     inBoard: {
       size: '152',
@@ -61,20 +62,35 @@ export default function NewPost({ page, no }: Props) {
     height: 100%;
     position: relative;
     overflow: visible;
+    ${shadow.normal};
+    ${radius[6]};
+    /* overflow: hidden; */
+    border-radius: 6px;
 
-    .mark-box {
+    > .mark-box {
       position: absolute;
       top: 16px;
       right: 16px;
-      ${check[page].mark}
+      ${check[page].mark};
     }
 
-    .img {
+    > .img {
       width: 100%;
       height: ${`${check[page].size}px`};
+      background-color: white;
       overflow: hidden;
-      transition: 0.3s all ease-in-out;
-      transform: scale(1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      & > * {
+        transition: 0.3s all ease-in-out;
+        transform: scale(1);
+      }
+      > .logo {
+        width: 60px;
+        height: 45px;
+      }
+
       :hover {
         & > * {
           transition: 0.3s all ease-in-out;
@@ -91,9 +107,10 @@ export default function NewPost({ page, no }: Props) {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      background-color: white;
 
       * {
-        font-size: ${`${check[page].fontSize}px`};
+        font-size: ${`${check[page].fontSize}px`} !important;
         line-height: 170%;
       }
 
@@ -108,9 +125,13 @@ export default function NewPost({ page, no }: Props) {
           align-items: flex-start;
         }
         .title {
+          font-size: ${`${check[page].fontSize}px`} !important;
+          height: ${`${check[page].titleSize}px`};
           ${font.weight[700]}
           max-width: 168px;
           margin: 0;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
       }
 
@@ -119,45 +140,52 @@ export default function NewPost({ page, no }: Props) {
         height: 27px;
         display: flex;
         justify-content: flex-end;
-        align-items: center;
-        * {
-          font-size: ${`${Number(check[page].fontSize) + 2}px`};
+        align-items: flex-end;
+        > * {
+          font-size: ${`${Number(check[page].fontSize) + 2}px`} !important;
           ${font.weight[700]}
         }
         .won {
-          font-size: ${`${check[page].fontSize}px`};
+          font-size: ${`${check[page].fontSize}px`} !important;
           ${font.weight[400]}
+          margin-left: 2px;
         }
       }
     }
   `;
 
   const info = (page === 'inMain' || page === 'inBoard') && (
-    <div className={'writer'}>{'한결'}</div>
+    <div className={'writer'}>{board.userNickname}</div>
   );
 
   const price = (page === 'inMain' || page === 'inBoard') && (
     <div className={'price '}>
-      <div>{'1,000,000'}</div>
+      <div>{board.price}</div>
       <div className={'won'}>{'원'}</div>
     </div>
   );
 
   const markBox =
     page === 'inMain' || page === 'inBoard' ? (
-      <MarkBox small hover shape={'?'} state={'disable'} />
+      <MarkBox shape={'11'} state={'able'} big hover />
     ) : (
-      <MarkBox small shape={'?'} state={'able'} />
+      <MarkBox big shape={0} state={'able'} />
     );
 
   return (
     <div className={cx(style)}>
       <div className={'img'}>
-        <Img src={img || 'img/logo.png'} />
+        {board.boardPhotoUrl ? (
+          <Img src={`${board.boardPhotoUrl}`} />
+        ) : (
+          <div className={'logo'}>
+            <Img src={'/img/logo.png'} />
+          </div>
+        )}
       </div>
       <div className={'info'}>
         <div className={'user'}>
-          <div className={'title'}>{'제목입니다~'}</div>
+          <div className={'title'}>{board.title}</div>
           {info}
         </div>
         {price}

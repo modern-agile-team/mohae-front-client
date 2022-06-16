@@ -3,8 +3,8 @@
 import { useState, useEffect } from 'react';
 import { css, cx } from '@emotion/css';
 import { keyframes } from '@emotion/react';
-import { color, radius, font, shadow } from '../../styles';
-import Review from './Review';
+import { color, radius, font, shadow } from '../../../styles';
+import Review from '../Review';
 import {
   Img,
   Poster,
@@ -16,9 +16,15 @@ import {
   BasicModal,
   MarkBox,
   Btn,
-} from '../../components';
+} from '../../../components';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../../../redux/root';
 
-export default function OtherPage() {
+interface Props {
+  [key: string]: any;
+}
+
+export default function OtherPage({ userNo }: Props) {
   const text: { [key: string]: any } = {
     sir: '님',
     board: '게시물',
@@ -63,6 +69,11 @@ export default function OtherPage() {
         height: 43px;
         justify-content: space-between;
         margin-bottom: 16px;
+        .sub-title {
+          > * :not(:last-child) {
+            margin-right: 8px;
+          }
+        }
         .name {
           ${font.weight[700]}
           font-size: 24px;
@@ -80,6 +91,9 @@ export default function OtherPage() {
           > div {
             width: 43px;
             height: 43px;
+            > button {
+              padding: 12px;
+            }
           }
         }
       }
@@ -97,6 +111,9 @@ export default function OtherPage() {
       }
       .item {
         width: 120px;
+        .icon {
+          margin-bottom: 8px;
+        }
       }
       .text {
         > :not(:last-child) {
@@ -133,80 +150,77 @@ export default function OtherPage() {
     </div>
   );
 
-  const component = (
-    <div className={cx(style)}>
-      <div className="header">
-        <Profile size={150} />
-        <div>
-          <div className="row title">
-            <div className={'row'}>
-              <div className={'name'}>{'모던 애자일'}</div>
-              <div className={'sir'}>{text.sir}</div>
-              <Box size={[100, 36]}>
-                <Category shape={'row'} name={'카테 1'} />
-              </Box>
-              <Box size={[100, 36]}>
-                <Category shape={'row'} name={'카테 2'} />
-              </Box>
-              <Box size={[100, 36]}>
-                <Category shape={'row'} name={'카테 3'} />
-              </Box>
-            </div>
-            <div className={'row btns'}>
-              <div>
-                <Btn />
-              </div>
-              <div>
-                <Btn white />
-              </div>
-            </div>
-          </div>
-          <Box size={[768, 90]}>
-            <div className={'row info-box '}>
-              <div className={'column item'}>
-                <div className={'icon'}>
-                  <Img src={'/img/study.png'} />{' '}
-                </div>
-                <span>{'대학교'}</span>
-              </div>
-              <div className={'column item'}>
-                <div className={'icon'}>
-                  <Img src={'/img/study.png'} />{' '}
-                </div>
-                <span>{'대학교'}</span>
-              </div>
-              <div className={'column item'}>
-                <div className={'icon'}>
-                  <Img src={'/img/study.png'} />{' '}
-                </div>
-                <div className={'text'}>
-                  <span>{text.board}</span>
-                  <span>{1}</span>
-                </div>
-              </div>
-              <div className={'column item'}>
-                <div className={'icon'}>
-                  <Img src={'/img/study.png'} />{' '}
-                </div>
-                <div className={'text'}>
-                  <span>{text.like}</span>
-                  <span>{2}</span>
-                </div>
-              </div>
-            </div>
-          </Box>
-        </div>
-      </div>
-      {resume(text.resume.spec)}
-      {resume(text.resume.give)}
-      {resume(text.resume.got)}
-      <Review />
+  const interestedCategories = (
+    <div className={'row sub-title'}>
+      <Category shape={'row'} name={'카테 1'} />
+
+      <Category shape={'row'} name={'카테 2'} />
+
+      <Category shape={'row'} name={'카테 3'} />
     </div>
   );
 
   return (
-    <BasicModal preBtn big visible={true} contents={component}>
-      {component}
+    <BasicModal preBtn big visible={true}>
+      <div className={cx(style)}>
+        <div className="header">
+          <Profile size={150} />
+          <div>
+            <div className="row title">
+              <div className={'row sub-title'}>
+                <div className={'name'}>{'모던 애자일'}</div>
+                <div className={'sir'}>{text.sir}</div>
+                {interestedCategories}
+              </div>
+              <div className={'row btns'}>
+                <div>
+                  <Btn white>
+                    <Img src={'/img/report-main.png'} />
+                  </Btn>
+                </div>
+              </div>
+            </div>
+            <Box size={[768, 90]}>
+              <div className={'row info-box '}>
+                <div className={'column item'}>
+                  <div className={'icon'}>
+                    <Img src={'/img/university.png'} />
+                  </div>
+                  <span>{'대학교'}</span>
+                </div>
+                <div className={'column item'}>
+                  <div className={'icon'}>
+                    <Img src={'/img/study.png'} />
+                  </div>
+                  <span>{'전공'}</span>
+                </div>
+                <div className={'column item'}>
+                  <div className={'icon'}>
+                    <Img src={'/img/post.png'} />
+                  </div>
+                  <div className={'text'}>
+                    <span>{text.board}</span>
+                    <span>{'1'}</span>
+                  </div>
+                </div>
+                <div className={'column item'}>
+                  <div className={'icon'}>
+                    <Img src={'/img/heart-main.png'} />
+                  </div>
+                  <div className={'text'}>
+                    <span>{text.like}</span>
+                    <span>{'2'}</span>
+                  </div>
+                </div>
+              </div>
+            </Box>
+          </div>
+        </div>
+        {resume(text.resume.spec)}
+        {resume(text.resume.give)}
+        {resume(text.resume.got)}
+        {/* <Review /> */}
+      </div>
     </BasicModal>
   );
 }

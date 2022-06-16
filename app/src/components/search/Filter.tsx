@@ -1,6 +1,7 @@
+/** @format */
+
 import React, { useEffect, useState } from 'react';
 import { css, cx } from '@emotion/css';
-import { FilterBtn } from '../button';
 import MarkBox from '../markbox/MarkBox';
 import { color, font } from '../../styles';
 import Slider from './Silder';
@@ -78,9 +79,10 @@ function Filter() {
       ];
 
       return textContents[i].map((el, key) => (
-        <FilterBtn small key={key}>
-          {el}
-        </FilterBtn>
+        // <FilterBtn small key={key}>
+        //    {el}
+        //  </FilterBtn>
+        <></>
       ));
     },
 
@@ -93,8 +95,8 @@ function Filter() {
   };
 
   return (
-    <div className={cx(commonStyle)} id='wrap'>
-      <div id='realBox'>
+    <div className={cx(commonStyle)} id="wrap">
+      <div id="realBox">
         <div className={cx(sectionWrap)}>
           <div className={cx(titleWrap)}>
             {create.title('정렬')}
@@ -102,14 +104,14 @@ function Filter() {
           </div>
           <div className={cx(titleWrap)}>
             {create.title('대상')}
-            <FilterBtn big id='bigBtn'>
-              <MarkBox shape={0} state={0} />
-              해줄래요
-            </FilterBtn>
-            <FilterBtn big>
-              <MarkBox shape={1} state={0} />
-              구할래요
-            </FilterBtn>
+            {/* <FilterBtn big id="bigBtn"> */}
+            <MarkBox shape={0} state={0} />
+            해줄래요
+            {/* </FilterBtn> */}
+            {/* <FilterBtn big> */}
+            <MarkBox shape={1} state={0} />
+            구할래요
+            {/* </FilterBtn> */}
           </div>
         </div>
         <div className={cx(sectionWrap)}>

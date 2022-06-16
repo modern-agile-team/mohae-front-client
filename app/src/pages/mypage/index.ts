@@ -1,6 +1,6 @@
 /** @format */
 
-import MyPage from './MyPage';
-import OtherPage from './OtherPage';
+import MyPage from './mypage/MyPage';
+import OtherPage from './other-page/OtherPage';
 
 export { MyPage, OtherPage };

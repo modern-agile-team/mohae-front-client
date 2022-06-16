@@ -2,14 +2,11 @@
 
 import React, { useEffect, useState } from 'react';
 import { css, cx } from '@emotion/css';
-import { Props } from '../button';
-import { color, font, radius } from '../../styles';
-import Img from '../img/Img';
-import Input from './Input';
-import Filter from './Filter';
+import { color, font, radius, shadow } from '../../styles';
+import { Img } from '../../components';
 
-interface InputProps extends Props {
-  value?: string | number;
+interface Props {
+  [key: string]: any;
   onChange?: () => any;
 }
 
@@ -27,8 +24,9 @@ interface DataList {
   };
 }
 // 리덕스로 바꾸게 되면 서로 연결 되야 하는 데이터나 코드가 리덕스에 저장이 되어야 함
-function Search(props: InputProps) {
-  const { board, main } = props;
+export default function Search(props: Props) {
+  const { placeholder } = props;
+
   const [localValue, setLocalValue] = useState<string[]>(
     JSON.parse(localStorage.getItem('currentSearch') || '[]')
   );
@@ -40,23 +38,23 @@ function Search(props: InputProps) {
       response: [
         {
           no: 1,
-          name: '개발',
+          name: '카테 1',
         },
         {
           no: 2,
-          name: '디자인',
+          name: '카테 2',
         },
         {
           no: 3,
-          name: '일상',
+          name: '카테 3',
         },
         {
           no: 4,
-          name: '응애',
+          name: '카테 4',
         },
         {
           no: 5,
-          name: '프론트',
+          name: '카테 5',
         },
       ],
     },
@@ -65,8 +63,12 @@ function Search(props: InputProps) {
   const realBoxStyle = () => {
     const common = css`
       #dataListWrap {
-        box-shadow: ${showFilter ? '' : '0px 8px 8px rgba(132, 131, 141, 0.5)'};
+        /* box-shadow: ${showFilter
+          ? ''
+          : '0px 8px 8px rgba(132, 131, 141, 0.5)'}; */
+        box-shadow: 0px 8px 8px rgba(132, 131, 141, 0.5);
         position: absolute;
+        top: 100px;
         background-color: white;
         border-radius: 0px 0px 6px 6px;
         display: flex;
@@ -77,37 +79,38 @@ function Search(props: InputProps) {
         }
       }
       &:focus-within #dataListWrap {
-        visibility: ${showFilter ? 'hidden' : 'visible'};
+        visibility: visible;
       }
       &:focus-within {
         border-radius: 6px 6px 0px;
       }
     `;
 
-    return board
-      ? css`
-          ${common}
-          #dataListWrap {
-            width: 812px;
-            height: 240px;
-            top: 38px;
-          }
-        `
-      : css`
-          ${common}
-          #dataListWrap {
-            width: 648px;
-            height: 239px;
-            top: 63px;
-          }
-        `;
+    return css`
+      ${common}
+      transition: 0.3s;
+      #dataListWrap {
+        width: 648px;
+        height: 239px;
+        top: 50px;
+        z-index: 4;
+      }
+    `;
   };
 
-  const parentWrap = css`
-    width: fit-content;
+  const style = css`
+    width: 648px;
     height: fit-content;
-    position: relative;
+    height: 63px;
     ${realBoxStyle()}
+    input {
+      width: 100%;
+      height: 100%;
+      ${radius[6]}
+      ${shadow.normal}
+              font-size: 24px;
+      padding: 16px 24px;
+    }
   `;
 
   const title = css`
@@ -143,21 +146,15 @@ function Search(props: InputProps) {
       }
     `;
 
-    return board
-      ? css`
-          width: 376px;
-          ${common}
-          padding-right: 24px;
-        `
-      : css`
-          width: 276px;
-          ${common}
-          margin-right: 16px;
-          padding-right: 24px;
-          #titleWrap {
-            width: 276px;
-          }
-        `;
+    return css`
+      width: 276px;
+      ${common}
+      margin-right: 16px;
+      padding-right: 24px;
+      #titleWrap {
+        width: 276px;
+      }
+    `;
   };
 
   const deleteAll = () => {
@@ -183,7 +180,7 @@ function Search(props: InputProps) {
       color: ${color.dark2};
       ${font.size[14]}
       padding: 0px 8px;
-      width: ${board ? '352px' : '276px'};
+      width: 276px;
       #list {
         height: 32px;
         ${radius[6]}
@@ -269,16 +266,9 @@ function Search(props: InputProps) {
     ));
   };
 
-  const show = () =>
-    board ? (
-      <Input board showFilter={showFilter} setShowFilter={setShowFilter} />
-    ) : (
-      <Input main showFilter={showFilter} setShowFilter={setShowFilter} />
-    );
-
   return (
-    <form className={cx(parentWrap)}>
-      {show()}
+    <form className={cx(style)}>
+      <input placeholder={placeholder} />
       <div id="dataListWrap">
         <div className={cx(userSearchWrap())}>
           <div id="titleWrap">
@@ -294,9 +284,6 @@ function Search(props: InputProps) {
           {HotKeyList()}
         </div>
       </div>
-      {showFilter && <Filter />}
     </form>
   );
 }
-
-export default Search;

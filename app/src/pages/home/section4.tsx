@@ -5,6 +5,11 @@ import { css, cx } from '@emotion/css';
 import { keyframes } from '@emotion/react';
 import { color, radius, font, shadow } from '../../styles';
 import { Img, Poster, NewPost, Box } from '../../components';
+import { getHotAll, get_in_progress } from '../../redux/main/reducer';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../../redux/root';
+import { AppDispatch } from '../../redux/root';
+import axios from 'axios';
 
 interface Props {
   [key: string]: any;
@@ -17,7 +22,7 @@ interface Focus {
 interface Text {
   [key: string]: any | Focus;
 }
-export default function Part3(props: Props) {
+export default function Part4(props: Props) {
   const text: Text = {
     focus: { all: 'All', inProgress: '진행 중', end: '마감' },
   };
@@ -129,11 +134,51 @@ export default function Part3(props: Props) {
 
   const filter = Object.keys(text.focus).map((title: string, index: number) => {
     return (
-      <button id={`${index}`} className={cx()} onClick={clickFocus}>
+      <button key={index} id={`${index}`} className={cx()} onClick={clickFocus}>
         {text.focus[title]}
       </button>
     );
   });
+
+  const dispatch = useDispatch<AppDispatch>();
+  const ENDPOINT = `http://mo-hae.site:8080/boards/hot?select=`;
+  const [targetBoard, setTargetBoard] = useState<{ [key: string]: any }>([]);
+
+  const hotBoardAll = useSelector((state: RootState) => state.main.allBoard);
+  const hotBoardProgressing = useSelector(
+    (state: RootState) => state.main.inProgressBoard
+  );
+
+  useEffect(() => {
+    dispatch(getHotAll());
+    axios
+      .get(`${ENDPOINT}${1}`)
+      .then((res) => {
+        if (res.data.statusCode >= 200 && res.data.statusCode <= 204) {
+          dispatch(get_in_progress(res.data.response));
+        } else {
+          console.log(`status err !!`);
+        }
+      })
+      .catch((err) => {
+        console.log(`err`, err);
+      });
+  }, []);
+
+  const hotBoards = targetBoard.map((board: any, index: number) => (
+    <div
+      key={index}
+      className={cx(
+        css`
+          width: 360px;
+          height: 284px;
+          ${radius[6]};
+        `
+      )}
+    >
+      <NewPost page={'inMain'} board={board} />
+    </div>
+  ));
 
   return (
     <div className={cx(style)}>
@@ -162,17 +207,7 @@ export default function Part3(props: Props) {
           </div>
         </div>
       </div>
-      <div className={'posts'}>
-        <Box size={[360, 284]}>
-          <NewPost page={'inMain'} />
-        </Box>
-        <Box size={[360, 284]}>
-          <NewPost page={'inMain'} />
-        </Box>
-        <Box size={[360, 284]}>
-          <NewPost page={'inMain'} />
-        </Box>
-      </div>
+      <div className={'posts'}>{hotBoards}</div>
     </div>
   );
 }

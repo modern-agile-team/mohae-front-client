@@ -2,7 +2,12 @@ import React, { useState } from 'react';
 import { css, cx } from '@emotion/css';
 import { Btn, Img } from '../../components';
 
-function Btns() {
+interface Props {
+  close: () => void;
+}
+
+function Btns(props: Props) {
+  const { close } = props;
   const [imgs, setImgs] = useState({
     like: {
       disable: '/img/report-main.png',
@@ -38,7 +43,7 @@ function Btns() {
       });
     },
     report: () => {
-      console.log('report :>> ');
+      close();
     },
   };
 

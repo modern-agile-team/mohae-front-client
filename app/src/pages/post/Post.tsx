@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { css, cx } from '@emotion/css';
-import { PostIt, Btn } from '../../components';
+import { PostIt, Btn, ReportModal } from '../../components';
 import PostBody from '../../components/pagecomp/PostBody';
 import PostImgs from '../../components/pagecomp/PostImgs';
 import PostInfo from './PostInfo';
@@ -11,7 +11,7 @@ import QuickMenu from './QuickMenu';
 import useScroll from '../../customhook/useScroll';
 
 function Post(props: Props) {
-  const [state, setState] = useState('');
+  const [report, setReport] = useState(false);
 
   const dummy = {
     statusCode: 200,
@@ -84,27 +84,30 @@ function Post(props: Props) {
   // );
 
   return (
-    <div className={cx(wrap)}>
-      <div className='topflexWrap'>
-        <PostImgs view />
-        <div className='sectionWrap'>
-          <PostInfo />
-          <PostWriter />
-          <div className='postIt'>
-            <PostIt small />
+    <>
+      <ReportModal visible={report} close={() => setReport(!report)} />
+      <div className={cx(wrap)}>
+        <div className='topflexWrap'>
+          <PostImgs view />
+          <div className='sectionWrap'>
+            <PostInfo />
+            <PostWriter close={() => setReport(!report)} />
+            <div className='postIt'>
+              <PostIt small />
+            </div>
           </div>
         </div>
-      </div>
-      <PostBody view />
-      <div className='cancelCloseBtn'>
-        <Btn main>마감 취소</Btn>
-      </div>
-      {useScroll().scrollY > 490 && (
-        <div className='quickMenu'>
-          <QuickMenu />
+        <PostBody view />
+        <div className='cancelCloseBtn'>
+          <Btn main>마감 취소</Btn>
         </div>
-      )}
-    </div>
+        {useScroll().scrollY > 490 && (
+          <div className='quickMenu'>
+            <QuickMenu close={() => setReport(!report)} />
+          </div>
+        )}
+      </div>
+    </>
   );
 }
 

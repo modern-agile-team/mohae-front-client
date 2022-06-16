@@ -3,12 +3,15 @@ import { css, cx } from '@emotion/css';
 import Profile from '../../components/profile/Profile';
 import { Btn, Img, PostIt } from '../../components';
 import { color, font } from '../../styles';
-import { Props } from '../../components/button';
 import Btns from './Btns';
 
 // 프로필 이미지, 닉네임, 전공, 로그인 상태(버튼 그려줘야 함),
+interface Props {
+  close: () => void;
+}
 
 function PostWriter(props: Props) {
+  const { close } = props;
   const dummy = {
     statusCode: 200,
     msg: '게시글 상세 조회가 완료되었습니다.',
@@ -87,7 +90,7 @@ function PostWriter(props: Props) {
             <p>{dummy.response.userMajor}</p>
           </div>
         </div>
-        <Btns />
+        <Btns close={close} />
       </div>
     </>
   );

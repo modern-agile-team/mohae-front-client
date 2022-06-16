@@ -1,10 +1,10 @@
-import React, { Dispatch, useEffect, useState } from 'react';
+import React, { Dispatch } from 'react';
 import { css, cx } from '@emotion/css';
 import { Props } from '../button';
 import { color, font, radius } from '../../styles';
 import Img from '../img/Img';
 import Input from './Input';
-import Filter from '../filter/Presenter';
+import Filter from '../filter/Container';
 import type { DataList } from './Container';
 
 interface InputProps extends Props {
@@ -172,7 +172,7 @@ function Presenter(props: InputProps) {
       </div>
     ) : (
       list.map((el, i) => (
-        <div id='#wrap' className={cx(searchStyle, hover)} key={i}>
+        <div className={cx(searchStyle, hover)} key={i}>
           <div id='list'>{el}</div>
           <div id='delete' onClick={() => deleteList(i)}>
             <Img src='/img/close.png' />

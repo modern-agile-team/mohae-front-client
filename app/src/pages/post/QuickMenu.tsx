@@ -3,7 +3,12 @@ import { css, cx } from '@emotion/css';
 import PostInfo from './PostInfo';
 import PostWriter from './PostWriter';
 
-function QuickMenu() {
+interface Props {
+  close: () => void;
+}
+
+function QuickMenu(props: Props) {
+  const { close } = props;
   const style = css`
     width: 1128px;
     height: 92px;
@@ -22,7 +27,7 @@ function QuickMenu() {
   return (
     <div className={cx(style)}>
       <PostInfo quickMenu />
-      <PostWriter />
+      <PostWriter close={close} />
     </div>
   );
 }

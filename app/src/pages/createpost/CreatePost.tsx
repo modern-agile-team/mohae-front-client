@@ -14,6 +14,10 @@ function CreatePost() {
     1: false,
     2: false,
   });
+  const [checked, setChecked] = useState<{ [key: number]: boolean }>({
+    0: true,
+    1: false,
+  });
   const container = css`
     display: flex;
     justify-content: space-between;
@@ -79,11 +83,11 @@ function CreatePost() {
   `;
 
   const create = {
-    btn: (top?: string) => {
+    btn: () => {
       const BtnStyle = css`
         width: 100px;
         height: 42px;
-        margin: ${top ? '0px 0px 16px 636px' : '16px 0px 64px 1028px'};
+        margin: 0px 0px 16px 636px;
         .imgWrap {
           width: 15px;
           height: 15px;
@@ -103,31 +107,41 @@ function CreatePost() {
     },
 
     selectBtn: () => {
+      const setItemCheck = (i: number) => {
+        setChecked({ 0: false, 1: false, [i]: !checked[i] });
+      };
       const contents = [
-        <SelectBtn large>
+        <>
           <MarkBox shape={0} state={0} />
           해줄래요
-        </SelectBtn>,
-        <SelectBtn large>
+        </>,
+        <>
           <MarkBox shape={1} state={0} />
           구할래요
-        </SelectBtn>,
+        </>,
       ];
 
       return contents.map((el, i) => (
         <div className='markBox' key={i}>
-          {el}
+          <SelectBtn
+            large
+            onChange={() => setItemCheck(i)}
+            checked={checked[i]}
+            type={'radio'}
+          >
+            {el}
+          </SelectBtn>
         </div>
       ));
     },
   };
 
+  const selectBoxClick = (i: number) => {
+    setView({ 0: false, 1: false, 2: false, [i]: !view[i] });
+  };
+
   const createSelectBox = () => {
     const placeholders = ['카테고리', '지역', '기간'];
-
-    const onClick = (i: number) => {
-      setView({ 0: false, 1: false, 2: false, [i]: !view[i] });
-    };
 
     return placeholders.map((el, i) => (
       <SelectBox
@@ -135,7 +149,7 @@ function CreatePost() {
         placeholder={el}
         view={view[i]}
         key={i}
-        onClick={() => onClick(i)}
+        onClick={() => selectBoxClick(i)}
         style={!i ? 'category' : 'text'}
       />
     ));
@@ -149,7 +163,7 @@ function CreatePost() {
           <PostImgs />
         </div>
         <div>
-          {create.btn('top')}
+          {create.btn()}
           <Box size={[736, 448]} className='writeWrap'>
             <div className='topWrap'>
               <div className='left'>
@@ -165,7 +179,6 @@ function CreatePost() {
         </div>
       </div>
       <PostBody />
-      {create.btn()}
     </>
   );
 }

@@ -1,10 +1,22 @@
+import React, { Dispatch, SetStateAction } from 'react';
 import { css, cx } from '@emotion/css';
 import { color, shadow, font, btnStyle, radius } from '../../styles';
 import MarkBox from '../markbox/MarkBox';
-import { Props } from './index';
+
+interface Props {
+  large?: boolean;
+  medium?: boolean;
+  small?: boolean;
+  children: React.ReactNode;
+  checked: boolean | undefined;
+  setShow?: Dispatch<SetStateAction<boolean>>;
+  onChange: () => void;
+  type: string;
+}
 
 function SelectBtn(props: Props) {
-  const { large, medium, small, disable, children, onClick } = props;
+  const { large, medium, small, children, checked, type, setShow, onChange } =
+    props;
 
   const commonStyle = css`
     background-color: white;
@@ -20,9 +32,12 @@ function SelectBtn(props: Props) {
       ${font.weight.regular}
       position: absolute;
     }
-    input[type='checkbox'] {
+    input[type='checkbox'],
+    input[type='radio'] {
       cursor: pointer;
       -webkit-appearance: none;
+      transition: 0.2s all linear;
+
       :checked {
         background-color: ${color.main};
         + span {
@@ -43,7 +58,8 @@ function SelectBtn(props: Props) {
       align-items: center;
       width: 182px;
       height: 60px;
-      input[type='checkbox'] {
+      input[type='checkbox'],
+      input[type='radio'] {
         width: 182px;
         height: 60px;
       }
@@ -60,7 +76,8 @@ function SelectBtn(props: Props) {
       ${shadow.button}
       width: 138px;
       height: 44px;
-      input[type='checkbox'] {
+      input[type='checkbox'],
+      input[type='radio'] {
         width: 138px;
         height: 44px;
         ${radius[6]}
@@ -77,7 +94,8 @@ function SelectBtn(props: Props) {
       ${shadow.button}
       width: 87px;
       height: 44px;
-      input[type='checkbox'] {
+      input[type='checkbox'],
+      input[type='radio'] {
         width: 87px;
         height: 44px;
         ${radius[6]}
@@ -95,9 +113,22 @@ function SelectBtn(props: Props) {
 
   const attrProps = Object.keys(props).map(attr => attrs[attr]);
 
+  const createInput = () => {
+    return type === 'radio' || type === '정렬' ? (
+      <input type='radio' name='radio' checked={checked} onChange={onChange} />
+    ) : (
+      <input
+        type='checkbox'
+        name={`${children}`}
+        checked={checked}
+        onChange={onChange}
+      />
+    );
+  };
+
   return (
     <label className={cx(commonStyle, attrProps)}>
-      <input type='checkbox' onClick={onClick} />
+      {createInput()}
       <span>{children}</span>
     </label>
   );

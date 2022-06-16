@@ -1,56 +1,43 @@
-import React, { useState } from 'react';
+import React, { Dispatch } from 'react';
 import { css, cx } from '@emotion/css';
-import { Btn, Props, SelectBtn } from '../button';
+import { Btn, SelectBtn } from '../button';
 import MarkBox from '../markbox/MarkBox';
 import { color, font } from '../../styles';
 import Slider from './Silder';
 import SelectBox from '../selectbox/SelectBox';
 import Img from '../img/Img';
+import type { type } from './Container';
+
+interface Props {
+  texts: type;
+  contents: type;
+  priceArea: (minValue: number, maxValue: number) => string;
+  minValue: number;
+  setMinValue: Dispatch<React.SetStateAction<number>>;
+  maxValue: number;
+  setMaxValue: Dispatch<React.SetStateAction<number>>;
+  view: { [key: number]: boolean };
+  setView: Dispatch<React.SetStateAction<{ [key: number]: boolean }>>;
+  filterChecked: { [key: string]: { [key: number]: boolean | undefined } };
+  setItemCheck: (list: string, i: number) => void;
+}
 
 function Presenter(props: Props) {
-  const [minValue, setMinValue] = useState(0);
-  const [maxValue, setMaxValue] = useState(1000000);
-  const [view, setView] = useState<{ [key: number]: boolean }>({ 0: false });
-
-  interface type {
-    [title: string]: string[] | React.ReactNode[];
-  }
-  const selectBtnText = (list: string) => {
-    const contents: type = {
-      정렬: ['인기순', '최신순', '오래된순'],
-      대상: [
-        <>
-          <MarkBox shape={1} state={0} />
-          해줄래요
-        </>,
-        <>
-          <MarkBox shape={0} state={0} />
-          구할래요
-        </>,
-      ],
-      기간: ['1주일', '1개월', '3개월', '상시'],
-      무료: ['무료'],
-    };
-
-    return contents[list].map((text, i) =>
-      list !== '대상' ? (
-        <SelectBtn key={i} small>
-          {text}
-        </SelectBtn>
-      ) : (
-        <SelectBtn key={i} medium>
-          {text}
-        </SelectBtn>
-      )
-    );
-  };
+  const {
+    texts,
+    contents,
+    priceArea,
+    minValue,
+    setMinValue,
+    maxValue,
+    setMaxValue,
+    view,
+    setView,
+    filterChecked,
+    setItemCheck,
+  } = props;
 
   const title = (section: string) => {
-    const texts: type = {
-      top: ['정렬', '대상'],
-      mid: ['기간', '지역'],
-    };
-
     return (
       <div className='title'>
         {texts[section].map((text, i) => (
@@ -59,6 +46,34 @@ function Presenter(props: Props) {
           </p>
         ))}
       </div>
+    );
+  };
+
+  const selectBtnText = (list: string) => {
+    return contents[list].map((text, i) =>
+      list !== '대상' ? (
+        <div key={i}>
+          <SelectBtn
+            onChange={() => setItemCheck(list, i)}
+            small
+            checked={filterChecked[list][i]}
+            type={list}
+          >
+            {text}
+          </SelectBtn>
+        </div>
+      ) : (
+        <div key={i}>
+          <SelectBtn
+            onChange={() => setItemCheck(list, i)}
+            medium
+            checked={filterChecked[list][i]}
+            type={list}
+          >
+            {text}
+          </SelectBtn>
+        </div>
+      )
     );
   };
 
@@ -146,20 +161,6 @@ function Presenter(props: Props) {
       margin: 0 16px 0 224px;
     }
   `;
-
-  const priceArea = (minValue: number, maxValue: number) => {
-    if (0 < minValue && maxValue < 1000000) {
-      return `${minValue.toLocaleString()} 원 ~ ${maxValue.toLocaleString()} 원`;
-    }
-    if (minValue > 0) {
-      return `${minValue.toLocaleString()} 원 이상`;
-    }
-    if (maxValue < 1000000) {
-      return `${maxValue.toLocaleString()} 원 이하`;
-    }
-
-    return '모든 가격대';
-  };
 
   return (
     <div className={cx(parentWrap)}>

@@ -1,3 +1,4 @@
-import { colors, aligns, sort, radius, font, shadows } from './style/palette';
+import Layout from './layout';
+import { color, radius, font, shadow, btnStyle } from './style/palette';
 
-export { colors, aligns, sort, radius, font, shadows };
+export { Layout, color, radius, font, shadow, btnStyle };

@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/root';
 import { SelectBtn } from '../button';
 import MarkBox from '../markbox/MarkBox';
 import Presenter from './Presenter';
@@ -8,6 +10,8 @@ interface type {
 }
 
 function Filter() {
+  const checked = useSelector((state: RootState) => state.filter);
+  console.log('checked :>> ', checked);
   const contents: type = {
     정렬: ['인기순', '최신순', '오래된순'],
     대상: [

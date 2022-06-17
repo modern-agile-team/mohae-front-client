@@ -1,4 +1,6 @@
-import { useState, useCallback } from 'react';
+/** @format */
+
+import { useState, useEffect, useCallback } from 'react';
 import { css, cx } from '@emotion/css';
 import { color, radius, font, shadow } from '../../styles';
 
@@ -13,6 +15,10 @@ export default function Snap({ contents }: Props) {
     colors = [color.light1, color.light3],
     // 반복할 배경 색상
     [part, setPart] = useState(0);
+
+  useEffect(() => {
+    setPart(3);
+  }, []);
 
   const container = css`
     overflow: auto;
@@ -90,7 +96,7 @@ export default function Snap({ contents }: Props) {
         : null;
     return index ? (
       <button
-        key={index}
+        key={`${index}`}
         className={cx(circle, target)}
         name={`${index}`}
         onClick={clickCircle}
@@ -105,7 +111,7 @@ export default function Snap({ contents }: Props) {
     const translate = `translateY(calc(${size} * ${-part}))`;
     return css`
       height: ${row};
-      transition: all 0.8s cubic-bezier(0.61, 0.31, 0.36, 0.69);
+      /* transition: all 0.8s cubic-bezier(0.61, 0.31, 0.36, 0.69); */
       transform: ${translate};
     `;
   };

@@ -1,10 +1,19 @@
 /** @format */
 
-import { useState, useEffect } from 'react';
+import { Suspense, useState, useEffect } from 'react';
 import { css, cx } from '@emotion/css';
 import { keyframes } from '@emotion/react';
 import { color, radius, font, shadow } from '../../styles';
 import { Img, Poster, NewPost, Box } from '../../components';
+import {
+  getHotAll,
+  getHotProgressing,
+  getHotOver,
+} from '../../redux/main/reducer';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../../redux/root';
+import { AppDispatch } from '../../redux/root';
+import axios from 'axios';
 
 interface Props {
   [key: string]: any;
@@ -17,13 +26,40 @@ interface Focus {
 interface Text {
   [key: string]: any | Focus;
 }
-export default function Part3(props: Props) {
+export default function Part4(props: Props) {
   const text: Text = {
     focus: { all: 'All', inProgress: '진행 중', end: '마감' },
   };
 
   const [focus, setFocus] = useState(0);
   const focusArea = `translate(${focus * 154}px, -50%)`;
+  const dispatch = useDispatch<AppDispatch>();
+  const ENDPOINT = `http://mo-hae.site:8080/boards/hot?select=`;
+
+  const boardsInMain = useSelector((state: RootState) => state.main);
+
+  const hotBoardAll = [
+    boardsInMain.allBoard[1] || null,
+    boardsInMain.allBoard[0] || null,
+    boardsInMain.allBoard[2] || null,
+  ].filter((board) => !!board);
+  const hotBoardProgressing = [
+    boardsInMain.inProgressBoard[1] || null,
+    boardsInMain.inProgressBoard[0] || null,
+    boardsInMain.inProgressBoard[2] || null,
+  ].filter((board) => !!board);
+  const hotBoardOver = [
+    boardsInMain.overedBoard[1] || null,
+    boardsInMain.overedBoard[0] || null,
+    boardsInMain.overedBoard[2] || null,
+  ].filter((board) => !!board);
+
+  useEffect(() => {
+    dispatch(getHotAll());
+    dispatch(getHotProgressing());
+    dispatch(getHotOver());
+  }, []);
+  console.log('hotBoardAll :>> ', hotBoardAll);
 
   const style = css`
     height: 100%;
@@ -31,9 +67,14 @@ export default function Part3(props: Props) {
     flex-direction: column;
     align-items: center;
     padding: calc((100vh - 59px - 518px) / 2) calc((100% - 1128px) / 2);
+    .loading {
+      background-color: red;
+      width: 100%;
+      height: 284px;
+    }
 
     .title {
-      font-weight: 700;
+      ${font.weight[700]};
       font-size: 28px;
       line-height: 36px;
       margin: 0 0 40px;
@@ -114,6 +155,7 @@ export default function Part3(props: Props) {
     .posts {
       width: 100%;
       height: 284px;
+      display: flex;
       & > * {
         display: inline-block;
       }
@@ -124,17 +166,40 @@ export default function Part3(props: Props) {
   `;
 
   const clickFocus = (e: React.MouseEvent<HTMLButtonElement>) => {
-    setFocus(Number(e.currentTarget.id));
+    const slideFocus = e.currentTarget.id;
+    setFocus(Number(slideFocus));
   };
 
   const filter = Object.keys(text.focus).map((title: string, index: number) => {
     return (
-      <button id={`${index}`} className={cx()} onClick={clickFocus}>
+      <button key={index} id={`${index}`} className={cx()} onClick={clickFocus}>
         {text.focus[title]}
       </button>
     );
   });
 
+  const threeBoard = (boards: any) =>
+    boardsInMain.allBoard[1] &&
+    boards.map((board: any, index: number) => (
+      <div
+        key={index}
+        className={cx(
+          css`
+            width: 360px;
+            height: 284px;
+            ${radius[6]};
+          `
+        )}
+      >
+        <NewPost page={'inMain'} board={board} />
+      </div>
+    ));
+
+  const boardViewCheck: { [key: string]: any } = {
+    0: threeBoard(hotBoardAll),
+    1: threeBoard(hotBoardProgressing),
+    2: threeBoard(hotBoardOver),
+  };
   return (
     <div className={cx(style)}>
       <span className={'title'}>{'사용법이 궁금하다면?'}</span>
@@ -162,17 +227,9 @@ export default function Part3(props: Props) {
           </div>
         </div>
       </div>
-      <div className={'posts'}>
-        <Box size={[360, 284]}>
-          <NewPost page={'inMain'} />
-        </Box>
-        <Box size={[360, 284]}>
-          <NewPost page={'inMain'} />
-        </Box>
-        <Box size={[360, 284]}>
-          <NewPost page={'inMain'} />
-        </Box>
-      </div>
+      {/* <Suspense fallback={<div className={'loading'}>{'잠시만요~~~~'}</div>}> */}
+      <div className={'posts'}>{boardViewCheck[focus]}</div>
+      {/* </Suspense> */}
     </div>
   );
 }

@@ -1,3 +1,5 @@
+/** @format */
+
 import { css, cx } from '@emotion/css';
 import React from 'react';
 import { Props } from '.';
@@ -91,9 +93,9 @@ function Btn(props: Props) {
     };
 
     return Object.keys(props)
-      .map(el => table[el])
-      .filter(el => el)
-      .map(el => (disable ? el.disable : el.able));
+      .map((el) => table[el])
+      .filter((el) => el)
+      .map((el) => (disable ? el.disable : el.able));
   };
 
   const categoryBtn = () => {

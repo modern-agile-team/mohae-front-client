@@ -1,3 +1,5 @@
+/** @format */
+
 import { css } from '@emotion/css';
 import Alram from './Alram';
 import SelectBtn from './SelectBtn';

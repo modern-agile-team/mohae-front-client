@@ -81,6 +81,7 @@ function Presenter(props: Props) {
     position: absolute;
     top: 42.5px;
     left: 0px;
+    z-index: 1;
 
     .filterTitle {
       ${font.size[14]}

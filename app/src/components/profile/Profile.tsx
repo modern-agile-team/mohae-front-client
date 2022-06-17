@@ -1,3 +1,5 @@
+/** @format */
+
 import { css, cx } from '@emotion/css';
 import { shadow, radius } from '../../styles';
 
@@ -46,12 +48,14 @@ function Profile(props: Props) {
   return (
     <>
       <div
-        onClick={!noneClick ? () => alert('프로필 클릭') : undefined}
-        className={cx(image)}></div>
+        // onClick={!noneClick ? () => alert('프로필 클릭') : undefined}
+        className={cx(image)}
+      ></div>
       {editBtn && (
         <div
           className={cx(imgUpdateBtn)}
-          onClick={() => alert('이미지 수정 버튼 클릭')}>
+          // onClick={() => alert('이미지 수정 버튼 클릭')}
+        >
           <img
             className={cx(editPhotoImg)}
             alt="editPhoto"

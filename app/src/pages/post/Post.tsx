@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { css, cx } from '@emotion/css';
 import { PostIt, Btn, ReportModal } from '../../components';
 import PostBody from '../../components/pagecomp/PostBody';
@@ -12,6 +12,13 @@ import useScroll from '../../customhook/useScroll';
 
 function Post(props: Props) {
   const [report, setReport] = useState(false);
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8000/list`)
+      .then(response => console.log('res : ', response.data))
+      .catch(err => console.log('err : ', err));
+  }, []);
 
   const dummy = {
     statusCode: 200,
@@ -50,7 +57,7 @@ function Post(props: Props) {
         opacity: 0;
         transform: translate3d(0, -8px, 0);
       }
-      to {
+      100% {
         opacity: 1;
         transform: translateZ(0);
       }
@@ -79,10 +86,6 @@ function Post(props: Props) {
     }
   `;
 
-  // axios(`http://localhost:8000/list`).then(response =>
-  //   console.log(response.data)
-  // );
-
   return (
     <>
       <ReportModal visible={report} close={() => setReport(!report)} />
@@ -99,7 +102,9 @@ function Post(props: Props) {
         </div>
         <PostBody view />
         <div className='cancelCloseBtn'>
-          <Btn main>마감 취소</Btn>
+          <Btn main>
+            {dummy.response.isDeadline ? '마감 취소' : '마감 하기'}
+          </Btn>
         </div>
         {useScroll().scrollY > 490 && (
           <div className='quickMenu'>

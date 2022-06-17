@@ -1,3 +1,5 @@
+/** @format */
+
 import { css, cx } from '@emotion/css';
 import React, { ReactChild } from 'react';
 import { color, font, radius, shadow, btnStyle } from '../../styles';
@@ -68,6 +70,7 @@ function MarkBox(props: MarkBoxProps) {
       ? css`
           ${markBoxSize()};
           &:hover :after {
+            z-index: 3;
             visibility: visible;
           }
         `
@@ -93,8 +96,8 @@ function MarkBox(props: MarkBoxProps) {
     const prop = String(shape) + String(state);
 
     return Object.keys(attrs)
-      .map(shape => prop === shape && attrs[shape])
-      .filter(el => el);
+      .map((shape) => prop === shape && attrs[shape])
+      .filter((el) => el);
   };
 
   return (

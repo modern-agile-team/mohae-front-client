@@ -37,12 +37,28 @@ function PostInfo(props: Props) {
     },
   };
 
-  // const showDDAY = () => {
-  //     //         isDeadline === 1 && 마감
-  //     // isDeadline === 0 && 게시중
-  //     // (!isDeadline && decimalDay) === null && 상시
-  //     // decimalDay !== null 기간
-  //   };
+  const showDDAYContent = () => {
+    if (!dummy.response.isDeadline) {
+      if (dummy.response.decimalDay !== null) {
+        return css`
+          background-color: ${color.subtle};
+          color: ${color.main};
+          content: 'D ${dummy.response.decimalDay}';
+        `;
+      }
+      return css`
+        background-color: ${color.main};
+        color: ${color.main};
+        content: '상시';
+      `;
+    } else {
+      return css`
+        background-color: ${color.dark1};
+        color: white;
+        content: '마감';
+      `;
+    }
+  };
 
   const wrap = css`
     border-bottom: ${!quickMenu && ` 1px solid ${color.light4}`};
@@ -86,11 +102,10 @@ function PostInfo(props: Props) {
         display: flex;
         align-items: center;
         :after {
-          content: 'D ${dummy.response.decimalDay}';
           width: 47px;
           height: 24px;
           background-color: ${color.main};
-          color: white;
+          ${showDDAYContent()}
           ${font.size[14]}
           ${font.weight[400]}
           display: flex;

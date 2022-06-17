@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { css, cx } from '@emotion/css';
-import { Btn, Category, Img, Input, Search } from '../../components';
+import { Btn, Img, Poster, Search } from '../../components';
 import { color, font, radius } from '../../styles';
 import { Link } from 'react-router-dom';
 import Categories from '../../components/category/Categories';
@@ -11,103 +11,103 @@ function Board() {
       allBoardNum: 9,
       boards: [
         {
-          decimalDay: 6,
+          decimalDay: -6,
           no: 10,
-          title: '123-6',
+          title: '제목임',
           isDeadline: 0,
-          price: 1000,
+          price: 999999,
           target: 1,
           areaNo: 1,
           areaName: '서울특별시',
-          userNickname: 'hneeddjsjde',
+          userNickname: '닉네임임자있음',
+        },
+        {
+          decimalDay: null,
+          no: 10,
+          title: '기이이이이이이이이ㅣ이이이이인제제제목',
+          isDeadline: 0,
+          price: 1000000,
+          target: 0,
+          areaNo: 1,
+          areaName: '서울특별시',
+          userNickname: '닉네임자있음',
+        },
+        {
+          decimalDay: -14,
+          no: 10,
+          title: '그냥 제목임요',
+          isDeadline: 0,
+          price: null,
+          target: 0,
+          areaNo: 1,
+          areaName: '서울특별시',
+          userNickname: '왕의 관상 김성제',
         },
         {
           decimalDay: 6,
           no: 10,
-          title: '123-6',
-          isDeadline: 0,
-          price: 1000,
+          title: '나도 제목인데?',
+          isDeadline: 1,
+          price: null,
           target: 1,
           areaNo: 1,
           areaName: '서울특별시',
-          userNickname: 'hneeddjsjde',
+          userNickname: '관리자_심서현',
+        },
+        {
+          decimalDay: 12,
+          no: 10,
+          title: '오 나도 제목인데 ㅋㅋㅋ',
+          isDeadline: 1,
+          price: 300000,
+          target: 1,
+          areaNo: 1,
+          areaName: '서울특별시',
+          userNickname: '응애 심서현',
+        },
+        {
+          decimalDay: 0,
+          no: 10,
+          title: '내가 진짜 제목임요',
+          isDeadline: 1,
+          price: 37000,
+          target: 0,
+          areaNo: 1,
+          areaName: '서울특별시',
+          userNickname: '난 응애 김성제',
         },
         {
           decimalDay: 6,
           no: 10,
-          title: '123-6',
-          isDeadline: 0,
+          title: '아니 뭐이리 제목이 많아',
+          isDeadline: 1,
           price: 1000,
           target: 1,
           areaNo: 1,
           areaName: '서울특별시',
-          userNickname: 'hneeddjsjde',
+          userNickname: '넌 누구얌',
         },
         {
-          decimalDay: 6,
+          decimalDay: -111,
           no: 10,
-          title: '123-6',
+          title: '열네자짜리제목열ㅇㅇㅇㅇㅇ/ㅇ',
           isDeadline: 0,
-          price: 1000,
+          price: null,
           target: 1,
           areaNo: 1,
           areaName: '서울특별시',
-          userNickname: 'hneeddjsjde',
+          userNickname: '나는 긴 닉네임이야',
         },
         {
-          decimalDay: 6,
+          decimalDay: -90,
           no: 10,
-          title: '123-6',
+          title: '누구...?',
           isDeadline: 0,
-          price: 1000,
-          target: 1,
+          price: 889000,
+          target: 0,
           areaNo: 1,
           areaName: '서울특별시',
-          userNickname: 'hneeddjsjde',
-        },
-        {
-          decimalDay: 6,
-          no: 10,
-          title: '123-6',
-          isDeadline: 0,
-          price: 1000,
-          target: 1,
-          areaNo: 1,
-          areaName: '서울특별시',
-          userNickname: 'hneeddjsjde',
-        },
-        {
-          decimalDay: 6,
-          no: 10,
-          title: '123-6',
-          isDeadline: 0,
-          price: 1000,
-          target: 1,
-          areaNo: 1,
-          areaName: '서울특별시',
-          userNickname: 'hneeddjsjde',
-        },
-        {
-          decimalDay: 6,
-          no: 10,
-          title: '123-6',
-          isDeadline: 0,
-          price: 1000,
-          target: 1,
-          areaNo: 1,
-          areaName: '서울특별시',
-          userNickname: 'hneeddjsjde',
-        },
-        {
-          decimalDay: 6,
-          no: 10,
-          title: '123-6',
-          isDeadline: 0,
-          price: 1000,
-          target: 1,
-          areaNo: 1,
-          areaName: '서울특별시',
-          userNickname: 'hneeddjsjde',
+          userNickname: '길다아아란닉네임',
         },
       ],
     },
@@ -166,18 +166,14 @@ function Board() {
   };
 
   const createPost = () => {
-    const dummyStyle = (i: number) => css`
-      background-color: ${color.main};
-      width: 264px;
-      height: 208px;
-      ${radius[6]}
+    const gap = (i: number) => css`
       margin-top: 24px;
       margin-right: ${i % 4 && '24px'};
     `;
     return dummy.response.boards.map((el, i) => (
-      <div className={cx(dummyStyle(i + 1))} key={i}>
-        {i + 1}
-      </div>
+      <Link key={i} className={cx(gap(i + 1))} to='/post'>
+        <Poster data={dummy.response.boards[i]} />
+      </Link>
     ));
   };
 

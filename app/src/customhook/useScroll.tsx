@@ -8,13 +8,11 @@ function useScroll() {
     let mounted = true;
     window.addEventListener('scroll', () => {
       if (mounted) {
-        console.log('이벤트 시작');
         setScrollY(window.pageYOffset);
         setLoading(false);
       }
     });
     return () => {
-      console.log('이벤트 종료');
       mounted = false;
       // window.removeEventListener('scroll', debounce(listener, delay));
     };

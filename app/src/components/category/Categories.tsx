@@ -154,7 +154,7 @@ export default function Categories({ num }: Props) {
       {Array(showNumber)
         .fill(undefined)
         .map((item, index) => (
-          <div className={'each'}>
+          <div className={'each'} key={index}>
             <Category
               key={index}
               shape={'circle'}

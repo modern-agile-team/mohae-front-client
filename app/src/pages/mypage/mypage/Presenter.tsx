@@ -3,8 +3,9 @@
 import { useState, useEffect } from 'react';
 import { css, cx } from '@emotion/css';
 import { keyframes } from '@emotion/react';
-import { color, radius, font, shadow } from '../../styles';
-import Review from './Review';
+import { color, radius, font, shadow } from '../../../styles';
+import Review from '../Review';
+import Slide from './Slide';
 import {
   Img,
   Poster,
@@ -13,22 +14,13 @@ import {
   Profile,
   FocusBar,
   Category,
-} from '../../components';
+} from '../../../components';
 
-export default function MyPage() {
-  const text: { [key: string]: any } = {
-    sir: '님',
-    registerDate: '가입일 :',
-    logout: '로그아웃',
-    interesting: '관심사',
-    resume: {
-      spec: '내 스펙 관리',
-      give: '해줄래요 이력',
-      got: '받을래요 이력',
-    },
-    rating: '총 평점',
-  };
-  const [num, setNum] = useState(100);
+interface Props {
+  [key: string]: any;
+}
+
+export default function MyPage({ text }: Props) {
   const style = css`
     width: 100%;
     height: fit-content;
@@ -44,7 +36,7 @@ export default function MyPage() {
       justify-content: space-between;
       height: fit-content;
       margin: 40px 0 64px;
-      .box {
+      > .box {
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -123,7 +115,7 @@ export default function MyPage() {
         > :not(:last-child) {
           margin-bottom: 32px;
         }
-        .section {
+        > .section {
           width: 100%;
           height: fit-content;
           > .title {
@@ -132,83 +124,12 @@ export default function MyPage() {
             line-height: 170%;
             margin-bottom: 16px;
           }
-          .slide {
+          > .slide {
             width: 100%;
             height: 177px;
             display: flex;
             justify-content: space-between;
           }
-        }
-      }
-    }
-
-    > .review {
-      width: 100%;
-      height: fit-content;
-      margin-bottom: 64px;
-      .score {
-        color: ${color.main};
-        margin: 0 4px;
-      }
-      .title {
-        width: 100%;
-        height: fit-content;
-        display: flex;
-        align-items: center;
-        margin-bottom: 16px;
-        * {
-          ${font.weight[700]}
-        }
-        .star {
-          width: 30px;
-          height: 30px;
-          margin-right: 8px;
-        }
-        .number {
-          color: ${color.dark3};
-        }
-      }
-      .each {
-        width: 100%;
-        height: fit-content;
-        margin: 32px 0;
-        display: flex;
-        justify-content: space-between;
-        .profile {
-          width: fit-content;
-          display: flex;
-          width: 931px;
-          margin-bottom: 16px;
-        }
-        .info-box {
-          margin-left: 16px;
-        }
-        .name {
-          width: fit-content;
-          ${font.weight[700]}
-          font-size: 14px;
-        }
-        .stars {
-          justify-content: flex;
-          flex-direction: row;
-          align-items: center;
-          height: 20px;
-          > :not(:last-child) {
-            margin-right: 4px;
-          }
-          * {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-          }
-        }
-        .description {
-          display: flex;
-          width: 100%;
-          padding-right: 24px;
-          height: 69px;
-          font-size: 14px;
-          overflow: hidden;
         }
       }
     }
@@ -240,15 +161,15 @@ export default function MyPage() {
               <span>{`${'하하하'} ${123}`}</span>
             </div>
             <div className={'item'}>
-              <Img src={'/img/heart-main.png'} />
+              <Img src={'/img/university.png'} />
               <span>{`${'하하하'} ${123}`}</span>
             </div>
             <div className={'item'}>
-              <Img src={'/img/heart-main.png'} />
+              <Img src={'/img/study.png'} />
               <span>{`${'하하하'} ${123}`}</span>
             </div>
           </div>
-          <FocusBar thin light3 />
+          <FocusBar thin light />
           <div className={'interest'}>{text.interesting}</div>
           <div className={'categories'}>
             <Box size={[80, 80]}>
@@ -277,33 +198,18 @@ export default function MyPage() {
         <div className={'boards'}>
           <div className={'section'}>
             <div className={'title'}>{text.resume.spec}</div>
-            <div className={'slide'}>
-              <Box size={[228, 177]}>
-                <NewPost page={'inSpec'} />
-              </Box>
-              <Box size={[228, 177]}></Box>
-              <Box size={[228, 177]}></Box>
-            </div>
+            <Slide outsideBtn spec />
           </div>
           <div className={'section'}>
             <div className={'title'}>{text.resume.give}</div>
-            <div className={'slide'}>
-              <Box size={[228, 177]}></Box>
-              <Box size={[228, 177]}></Box>
-              <Box size={[228, 177]}></Box>
-            </div>
+            <Slide outsideBtn spec />
           </div>
           <div className={'section'}>
             <div className={'title'}>{text.resume.got}</div>
-            <div className={'slide'}>
-              <Box size={[228, 177]}></Box>
-              <Box size={[228, 177]}></Box>
-              <Box size={[228, 177]}></Box>
-            </div>
+            <Slide outsideBtn spec />
           </div>
         </div>
       </div>
-      <Review />
     </div>
   );
 }

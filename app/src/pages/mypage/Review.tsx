@@ -119,7 +119,7 @@ export default function Review() {
           </div>
           <div className={'description'}></div>
         </div>
-        <Poster inReview title={'123'} />
+        {/* <Poster inReview title={'123'} /> */}
       </div>
       <FocusBar thin light3 />
       <div className={'each'}>
@@ -144,7 +144,7 @@ export default function Review() {
             }
           </div>
         </div>
-        <Poster inReview title={'123'} />
+        {/* <Poster inReview title={'123'} /> */}
       </div>
       <FocusBar thin light3 />
     </div>

@@ -5,9 +5,13 @@ import CheckBox from '../check-label/CheckLabel';
 import { Box } from '../../components';
 import { animation } from './modalAnimation';
 import { Btn } from '../button';
+import Report from '../check-label/CheckLabel';
+import Img from '../img/Img';
+import { color, font } from '../../styles';
 
 interface Props {
-  [key: string]: any;
+  visible: boolean;
+  close: () => void;
 }
 
 function ReportModal({ visible, close }: Props) {
@@ -35,19 +39,45 @@ function ReportModal({ visible, close }: Props) {
     transform: translate(-50%, -50%);
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
     z-index: 14;
+    padding: 16px 67px 24px 67px;
     ${visible ? animation.basicAppear : animation.basicDissappear}
-  `;
+    .wrap {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
 
-  const btnWrapper = css`
-    width: 100%;
-    height: fit-content;
-    display: flex;
-    justify-content: center;
-    & > :not(:last-child) {
-      margin-right: 8px;
+      .title {
+        width: fit-content;
+        height: 23px;
+        color: ${color.dark1};
+        ${font.size[16]}
+        ${font.weight[400]}
+      }
+      .warring {
+        width: fit-content;
+        height: 14px;
+        color: ${color.main};
+        ${font.size[10]}
+        ${font.weight[300]}
+        margin-bottom: 12px;
+      }
+    }
+
+    .close-btn {
+      width: 15px;
+      height: 15px;
+      margin: 0px 0px 0px 286px;
+    }
+
+    .send-btn {
+      width: 74px;
+      height: 44px;
+    }
+
+    label {
+      height: 20px;
     }
   `;
 
@@ -63,24 +93,36 @@ function ReportModal({ visible, close }: Props) {
   `;
 
   return (
-    <div>
-      <Box light size={[360, 470]} className={box}>
-        <CheckBox />
-        <div className={btnWrapper}>
+    <>
+      <Box light size={[384, 480]} className={box}>
+        <div className={'close-btn'} onClick={close}>
+          <Img src='/img/close.png' />
+        </div>
+        <div className='wrap'>
+          <p className='title'>신고 사유 선택</p>
+          <p className='warring'>최대 3개 항목까지 선택 가능합니다.</p>
+        </div>
+        <Report
+          list={[
+            '욕설 / 비방',
+            '개인정보 요구',
+            '사기',
+            '사적인 연락',
+            '도배',
+            '선정적인 게시물',
+            '위협',
+          ]}
+        />
+        <div className='wrap'>
           <div className={'send-btn'}>
             <Btn main able>
               {'전송'}
             </Btn>
           </div>
-          <div className={'close-btn'}>
-            <Btn main able onClick={close}>
-              {'취소'}
-            </Btn>
-          </div>
         </div>
       </Box>
       <div onClick={close} className={cx(overlay)}></div>
-    </div>
+    </>
   );
 }
 

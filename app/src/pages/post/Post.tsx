@@ -1,14 +1,24 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { css, cx } from '@emotion/css';
-import { PostIt, Btn } from '../../components';
-import PostBody from './pagecomp/PostBody';
-import PostImgs from './pagecomp/PostImgs';
-import PostInfo from './pagecomp/PostInfo';
-import PostWriter from './pagecomp/PostWriter';
+import { PostIt, Btn, ReportModal } from '../../components';
+import PostBody from '../../components/pagecomp/PostBody';
+import PostImgs from '../../components/pagecomp/PostImgs';
+import PostInfo from './PostInfo';
+import PostWriter from './PostWriter';
 import { Props } from '../../components/button';
+import axios from 'axios';
+import QuickMenu from './QuickMenu';
+import useScroll from '../../customhook/useScroll';
 
 function Post(props: Props) {
-  const [state, setState] = useState('');
+  const [report, setReport] = useState(false);
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8000/list`)
+      .then(response => console.log('res : ', response.data))
+      .catch(err => console.log('err : ', err));
+  }, []);
 
   const dummy = {
     statusCode: 200,
@@ -42,6 +52,16 @@ function Post(props: Props) {
 
   const wrap = css`
     margin-top: 40px;
+    @keyframes fadeInDown {
+      0% {
+        opacity: 0;
+        transform: translate3d(0, -8px, 0);
+      }
+      100% {
+        opacity: 1;
+        transform: translateZ(0);
+      }
+    }
 
     .topflexWrap {
       display: flex;
@@ -59,25 +79,40 @@ function Post(props: Props) {
       margin-left: 1028px;
       margin-bottom: 64px;
     }
+    .quickMenu {
+      position: fixed;
+      top: 59px;
+      animation: fadeInDown 1s;
+    }
   `;
 
   return (
-    <div className={cx(wrap)}>
-      <div className='topflexWrap'>
-        <PostImgs />
-        <div className='sectionWrap'>
-          <PostInfo />
-          <PostWriter />
-          <div className='postIt'>
-            <PostIt small />
+    <>
+      <ReportModal visible={report} close={() => setReport(!report)} />
+      <div className={cx(wrap)}>
+        <div className='topflexWrap'>
+          <PostImgs view />
+          <div className='sectionWrap'>
+            <PostInfo />
+            <PostWriter close={() => setReport(!report)} />
+            <div className='postIt'>
+              <PostIt small />
+            </div>
           </div>
         </div>
+        <PostBody view />
+        <div className='cancelCloseBtn'>
+          <Btn main>
+            {dummy.response.isDeadline ? '마감 취소' : '마감 하기'}
+          </Btn>
+        </div>
+        {useScroll().scrollY > 490 && (
+          <div className='quickMenu'>
+            <QuickMenu close={() => setReport(!report)} />
+          </div>
+        )}
       </div>
-      <PostBody view />
-      <div className='cancelCloseBtn'>
-        <Btn main>마감 취소</Btn>
-      </div>
-    </div>
+    </>
   );
 }
 

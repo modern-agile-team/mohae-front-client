@@ -9,7 +9,7 @@ interface Props {
   [key: string]: any;
 }
 
-export default function Carousel({ onClick, imgs, outsideBtn }: Props) {
+export default function Carousel({ onClick, imgs }: Props) {
   const IMAGES = imgs || [
     'img/camera.png',
     'img/edit.png',
@@ -65,18 +65,10 @@ export default function Carousel({ onClick, imgs, outsideBtn }: Props) {
 
     .prev {
       left: 0;
-      ${outsideBtn &&
-      css`
-        left: -48px;
-      `}
       background: url('/img/arrow-left-light1.png') no-repeat center/contain;
     }
     .next {
       right: 0;
-      ${outsideBtn &&
-      css`
-        right: -48px;
-      `}
       background: url('/img/arrow-right-light1.png') no-repeat center/contain;
     }
 
@@ -88,10 +80,6 @@ export default function Carousel({ onClick, imgs, outsideBtn }: Props) {
       align-items: center;
       position: absolute;
       bottom: 16px;
-      ${outsideBtn &&
-      css`
-        bottom: 8px;
-      `}
       left: 50%;
       transform: translateX(-50%);
     }

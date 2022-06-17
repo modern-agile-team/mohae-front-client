@@ -1,13 +1,17 @@
 import React from 'react';
 import { css, cx } from '@emotion/css';
-import Profile from '../../../components/profile/Profile';
-import { Btn, Img, PostIt } from '../../../components';
-import { color, font } from '../../../styles';
-import { Props } from '../../../components/button';
+import Profile from '../../components/profile/Profile';
+import { Btn, Img, PostIt } from '../../components';
+import { color, font } from '../../styles';
+import Btns from './Btns';
 
 // 프로필 이미지, 닉네임, 전공, 로그인 상태(버튼 그려줘야 함),
+interface Props {
+  close: () => void;
+}
 
 function PostWriter(props: Props) {
+  const { close } = props;
   const dummy = {
     statusCode: 200,
     msg: '게시글 상세 조회가 완료되었습니다.',
@@ -47,7 +51,7 @@ function PostWriter(props: Props) {
       &:nth-child(1) {
         ${font.size[14]}
         ${font.weight[700]}
-            margin-bottom: 4px;
+        margin-bottom: 4px;
       }
       &:nth-child(2) {
         ${font.size[14]}
@@ -57,7 +61,7 @@ function PostWriter(props: Props) {
     .btnContainer {
       display: flex;
       justify-content: space-between;
-      width: 264px;
+      width: 128px;
     }
     .btnWrap {
       width: 60px;
@@ -76,45 +80,6 @@ function PostWriter(props: Props) {
     }
   `;
 
-  const ableImg = [
-    '/img/heart-main.png',
-    '/img/chatting.png',
-    '/img/report-main.png',
-    '/img/bookmark-main.png',
-  ];
-
-  const onClick = (e: React.MouseEvent) => {
-    console.log('e.target :>> ', e.currentTarget);
-  };
-
-  const imgEl = (el: string, i: number) => {
-    return i !== 1 ? (
-      <Btn white onClick={e => onClick(e)}>
-        <div className='imgWrap'>
-          <Img src={el} />
-        </div>
-      </Btn>
-    ) : (
-      <Btn main onClick={e => onClick(e)}>
-        <div className='imgWrap'>
-          <Img src={el} />
-        </div>
-      </Btn>
-    );
-  };
-
-  const btns = (
-    <div className='btnContainer'>
-      {ableImg.map((el, i) => {
-        return (
-          <div className='btnWrap' key={i}>
-            {imgEl(el, i)}
-          </div>
-        );
-      })}
-    </div>
-  );
-
   return (
     <>
       <div className={cx(style)}>
@@ -125,7 +90,7 @@ function PostWriter(props: Props) {
             <p>{dummy.response.userMajor}</p>
           </div>
         </div>
-        {btns}
+        <Btns close={close} />
       </div>
     </>
   );

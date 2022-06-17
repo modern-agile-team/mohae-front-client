@@ -1,24 +1,16 @@
 import { css, cx, keyframes } from '@emotion/css';
 import { color } from '../../styles';
 import { Box } from '../../components';
+import MarkBox from '../markbox/MarkBox';
 
 interface Props {
-  [key: string]: any;
+  img: string;
+  state: number;
+  shape: number;
 }
 
-interface CheckSize {
-  [key: string]: number[];
-}
-
-function ImgBox({ place, img, state }: Props) {
-  const checkSize: CheckSize = {
-    inMain: [360, 208],
-    inBoard: [264, 152],
-    inSpec: [228, 120],
-    inReview: [173, 97],
-  };
-
-  const size = checkSize[place];
+function ImgBox({ img, state, shape }: Props) {
+  const size = [264, 152];
 
   const zoomIn = keyframes`
   from {
@@ -40,22 +32,31 @@ function ImgBox({ place, img, state }: Props) {
   const box = css`
     background: white url(${imgUrl}) no-repeat center/cover;
     background-size: ${img ? '100%' : '30%'};
+    border-radius: 6px 6px 0px 0px;
 
-    position: relative;
+    /* position: relative; */
 
     /* animation */
     ${img !== null && hover}
-  `;
-
-  const endBox = css`
-    height: inherit;
-    background: ${color.dark1};
-    opacity: 0.5;
+    .mosaic {
+      height: inherit;
+      background: ${color.dark1};
+      opacity: 0.5;
+    }
+    .markBox {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      z-index: 1;
+    }
   `;
 
   return (
-    <Box noRadius size={size} className={box}>
-      {state === 'end' && <div className={cx(endBox)}></div>}
+    <Box size={size} className={box}>
+      <div className='markBox'>
+        <MarkBox shape={shape} state={state} hover />
+      </div>
+      {state ? <div id='find' className={'mosaic'} /> : <></>}
     </Box>
   );
 }

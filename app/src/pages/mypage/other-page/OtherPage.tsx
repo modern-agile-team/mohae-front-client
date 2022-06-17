@@ -163,10 +163,10 @@ export default function OtherPage({ userNo }: Props) {
   return (
     <BasicModal preBtn big visible={true}>
       <div className={cx(style)}>
-        <div className="header">
+        <div className='header'>
           <Profile size={150} />
           <div>
-            <div className="row title">
+            <div className='row title'>
               <div className={'row sub-title'}>
                 <div className={'name'}>{'모던 애자일'}</div>
                 <div className={'sir'}>{text.sir}</div>

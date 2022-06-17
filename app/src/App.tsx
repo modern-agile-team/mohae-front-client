@@ -4,7 +4,17 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { injectGlobal } from '@emotion/css';
 import { color, Layout } from './styles';
-import { HG, Home, MyPage, OtherPage, Spec } from './pages';
+import {
+  Board,
+  CreatePost,
+  HG,
+  Home,
+  MyPage,
+  OtherPage,
+  Post,
+  Spec,
+} from './pages';
+import SJ from './pages/test/SJ';
 
 injectGlobal`
   * {
@@ -53,17 +63,23 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Layout main component={<Home />} />} />
-        <Route path="/hg" element={<Layout component={<HG />} />} />
-        <Route path="/hl" element={<Layout component={<div />} />} />
-        <Route path="/sj" element={<Layout component={<div />} />} />
-        <Route path="/boards/:no" element={<Layout component={<HG />} />} />
-        <Route path="/mypage/:no" element={<Layout component={<MyPage />} />} />
+        <Route path='/' element={<Layout main component={<Home />} />} />
+        <Route path='/hg' element={<Layout component={<HG />} />} />
+        <Route path='/hl' element={<Layout component={<div />} />} />
+        <Route path='/sj' element={<Layout component={<SJ />} />} />
+        <Route path='/boards/:no' element={<Layout component={<Board />} />} />
+        <Route path='/mypage/:no' element={<Layout component={<MyPage />} />} />
         <Route
-          path="/otherpage/:no"
+          path='/otherpage/:no'
           element={<Layout component={<OtherPage />} />}
         />
-        <Route path="/spec/:no" element={<Layout component={<Spec />} />} />
+        <Route
+          path='/otherpage/:no'
+          element={<Layout component={<OtherPage />} />}
+        />
+        <Route path='/spec/:no' element={<Layout component={<Spec />} />} />
+        <Route path='/post' element={<Layout component={<Post />} />} />
+        <Route path='/write' element={<Layout component={<CreatePost />} />} />
       </Routes>
     </Router>
   );

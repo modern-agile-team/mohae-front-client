@@ -1,90 +1,157 @@
+import React from 'react';
 import { css, cx } from '@emotion/css';
-import { Box } from '../../components';
-import MarkBox from '../markbox/MarkBox';
+import Box from '../box/Box';
 import ImgBox from './ImgBox';
-import InfoBox from './InfoBox';
+import { color, font } from '../../styles';
+import MarkBox from '../markbox/MarkBox';
 
 interface Props {
-  [key: string]: any;
+  data: {
+    decimalDay: number | null;
+    no: number;
+    title: string;
+    isDeadline: number;
+    price: number | null;
+    target: number;
+    areaNo: number;
+    areaName: string;
+    userNickname: string;
+  };
 }
 
-interface CheckPlace {
-  [key: string]: any;
-}
+function Poster({ data }: Props) {
+  const style = css`
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translate3d(0, 8px, 0);
+      }
+      100% {
+        opacity: 1;
+        transform: translateZ(0);
+      }
+    }
+    &:hover {
+      .default {
+        visibility: hidden;
+        display: none;
+      }
+      .hovered {
+        visibility: visible;
+        animation: fadeInUp 0.7s;
+      }
+    }
 
-interface CheckSize {
-  [key: string]: number[];
-}
+    .default {
+      width: 100%;
+      height: 56px;
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 12px;
 
-function Poster(props: Props) {
-  const {
-    inMain,
-    inBoard,
-    inSpec,
-    inReview,
-    noMark,
-    title,
-    writer,
-    price,
-    img,
-    location,
-    dDay,
-    state,
-  } = props;
+      .title,
+      .writer,
+      .areaName {
+        height: 20px;
+        ${font.size[12]}
+        ${color.dark1}
+        visibility: visible;
+      }
+      .title {
+        width: 152px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        ${font.size[12]}
+        ${font.weight[700]}
+      }
+      .writer {
+        color: ${color.dark2};
+      }
+      .price {
+        ${font.size[14]}
+        ${font.weight[700]}
+        display: flex;
+        align-items: center;
+        color: ${data.price !== null ? color.dark1 : color.main};
 
-  const checkSize: CheckSize = {
-    inMain: [360, 284],
-    inBoard: [264, 208],
-    inSpec: [228, 177],
-    inReview: [173, 130],
+        ::after {
+          content: '${data.price !== null && '원'}';
+          ${font.size[12]}
+          ${font.weight[400]}
+        }
+      }
+    }
+
+    .hovered {
+      height: 56px;
+      visibility: hidden;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 12px;
+      .areaName,
+      .DDAY {
+        ${font.weight[700]}
+      }
+      .areaName {
+        ${font.size[12]}
+        height: 20px;
+      }
+    }
+  `;
+
+  const textContents = () => {
+    const common = css`
+      ${font.size[14]}
+      ${font.weight[700]}
+    `;
+    const textStyle = {
+      dark: css`
+        ${common}
+        color: ${color.dark1};
+      `,
+      main: css`
+        ${common}
+        color: ${color.main};
+      `,
+    };
+
+    if (!data.isDeadline) {
+      if (data.decimalDay === 0) {
+        return <p className={cx(textStyle.main)}>D-DAY</p>;
+      } else if (data.decimalDay !== null) {
+        return <p className={cx(textStyle.dark)}>D {data.decimalDay}</p>;
+      }
+      return <p className={cx(textStyle.main)}>상시</p>;
+    } else {
+      return <p className={cx(textStyle.dark)}>마감</p>;
+    }
   };
 
-  const [place] = Object.keys(props).filter((prop) =>
-    Object.keys(checkSize).includes(prop)
-  );
-
-  const size = checkSize[place];
-
-  const markVisible = !noMark;
-
-  const box = css`
-    cursor: pointer;
-  `;
-
-  const wrapper = css`
-    width: fit-content;
-    height: fit-content;
-    position: relative;
-  `;
-
-  const markBox = css`
-    z-index: 2;
-    position: absolute;
-    top: ${place === 'inReview' ? 8 : 16}px;
-    right: ${place === 'inReview' ? 8 : 16}px;
-  `;
-
   return (
-    <div className={cx(wrapper)}>
-      {markVisible && (
-        <div className={cx(markBox)}>
-          {/* <MarkBox {...markHover} {...markSize} style={markStyle} /> */}
+    <Box size={[264, 208]}>
+      <ImgBox
+        img={'/img/favicon.ico'}
+        shape={data.target}
+        state={data.isDeadline}
+      />
+      <div className={cx(style)}>
+        <div className='default'>
+          <div>
+            <p className='title'>{data.title}</p>
+            <p className='writer'>{data.userNickname}</p>
+          </div>
+          <p className='price'>
+            {data.price !== null ? data.price.toLocaleString() : '나눔'}
+          </p>
         </div>
-      )}
-      <div onClick={() => alert('clicked!')}>
-        <Box size={size} className={box}>
-          <ImgBox place={place} img={img} state={state} />
-          <InfoBox
-            place={place}
-            title={title}
-            writer={writer}
-            price={price}
-            location={location}
-            dDay={dDay}
-          />
-        </Box>
+        <div className='hovered'>
+          <p className='areaName'>{data.areaName}</p>
+          {textContents()}
+        </div>
       </div>
-    </div>
+    </Box>
   );
 }
 

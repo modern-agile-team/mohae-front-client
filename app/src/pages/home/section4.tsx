@@ -1,11 +1,15 @@
 /** @format */
 
-import { useState, useEffect } from 'react';
+import { Suspense, useState, useEffect } from 'react';
 import { css, cx } from '@emotion/css';
 import { keyframes } from '@emotion/react';
 import { color, radius, font, shadow } from '../../styles';
 import { Img, Poster, NewPost, Box } from '../../components';
-import { getHotAll, get_in_progress } from '../../redux/main/reducer';
+import {
+  getHotAll,
+  getHotProgressing,
+  getHotOver,
+} from '../../redux/main/reducer';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../redux/root';
 import { AppDispatch } from '../../redux/root';
@@ -29,6 +33,33 @@ export default function Part4(props: Props) {
 
   const [focus, setFocus] = useState(0);
   const focusArea = `translate(${focus * 154}px, -50%)`;
+  const dispatch = useDispatch<AppDispatch>();
+  const ENDPOINT = `http://mo-hae.site:8080/boards/hot?select=`;
+
+  const boardsInMain = useSelector((state: RootState) => state.main);
+
+  const hotBoardAll = [
+    boardsInMain.allBoard[1] || null,
+    boardsInMain.allBoard[0] || null,
+    boardsInMain.allBoard[2] || null,
+  ].filter((board) => !!board);
+  const hotBoardProgressing = [
+    boardsInMain.inProgressBoard[1] || null,
+    boardsInMain.inProgressBoard[0] || null,
+    boardsInMain.inProgressBoard[2] || null,
+  ].filter((board) => !!board);
+  const hotBoardOver = [
+    boardsInMain.overedBoard[1] || null,
+    boardsInMain.overedBoard[0] || null,
+    boardsInMain.overedBoard[2] || null,
+  ].filter((board) => !!board);
+
+  useEffect(() => {
+    dispatch(getHotAll());
+    dispatch(getHotProgressing());
+    dispatch(getHotOver());
+  }, []);
+  console.log('hotBoardAll :>> ', hotBoardAll);
 
   const style = css`
     height: 100%;
@@ -36,9 +67,14 @@ export default function Part4(props: Props) {
     flex-direction: column;
     align-items: center;
     padding: calc((100vh - 59px - 518px) / 2) calc((100% - 1128px) / 2);
+    .loading {
+      background-color: red;
+      width: 100%;
+      height: 284px;
+    }
 
     .title {
-      font-weight: 700;
+      ${font.weight[700]};
       font-size: 28px;
       line-height: 36px;
       margin: 0 0 40px;
@@ -119,6 +155,7 @@ export default function Part4(props: Props) {
     .posts {
       width: 100%;
       height: 284px;
+      display: flex;
       & > * {
         display: inline-block;
       }
@@ -129,7 +166,8 @@ export default function Part4(props: Props) {
   `;
 
   const clickFocus = (e: React.MouseEvent<HTMLButtonElement>) => {
-    setFocus(Number(e.currentTarget.id));
+    const slideFocus = e.currentTarget.id;
+    setFocus(Number(slideFocus));
   };
 
   const filter = Object.keys(text.focus).map((title: string, index: number) => {
@@ -140,46 +178,28 @@ export default function Part4(props: Props) {
     );
   });
 
-  const dispatch = useDispatch<AppDispatch>();
-  const ENDPOINT = `http://mo-hae.site:8080/boards/hot?select=`;
-  const [targetBoard, setTargetBoard] = useState<{ [key: string]: any }>([]);
+  const threeBoard = (boards: any) =>
+    boardsInMain.allBoard[1] &&
+    boards.map((board: any, index: number) => (
+      <div
+        key={index}
+        className={cx(
+          css`
+            width: 360px;
+            height: 284px;
+            ${radius[6]};
+          `
+        )}
+      >
+        <NewPost page={'inMain'} board={board} />
+      </div>
+    ));
 
-  const hotBoardAll = useSelector((state: RootState) => state.main.allBoard);
-  const hotBoardProgressing = useSelector(
-    (state: RootState) => state.main.inProgressBoard
-  );
-
-  useEffect(() => {
-    dispatch(getHotAll());
-    axios
-      .get(`${ENDPOINT}${1}`)
-      .then((res) => {
-        if (res.data.statusCode >= 200 && res.data.statusCode <= 204) {
-          dispatch(get_in_progress(res.data.response));
-        } else {
-          console.log(`status err !!`);
-        }
-      })
-      .catch((err) => {
-        console.log(`err`, err);
-      });
-  }, []);
-
-  const hotBoards = targetBoard.map((board: any, index: number) => (
-    <div
-      key={index}
-      className={cx(
-        css`
-          width: 360px;
-          height: 284px;
-          ${radius[6]};
-        `
-      )}
-    >
-      <NewPost page={'inMain'} board={board} />
-    </div>
-  ));
-
+  const boardViewCheck: { [key: string]: any } = {
+    0: threeBoard(hotBoardAll),
+    1: threeBoard(hotBoardProgressing),
+    2: threeBoard(hotBoardOver),
+  };
   return (
     <div className={cx(style)}>
       <span className={'title'}>{'사용법이 궁금하다면?'}</span>
@@ -207,7 +227,9 @@ export default function Part4(props: Props) {
           </div>
         </div>
       </div>
-      <div className={'posts'}>{hotBoards}</div>
+      {/* <Suspense fallback={<div className={'loading'}>{'잠시만요~~~~'}</div>}> */}
+      <div className={'posts'}>{boardViewCheck[focus]}</div>
+      {/* </Suspense> */}
     </div>
   );
 }

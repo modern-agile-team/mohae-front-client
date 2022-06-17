@@ -12,6 +12,9 @@ interface Props {
 }
 
 export default function NewPost({ page, board }: Props) {
+  const text: { [key: string]: any } = {
+    isOver: 'DAY',
+  };
   const check: { [key: string]: any } = {
     inMain: {
       size: '208',
@@ -108,6 +111,37 @@ export default function NewPost({ page, board }: Props) {
       justify-content: space-between;
       align-items: center;
       background-color: white;
+      position: relative;
+      overflow: hidden;
+      > .sub-info {
+        padding: 14px 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        left: 0;
+        bottom: -76px;
+        transition: 0.3s ease-in-out all;
+        * {
+          ${font.weight[700]};
+        }
+        > .area {
+          font-size: 14px;
+        }
+        > .day {
+          font-size: 16px;
+          color: ${`${board.decimalDay === null ? color.main : color.dark1}`};
+        }
+      }
+      :hover {
+        > .sub-info {
+          transition: 0.3s ease-in-out all;
+          transform: translateY(-76px);
+          background-color: white;
+        }
+      }
 
       * {
         font-size: ${`${check[page].fontSize}px`} !important;
@@ -155,28 +189,37 @@ export default function NewPost({ page, board }: Props) {
   `;
 
   const info = (page === 'inMain' || page === 'inBoard') && (
-    <div className={'writer'}>{board.userNickname}</div>
+    <div className={'writer'}>{board && board.userNickname}</div>
   );
 
   const price = (page === 'inMain' || page === 'inBoard') && (
     <div className={'price '}>
-      <div>{board.price}</div>
+      <div>{board && board.price}</div>
       <div className={'won'}>{'원'}</div>
     </div>
   );
 
   const markBox =
     page === 'inMain' || page === 'inBoard' ? (
-      <MarkBox shape={'11'} state={'able'} big hover />
+      <MarkBox
+        shape={(board && board.target) || 1}
+        state={(board && board.isDeadline) || 1}
+        big
+        hover
+      />
     ) : (
-      <MarkBox big shape={0} state={'able'} />
+      <MarkBox
+        big
+        shape={(board && board.target) || 0}
+        state={(board && board.isDeadline) || 1}
+      />
     );
 
   return (
     <div className={cx(style)}>
       <div className={'img'}>
         {board.boardPhotoUrl ? (
-          <Img src={`${board.boardPhotoUrl}`} />
+          <Img src={`${board && board.boardPhotoUrl}`} />
         ) : (
           <div className={'logo'}>
             <Img src={'/img/logo.png'} />
@@ -185,10 +228,16 @@ export default function NewPost({ page, board }: Props) {
       </div>
       <div className={'info'}>
         <div className={'user'}>
-          <div className={'title'}>{board.title}</div>
+          <div className={'title'}>{board && board.title}</div>
           {info}
         </div>
         {price}
+        <div className={'sub-info'}>
+          <div className={'area'}> {board.areaName}</div>
+          <div className={'day'}>{`D - ${
+            board.decimalDay || text.isOver
+          }`}</div>
+        </div>
       </div>
       <div className={'mark-box'}>{markBox}</div>
     </div>

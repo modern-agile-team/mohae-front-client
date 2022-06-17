@@ -2,5 +2,5 @@
 
 const a = 1;
 const b = 2;
-const d = 315315351351;
+const f = 123;
 export {};

@@ -187,15 +187,6 @@ function Board() {
 
   //1250
 
-  const onClick = {
-    linkClick: () => {
-      console.log('링크클릭 :>> ');
-    },
-    postClick: () => {
-      console.log('게시물클릭 :>> ');
-    },
-  };
-
   return (
     <>
       <div className={cx(title)}>전체 게시판</div>
@@ -204,7 +195,7 @@ function Board() {
         <Search board />
         <div className={cx(style.btn)}>
           <Link to={'/write'}>
-            <Btn main onClick={onClick.linkClick}>
+            <Btn main>
               <p>글쓰기</p>
               <div className='imgWrap'>
                 <Img src='/img/write.png' />

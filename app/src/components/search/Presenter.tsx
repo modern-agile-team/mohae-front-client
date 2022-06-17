@@ -79,6 +79,7 @@ function Presenter(props: InputProps) {
     width: fit-content;
     height: fit-content;
     position: relative;
+    z-index: 4;
     ${realBoxStyle()}
   `;
 

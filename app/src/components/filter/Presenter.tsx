@@ -79,7 +79,7 @@ function Presenter(props: Props) {
 
   const parentWrap = css`
     position: absolute;
-    top: 42.5px;
+    top: 43.5px;
     left: 0px;
     z-index: 1;
 

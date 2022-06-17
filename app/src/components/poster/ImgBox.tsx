@@ -33,15 +33,14 @@ function ImgBox({ img, state, shape }: Props) {
     background: white url(${imgUrl}) no-repeat center/cover;
     background-size: ${img ? '100%' : '30%'};
     border-radius: 6px 6px 0px 0px;
+    position: relative;
 
-    /* position: relative; */
-
-    /* animation */
     ${img !== null && hover}
     .mosaic {
       height: inherit;
       background: ${color.dark1};
       opacity: 0.5;
+      border-radius: 6px 6px 0px 0px;
     }
     .markBox {
       position: absolute;

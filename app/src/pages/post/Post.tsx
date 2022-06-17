@@ -13,13 +13,6 @@ import useScroll from '../../customhook/useScroll';
 function Post(props: Props) {
   const [report, setReport] = useState(false);
 
-  useEffect(() => {
-    axios
-      .get(`http://localhost:8000/list`)
-      .then(response => console.log('res : ', response.data))
-      .catch(err => console.log('err : ', err));
-  }, []);
-
   const dummy = {
     statusCode: 200,
     msg: '게시글 상세 조회가 완료되었습니다.',

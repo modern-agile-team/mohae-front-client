@@ -6,15 +6,7 @@ import { keyframes } from '@emotion/react';
 import { color, radius, font, shadow } from '../../../styles';
 import Review from '../Review';
 import Slide from './Slide';
-import {
-  Img,
-  Poster,
-  NewPost,
-  Box,
-  Profile,
-  FocusBar,
-  Category,
-} from '../../../components';
+import { Img, Box, Profile, FocusBar, Category } from '../../../components';
 
 interface Props {
   [key: string]: any;

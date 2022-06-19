@@ -17,7 +17,7 @@ export default function Snap({ contents }: Props) {
     [part, setPart] = useState(0);
 
   useEffect(() => {
-    setPart(3);
+    // setPart(3);
   }, []);
 
   const container = css`
@@ -111,7 +111,7 @@ export default function Snap({ contents }: Props) {
     const translate = `translateY(calc(${size} * ${-part}))`;
     return css`
       height: ${row};
-      /* transition: all 0.8s cubic-bezier(0.61, 0.31, 0.36, 0.69); */
+      transition: all 0.8s cubic-bezier(0.61, 0.31, 0.36, 0.69);
       transform: ${translate};
     `;
   };

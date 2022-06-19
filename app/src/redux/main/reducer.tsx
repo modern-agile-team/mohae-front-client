@@ -11,7 +11,7 @@ import axios from 'axios';
 const GET_OVER = 'get_over';
 const GET_IN_PROGRESS = 'get_in_progress';
 
-const ENDPOINT = `http://mo-hae.site:8080`;
+const ENDPOINT = `https://mo-hae.site`;
 
 const asyncThunk = (name: string, param: string) =>
   createAsyncThunk<any, void, {}>(name, async () => {
@@ -35,16 +35,13 @@ const initialState = {
 // store (state)
 
 export const main = createSlice({
-  name: 'user',
+  name: 'main',
   initialState,
   // reducer function
   reducers: {
     // create reducers
     // [GET_OVER]: (state, action: PayloadAction<any>) => {
     //   state.overedBoard = action.payload;
-    // },
-    // [GET_IN_PROGRESS]: (state, action: PayloadAction<any>) => {
-    //   state.inProgressBoard = action.payload;
     // },
   },
   extraReducers: (builder) => {

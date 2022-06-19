@@ -105,7 +105,6 @@ export default function Login() {
         </div>
         <Box size={[480, 52]}>
           <Btn main>로그인</Btn>
-          {/* <Btn white>로그인</Btn> */}
         </Box>
       </div>
     </BasicModal>

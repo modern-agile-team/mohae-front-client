@@ -6,11 +6,9 @@ import { Categories, Category, MarkBox, NewPost } from '../../components';
 import { RootState, AppDispatch } from '../../redux/root';
 import { user_login, addAge, updateToken } from '../../redux/user/reducer';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { Profile } from '../../pages';
+import { Profile, Login2 } from '../../pages';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import Search from '../../components/search/Search';
-import Filter from '../../components/search/Filter';
 
 export default function HG() {
   const dummyBoard = {
@@ -27,23 +25,7 @@ export default function HG() {
   };
   return (
     <>
-      {/* <button onClick={change}>{'change'}</button>
-      <div>{user.name}</div>
-      <div>{user.age}</div>
-      <div>{user.id}</div> */}
-      {/* <MarkBox />
-      <MarkBox big shape={'?'} state={'able'} /> */}
-      <div
-        className={cx(css`
-          width: 360px;
-          height: 284px;
-        `)}
-      >
-        <NewPost page={'inMain'} board={dummyBoard} />
-      </div>
-
-      {/* <Filter /> */}
-      {/* <Profile /> */}
+      <Login2 />
     </>
   );
 }

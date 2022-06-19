@@ -3,7 +3,7 @@
 import { css, cx } from '@emotion/css';
 import { color, radius, font, shadow } from '../../style/palette';
 import { ReactElement } from 'react';
-import { Img } from '../../../components';
+import { Img, Btn } from '../../../components';
 
 const wrapper = css`
   * {
@@ -33,25 +33,25 @@ const wrapper = css`
     height: 100%;
   }
 
-  .button-wrapper {
+  > .button-wrapper {
     height: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    & > :not(:last-child) {
+    .menu {
+      height: 100%;
       margin-right: 40px;
+      font-size: 14px;
     }
-  }
-
-  .button {
-    height: 100%;
-    font-size: 14px;
-  }
-
-  .square-buttons {
-    display: flex;
-    & > :not(:last-child) {
-      margin-right: 8px;
+    .square-buttons {
+      display: flex;
+      > * {
+        width: 100px;
+        height: 43px;
+      }
+      & > :not(:last-child) {
+        margin-right: 8px;
+      }
     }
   }
 `;
@@ -75,12 +75,12 @@ export default function Header(props: Props): ReactElement {
         <Img src={'/img/logo.png'} />
       </div>
       <div className={'button-wrapper'}>
-        <button className={'button'}>{text.boards}</button>
-        <button className={'button'}>{text.notice}</button>
-        <button className={'button'}>{text.inquire}</button>
+        <button className={'menu'}>{text.boards}</button>
+        <button className={'menu'}>{text.notice}</button>
+        <button className={'menu'}>{text.inquire}</button>
         <div className={'square-buttons'}>
-          {/* <Btn6>{text.regist}</Btn6>
-          <Btn6 main>{text.login}</Btn6> */}
+          <Btn white>{text.regist}</Btn>
+          <Btn main>{text.login}</Btn>
         </div>
       </div>
     </div>

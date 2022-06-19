@@ -59,7 +59,6 @@ export default function Part4(props: Props) {
     dispatch(getHotProgressing());
     dispatch(getHotOver());
   }, []);
-  console.log('hotBoardAll :>> ', hotBoardAll);
 
   const style = css`
     height: 100%;

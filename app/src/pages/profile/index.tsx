@@ -30,7 +30,7 @@ export default function Edit() {
     four: false,
   });
 
-  const toggleSelectBox = (e: React.MouseEvent<HTMLDialogElement>) => {
+  const toggleSelectBox = (e: React.MouseEvent<HTMLDivElement>) => {
     const target = e.currentTarget.id;
     setOpen({
       one: false,

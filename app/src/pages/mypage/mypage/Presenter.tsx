@@ -1,6 +1,6 @@
 /** @format */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { css, cx } from '@emotion/css';
 import { keyframes } from '@emotion/react';
 import { color, radius, font, shadow } from '../../../styles';
@@ -12,7 +12,7 @@ interface Props {
   [key: string]: any;
 }
 
-export default function MyPage({ text }: Props) {
+export default function MyPage({ text, userInfo }: Props) {
   const style = css`
     width: 100%;
     height: fit-content;
@@ -97,8 +97,11 @@ export default function MyPage({ text }: Props) {
         width: 100%;
         height: fit-content;
         display: flex;
-        justify-content: space-between;
+        justify-content: center;
         align-items: center;
+        > :not(:last-child) {
+          margin-right: 8px;
+        }
       }
       > .boards {
         width: 748px;
@@ -127,12 +130,26 @@ export default function MyPage({ text }: Props) {
     }
   `;
 
+  // console.log('userInfo :>> ', userInfo);
+
+  const interested =
+    userInfo &&
+    userInfo.categories.map((category: any, index: number) => (
+      <Box key={index} size={[80, 80]}>
+        <Category
+          shape={'square'}
+          img={`/img/category-${category.no - 1}.png`}
+          name={category.name}
+        />
+      </Box>
+    ));
+
   return (
     <div className={cx(style)}>
       <div className={'user'}>
         <Box className={'box'} size={[304, 724]}>
           <div className={'name'}>
-            <div>{'모던 애자일'}</div>
+            <div>{userInfo && userInfo.nickname}</div>
             <div>{text.sir}</div>
           </div>
           <div className={'profile'}>
@@ -140,52 +157,30 @@ export default function MyPage({ text }: Props) {
           </div>
           <div className={'register'}>
             <div>{text.registerDate}</div>
-            <div className={'date'}>{'2022.01.01'}</div>
+            <div className={'date'}>{userInfo && userInfo.createdAt}</div>
           </div>
           <button className={'logout'}>{text.logout}</button>
           <div className={'privacy'}>
             <div className={'item'}>
               <Img src={'/img/post.png'} />
-              <span>{`${'하하하'} ${123}`}</span>
+              <span>{`${text.boards} ${userInfo && userInfo.boardNum}`}</span>
             </div>
             <div className={'item'}>
               <Img src={'/img/heart-main.png'} />
-              <span>{`${'하하하'} ${123}`}</span>
+              <span>{`${text.like} ${userInfo && userInfo.likedUserNum}`}</span>
             </div>
             <div className={'item'}>
               <Img src={'/img/university.png'} />
-              <span>{`${'하하하'} ${123}`}</span>
+              <span>{userInfo && userInfo.schoolName}</span>
             </div>
             <div className={'item'}>
               <Img src={'/img/study.png'} />
-              <span>{`${'하하하'} ${123}`}</span>
+              <span>{userInfo && userInfo.majorName}</span>
             </div>
           </div>
           <FocusBar thin light />
           <div className={'interest'}>{text.interesting}</div>
-          <div className={'categories'}>
-            <Box size={[80, 80]}>
-              <Category
-                shape={'square'}
-                img={'/img/heart-main.png'}
-                name={'카테1'}
-              />
-            </Box>
-            <Box size={[80, 80]}>
-              <Category
-                shape={'square'}
-                img={'/img/heart-main.png'}
-                name={'카테2'}
-              />
-            </Box>
-            <Box size={[80, 80]}>
-              <Category
-                shape={'square'}
-                img={'/img/heart-main.png'}
-                name={'카테3'}
-              />
-            </Box>
-          </div>
+          <div className={'categories'}>{interested}</div>
         </Box>
         <div className={'boards'}>
           <div className={'section'}>

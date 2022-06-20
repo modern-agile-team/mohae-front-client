@@ -1,24 +1,21 @@
+/** @format */
+
 import { useState, useEffect } from 'react';
 import { css, cx } from '@emotion/css';
 import { Box } from '../../components';
-// import ArrowBtn from '../arrowbtn/ArrowBtn';
 import Img from '../img/Img';
 import { animation } from './modalAnimation';
+import { close_all } from '../../redux/modal/reducer';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState, AppDispatch } from '../../redux/root';
 
 interface Props {
   [key: string]: any;
 }
 
-function BasicModal({
-  visible,
-  close,
-  big,
-  preBtn,
-  noCloseBtn,
-  children,
-}: Props) {
-  const [modalState, setModalState] = useState(false);
-
+function BasicModal({ visible, big, preBtn, noCloseBtn, children }: Props) {
+  const [modalState, setModalState] = useState(visible);
+  const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
     let timer: any;
     if (visible) {
@@ -26,7 +23,6 @@ function BasicModal({
     } else {
       timer = setTimeout(() => setModalState(false), 800);
     }
-
     return () => {
       clearTimeout(timer);
     };
@@ -45,12 +41,6 @@ function BasicModal({
     align-items: center;
     z-index: 12;
     ${visible ? animation.basicAppear : animation.basicDissappear}
-  `;
-
-  const arrowBtn = css`
-    top: 24px;
-    left: 24px;
-    position: absolute;
   `;
 
   const closeBtn = css`
@@ -76,20 +66,24 @@ function BasicModal({
     ${modalState || animation.dissappearOverlay};
   `;
 
+  const close = () => {
+    dispatch(close_all(false));
+  };
+
   return (
     <div>
       <Box
         light
         bigRadius
         size={big ? [1128, 630] : [936, 540]}
-        className={box}>
+        className={box}
+      >
         {preBtn && (
           <div className={'arrowBtn'}>
             <Img
               src={'img/arrow-left-dark1.png'}
               onClick={() => alert('이전')}
             />
-            {/* <ArrowBtn left dark onClick={() => alert('이전')} /> */}
           </div>
         )}
         {noCloseBtn || (

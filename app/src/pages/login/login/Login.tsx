@@ -13,8 +13,8 @@ import {
   Btn,
   OrderedImg,
   Report,
-} from '../../components';
-import { radius, font, color, shadow } from '../../styles';
+} from '../../../components';
+import { radius, font, color, shadow } from '../../../styles';
 import { css, cx } from '@emotion/css';
 
 interface Props {

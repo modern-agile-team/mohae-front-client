@@ -1,6 +1,5 @@
 /** @format */
 
-import { useSelector, useDispatch } from 'react-redux';
 import {
   Img,
   Poster,
@@ -17,14 +16,18 @@ import {
 } from '../../components';
 import { radius, font, color, shadow } from '../../styles';
 import { css, cx } from '@emotion/css';
+import Login from './login/Login';
 import Register from './register';
-import Login from './Login';
 
 interface Props {
   [key: string]: any;
 }
 
-export default function Presenter({ text }: Props) {
+export default function Presenter({ openModal, children }: Props) {
+  const text: { [key: string]: any } = {
+    login: '로그인',
+    register: '회원가입',
+  };
   const style = css`
     width: 100%;
     height: 100%;
@@ -130,12 +133,10 @@ export default function Presenter({ text }: Props) {
       margin: 16px 0;
       width: 83px;
       height: 111px;
-      background-color: lightblue;
     }
   `;
-
   return (
-    <BasicModal small visible={true}>
+    <BasicModal small visible={openModal}>
       <div className={cx(style)}>
         <div className={'logo'}>
           <Img src={'/img/logo.png'} />
@@ -145,8 +146,9 @@ export default function Presenter({ text }: Props) {
           <button>{text.register}</button>
         </ul>
         <FocusBar thin />
-        <Register text={text} />
+        {/* <Register text={text} /> */}
         {/* <Login text={text} /> */}
+        {children}
       </div>
     </BasicModal>
   );

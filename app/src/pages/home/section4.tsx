@@ -1,10 +1,10 @@
 /** @format */
 
 import { Suspense, useState, useEffect } from 'react';
+import { decodeToken } from 'react-jwt';
 import { css, cx } from '@emotion/css';
-import { keyframes } from '@emotion/react';
 import { color, radius, font, shadow } from '../../styles';
-import { Img, Poster, NewPost, Box } from '../../components';
+import { Img, NewPost } from '../../components';
 import {
   getHotAll,
   getHotProgressing,
@@ -34,7 +34,7 @@ export default function Part4(props: Props) {
   const [focus, setFocus] = useState(0);
   const focusArea = `translate(${focus * 154}px, -50%)`;
   const dispatch = useDispatch<AppDispatch>();
-  const ENDPOINT = `http://mo-hae.site:8080/boards/hot?select=`;
+  const ENDPOINT = `https://mo-hae.site/profile/5`;
 
   const boardsInMain = useSelector((state: RootState) => state.main);
 
@@ -53,13 +53,31 @@ export default function Part4(props: Props) {
     boardsInMain.overedBoard[0] || null,
     boardsInMain.overedBoard[2] || null,
   ].filter((board) => !!board);
+  const TOKEN =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVzdGFyZzFAaGFubWFpbC5uZXQiLCJ1c2VyTm8iOjUsImlzc3VlciI6Im1vZGVybi1hZ2lsZSIsImV4cGlyYXRpb24iOiIzNjAwMCIsImlhdCI6MTY1NTY5OTA4MywiZXhwIjoxNjU1NzM1MDgzfQ.6Ds_HrZym2ZCNyus8jAqvHXh1hde5d_CSgYD1nH5m18';
+  const decodedToken = decodeToken(TOKEN);
+  // console.log('decodedToken :>> ', decodedToken);
 
   useEffect(() => {
     dispatch(getHotAll());
     dispatch(getHotProgressing());
     dispatch(getHotOver());
+    axios
+      .get(ENDPOINT, {
+        headers: {
+          accept: 'application/json',
+          Authorization: `Bearer ${TOKEN}`,
+        },
+      })
+      .then((res) => {
+        // console.log('res >>', res.data);
+      })
+      .catch((err) => {
+        // console.log(`err`, err);
+      });
   }, []);
 
+  // console.log('hotBoardProgressing :>> ', hotBoardProgressing);
   const style = css`
     height: 100%;
     display: flex;

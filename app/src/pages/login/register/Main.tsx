@@ -32,10 +32,17 @@ export default function Main({ text }: Props) {
         </div>
         <span>{text.subDesc}</span>
       </div>
-      <div className={'ssary'}></div>
-      <Box size={[100, 43]}>
+      <div className={'ssary'}>
+        <Img src={'/img/hello.png'} />
+      </div>
+      <div
+        className={cx(css`
+          width: 100px;
+          height: 43px;
+        `)}
+      >
         <Btn main>{text.signUp}</Btn>
-      </Box>
+      </div>
     </>
   );
 }

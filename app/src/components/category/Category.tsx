@@ -56,25 +56,29 @@ export default function Category({
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      :hover {
-        :after {
-          content: '${name}';
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          position: absolute;
-          font-size: 14px;
-          line-height: 170%;
-          width: 100%;
-          height: 100%;
-          ${radius[6]}
-          line-height: 170%;
-          background-color: white;
-          top: 0;
-          left: 0;
-          color: ${color.dark1};
+      overflow: hidden;
+      > .category-name {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        top: 100%;
+        left: 0;
+        transition: 0.15s all ease-in-out;
+        line-height: 170%;
+        color: ${color.dark1};
+        ${font.weight[700]};
+        background-color: rgba(255, 255, 255, 0.65);
+        /* backdrop-filter: blur(2px); */
+      }
 
-          ${font.weight[700]}
+      :hover {
+        .category-name {
+          transition: 0.2s all ease-in-out;
+          transform: translateY(-100%);
         }
       }
       .icon {
@@ -99,9 +103,12 @@ export default function Category({
   return !(shape === 'row') ? (
     <Link to={`/boards/${id}`} className={cx(style[shape])}>
       {!(shape === 'row') && (
-        <div className={'icon'}>
-          <Img src={img} />
-        </div>
+        <>
+          <div className={'icon'}>
+            <Img src={img} />
+          </div>
+          {shape === 'square' && <div className={'category-name'}>{name}</div>}
+        </>
       )}
       {!(shape === 'square') && <div>{name || 'Category'}</div>}
     </Link>

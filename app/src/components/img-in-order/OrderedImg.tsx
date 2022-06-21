@@ -1,10 +1,12 @@
 /** @format */
 
 import { css, cx } from '@emotion/css';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { color, radius, font, shadow } from '../../styles';
 import Img from '../img/Img';
 import Style from './style';
+import axios from 'axios';
+import { ContentBlock } from 'draft-js';
 
 interface Props {
   [key: string]: any;
@@ -25,6 +27,9 @@ export default function OrderedImg({ imgs, edit, inline }: Props) {
   );
   const [alarm, setAlarm] = useState(true);
   const [myImage, setMyImage] = useState<IMAGE[]>(clone || []);
+
+  const [testImg, setTestImg] = useState(null);
+
   const addImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.currentTarget.files || [];
     if (inline && files.length + myImage.length > 5) {
@@ -39,6 +44,40 @@ export default function OrderedImg({ imgs, edit, inline }: Props) {
         setMyImage(urls);
       }
     }
+    const img: any | Blob | File =
+      e.currentTarget.files && e.currentTarget.files[0];
+    // const img = e.currentTarget.files;
+    const formDataImg = new FormData();
+    formDataImg.append('file', img);
+    // for (let key of Object.keys(formDataImg)) {
+    //   console.log(key);
+    // }
+    // console.log('img :>> ', img);
+    // console.log('formDataImg :>> ', formDataImg);
+
+    axios
+      .post(
+        'https://mo-hae.site/specs/regist',
+        {
+          title: '이한결제목',
+          description: '이한결본문',
+          image: formDataImg,
+        },
+        {
+          headers: {
+            accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization:
+              'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVzdGFyZzFAaGFubWFpbC5uZXQiLCJ1c2VyTm8iOjUsImlzc3VlciI6Im1vZGVybi1hZ2lsZSIsImV4cGlyYXRpb24iOiIzNjAwMCIsImlhdCI6MTY1NTc3NTc3NSwiZXhwIjoxNjU1ODExNzc1fQ.l7alrMuDDhip_KUU1yvSF5rAZ-UoPeALh5dZBjsFuxk',
+          },
+        }
+      )
+      .then((res) => {
+        console.log(`res`, res);
+      })
+      .catch((err) => {
+        console.log(`err`, err);
+      });
   };
 
   useEffect(() => {
@@ -117,9 +156,11 @@ export default function OrderedImg({ imgs, edit, inline }: Props) {
     setMyImage(newImage);
   };
 
+  const input_element = useRef(null);
+  // const input_element = document.querySelector('#input-file');
+
   const request = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-
     console.log('myImage :>> ', myImage);
   };
 
@@ -171,6 +212,7 @@ export default function OrderedImg({ imgs, edit, inline }: Props) {
                 onChange={addImage}
                 multiple
                 accept=".jpg,.jpeg,.png"
+                // ref={input_element}
               />
               <label htmlFor="input-file">
                 <div className={'item-box add'}>

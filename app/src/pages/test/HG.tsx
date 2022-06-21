@@ -2,7 +2,14 @@
 
 import { useState, useEffect } from 'react';
 import { injectGlobal, cx, css } from '@emotion/css';
-import { Categories, Category, MarkBox, NewPost } from '../../components';
+import {
+  Categories,
+  Category,
+  OrderedImg,
+  MarkBox,
+  NewPost,
+  Carousel,
+} from '../../components';
 import { RootState, AppDispatch } from '../../redux/root';
 import { Profile, LoginModal } from '../../pages';
 import axios from 'axios';
@@ -14,6 +21,7 @@ export default function HG() {
       {/* <LoginModal /> */}
       {/* <Login /> */}
       {/* <Login /> */}
+      <OrderedImg edit />
     </>
   );
 }

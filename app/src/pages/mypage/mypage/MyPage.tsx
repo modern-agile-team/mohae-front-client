@@ -28,6 +28,7 @@ export default function MyPage() {
   const dispatch = useDispatch();
   const userId = useParams().no;
   const userInfo = useSelector((state: RootState) => state.mypage.user.profile);
+  console.log(`userId`, userId);
   const text: { [key: string]: any } = {
     sir: '님',
     registerDate: '가입일 :',
@@ -48,7 +49,7 @@ export default function MyPage() {
         headers: {
           accept: 'application/json',
           Authorization:
-            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVzdGFyZzFAaGFubWFpbC5uZXQiLCJ1c2VyTm8iOjUsImlzc3VlciI6Im1vZGVybi1hZ2lsZSIsImV4cGlyYXRpb24iOiIzNjAwMCIsImlhdCI6MTY1NTc0MTc1NSwiZXhwIjoxNjU1Nzc3NzU1fQ.UqRpUTUxe8SeCEfukMQOQRff3cXAS3r032lXE4wYQuE',
+            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVzdGFyZzFAaGFubWFpbC5uZXQiLCJ1c2VyTm8iOjUsImlzc3VlciI6Im1vZGVybi1hZ2lsZSIsImV4cGlyYXRpb24iOiIzNjAwMCIsImlhdCI6MTY1NTgyNTE5NiwiZXhwIjoxNjU1ODYxMTk2fQ.PZG28ccYfcN7IJsb7DyoGCM3tHbM2ARXf3OoS9Hwu60',
         },
       })
       .then((res) => {

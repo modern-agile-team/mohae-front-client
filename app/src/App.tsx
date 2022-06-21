@@ -2,7 +2,13 @@
 
 import React, { Suspense } from 'react';
 import { cx, css } from '@emotion/css';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link,
+  Navigate,
+} from 'react-router-dom';
 import { injectGlobal } from '@emotion/css';
 import { color, Layout } from './styles';
 import {
@@ -15,8 +21,8 @@ import {
   Post,
   LoginModal,
   Spec,
+  Default,
 } from './pages';
-import SJ from './pages/test/SJ';
 
 injectGlobal`
   * {
@@ -66,40 +72,26 @@ interface Props {
 }
 function App({}: Props) {
   const MyPage = React.lazy(() => import('./pages/mypage/mypage/MyPage'));
+  let isAuthorized = sessionStorage.getItem('isAuthorized');
+  console.log('isAuthorized :>> ', isAuthorized);
+
   return (
     <Router>
+      {/* {!isAuthorized ? <Navigate to="/login" /> : <Navigate to="/" />} */}
       <Routes>
+        <Route path="*" element={<Navigate to="/" replace />} />
         <Route path={'/'} element={<Layout main component={<Home />} />} />
         <Route path={'/hg'} element={<Layout component={<HG />} />} />
-        <Route path={'/hl'} element={<Layout component={<div />} />} />
-        <Route path={'/sj'} element={<Layout component={<SJ />} />} />
         <Route
           path={'/boards/:no'}
           element={<Layout component={<Board />} />}
         />
+        {/* <Route element={<Default />}> */}
         <Route
           path={'/mypage/:no'}
-          element={
-            <Layout
-              component={
-                <Suspense
-                  fallback={
-                    <div
-                      className={cx(css`
-                        width: 100%;
-                        height: 100vh;
-                        background-color: red;
-                        z-index: 10;
-                      `)}
-                    />
-                  }
-                >
-                  <MyPage />
-                </Suspense>
-              }
-            />
-          }
+          element={<Layout component={<MyPage />} />}
         />
+        {/* </Route> */}
         <Route path={'/spec/:no'} element={<Layout component={<Spec />} />} />
         <Route path={'/post'} element={<Layout component={<Post />} />} />
         <Route

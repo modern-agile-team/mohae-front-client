@@ -1,10 +1,12 @@
 /** @format */
 
 import { css, cx } from '@emotion/css';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { color, radius, font, shadow } from '../../styles';
 import Img from '../img/Img';
 import Style from './style';
+import axios from 'axios';
+import { useForm, UseFormReturn } from 'react-hook-form';
 
 interface Props {
   [key: string]: any;
@@ -25,6 +27,9 @@ export default function OrderedImg({ imgs, edit, inline }: Props) {
   );
   const [alarm, setAlarm] = useState(true);
   const [myImage, setMyImage] = useState<IMAGE[]>(clone || []);
+
+  const { register, handleSubmit } = useForm();
+
   const addImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.currentTarget.files || [];
     if (inline && files.length + myImage.length > 5) {
@@ -119,7 +124,6 @@ export default function OrderedImg({ imgs, edit, inline }: Props) {
 
   const request = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-
     console.log('myImage :>> ', myImage);
   };
 
@@ -171,6 +175,7 @@ export default function OrderedImg({ imgs, edit, inline }: Props) {
                 onChange={addImage}
                 multiple
                 accept=".jpg,.jpeg,.png"
+                // {...register('file')}
               />
               <label htmlFor="input-file">
                 <div className={'item-box add'}>

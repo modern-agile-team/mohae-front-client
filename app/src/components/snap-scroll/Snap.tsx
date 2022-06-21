@@ -1,6 +1,6 @@
 /** @format */
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, Fragment } from 'react';
 import { css, cx } from '@emotion/css';
 import { color, radius, font, shadow } from '../../styles';
 
@@ -102,7 +102,7 @@ export default function Snap({ contents }: Props) {
         onClick={clickCircle}
       />
     ) : (
-      <></>
+      <Fragment key={index}></Fragment>
     );
   });
 

@@ -14,6 +14,7 @@ export default function LoginModal({}: Props) {
   const openModal = useSelector((state: RootState) => state.modal.openLogin);
 
   const text: { [key: string]: any } = {
+    login: '로그인',
     placeholder: {
       id: '이메일을 입력해 주세요',
       pw: '비밀번호를 입력해 주세요',
@@ -28,8 +29,8 @@ export default function LoginModal({}: Props) {
 
   return (
     <Presenter openModal={openModal}>
-      {/* <Login text={text} /> */}
-      <Register text={text} />
+      <Login text={text} />
+      {/* <Register text={text} /> */}
     </Presenter>
   );
 }

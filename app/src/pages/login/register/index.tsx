@@ -8,11 +8,14 @@ interface Props {
 }
 
 export default function Register({ text }: Props) {
-  return (
-    <>
-      {/* <Main text={text} /> */}
-      {/* <Agreement /> */}
-      <PersonalInfo />
-    </>
-  );
+  const main = false,
+    agreement = false,
+    info = false;
+  const show = {
+    main: <Main text={text} />,
+    agreement: <Agreement />,
+    info: <PersonalInfo />,
+  };
+
+  return <>{show.info}</>;
 }

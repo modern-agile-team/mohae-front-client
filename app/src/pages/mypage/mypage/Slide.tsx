@@ -105,7 +105,7 @@ export default function Carousel({ onClick, imgs, outsideBtn }: Props) {
   const images = IMAGES.map((img: string, index: number) => (
     <>
       <div className={'board'} key={index}>
-        <NewPost page={'inSpec'} />
+        {/* <NewPost page={'inSpec'} /> */}
       </div>
     </>
   ));

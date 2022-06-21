@@ -10,8 +10,8 @@ interface type {
 }
 
 function Filter() {
-  const checked = useSelector((state: RootState) => state.filter);
-  console.log('checked :>> ', checked);
+  // const checked = useSelector((state: RootState) => state.filter);
+  // console.log('checked :>> ', checked);
   const contents: type = {
     정렬: ['인기순', '최신순', '오래된순'],
     대상: [

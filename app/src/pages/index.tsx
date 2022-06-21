@@ -6,7 +6,7 @@ import { MyPage, OtherPage } from './mypage';
 import Resign from './resign';
 import Profile from './profile';
 import Spec from './spec';
-import Login from './login/Container';
+import LoginModal from './login';
 import CreatePost from './createpost/CreatePost';
 import Board from './board/Board';
 import Post from './post/Post';
@@ -21,5 +21,5 @@ export {
   Board,
   Post,
   Spec,
-  Login,
+  LoginModal,
 };

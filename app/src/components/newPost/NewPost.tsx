@@ -6,6 +6,7 @@ import Img from '../img/Img';
 import MarkBox from '../markbox/MarkBox';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../redux/root';
+import { Link } from 'react-router-dom';
 
 interface Props {
   [key: string]: any;
@@ -216,7 +217,7 @@ export default function NewPost({ page, board }: Props) {
     );
 
   return (
-    <div className={cx(style)}>
+    <Link to={`post/${board.no}`} className={cx(style)}>
       <div className={'img'}>
         {board.boardPhotoUrl ? (
           <Img src={`${board && board.boardPhotoUrl}`} />
@@ -240,6 +241,6 @@ export default function NewPost({ page, board }: Props) {
         </div>
       </div>
       <div className={'mark-box'}>{markBox}</div>
-    </div>
+    </Link>
   );
 }

@@ -10,6 +10,7 @@ import LoginModal from './login';
 import CreatePost from './createpost/CreatePost';
 import Board from './board/Board';
 import Post from './post/Post';
+import Default from './default/Default';
 export {
   HG,
   Home,
@@ -22,4 +23,5 @@ export {
   Post,
   Spec,
   LoginModal,
+  Default,
 };

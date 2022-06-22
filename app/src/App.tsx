@@ -101,7 +101,7 @@ function App({}: Props) {
           }
         />
         <Route path={'/spec/:no'} element={<Layout component={<Spec />} />} />
-        <Route path={'/post'} element={<Layout component={<Post />} />} />
+        <Route path={'/post/:no'} element={<Layout component={<Post />} />} />
         <Route
           path={'/write'}
           element={<Layout component={<CreatePost />} />}

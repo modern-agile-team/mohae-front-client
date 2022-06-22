@@ -33,11 +33,10 @@ function Poster({ data }: Props) {
     }
     &:hover {
       .default {
-        visibility: hidden;
         display: none;
       }
       .hovered {
-        visibility: visible;
+        display: flex;
         animation: fadeInUp 0.7s;
       }
     }
@@ -85,8 +84,7 @@ function Poster({ data }: Props) {
 
     .hovered {
       height: 56px;
-      visibility: hidden;
-      display: flex;
+      display: none;
       justify-content: space-between;
       align-items: center;
       padding: 8px 12px;

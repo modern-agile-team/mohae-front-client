@@ -10,7 +10,7 @@ import axios from 'axios';
 import QuickMenu from './QuickMenu';
 import useScroll from '../../customhook/useScroll';
 
-function Post(props: Props) {
+function Presenter(props: Props) {
   const [report, setReport] = useState(false);
 
   const dummy = {
@@ -109,4 +109,4 @@ function Post(props: Props) {
   );
 }
 
-export default Post;
+export default Presenter;

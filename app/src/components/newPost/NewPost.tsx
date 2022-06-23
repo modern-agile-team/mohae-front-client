@@ -115,32 +115,38 @@ export default function NewPost({ page, board }: Props) {
       position: relative;
       overflow: hidden;
       > .sub-info {
-        padding: 14px 16px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        left: 0;
-        bottom: -76px;
-        transition: 0.3s ease-in-out all;
-        * {
-          ${font.weight[700]};
-        }
-        > .area {
-          font-size: 14px;
-        }
-        > .day {
-          font-size: 16px;
-          color: ${`${board.decimalDay === null ? color.main : color.dark1}`};
-        }
+        ${page !== 'inSpec' &&
+        css`
+          padding: 14px 16px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          width: 100%;
+          height: 100%;
+          position: absolute;
+          left: 0;
+          bottom: -76px;
+          transition: 0.3s ease-in-out all;
+          * {
+            ${font.weight[700]};
+          }
+          > .area {
+            font-size: 14px;
+          }
+          > .day {
+            font-size: 16px;
+            color: ${`${board.decimalDay === null ? color.main : color.dark1}`};
+          }
+        `}
       }
       :hover {
         > .sub-info {
-          transition: 0.3s ease-in-out all;
-          transform: translateY(-76px);
-          background-color: white;
+          ${page !== 'inSpec' &&
+          css`
+            transition: 0.3s ease-in-out all;
+            transform: translateY(-76px);
+            background-color: white;
+          `}
         }
       }
 
@@ -200,7 +206,7 @@ export default function NewPost({ page, board }: Props) {
     </div>
   );
 
-  const markBox =
+  const markBox = board.isDeadline ? (
     page === 'inMain' || page === 'inBoard' ? (
       <MarkBox
         shape={(board && board.target) || 1}
@@ -214,14 +220,24 @@ export default function NewPost({ page, board }: Props) {
         shape={(board && board.target) || 0}
         state={(board && board.isDeadline) || 1}
       />
-    );
+    )
+  ) : (
+    <> </>
+  );
 
   return (
     <Link to={`post/${board.no}`} className={cx(style)}>
       <div className={'img'}>
-        {board.boardPhotoUrl ? (
-          <Img src={`${board && board.boardPhotoUrl}`} />
+        {/* baordPhotoUrl >> 승범 형식
+         *  board.specPhotos[0].photo_url >> 수형 형식
+         */}
+        {/* {board && board.boardPhotoUrl ? ( */}
+        {board ? (
+          // board.specPhotos.length(
+          // && board.specPhotos.length > 0
+          <Img src={`${board.specPhotos[0].photo_url}`} />
         ) : (
+          // <Img src={board.boardPhotoUrl && `${board.boardPhotoUrl}`} />
           <div className={'logo'}>
             <Img src={'/img/logo.png'} />
           </div>
@@ -235,9 +251,9 @@ export default function NewPost({ page, board }: Props) {
         {price}
         <div className={'sub-info'}>
           <div className={'area'}> {board.areaName}</div>
-          <div className={'day'}>{`D - ${
-            board.decimalDay || text.isOver
-          }`}</div>
+          <div className={'day'}>
+            {page !== 'inSpec' && `D - ${board.decimalDay || text.isOver}`}
+          </div>
         </div>
       </div>
       <div className={'mark-box'}>{markBox}</div>

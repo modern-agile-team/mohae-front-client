@@ -16,6 +16,7 @@ import { Profile, LoginModal } from '../../pages';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
+import TestImg from './test';
 
 interface BODY {
   title: string;
@@ -25,8 +26,8 @@ interface BODY {
 
 export default function HG() {
   const IMGURL = 'https://mohaeproj.s3.amazonaws.com/';
-  const [imgurl, setImgurl] = useState('');
   const { register, handleSubmit } = useForm();
+  const [testImg, setImg] = useState<any[]>([]);
   // useEffect(() => {
   //   axios
   //     .get(`https://mo-hae.site/specs/profile?user=5&take=6&page=1`, {
@@ -46,61 +47,68 @@ export default function HG() {
   // }, []);
 
   const onSubmit = async (e: any) => {
+    e.preventDefault();
     const formData = new FormData();
-    const EVENT = e;
-
-    formData.append('title', '제목333');
-    formData.append('description', '본문333');
-    var arr = EVENT.file;
-    for (var i = 0; i < arr.length; i++) {
-      formData.append('image', EVENT.file[i]);
+    console.log('e.currenTarget.file :>> ', e.target.firstChild.files);
+    const files = e.target.firstChild.files;
+    for (let i = 0; i < files.length; i++) {
+      setImg([...testImg, URL.createObjectURL(files[i])]);
     }
+
+    formData.append('title', '제목99');
+    formData.append('description', '본문99');
+    for (var i = 0; i < files.length; i++) {
+      formData.append('image', files[i]);
+    }
+
+    // const iterator = formData.values();
+    // console.log('iterator :>> ', iterator.next().value);
+    // console.log('iterator :>> ', iterator.next().value);
+    // console.log('iterator :>> ', iterator.next().value);
+    // console.log('iterator :>> ', iterator.next().value);
+    // console.log('iterator :>> ', iterator.next().value);
+
     // const ITER = formData.entries();
     // console.log('formData :>> ', ITER.next());
     // console.log('formData :>> ', ITER.next());
     // console.log('formData :>> ', ITER.next());
     // File 이 'image' 라는 key 에 잘 할당이 됐는지 확인 법
 
-    axios
-      .post('https://mo-hae.site/specs/regist', formData, {
-        headers: {
-          accept: 'application/json',
-          'Content-Type': 'multipart/form-data',
-          Authorization:
-            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVzdGFyZzFAaGFubWFpbC5uZXQiLCJ1c2VyTm8iOjUsImlzc3VlciI6Im1vZGVybi1hZ2lsZSIsImV4cGlyYXRpb24iOiIzNjAwMCIsImlhdCI6MTY1NTc4OTE2NiwiZXhwIjoxNjU1ODI1MTY2fQ.AaB2J02i8DE_-w98_AzXkvqT7HIpZm9S1Klmavd4Cpk',
-        },
-      })
-      .then((res) => {
-        console.log(`res`, res.data);
-      })
-      .catch((err) => {
-        console.log(`err`, err);
-      });
+    // axios
+    //   .post('https://mo-hae.site/specs/regist', formData, {
+    //     headers: {
+    //       accept: 'application/json',
+    //       'Content-Type': 'multipart/form-data',
+    //       Authorization:
+    //         'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVzdGFyZzFAaGFubWFpbC5uZXQiLCJ1c2VyTm8iOjUsImlzc3VlciI6Im1vZGVybi1hZ2lsZSIsImV4cGlyYXRpb24iOiIzNjAwMCIsImlhdCI6MTY1NTk2NDk1NSwiZXhwIjoxNjU2MDAwOTU1fQ.ACZMCX5BnAx9mA8mj78LCDCWTawX6-wYkXznfnLKhyk',
+    //     },
+    //   })
+    //   .then((res) => {
+    //     console.log(`res`, res.data);
+    //   })
+    //   .catch((err) => {
+    //     console.log(`err`, err);
+    //   });
   };
 
+  console.log('testImg :>> ', testImg);
   return (
     <>
-      <div className="App">
-        <form onSubmit={handleSubmit(onSubmit)}>
+      {/* <div className="App">
+        <form onSubmit={onSubmit}>
           <input
+            id="img"
             type="file"
-            {...register('file')}
+            // {...register('file')}
             accept=".jpg,.jpeg,.png"
             multiple
           />
 
           <input type="submit" />
         </form>
+      </div> */}
 
-        {/* <div
-          className={cx(css`
-            width: 300px;
-            height: 300px;
-          `)}
-        >
-          <Img src={`${IMGURL}${imgurl}`} />
-        </div> */}
-      </div>
+      <TestImg edit />
       {/* <OrderedImg edit /> */}
     </>
   );

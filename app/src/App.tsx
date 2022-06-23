@@ -16,12 +16,11 @@ import {
   CreatePost,
   HG,
   Home,
-  // MyPage,
+  MyPage,
   OtherPage,
   Post,
   LoginModal,
   Spec,
-  Default,
 } from './pages';
 
 injectGlobal`
@@ -71,9 +70,9 @@ interface Props {
   [key: string]: any;
 }
 function App({}: Props) {
-  const MyPage = React.lazy(() => import('./pages/mypage/mypage/MyPage'));
+  // const MyPage = React.lazy(() => import('./pages/mypage/mypage/MyPage'));
   let isAuthorized = sessionStorage.getItem('isAuthorized');
-  console.log('isAuthorized :>> ', isAuthorized);
+  // console.log('isAuthorized :>> ', isAuthorized);
 
   return (
     <Router>

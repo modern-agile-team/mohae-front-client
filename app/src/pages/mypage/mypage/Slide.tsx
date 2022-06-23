@@ -9,18 +9,7 @@ interface Props {
   [key: string]: any;
 }
 
-export default function Carousel({ onClick, imgs, outsideBtn }: Props) {
-  const IMAGES = imgs || [
-    '/img/camera.png',
-    '/img/edit.png',
-    '/img/filter.png',
-    '/img/heart-main.png',
-    '/img/study.png',
-    '/img/send.png',
-    '/img/star-unfilled.png',
-    '/img/study.png',
-  ];
-
+export default function Slide({ onClick, outsideBtn, items }: Props) {
   const [sector, setSector] = useState(0);
 
   const style = css`
@@ -32,10 +21,10 @@ export default function Carousel({ onClick, imgs, outsideBtn }: Props) {
       height: calc(100% + 16px);
       /* background-color: pink; */
       position: relative;
-      overflow: hidden;
       border-radius: inherit;
       transform: translate(-8px, -8px);
 
+      overflow: hidden;
       > .box {
         width: calc(100% - 16px);
         height: calc(100% - 16px);
@@ -90,7 +79,7 @@ export default function Carousel({ onClick, imgs, outsideBtn }: Props) {
 
   const clickArrowBtn = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (e.currentTarget.name === '+') {
-      if ((sector - 1) * 3 > IMAGES.length) {
+      if ((sector - 1) * 3 > items.length) {
         setSector(0);
       } else {
         setSector(sector + 3);
@@ -102,20 +91,23 @@ export default function Carousel({ onClick, imgs, outsideBtn }: Props) {
     }
   };
 
-  const images = IMAGES.map((img: string, index: number) => (
-    <>
-      <div className={'board'} key={index}>
-        {/* <NewPost page={'inSpec'} /> */}
-      </div>
-    </>
-  ));
+  // console.log('sector :>> ', sector);
+  const viewPosts =
+    items &&
+    items.map((contents: string, index: number) => (
+      <>
+        <div className={'board'} key={index}>
+          <NewPost page={'inSpec'} board={contents} />
+        </div>
+      </>
+    ));
 
   return (
     <div className={'slide'}>
       <div className={cx(style)}>
         <div className={'whole'}>
           <div className={'box'}>
-            <div className={'container'}>{images}</div>
+            <div className={'container'}>{viewPosts}</div>
           </div>
           {/* arrowBtn comp */}
         </div>

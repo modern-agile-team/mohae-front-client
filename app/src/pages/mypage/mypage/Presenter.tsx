@@ -12,7 +12,8 @@ interface Props {
   [key: string]: any;
 }
 
-export default function MyPage({ text, userInfo }: Props) {
+export default function MyPage({ text, userInfo, posts }: Props) {
+  console.log('posts :>> ', posts);
   const style = css`
     width: 100%;
     height: fit-content;
@@ -130,19 +131,20 @@ export default function MyPage({ text, userInfo }: Props) {
     }
   `;
 
-  // console.log('userInfo :>> ', userInfo);
-
   const interested =
-    userInfo &&
-    userInfo.categories.map((category: any, index: number) => (
-      <Box key={index} size={[80, 80]}>
-        <Category
-          shape={'square'}
-          img={`/img/category-${category.no - 1}.png`}
-          name={category.name}
-        />
-      </Box>
-    ));
+    userInfo && userInfo.categories ? (
+      userInfo.categories.map((category: any, index: number) => (
+        <Box key={index} size={[80, 80]}>
+          <Category
+            shape={'square'}
+            img={`/img/category-${category.no - 1}.png`}
+            name={category.name}
+          />
+        </Box>
+      ))
+    ) : (
+      <div>{'NULL'}</div>
+    );
 
   return (
     <div className={cx(style)}>
@@ -171,11 +173,11 @@ export default function MyPage({ text, userInfo }: Props) {
             </div>
             <div className={'item'}>
               <Img src={'/img/university.png'} />
-              <span>{userInfo && userInfo.schoolName}</span>
+              <span>{(userInfo && userInfo.schoolName) || '-'}</span>
             </div>
             <div className={'item'}>
               <Img src={'/img/study.png'} />
-              <span>{userInfo && userInfo.majorName}</span>
+              <span>{(userInfo && userInfo.majorName) || '-'}</span>
             </div>
           </div>
           <FocusBar thin light />
@@ -185,15 +187,18 @@ export default function MyPage({ text, userInfo }: Props) {
         <div className={'boards'}>
           <div className={'section'}>
             <div className={'title'}>{text.resume.spec}</div>
-            <Slide outsideBtn spec />
+            <Slide outsideBtn items={posts.profileSpecs} />
           </div>
           <div className={'section'}>
             <div className={'title'}>{text.resume.give}</div>
-            <Slide outsideBtn spec />
+            <Slide
+              outsideBtn
+              // items={posts.profileToHelp}
+            />
           </div>
           <div className={'section'}>
             <div className={'title'}>{text.resume.got}</div>
-            <Slide outsideBtn spec />
+            <Slide outsideBtn />
           </div>
         </div>
       </div>

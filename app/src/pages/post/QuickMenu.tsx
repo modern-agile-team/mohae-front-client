@@ -5,10 +5,12 @@ import PostWriter from './PostWriter';
 
 interface Props {
   close: () => void;
+  data?: { [key: string]: any };
 }
 
 function QuickMenu(props: Props) {
-  const { close } = props;
+  const { close, data } = props;
+
   const style = css`
     width: 1128px;
     height: 92px;
@@ -24,10 +26,11 @@ function QuickMenu(props: Props) {
       margin-right: 16px;
     }
   `;
+
   return (
     <div className={cx(style)}>
-      <PostInfo quickMenu />
-      <PostWriter close={close} />
+      <PostInfo quickMenu data={data} />
+      <PostWriter close={close} data={data} />
     </div>
   );
 }

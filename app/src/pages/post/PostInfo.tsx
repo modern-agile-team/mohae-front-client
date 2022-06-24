@@ -1,49 +1,23 @@
 import React from 'react';
 import { css, cx } from '@emotion/css';
-import { Props } from '../../components/button';
 import { color, font, radius } from '../../styles';
 
 // target, 카테고리, 제목, d-day, 지역, 작성자여부, 좋아요, 조회수, 가격
+interface Props {
+  quickMenu?: boolean;
+  data?: { [key: string]: any };
+}
 
 function PostInfo(props: Props) {
-  const { quickMenu } = props;
-  const dummy = {
-    statusCode: 200,
-    msg: '게시글 상세 조회가 완료되었습니다.',
-    response: {
-      no: 42,
-      decimalDay: '- 8',
-      title: '카테고리 조회 테스트',
-      description: '생성',
-      isDeadline: 1,
-      hit: 4,
-      likeCount: 0,
-      price: 999999,
-      summary: 'test',
-      target: 1,
-      note1: '첫번째',
-      note2: '두번째',
-      note3: '세번째',
-      areaNo: 1,
-      areaName: '서울특별시',
-      categoryNo: 2,
-      categoryName: '디자인',
-      userNo: 1,
-      userName: '백팀장',
-      userNickname: '내가 관리자다',
-      userPhotoUrl: 'asdfasdf',
-      userSchool: '선택안함',
-      userMajor: '선택안함',
-    },
-  };
+  const { quickMenu, data } = props;
 
   const showDDAYContent = () => {
-    if (!dummy.response.isDeadline) {
-      if (dummy.response.decimalDay !== null) {
+    if (!data?.isDeadline) {
+      if (data?.decimalDay !== null) {
         return css`
           background-color: ${color.subtle};
           color: ${color.main};
-          content: 'D ${dummy.response.decimalDay}';
+          content: 'D ${data?.decimalDay}';
         `;
       }
       return css`
@@ -78,6 +52,7 @@ function PostInfo(props: Props) {
         display: flex;
         justify-content: end;
         margin-top: 4px;
+        cursor: pointer;
         p:nth-child(1) {
           margin-right: 8px;
           padding-right: 8px;
@@ -116,7 +91,7 @@ function PostInfo(props: Props) {
       }
       .price {
         :after {
-          content: '${dummy.response.price && '원'}';
+          content: '${data?.price ? '원' : ''}';
           margin: 0px 0px 0px 4px;
         }
       }
@@ -163,16 +138,14 @@ function PostInfo(props: Props) {
         <div className={cx(sectionWrap1())}>
           <div>
             <p className='coordinates'>
-              {dummy.response.target ? '구할래요' : '해줄래요'} {'>'} 카테고리{' '}
-              {'>'} {dummy.response.categoryName}
+              {data?.target ? '구할래요' : '해줄래요'} {'>'} 카테고리 {'>'}{' '}
+              {data?.category}
             </p>
-            <p className='title'>{dummy.response.title}</p>
-            <p className='area'>{dummy.response.areaName}</p>
+            <p className='title'>{data?.title}</p>
+            <p className='area'>{data?.areaName}</p>
           </div>
           <p className='price'>
-            {dummy.response.price
-              ? dummy.response.price.toLocaleString()
-              : '무료'}
+            {data?.price ? data?.price.toLocaleString() : '무료'}
           </p>
         </div>
         <div className='sectionWrap2'>
@@ -181,18 +154,16 @@ function PostInfo(props: Props) {
             <p>삭제하기</p>
           </div>
           <div className='textBtnWrap'>
-            <p>좋아요 {dummy.response.likeCount}개</p>
-            <p>조회수 {dummy.response.hit}회</p>
+            <p>좋아요 {data?.likeCount !== null ? data?.likeCount : 0}개</p>
+            <p>조회수 {data?.hit !== null ? data?.hit : 0}회</p>
           </div>
         </div>
       </>
     ) : (
       <div className={cx(sectionWrap1())}>
-        <p className='title'>{dummy.response.title}</p>
+        <p className='title'>{data?.title}</p>
         <p className='price'>
-          {dummy.response.price
-            ? dummy.response.price.toLocaleString()
-            : '무료'}
+          {data?.price ? data?.price.toLocaleString() : '무료'}
         </p>
       </div>
     );

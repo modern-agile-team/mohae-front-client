@@ -8,39 +8,15 @@ import Btns from './Btns';
 // 프로필 이미지, 닉네임, 전공, 로그인 상태(버튼 그려줘야 함),
 interface Props {
   close: () => void;
+  data?: { [key: string]: any };
 }
 
 function PostWriter(props: Props) {
-  const { close } = props;
-  const dummy = {
-    statusCode: 200,
-    msg: '게시글 상세 조회가 완료되었습니다.',
-    response: {
-      no: 42,
-      decimalDay: '- 8',
-      title: '카테고리 조회 테스트',
-      description: '생성',
-      isDeadline: 1,
-      hit: 4,
-      likeCount: 0,
-      price: 1000,
-      summary: 'test',
-      target: 1,
-      note1: '첫번째',
-      note2: '두번째',
-      note3: '세번째',
-      areaNo: 1,
-      areaName: '서울특별시',
-      categoryNo: 2,
-      categoryName: '디자인',
-      userNo: 1,
-      userName: '백팀장',
-      userNickname: '내가 관리자다',
-      userPhotoUrl: 'asdfasdf',
-      userSchool: '선택안함',
-      userMajor: '선택안함',
-    },
-  };
+  const { close, data } = props;
+  const userImg =
+    data?.userPhotoUrl !== null
+      ? `https://mohaeproj.s3.amazonaws.com/${data?.userPhotoUrl}`
+      : null;
 
   const style = css`
     margin-top: 16px;
@@ -84,10 +60,10 @@ function PostWriter(props: Props) {
     <>
       <div className={cx(style)}>
         <div className='userData'>
-          <Profile img={null} size={60} smallShadow />
+          <Profile img={userImg} size={60} smallShadow />
           <div>
-            <p>{dummy.response.userNickname}</p>
-            <p>{dummy.response.userMajor}</p>
+            <p>{data?.nickname}</p>
+            <p>{data?.major}</p>
           </div>
         </div>
         <Btns close={close} />

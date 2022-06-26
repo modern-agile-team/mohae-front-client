@@ -22,7 +22,11 @@ const asyncThunk = (name: string, param: string | number) =>
 
 // export const getHotAll = asyncThunk('getUserInfo', 5);
 
-const initialState = {
+interface INITSTATE {
+  [key: string]: any;
+}
+
+const initialState: INITSTATE = {
   isLoading: true,
   profileSpecs: [],
   profileToHelp: [],
@@ -34,13 +38,13 @@ export const spec = createSlice({
   initialState,
   reducers: {
     [GET_USER_SPECS]: (state, action: PayloadAction<any>) => {
-      state.profileSpecs = action.payload;
+      state.profileSpecs = [...state.profileSpecs, ...action.payload];
     },
     [GET_USER_TOHELP]: (state, action: PayloadAction<any>) => {
-      state.profileToHelp = action.payload;
+      state.profileToHelp = [...state.profileToHelp, ...action.payload];
     },
     [GET_USER_HELPME]: (state, action: PayloadAction<any>) => {
-      state.profileHelpMe = action.payload;
+      state.profileHelpMe = [...state.profileHelpMe, ...action.payload];
     },
   },
   extraReducers: (builder) => {

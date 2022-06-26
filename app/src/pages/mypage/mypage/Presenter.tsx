@@ -12,8 +12,8 @@ interface Props {
   [key: string]: any;
 }
 
-export default function MyPage({ text, userInfo, posts }: Props) {
-  console.log('posts :>> ', posts);
+export default function MyPage({ text, userInfo, posts, actions }: Props) {
+  // console.log('actions :>> ', actions);
   const style = css`
     width: 100%;
     height: fit-content;
@@ -187,18 +187,27 @@ export default function MyPage({ text, userInfo, posts }: Props) {
         <div className={'boards'}>
           <div className={'section'}>
             <div className={'title'}>{text.resume.spec}</div>
-            <Slide outsideBtn items={posts.profileSpecs} />
+            <Slide
+              outsideBtn
+              items={posts.profileSpecs}
+              action={actions.specs}
+            />
           </div>
           <div className={'section'}>
             <div className={'title'}>{text.resume.give}</div>
             <Slide
               outsideBtn
-              // items={posts.profileToHelp}
+              items={posts.profileToHelp}
+              action={actions.toHelp}
             />
           </div>
           <div className={'section'}>
             <div className={'title'}>{text.resume.got}</div>
-            <Slide outsideBtn />
+            <Slide
+              outsideBtn
+              items={posts.profileHelpMe}
+              action={actions.helpMe}
+            />
           </div>
         </div>
       </div>

@@ -33,39 +33,39 @@ interface Props {
 }
 
 export default function MyPage({}: Props) {
-  const ENDPOINT = `https://mo-hae.site/`;
-  const SPEC = `specs/profile?`;
-  const BOARDS = `boards/profile?`;
-  const target = {
-    0: '&target=false',
-    // 받을래요
-    1: '&target=true',
-    // 해줄래요
-  };
-  const userId = useParams().no;
-  const userInfo = useSelector((state: RootState) => state.mypage.user.profile);
-  const posts = useSelector((state: RootState) => state.spec);
-  const specs = useSelector((state: RootState) => state.spec.profileSpecs);
-  const toHelp = useSelector((state: RootState) => state.spec.profileToHelp);
-  console.log('posts :>> ', posts);
-  // console.log(`specs`, specs);
-  // console.log(`toHelp`, toHelp);
-  const TOKEN =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN1YnJvQG5hdmVyLmNvbSIsInVzZXJObyI6MSwiaXNzdWVyIjoibW9kZXJuLWFnaWxlIiwiZXhwaXJhdGlvbiI6IjM2MDAwIiwiaWF0IjoxNjU1OTQ3MjA4LCJleHAiOjE2NTU5ODMyMDh9.R1nmhFSqTFcEk5uJoke8ec97gqz7G0PdKt5mtriFH0E';
-  const text: { [key: string]: any } = {
-    sir: '님',
-    registerDate: '가입일 :',
-    logout: '로그아웃',
-    interesting: '관심사',
-    boards: '게시물',
-    like: '좋아요',
-    resume: {
-      spec: '내 스펙 관리',
-      give: '해줄래요 이력',
-      got: '받을래요 이력',
+  const ENDPOINT = `https://mo-hae.site/`,
+    SPEC = `specs/profile?`,
+    BOARDS = `boards/profile?`,
+    target = {
+      0: '&target=false',
+      // 받을래요
+      1: '&target=true',
+      // 해줄래요
     },
-    rating: '총 평점',
-  };
+    actions = {
+      specs: get_user_specs,
+      toHelp: get_user_tohelp,
+      helpMe: get_user_helpme,
+    },
+    userId = useParams().no,
+    userInfo = useSelector((state: RootState) => state.mypage.user.profile),
+    posts = useSelector((state: RootState) => state.spec),
+    TOKEN =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVzdGFyZzFAaGFubWFpbC5uZXQiLCJ1c2VyTm8iOjUsImlzc3VlciI6Im1vZGVybi1hZ2lsZSIsImV4cGlyYXRpb24iOiIzNjAwMCIsImlhdCI6MTY1NjI0OTExNCwiZXhwIjoxNjU2Mjg1MTE0fQ.H8FvsMNRv40Z8sfiiTej2kV5i5H8Iyj0oU9DgmzgekE',
+    text: { [key: string]: any } = {
+      sir: '님',
+      registerDate: '가입일 :',
+      logout: '로그아웃',
+      interesting: '관심사',
+      boards: '게시물',
+      like: '좋아요',
+      resume: {
+        spec: '내 스펙 관리',
+        give: '해줄래요 이력',
+        got: '받을래요 이력',
+      },
+      rating: '총 평점',
+    };
 
   useGetRequest(`${SPEC}user=${userId}&take=6&page=1`, TOKEN, get_user_specs);
   useGetRequest(
@@ -79,9 +79,14 @@ export default function MyPage({}: Props) {
     get_user_helpme
   );
   useGetRequest(`profile/${userId}`, TOKEN, get_user_info);
-
+  console.log('해줄래요 게시글들 :>> ', posts.profileToHelp);
   return (
-    <Presenter text={text} userInfo={userInfo && userInfo} posts={posts} />
+    <Presenter
+      text={text}
+      userInfo={userInfo && userInfo}
+      posts={posts}
+      actions={actions}
+    />
   );
 }
 // container

@@ -65,11 +65,10 @@ export default function NewPost({ page, board }: Props) {
     width: 100%;
     height: 100%;
     position: relative;
-    overflow: visible;
+    overflow: hidden;
     ${shadow.normal};
     ${radius[6]};
     /* overflow: hidden; */
-    border-radius: 6px;
 
     > .mark-box {
       position: absolute;
@@ -80,6 +79,8 @@ export default function NewPost({ page, board }: Props) {
 
     > .img {
       width: 100%;
+      border-top-left-radius: 6px;
+      border-top-right-radius: 6px;
       height: ${`${check[page].size}px`};
       background-color: white;
       overflow: hidden;
@@ -114,6 +115,8 @@ export default function NewPost({ page, board }: Props) {
       background-color: white;
       position: relative;
       overflow: hidden;
+      border-bottom-left-radius: 6px;
+      border-bottom-right-radius: 6px;
       > .sub-info {
         ${page !== 'inSpec' &&
         css`
@@ -209,16 +212,16 @@ export default function NewPost({ page, board }: Props) {
   const markBox = board.isDeadline ? (
     page === 'inMain' || page === 'inBoard' ? (
       <MarkBox
-        shape={(board && board.target) || 1}
-        state={(board && board.isDeadline) || 1}
+        shape={board && board.target}
+        state={board && board.isDeadline}
         big
         hover
       />
     ) : (
       <MarkBox
         big
-        shape={(board && board.target) || 0}
-        state={(board && board.isDeadline) || 1}
+        shape={board && board.target}
+        state={board && board.isDeadline}
       />
     )
   ) : (
@@ -228,16 +231,9 @@ export default function NewPost({ page, board }: Props) {
   return (
     <Link to={`post/${board.no}`} className={cx(style)}>
       <div className={'img'}>
-        {/* baordPhotoUrl >> 승범 형식
-         *  board.specPhotos[0].photo_url >> 수형 형식
-         */}
-        {/* {board && board.boardPhotoUrl ? ( */}
         {board ? (
-          // board.specPhotos.length(
-          // && board.specPhotos.length > 0
-          <Img src={`${board.specPhotos[0].photo_url}`} />
+          <Img src={`${board.photoUrl}`} />
         ) : (
-          // <Img src={board.boardPhotoUrl && `${board.boardPhotoUrl}`} />
           <div className={'logo'}>
             <Img src={'/img/logo.png'} />
           </div>
@@ -250,7 +246,7 @@ export default function NewPost({ page, board }: Props) {
         </div>
         {price}
         <div className={'sub-info'}>
-          <div className={'area'}> {board.areaName}</div>
+          <div className={'area'}> {board.area}</div>
           <div className={'day'}>
             {page !== 'inSpec' && `D - ${board.decimalDay || text.isOver}`}
           </div>

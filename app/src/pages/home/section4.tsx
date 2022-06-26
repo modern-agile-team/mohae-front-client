@@ -34,7 +34,6 @@ export default function Part4(props: Props) {
   const [focus, setFocus] = useState(0);
   const focusArea = `translate(${focus * 154}px, -50%)`;
   const dispatch = useDispatch<AppDispatch>();
-  const ENDPOINT = `https://mo-hae.site/profile/5`;
 
   const boardsInMain = useSelector((state: RootState) => state.main);
 
@@ -53,23 +52,12 @@ export default function Part4(props: Props) {
     boardsInMain.overedBoard[0] || null,
     boardsInMain.overedBoard[2] || null,
   ].filter((board) => !!board);
+  console.log('hotBoardAll :>> ', hotBoardAll);
 
   useEffect(() => {
     dispatch(getHotAll());
     dispatch(getHotProgressing());
     dispatch(getHotOver());
-    // axios
-    //   .get(ENDPOINT, {
-    //     headers: {
-    //       accept: 'application/json',
-    //     },
-    //   })
-    //   .then((res) => {
-    //     // console.log('res >>', res.data);
-    //   })
-    //   .catch((err) => {
-    //     // console.log(`err`, err);
-    //   });
   }, []);
 
   // console.log('hotBoardProgressing :>> ', hotBoardProgressing);
@@ -165,9 +153,11 @@ export default function Part4(props: Props) {
       }
     }
     .posts {
-      width: 100%;
-      height: 284px;
+      width: calc(100%);
+      height: calc(284px);
       display: flex;
+      justify-content: flex-start;
+      overflow: visible;
       & > * {
         display: inline-block;
       }
@@ -199,7 +189,8 @@ export default function Part4(props: Props) {
           css`
             width: 360px;
             height: 284px;
-            ${radius[6]};
+            overflow: hidden;
+            ${shadow.normal}/* ${radius[6]}; */
           `
         )}
       >
@@ -239,9 +230,7 @@ export default function Part4(props: Props) {
           </div>
         </div>
       </div>
-      {/* <Suspense fallback={<div className={'loading'}>{'잠시만요~~~~'}</div>}> */}
       <div className={'posts'}>{boardViewCheck[focus]}</div>
-      {/* </Suspense> */}
     </div>
   );
 }

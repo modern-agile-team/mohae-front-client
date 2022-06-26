@@ -15,6 +15,7 @@ interface Props {
 interface IMAGE {
   img: string;
   checked: boolean;
+  File: FormData | any;
 }
 
 export default function OrderedImg({ imgs, edit, inline }: Props) {
@@ -28,8 +29,6 @@ export default function OrderedImg({ imgs, edit, inline }: Props) {
   const [alarm, setAlarm] = useState(true);
   const [myImage, setMyImage] = useState<IMAGE[]>(clone || []);
 
-  const { register, handleSubmit } = useForm();
-
   const addImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.currentTarget.files || [];
     if (inline && files.length + myImage.length > 5) {
@@ -40,7 +39,8 @@ export default function OrderedImg({ imgs, edit, inline }: Props) {
       const urls = [...myImage];
       for (let count = 0; count < files.length; count++) {
         const imageURL = URL.createObjectURL(files[count]);
-        files && urls.push({ img: imageURL, checked: false });
+        files &&
+          urls.push({ img: imageURL, checked: false, File: files[count] });
         setMyImage(urls);
       }
     }
@@ -74,7 +74,7 @@ export default function OrderedImg({ imgs, edit, inline }: Props) {
     color: white;
   `;
 
-  const click = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const orderingImg = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
     e.stopPropagation();
@@ -122,9 +122,30 @@ export default function OrderedImg({ imgs, edit, inline }: Props) {
     setMyImage(newImage);
   };
 
-  const request = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const request = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('myImage :>> ', myImage);
+    const formData = new FormData();
+
+    formData.append('title', 'newTitle');
+    formData.append('description', 'newDescript');
+    for (var i = 0; i < myImage.length; i++) {
+      formData.append('image', myImage[i].File);
+    }
+    axios
+      .post('https://mo-hae.site/specs/regist', formData, {
+        headers: {
+          accept: 'application/json',
+          'Content-Type': 'multipart/form-data',
+          Authorization:
+            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVzdGFyZzFAaGFubWFpbC5uZXQiLCJ1c2VyTm8iOjUsImlzc3VlciI6Im1vZGVybi1hZ2lsZSIsImV4cGlyYXRpb24iOiIzNjAwMCIsImlhdCI6MTY1NjAzNDE4NCwiZXhwIjoxNjU2MDcwMTg0fQ.BZ_K0FHz0EFFeYHOuwMf_VYL3MRLjow-TctQiWAJvB8',
+        },
+      })
+      .then((res) => {
+        console.log(`res`, res.data);
+      })
+      .catch((err) => {
+        console.log(`err`, err);
+      });
   };
 
   const show = () => {
@@ -153,7 +174,7 @@ export default function OrderedImg({ imgs, edit, inline }: Props) {
                 key={index}
                 className={'item-box'}
                 name={`${index}`}
-                onClick={click}
+                onClick={orderingImg}
               >
                 <Img src={each.img} />
                 <div className={cx(sequence, order)}>{index + 1}</div>
@@ -169,19 +190,21 @@ export default function OrderedImg({ imgs, edit, inline }: Props) {
           ((myImage.length < 5 && inline) ||
             (myImage.length < 10 && !inline)) && (
             <>
-              <input
-                id="input-file"
-                type="file"
-                onChange={addImage}
-                multiple
-                accept=".jpg,.jpeg,.png"
-                // {...register('file')}
-              />
-              <label htmlFor="input-file">
-                <div className={'item-box add'}>
-                  <div className={'icon'} />
-                </div>
-              </label>
+              <form onSubmit={request}>
+                <input
+                  id="input-file"
+                  type="file"
+                  onChange={addImage}
+                  multiple
+                  accept=".jpg,.jpeg,.png"
+                />
+                <label htmlFor="input-file">
+                  <div className={'item-box add'}>
+                    <div className={'icon'} />
+                  </div>
+                </label>
+                <input type={'submit'} />
+              </form>
             </>
           )}
       </>
@@ -218,19 +241,6 @@ export default function OrderedImg({ imgs, edit, inline }: Props) {
             <div className={'container'}>{images()}</div>
           </div>
         </div>
-        <button
-          className={cx(css`
-            position: absolute;
-            background-color: red;
-            width: 40px;
-            height: 30px;
-            top: 100px;
-            left: 20px;
-          `)}
-          onClick={request}
-        >
-          {'호출'}
-        </button>
       </>
     );
   } else if (imgs) {

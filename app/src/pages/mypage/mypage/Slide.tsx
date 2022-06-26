@@ -1,16 +1,52 @@
 /** @format */
 
 import { cx, css } from '@emotion/css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Img, NewPost } from '../../../components';
 import { color, radius, font, shadow } from '../../../styles';
+import { useParams } from 'react-router-dom';
+import { useGetRequest } from '../../../redux/axios';
+import axios from 'axios';
+import { get_user_specs } from '../../../redux/spec/reducer';
+import { useDispatch } from 'react-redux';
 
 interface Props {
   [key: string]: any;
 }
+interface PARAMS {
+  [key: string]: any;
+}
 
-export default function Slide({ onClick, outsideBtn, items }: Props) {
-  const [sector, setSector] = useState(0);
+export default function Slide({ onClick, outsideBtn, items, action }: Props) {
+  const [sector, setSector] = useState(0),
+    dispatch = useDispatch(),
+    ENDPOINT = `https://mo-hae.site/`,
+    TOKEN =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVzdGFyZzFAaGFubWFpbC5uZXQiLCJ1c2VyTm8iOjUsImlzc3VlciI6Im1vZGVybi1hZ2lsZSIsImV4cGlyYXRpb24iOiIzNjAwMCIsImlhdCI6MTY1NjI0OTExNCwiZXhwIjoxNjU2Mjg1MTE0fQ.H8FvsMNRv40Z8sfiiTej2kV5i5H8Iyj0oU9DgmzgekE',
+    userId = useParams().no,
+    params: PARAMS = {
+      'spec/get_user_specs': 'specs/profile?user=',
+      'spec/get_user_tohelp': 'boards/profile?user=',
+      'spec/get_user_helpme': 'boards/profile?user=',
+    },
+    targets: PARAMS = {
+      'spec/get_user_specs': '',
+      'spec/get_user_tohelp': '&target=true',
+      'spec/get_user_helpme': '&target=false',
+    },
+    SPEC = `specs/profile?`,
+    [cycle, setCycle] = useState(false),
+    arrowBtn: PARAMS = {
+      right: {
+        true: '/img/arrow-right-main.png',
+        false: '/img/arrow-right-light1.png',
+      },
+      left: {
+        true: '/img/arrow-left-main.png',
+        false: '/img/arrow-left-light1.png',
+      },
+    },
+    checkNext = Math.floor((items.length - 1) / 3) > sector;
 
   const style = css`
     width: 100%;
@@ -19,7 +55,6 @@ export default function Slide({ onClick, outsideBtn, items }: Props) {
     > .whole {
       width: calc(100% + 16px);
       height: calc(100% + 16px);
-      /* background-color: pink; */
       position: relative;
       border-radius: inherit;
       transform: translate(-8px, -8px);
@@ -28,13 +63,12 @@ export default function Slide({ onClick, outsideBtn, items }: Props) {
       > .box {
         width: calc(100% - 16px);
         height: calc(100% - 16px);
-        /* background-color: lightblue; */
         transform: translate(8px, 8px);
         border-radius: 6px;
         > .container {
           width: fit-content;
           transition: 0.7s;
-          transform: ${`translateX(calc(${-sector * (228 + 32)}px))`};
+          transform: ${`translateX(calc(${-(sector * 3) * (228 + 32)}px))`};
           height: 100%;
           display: flex;
           align-items: center;
@@ -65,7 +99,9 @@ export default function Slide({ onClick, outsideBtn, items }: Props) {
       css`
         left: -24px;
       `}
-      background: url('/img/arrow-left-light1.png') no-repeat center/contain;
+      background: ${`url(${
+        arrowBtn.left[`${sector > 0}`]
+      }) no-repeat center/contain;`};
     }
     > .next {
       right: 0;
@@ -73,34 +109,58 @@ export default function Slide({ onClick, outsideBtn, items }: Props) {
       css`
         right: -24px;
       `}
-      background: url('/img/arrow-right-light1.png') no-repeat center/contain;
+      background: ${`url(${
+        arrowBtn.right[`${items.length > 3}`]
+      }) no-repeat center/contain;`};
     }
   `;
 
-  const clickArrowBtn = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const useClickArrowBtn = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (e.currentTarget.name === '+') {
-      if ((sector - 1) * 3 > items.length) {
-        setSector(0);
+      if (Math.floor((items.length - 1) / 3) > sector) {
+        !cycle &&
+          axios
+            .get(
+              `${ENDPOINT}${params[action.type]}${userId}&take=3&page=${
+                sector + 3
+              }${targets[action]}`,
+              {
+                headers: {
+                  accept: 'application/json',
+                  'Content-Type': 'application/json',
+                  Authorization: `Bearer ${TOKEN}`,
+                },
+              }
+            )
+            .then((res) => {
+              // console.log('res :>> ', res.data.response);
+              dispatch(action(res.data.response));
+            })
+            .catch((err) => {
+              console.log(`err`, err);
+            });
+        setSector(sector + 1);
       } else {
-        setSector(sector + 3);
+        setCycle(true);
+        setSector(0);
       }
     } else {
       if (sector) {
-        setSector(sector - 3);
+        setSector(sector - 1);
       }
     }
   };
 
-  // console.log('sector :>> ', sector);
   const viewPosts =
-    items &&
-    items.map((contents: string, index: number) => (
-      <>
+    items && items.length > 0 ? (
+      items.map((contents: string, index: number) => (
         <div className={'board'} key={index}>
           <NewPost page={'inSpec'} board={contents} />
         </div>
-      </>
-    ));
+      ))
+    ) : (
+      <span>{'NO DATA'}</span>
+    );
 
   return (
     <div className={'slide'}>
@@ -109,10 +169,9 @@ export default function Slide({ onClick, outsideBtn, items }: Props) {
           <div className={'box'}>
             <div className={'container'}>{viewPosts}</div>
           </div>
-          {/* arrowBtn comp */}
         </div>
-        <button className={'btn prev'} onClick={clickArrowBtn} name="-" />
-        <button className={'btn next'} onClick={clickArrowBtn} name="+" />
+        <button className={`btn prev`} onClick={useClickArrowBtn} name="-" />
+        <button className={'btn next'} onClick={useClickArrowBtn} name="+" />
       </div>
     </div>
   );

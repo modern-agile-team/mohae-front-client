@@ -22,7 +22,7 @@ export default function Slide({ onClick, outsideBtn, items, action }: Props) {
     dispatch = useDispatch(),
     ENDPOINT = `https://mo-hae.site/`,
     TOKEN =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVzdGFyZzFAaGFubWFpbC5uZXQiLCJ1c2VyTm8iOjUsImlzc3VlciI6Im1vZGVybi1hZ2lsZSIsImV4cGlyYXRpb24iOiIzNjAwMCIsImlhdCI6MTY1NjI0OTExNCwiZXhwIjoxNjU2Mjg1MTE0fQ.H8FvsMNRv40Z8sfiiTej2kV5i5H8Iyj0oU9DgmzgekE',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVzdGFyZzFAaGFubWFpbC5uZXQiLCJ1c2VyTm8iOjUsImlzc3VlciI6Im1vZGVybi1hZ2lsZSIsImV4cGlyYXRpb24iOiIzNjAwMCIsImlhdCI6MTY1NjI5MjkzNywiZXhwIjoxNjU2MzI4OTM3fQ.5eQ2KU4THZKbWW77fEp6GRWhd7_hemA62bVE3v7fnaI',
     userId = useParams().no,
     params: PARAMS = {
       'spec/get_user_specs': 'specs/profile?user=',

@@ -2,7 +2,7 @@
 
 import HG from './test/HG';
 import Home from './home/Home';
-import { MyPage, OtherPage } from './mypage';
+import { MyPage } from './mypage';
 import Resign from './resign';
 import Profile from './profile';
 import Spec from './spec';
@@ -15,7 +15,6 @@ export {
   HG,
   Home,
   MyPage,
-  OtherPage,
   Resign,
   Profile,
   CreatePost,

@@ -199,7 +199,7 @@ export default function NewPost({ page, board }: Props) {
   `;
 
   const info = (page === 'inMain' || page === 'inBoard') && (
-    <div className={'writer'}>{board && board.userNickname}</div>
+    <div className={'writer'}>{board && board.nickname}</div>
   );
 
   const price = (page === 'inMain' || page === 'inBoard') && (

@@ -52,7 +52,6 @@ export default function Part4(props: Props) {
     boardsInMain.overedBoard[0] || null,
     boardsInMain.overedBoard[2] || null,
   ].filter((board) => !!board);
-  console.log('hotBoardAll :>> ', hotBoardAll);
 
   useEffect(() => {
     dispatch(getHotAll());
@@ -60,7 +59,6 @@ export default function Part4(props: Props) {
     dispatch(getHotOver());
   }, []);
 
-  // console.log('hotBoardProgressing :>> ', hotBoardProgressing);
   const style = css`
     height: 100%;
     display: flex;

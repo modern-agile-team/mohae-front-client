@@ -5,13 +5,14 @@ import Presenter from './Presenter';
 import Login from './login/Login';
 import Register from './register';
 import { RootState } from '../../redux/root';
+import { open_login } from '../../redux/modal/reducer';
 
 interface Props {
   [key: string]: any;
 }
 
 export default function LoginModal({}: Props) {
-  const openModal = useSelector((state: RootState) => state.modal.openLogin);
+  const isOpenModal = useSelector((state: RootState) => state.modal.openLogin);
 
   const text: { [key: string]: any } = {
     login: '로그인',
@@ -28,7 +29,7 @@ export default function LoginModal({}: Props) {
   };
 
   return (
-    <Presenter openModal={openModal}>
+    <Presenter isOpenModal={isOpenModal}>
       <Login text={text} />
       {/* <Register text={text} /> */}
     </Presenter>

@@ -11,29 +11,6 @@ interface Props {
 function PostInfo(props: Props) {
   const { quickMenu, data } = props;
 
-  const showDDAYContent = () => {
-    if (!data?.isDeadline) {
-      if (data?.decimalDay !== null) {
-        return css`
-          background-color: ${color.subtle};
-          color: ${color.main};
-          content: 'D ${data?.decimalDay}';
-        `;
-      }
-      return css`
-        background-color: ${color.main};
-        color: ${color.main};
-        content: '상시';
-      `;
-    } else {
-      return css`
-        background-color: ${color.dark1};
-        color: white;
-        content: '마감';
-      `;
-    }
-  };
-
   const wrap = css`
     border-bottom: ${!quickMenu && ` 1px solid ${color.light4}`};
     width: ${!quickMenu && '736px'};
@@ -68,6 +45,29 @@ function PostInfo(props: Props) {
     }
   `;
 
+  const showDDAYContent = () => {
+    if (!data?.isDeadline) {
+      if (data?.decimalDay !== null) {
+        return css`
+          background-color: ${color.subtle};
+          color: ${color.main};
+          content: 'D ${data?.decimalDay}';
+        `;
+      }
+      return css`
+        background-color: ${color.main};
+        color: white;
+        content: '상시';
+      `;
+    } else {
+      return css`
+        background-color: ${color.dark1};
+        color: white;
+        content: '마감';
+      `;
+    }
+  };
+
   const difContents = () => {
     const common = css`
       display: flex;
@@ -79,7 +79,6 @@ function PostInfo(props: Props) {
         :after {
           width: 47px;
           height: 24px;
-          background-color: ${color.main};
           ${showDDAYContent()}
           ${font.size[14]}
           ${font.weight[400]}

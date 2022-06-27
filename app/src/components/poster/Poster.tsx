@@ -3,7 +3,6 @@ import { css, cx } from '@emotion/css';
 import Box from '../box/Box';
 import ImgBox from './ImgBox';
 import { color, font } from '../../styles';
-import MarkBox from '../markbox/MarkBox';
 
 interface Props {
   data: {
@@ -11,6 +10,7 @@ interface Props {
     no: number;
     title: string;
     isDeadline: number;
+    boardPhoto: string | null;
     price: number | null;
     target: number;
     areaNo: number;
@@ -130,7 +130,7 @@ function Poster({ data }: Props) {
   return (
     <Box size={[264, 208]}>
       <ImgBox
-        img={'/img/favicon.ico'}
+        img={data.boardPhoto}
         shape={data.target}
         state={data.isDeadline}
       />

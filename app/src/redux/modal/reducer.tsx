@@ -20,7 +20,7 @@ export const modal = createSlice({
       state.openLogin = action.payload;
     },
     [CLOSE_ALL]: (state, action: PayloadAction<any>) => {
-      state.openLogin = false;
+      state.openLogin = action.payload;
     },
   },
 });

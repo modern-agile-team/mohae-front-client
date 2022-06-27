@@ -1,3 +1,5 @@
+/** @format */
+
 import { css, cx } from '@emotion/css';
 import Header from './header/Header';
 import Footer from './footer/Footer';
@@ -10,6 +12,8 @@ type Props = {
 };
 
 export default function Layout({ main, component }: Props): ReactElement {
+  // const TOKEN = localStorage.getItem('');
+
   const wrapper: string = css`
     display: flex;
     flex-direction: column;

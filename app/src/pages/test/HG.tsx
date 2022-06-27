@@ -11,12 +11,14 @@ import {
   NewPost,
   Carousel,
 } from '../../components';
+
 import { RootState, AppDispatch } from '../../redux/root';
 import { Profile, LoginModal } from '../../pages';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import TestImg from './test';
+import OtherPage from '../mypage/mypage/OtherPage';
 
 interface BODY {
   title: string;
@@ -27,7 +29,8 @@ interface BODY {
 export default function HG() {
   return (
     <>
-      <OrderedImg edit />
+      {/* <OrderedImg edit /> */}
+      <OtherPage />
     </>
   );
 }

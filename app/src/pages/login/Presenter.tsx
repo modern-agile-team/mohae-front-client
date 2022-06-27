@@ -23,7 +23,7 @@ interface Props {
   [key: string]: any;
 }
 
-export default function Presenter({ openModal, children }: Props) {
+export default function Presenter({ isOpenModal, children }: Props) {
   const text: { [key: string]: any } = {
     login: '로그인',
     register: '회원가입',
@@ -51,50 +51,52 @@ export default function Presenter({ openModal, children }: Props) {
       }
       margin-bottom: 16px;
     }
-    > .input {
-      width: 480px;
-      height: 52px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 16px;
-      margin-top: 24px;
-      background-color: white;
-      ${radius[6]};
-      ${shadow.inputGray};
-      .icon {
-        width: 24px;
-        height: 24px;
-      }
-      input {
-        width: 408px;
-        height: 20px;
-      }
-    }
-    > .option {
-      width: 100%;
-      &,
-      * {
+    form {
+      > .input {
+        width: 480px;
+        height: 52px;
         display: flex;
         justify-content: space-between;
         align-items: center;
-      }
-      * {
-        cursor: pointer;
-        color: ${color.dark1};
-      }
-      margin: 16px 0 24px;
-      font-size: 14px;
-      input {
-        -moz-appearance: none;
-        -webkit-appearance: none;
-        -o-appearance: none;
-        width: 20px;
-        height: 20px;
-        ${radius[6]};
-        margin-right: 8px;
+        padding: 14px 16px;
+        margin-top: 24px;
         background-color: white;
-        box-shadow: 0px 0px 4px rgba(132, 131, 141, 0.25);
+        ${radius[6]};
+        ${shadow.inputGray};
+        .icon {
+          width: 24px;
+          height: 24px;
+        }
+        input {
+          width: 408px;
+          height: 20px;
+        }
+      }
+      > .option {
+        width: 100%;
+        &,
+        * {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+        * {
+          cursor: pointer;
+          color: ${color.dark1};
+        }
+        margin: 16px 0 24px;
+        font-size: 14px;
+        input {
+          -moz-appearance: none;
+          -webkit-appearance: none;
+          -o-appearance: none;
+          width: 20px;
+          height: 20px;
+          ${radius[6]};
+          margin-right: 8px;
+          background-color: white;
+          box-shadow: 0px 0px 4px rgba(132, 131, 141, 0.25);
+        }
       }
     }
     > .btn {
@@ -136,7 +138,7 @@ export default function Presenter({ openModal, children }: Props) {
     }
   `;
   return (
-    <BasicModal small visible={openModal}>
+    <BasicModal small visible={isOpenModal}>
       <div className={cx(style)}>
         <div className={'logo'}>
           <Img src={'/img/logo.png'} />
@@ -146,8 +148,6 @@ export default function Presenter({ openModal, children }: Props) {
           <button>{text.register}</button>
         </ul>
         <FocusBar thin />
-        {/* <Register text={text} /> */}
-        {/* <Login text={text} /> */}
         {children}
       </div>
     </BasicModal>

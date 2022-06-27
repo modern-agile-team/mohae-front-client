@@ -19,6 +19,11 @@ import { radius, font, color, shadow } from '../../../styles';
 import { css, cx } from '@emotion/css';
 import { decodeToken } from 'react-jwt';
 import axios from 'axios';
+import { close_all } from '../../../redux/modal/reducer';
+import { open_login } from '../../../redux/modal/reducer';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../../../redux/root';
+import { useNavigate, Navigate } from 'react-router-dom';
 
 interface Props {
   [key: string]: any;
@@ -30,6 +35,13 @@ export default function Register({ text }: Props) {
     password: '',
   });
   const [token, setToken] = useState<any>('');
+  const [isOpenLogin, setIsOpenLogin] = useState(
+    useSelector((state: RootState) => state.modal.openLogin)
+  );
+  //
+  const dispatch = useDispatch();
+
+  const navigate = useNavigate();
 
   const handleId = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue({
@@ -45,7 +57,8 @@ export default function Register({ text }: Props) {
     });
   };
 
-  const requestLogin = () => {
+  const requestLogin = (e: any) => {
+    e.preventDefault();
     axios
       .post(
         `https://mo-hae.site/auth/signin`,
@@ -58,54 +71,58 @@ export default function Register({ text }: Props) {
         }
       )
       .then((res) => {
-        // console.log(`res`, res.data.success);
-        res.data.success &&
-          sessionStorage.setItem('isAuthorized', res.data.response);
-        setToken(decodeToken(res.data.response));
-        // res.data.response >> token
+        if (res.data.statusCode >= 200 && res.data.statusCode <= 204) {
+          sessionStorage.setItem('userAccessToken', res.data.response);
+          navigate('/');
+
+          dispatch(open_login(!isOpenLogin));
+          // 모달 내리기
+        } else {
+          alert('이메일과 비밀번호를 다시 확인해주세요.');
+        }
       })
       .catch((err) => {
-        console.log(`err`, err);
+        alert(err.response.data.error.message);
       });
   };
 
-  let isAuthorized = sessionStorage;
-
   return (
     <>
-      <div className={'input'}>
-        <div className={'icon'}>
-          <Img src={'/img/id.png'} />
+      <form onSubmit={requestLogin}>
+        <div className={'input'}>
+          <div className={'icon'}>
+            <Img src={'/img/id.png'} />
+          </div>
+          <input
+            placeholder={text.placeholder.id}
+            value={inputValue.id}
+            onChange={handleId}
+          />
         </div>
-        <input
-          placeholder={text.placeholder.id}
-          value={inputValue.id}
-          onChange={handleId}
-        />
-      </div>
-      <div className={'input'}>
-        <div className={'icon'}>
-          <Img src={'/img/password.png'} />
+        <div className={'input'}>
+          <div className={'icon'}>
+            <Img src={'/img/password.png'} />
+          </div>
+          <input
+            placeholder={text.placeholder.pw}
+            onChange={handlePW}
+            value={inputValue.password}
+            type={'password'}
+          />
         </div>
-        <input
-          placeholder={text.placeholder.pw}
-          onChange={handlePW}
-          value={inputValue.password}
-          type={'password'}
-        />
-      </div>
-      <div className={'option'}>
-        <div>
-          <input id="keep-login" type="checkbox" />
-          <label htmlFor="keep-login">{text.stayLogin}</label>
+        <div className={'option'}>
+          <div>
+            <input id="keep-login" type="checkbox" />
+            <label htmlFor="keep-login">{text.stayLogin}</label>
+          </div>
+          <button>{text.forgotPw}</button>
         </div>
-        <button>{text.forgotPw}</button>
-      </div>
-      <Box size={[480, 52]}>
-        <Btn main onClick={requestLogin}>
-          {text.login}
-        </Btn>
-      </Box>
+        <Box size={[480, 52]}>
+          <Btn main onClick={requestLogin}>
+            {text.login}
+          </Btn>
+        </Box>
+      </form>
     </>
   );
 }

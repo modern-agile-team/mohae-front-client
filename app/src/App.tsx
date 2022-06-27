@@ -17,7 +17,6 @@ import {
   HG,
   Home,
   MyPage,
-  OtherPage,
   Post,
   LoginModal,
   Spec,
@@ -70,13 +69,10 @@ interface Props {
   [key: string]: any;
 }
 function App({}: Props) {
-  // const MyPage = React.lazy(() => import('./pages/mypage/mypage/MyPage'));
   let isAuthorized = sessionStorage.getItem('isAuthorized');
-  // console.log('isAuthorized :>> ', isAuthorized);
 
   return (
     <Router>
-      {/* {!isAuthorized ? <Navigate to="/login" /> : <Navigate to="/" />} */}
       <Routes>
         <Route path="*" element={<Navigate to="/" replace />} />
         <Route path={'/'} element={<Layout main component={<Home />} />} />
@@ -85,12 +81,10 @@ function App({}: Props) {
           path={'/boards/:no'}
           element={<Layout component={<Board />} />}
         />
-        {/* <Route element={<Default />}> */}
         <Route
           path={'/mypage/:no'}
           element={<Layout component={<MyPage />} />}
         />
-        {/* </Route> */}
         <Route path={'/spec/:no'} element={<Layout component={<Spec />} />} />
         <Route path={'/post'} element={<Layout component={<Post />} />} />
         <Route

@@ -5,7 +5,35 @@ import PostWriter from './PostWriter';
 
 interface Props {
   close: () => void;
-  data?: { [key: string]: any };
+  data?: {
+    date: string;
+    msg: string;
+    response: {
+      authorization: boolean;
+      board: {
+        areaName: string;
+        areaNo: number;
+        boardPhotoUrls: string | null;
+        categoryName: string;
+        categoryNo: number;
+        decimalDay: number | null;
+        description?: string;
+        hit: number;
+        isDeadline: number;
+        isLike?: number;
+        likeCount: number;
+        majorName: string;
+        nickname: string;
+        no: number;
+        price: number;
+        summary: null | string;
+        target: number;
+        title: string;
+        userNo: number;
+        userPhotoUrl: string;
+      };
+    };
+  };
 }
 
 function QuickMenu(props: Props) {

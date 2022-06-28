@@ -7,11 +7,41 @@ import { radius } from '../../styles';
 interface Props {
   view?: boolean;
   getValue?: boolean;
-  data?: { [key: string]: any };
+  data?: {
+    date: string;
+    msg: string;
+    response: {
+      authorization: boolean;
+      board: {
+        areaName: string;
+        areaNo: number;
+        boardPhotoUrls: string | null;
+        categoryName: string;
+        categoryNo: number;
+        decimalDay: number | null;
+        description?: string;
+        hit: number;
+        isDeadline: number;
+        isLike?: number;
+        likeCount: number;
+        majorName: string;
+        nickname: string;
+        no: number;
+        price: number;
+        summary: null | string;
+        target: number;
+        title: string;
+        userNo: number;
+        userPhotoUrl: string;
+      };
+    };
+  };
 }
 
 function PostImgs(props: Props) {
   const { view, getValue, data } = props;
+  const datas = data?.response;
+  console.log('datas :>> ', datas);
 
   const imgs = [
     '/img/camera.png',
@@ -48,7 +78,12 @@ function PostImgs(props: Props) {
       <Box className='carouselBox' size={[360, 360]}>
         <Carousel images={imgs} />
         <div className='markBox'>
-          <MarkBox shape={data?.target} state={data?.isDeadline} big hover />
+          <MarkBox
+            shape={datas?.board.target}
+            state={datas?.board.isDeadline}
+            big
+            hover
+          />
         </div>
       </Box>
       <Box className='orderImgBox' size={[360, 72]}>

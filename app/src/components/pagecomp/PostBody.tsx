@@ -7,11 +7,40 @@ import { color, font, radius } from '../../styles';
 interface Props {
   view?: boolean;
   getValue?: boolean;
-  data?: { [key: string]: any };
+  data?: {
+    date: string;
+    msg: string;
+    response: {
+      authorization: boolean;
+      board: {
+        areaName: string;
+        areaNo: number;
+        boardPhotoUrls: string | null;
+        categoryName: string;
+        categoryNo: number;
+        decimalDay: number | null;
+        description?: string;
+        hit: number;
+        isDeadline: number;
+        isLike?: number;
+        likeCount: number;
+        majorName: string;
+        nickname: string;
+        no: number;
+        price: number;
+        summary: null | string;
+        target: number;
+        title: string;
+        userNo: number;
+        userPhotoUrl: string;
+      };
+    };
+  };
 }
 
 function PostBody(props: Props) {
   const { view, getValue, data } = props;
+  const datas = data?.response;
 
   const style = css`
     margin: 32px 0px 16px 0px;
@@ -19,19 +48,28 @@ function PostBody(props: Props) {
       padding: ${view && '16px 0px 16px 24px'};
       ${font.size[14]}
       ${font.weight[400]}
-      word-break:break-all;
+      word-break: break-all;
     }
 
-    .description {
+    .description-scrollBox {
       width: 1080px;
       height: 365px;
-      overflow-y: scroll;
+      overflow-y: auto;
+    }
+    .description-box {
+      height: fit-content;
     }
   `;
 
   const body = () => {
     return view ? (
-      <div className='description'>{data?.description}</div>
+      <div className='description-scrollBox'>
+        <div className='description-box'>
+          {datas?.board.description && datas.authorization
+            ? datas?.board.description
+            : '게시글 상세 조회는 로그인을 하고 이용 하시길 바랍니다.'}
+        </div>
+      </div>
     ) : (
       <TextEditor size={379} />
     );

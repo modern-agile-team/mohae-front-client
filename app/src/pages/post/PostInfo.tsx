@@ -5,11 +5,40 @@ import { color, font, radius } from '../../styles';
 // target, 카테고리, 제목, d-day, 지역, 작성자여부, 좋아요, 조회수, 가격
 interface Props {
   quickMenu?: boolean;
-  data?: { [key: string]: any };
+  data?: {
+    date: string;
+    msg: string;
+    response: {
+      authorization: boolean;
+      board: {
+        areaName: string;
+        areaNo: number;
+        boardPhotoUrls: string | null;
+        categoryName: string;
+        categoryNo: number;
+        decimalDay: number | null;
+        description?: string;
+        hit: number;
+        isDeadline: number;
+        isLike?: number;
+        likeCount: number;
+        majorName: string;
+        nickname: string;
+        no: number;
+        price: number;
+        summary: null | string;
+        target: number;
+        title: string;
+        userNo: number;
+        userPhotoUrl: string;
+      };
+    };
+  };
 }
 
 function PostInfo(props: Props) {
   const { quickMenu, data } = props;
+  const datas = data?.response.board;
 
   const wrap = css`
     border-bottom: ${!quickMenu && ` 1px solid ${color.light4}`};
@@ -46,12 +75,12 @@ function PostInfo(props: Props) {
   `;
 
   const showDDAYContent = () => {
-    if (!data?.isDeadline) {
-      if (data?.decimalDay !== null) {
+    if (!datas?.isDeadline) {
+      if (datas?.decimalDay !== null) {
         return css`
           background-color: ${color.subtle};
           color: ${color.main};
-          content: 'D ${data?.decimalDay}';
+          content: 'D ${datas?.decimalDay}';
         `;
       }
       return css`
@@ -90,7 +119,7 @@ function PostInfo(props: Props) {
       }
       .price {
         :after {
-          content: '${data?.price ? '원' : ''}';
+          content: '${datas?.price ? '원' : ''}';
           margin: 0px 0px 0px 4px;
         }
       }
@@ -137,14 +166,16 @@ function PostInfo(props: Props) {
         <div className={cx(sectionWrap1())}>
           <div>
             <p className='coordinates'>
-              {data?.target ? '구할래요' : '해줄래요'} {'>'} 카테고리 {'>'}{' '}
-              {data?.category}
+              {datas?.target ? '구할래요' : '해줄래요'} {'>'} 카테고리 {'>'}{' '}
+              {datas?.categoryName}
             </p>
-            <p className='title'>{data?.title}</p>
-            <p className='area'>{data?.areaName}</p>
+            <p className='title'>{datas?.title}</p>
+            <p className='area'>
+              {datas?.areaName ? datas?.areaName : '지역 선택 없음'}
+            </p>
           </div>
           <p className='price'>
-            {data?.price ? data?.price.toLocaleString() : '무료'}
+            {datas?.price ? datas?.price.toLocaleString() : '무료'}
           </p>
         </div>
         <div className='sectionWrap2'>
@@ -153,16 +184,16 @@ function PostInfo(props: Props) {
             <p>삭제하기</p>
           </div>
           <div className='textBtnWrap'>
-            <p>좋아요 {data?.likeCount !== null ? data?.likeCount : 0}개</p>
-            <p>조회수 {data?.hit !== null ? data?.hit : 0}회</p>
+            <p>좋아요 {datas?.likeCount !== null ? datas?.likeCount : 0}개</p>
+            <p>조회수 {datas?.hit !== null ? datas?.hit : 0}회</p>
           </div>
         </div>
       </>
     ) : (
       <div className={cx(sectionWrap1())}>
-        <p className='title'>{data?.title}</p>
+        <p className='title'>{datas?.title}</p>
         <p className='price'>
-          {data?.price ? data?.price.toLocaleString() : '무료'}
+          {datas?.price ? datas?.price.toLocaleString() : '무료'}
         </p>
       </div>
     );

@@ -8,14 +8,42 @@ import Btns from './Btns';
 // 프로필 이미지, 닉네임, 전공, 로그인 상태(버튼 그려줘야 함),
 interface Props {
   close: () => void;
-  data?: { [key: string]: any };
+  data?: {
+    date: string;
+    msg: string;
+    response: {
+      authorization: boolean;
+      board: {
+        areaName: string;
+        areaNo: number;
+        boardPhotoUrls: string | null;
+        categoryName: string;
+        categoryNo: number;
+        decimalDay: number | null;
+        description?: string;
+        hit: number;
+        isDeadline: number;
+        isLike?: number;
+        likeCount: number;
+        majorName: string;
+        nickname: string;
+        no: number;
+        price: number;
+        summary: null | string;
+        target: number;
+        title: string;
+        userNo: number;
+        userPhotoUrl: string;
+      };
+    };
+  };
 }
 
-function PostWriter(props: Props) {
-  const { close, data } = props;
+function PostWriter({ close, data }: Props) {
+  const datas = data?.response.board;
   const userImg =
-    data?.userPhotoUrl !== null
-      ? `https://mohaeproj.s3.amazonaws.com/${data?.userPhotoUrl}`
+    datas?.userPhotoUrl !== null
+      ? `https://mohaeproj.s3.amazonaws.com/${datas?.userPhotoUrl}`
       : null;
 
   const style = css`
@@ -62,8 +90,8 @@ function PostWriter(props: Props) {
         <div className='userData'>
           <Profile img={userImg} size={60} smallShadow />
           <div>
-            <p>{data?.nickname}</p>
-            <p>{data?.major}</p>
+            <p>{datas?.nickname}</p>
+            <p>{datas?.majorName}</p>
           </div>
         </div>
         <Btns close={close} />

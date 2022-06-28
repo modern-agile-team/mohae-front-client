@@ -12,36 +12,45 @@ import getToken from '../../utils/getToken';
 import { useParams, useLocation } from 'react-router-dom';
 import { get_spec_info, get_spec_no } from '../../redux/spec/reducer';
 import { promises } from 'stream';
+import axios from 'axios';
 
 export default function Visit() {
   const isOpen = useSelector((state: RootState) => state.modal.openSpecVisit),
     TOKEN = getToken(),
-    ENDPOINT = 'specs/spec/';
+    ENDPOINT = 'https://mo-hae.site/specs/spec/';
 
   const text: { [key: string]: any } = {
     sir: '님',
   };
-  const PARAM = useParams();
   const search = useLocation().search;
   const regexpLastWord = /\w+$/;
-  const getTest = async (a: any) => {
-    return search.match(a);
-  };
-  // Promise.resolve(search.match(regexpLastWord)).then((res) => {
-  //   console.log('res :>> ', res);
-  // });
 
   const getSearch: RegExpMatchArray | null = search.match(regexpLastWord);
   const specInfo = useSelector((state: RootState) => state.spec.specInfo);
   const dispatch = useDispatch();
 
-  useGetRequest(`${ENDPOINT}${74}`, TOKEN, get_spec_info);
+  useEffect(() => {
+    getSearch &&
+      isOpen &&
+      axios
+        .get(`${ENDPOINT}${getSearch[0]}`, {
+          headers: {
+            accept: 'application/json',
+            Authorization: `Bearer ${TOKEN}`,
+          },
+        })
+        .then((res) => {
+          console.log('res.data :>> ', res.data);
+        })
+        .catch((err) => {
+          console.log('err :>> ', err);
+        });
+  }, []);
 
   const imgURLs =
     specInfo &&
     specInfo.specPhotos.length > 0 &&
     specInfo.specPhotos.map((img: any, index: number) => img.photo_url);
-  // console.log('imgURLs :>> ', imgURLs);
 
   return (
     <BasicModal big visible={isOpen}>

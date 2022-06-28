@@ -1,7 +1,10 @@
+/** @format */
+
 import { ReactElement } from 'react';
 import { color, radius, font, shadow } from '../../style/palette';
 import { css, cx } from '@emotion/css';
 import { Img } from '../../../components';
+import { Link } from 'react-router-dom';
 
 const style = css`
   height: 120px;
@@ -29,6 +32,10 @@ const style = css`
     width: 72px;
     flex-direction: row;
     justify-content: space-between;
+    > * {
+      width: 24px;
+      height: 24px;
+    }
     & > :not(:last-child) {
       margin-right: 24px;
     }
@@ -44,8 +51,26 @@ export default function Footer(): ReactElement {
   return (
     <div className={cx(style)}>
       <div className={'icon-wrapper'}>
-        <Img src={'/img/notion.png'} />
-        <Img src={'/img/medium.png'} />
+        <button
+          onClick={() => {
+            window.open(
+              'https://modern-agile-official-client.vercel.app/',
+              '_blank'
+            );
+          }}
+        >
+          <Img src={'/img/medium.png'} />
+        </button>
+        <button
+          onClick={() => {
+            window.open(
+              'https://www.notion.so/25f5a56ccbe94545be0a4608ca55f026',
+              '_blank'
+            );
+          }}
+        >
+          <Img src={'/img/notion.png'} />
+        </button>
       </div>
       <div>{text.introduce}</div>
       <div>{text.others}</div>

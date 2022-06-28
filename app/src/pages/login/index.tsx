@@ -31,7 +31,6 @@ export default function LoginModal({}: Props) {
   return (
     <Presenter isOpenModal={isOpenModal}>
       <Login text={text} />
-      {/* <Register text={text} /> */}
     </Presenter>
   );
 }

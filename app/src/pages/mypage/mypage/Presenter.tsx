@@ -14,10 +14,15 @@ export default function MyPage({
   actions,
   checkSelf,
 }: Props) {
-  console.log('posts :>> ', posts);
   if (checkSelf === 'true') {
     return (
-      <MySelf text={text} userInfo={userInfo} posts={posts} actions={actions} />
+      <MySelf
+        text={text}
+        userInfo={userInfo}
+        posts={posts}
+        actions={actions}
+        checkSelf={checkSelf}
+      />
     );
   } else {
     return (
@@ -26,6 +31,7 @@ export default function MyPage({
         userInfo={userInfo}
         posts={posts}
         actions={actions}
+        checkSelf={checkSelf}
       />
     );
   }

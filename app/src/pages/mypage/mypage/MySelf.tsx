@@ -10,7 +10,14 @@ interface Props {
   [key: string]: any;
 }
 
-export default function MySelf({ text, userInfo, posts, actions }: Props) {
+export default function MySelf({
+  text,
+  userInfo,
+  posts,
+  actions,
+  checkSelf,
+}: Props) {
+  // console.log('posts.profileSpecs :>> ', posts.profileSpecs);
   const navigate = useNavigate();
 
   const interested =
@@ -79,24 +86,33 @@ export default function MySelf({ text, userInfo, posts, actions }: Props) {
             <div className={'title'}>{text.resume.spec}</div>
             <Slide
               outsideBtn
+              checkSelf={checkSelf}
+              viewNumber={3}
               items={posts.profileSpecs}
               action={actions.specs}
+              marginRight={32}
             />
           </div>
           <div className={'section'}>
             <div className={'title'}>{text.resume.give}</div>
             <Slide
               outsideBtn
+              checkSelf={checkSelf}
+              viewNumber={3}
               items={posts.profileToHelp}
               action={actions.toHelp}
+              marginRight={32}
             />
           </div>
           <div className={'section'}>
             <div className={'title'}>{text.resume.got}</div>
             <Slide
               outsideBtn
+              checkSelf={checkSelf}
+              viewNumber={3}
               items={posts.profileHelpMe}
               action={actions.helpMe}
+              marginRight={32}
             />
           </div>
         </div>

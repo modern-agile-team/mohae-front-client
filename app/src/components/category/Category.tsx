@@ -97,6 +97,13 @@ export default function Category({
       justify-content: center;
       align-items: center;
       ${className};
+      :hover {
+        background-color: ${color.subtle};
+      }
+      :active {
+        background-color: ${color.lighter};
+        color: white !important;
+      }
     `,
   };
 

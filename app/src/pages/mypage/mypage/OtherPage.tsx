@@ -21,32 +21,30 @@ interface Props {
   [key: string]: any;
 }
 
-export default function OtherPage({ text, userInfo, posts, actions }: Props) {
-  // console.log(`text`, text);
-  // console.log('userInfo :>> ', userInfo);
-  // console.log('posts :>> ', posts);
-  // console.log('actions :>> ', actions);
-  const interestedCategories = (
-    <div className={'row sub-title'}>
-      <Category shape={'row'} name={'카테 1'} />
-
-      <Category shape={'row'} name={'카테 2'} />
-
-      <Category shape={'row'} name={'카테 3'} />
-    </div>
-  );
+export default function OtherPage({
+  text,
+  userInfo,
+  posts,
+  actions,
+  checkSelf,
+}: Props) {
+  const interestedCategories =
+    userInfo &&
+    userInfo.categories.map((category: any, index: number) => (
+      <Category key={index} shape={'row'} name={category.name} />
+    ));
 
   return (
-    <BasicModal preBtn big visible={true}>
+    <BasicModal big visible={true}>
       <div className={cx(style)}>
         <div className="header">
           <Profile size={150} />
           <div>
             <div className="row title">
               <div className={'row sub-title'}>
-                <div className={'name'}>{'모던 애자일'}</div>
+                <div className={'name'}>{userInfo && userInfo.nickname}</div>
                 <div className={'sir'}>{text.sir}</div>
-                {interestedCategories}
+                <div className={'row sub-title'}>{interestedCategories}</div>
               </div>
               <div className={'row btns'}>
                 <div>
@@ -96,27 +94,36 @@ export default function OtherPage({ text, userInfo, posts, actions }: Props) {
         </div>
         <div className={'boards'}>
           <div className={'section'}>
-            <div className={'title'}>{'SPEC'}</div>
+            <div className={'title'}>{'내 스펙 관리'}</div>
             <Slide
               outsideBtn
+              viewNumber={4}
               items={posts.profileSpecs}
               action={actions.specs}
+              marginRight={16}
+              checkSelf={checkSelf}
             />
           </div>
           <div className={'section'}>
-            <div className={'title'}>{'TOHELP'}</div>
+            <div className={'title'}>{'해줄래요 이력'}</div>
             <Slide
               outsideBtn
+              viewNumber={4}
               items={posts.profileToHelp}
               action={actions.toHelp}
+              marginRight={16}
+              checkSelf={checkSelf}
             />
           </div>
           <div className={'section'}>
-            <div className={'title'}>{'HELPME'}</div>
+            <div className={'title'}>{'받을래요 이력'}</div>
             <Slide
               outsideBtn
+              viewNumber={4}
               items={posts.profileHelpMe}
               action={actions.helpMe}
+              marginRight={16}
+              checkSelf={checkSelf}
             />
           </div>
         </div>
@@ -155,7 +162,7 @@ const style = css`
     align-items: flex-end;
     .title {
       width: 100%;
-      height: 43px;
+      height: 23px;
       justify-content: space-between;
       margin-bottom: 16px;
       .sub-title {
@@ -194,14 +201,16 @@ const style = css`
     .info {
       height: fit-content;
     }
-    .icon {
-      width: 30px;
-      height: 30px;
-    }
     .item {
       width: 120px;
       .icon {
         margin-bottom: 8px;
+        width: 30px;
+        height: 30px;
+        :hover {
+          cursor: pointer;
+          /* background-color: ${color.subtle}; */
+        }
       }
     }
     .text {
@@ -210,20 +219,19 @@ const style = css`
       }
     }
   }
-
-  > .resume {
-    width: 100%;
-    height: fit-content;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    .hidden {
-      overflow: hidden;
-    }
-    > .title {
-      width: 100%;
-      ${font.weight[700]}
-      margin-bottom: 16px;
+  > .boards {
+    .section {
+      height: 216px;
+      /* overflow: visible; */
+      > .slide {
+        height: calc(100% - 23px - 16px);
+      }
+      > .title {
+        height: 23px;
+        font-size: 16px;
+        margin-bottom: 16px;
+      }
+      margin-bottom: 32px;
     }
   }
 `;

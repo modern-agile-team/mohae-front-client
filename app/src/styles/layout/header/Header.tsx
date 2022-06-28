@@ -62,7 +62,7 @@ export default function Header(props: Props): ReactElement {
       </div>
     </Link>
   );
-  // console.log('object :>> ', getToken());
+
   return (
     <div className={cx(wrapper)}>
       <Link className={'logo'} to={'/'}>

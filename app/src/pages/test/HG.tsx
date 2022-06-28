@@ -11,6 +11,9 @@ import {
   NewPost,
   Carousel,
 } from '../../components';
+import Edit from '../spec/Edit';
+import Spec from '../spec';
+import Visit from '../spec/Visit';
 
 import { RootState, AppDispatch } from '../../redux/root';
 import { Profile, LoginModal } from '../../pages';
@@ -29,8 +32,9 @@ interface BODY {
 export default function HG() {
   return (
     <>
-      {/* <OrderedImg edit /> */}
-      <OtherPage />
+      {/* <Spec /> */}
+      {/* <Edit /> */}
+      <Visit />
     </>
   );
 }

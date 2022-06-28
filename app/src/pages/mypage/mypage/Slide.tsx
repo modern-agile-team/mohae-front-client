@@ -4,11 +4,12 @@ import { cx, css } from '@emotion/css';
 import { useState, useEffect } from 'react';
 import { Img, NewPost } from '../../../components';
 import { color, radius, font, shadow } from '../../../styles';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useGetRequest } from '../../../redux/axios';
 import axios from 'axios';
 import { get_user_specs } from '../../../redux/spec/reducer';
 import { useDispatch } from 'react-redux';
+import getToken from '../../../utils/getToken';
 
 interface Props {
   [key: string]: any;
@@ -17,12 +18,19 @@ interface PARAMS {
   [key: string]: any;
 }
 
-export default function Slide({ onClick, outsideBtn, items, action }: Props) {
+export default function Slide({
+  onClick,
+  outsideBtn,
+  items,
+  action,
+  marginRight,
+  viewNumber,
+  checkSelf,
+}: Props) {
   const [sector, setSector] = useState(0),
     dispatch = useDispatch(),
     ENDPOINT = `https://mo-hae.site/`,
-    TOKEN =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVzdGFyZzFAaGFubWFpbC5uZXQiLCJ1c2VyTm8iOjUsImlzc3VlciI6Im1vZGVybi1hZ2lsZSIsImV4cGlyYXRpb24iOiIzNjAwMCIsImlhdCI6MTY1NjI5MjkzNywiZXhwIjoxNjU2MzI4OTM3fQ.5eQ2KU4THZKbWW77fEp6GRWhd7_hemA62bVE3v7fnaI',
+    TOKEN = getToken(),
     userId = useParams().no,
     params: PARAMS = {
       'spec/get_user_specs': 'specs/profile?user=',
@@ -46,7 +54,60 @@ export default function Slide({ onClick, outsideBtn, items, action }: Props) {
         false: '/img/arrow-left-light1.png',
       },
     },
-    checkNext = Math.floor((items.length - 1) / 3) > sector;
+    text: PARAMS = {
+      'spec/get_user_specs': '아직 등록된 스펙이 없습니다.',
+      'spec/get_user_tohelp': '아직 등록된 이력이 없습니다.',
+      'spec/get_user_helpme': '아직 등록된 이력이 없습니다.',
+    },
+    animationLength: PARAMS = {
+      true: items.length,
+      false: items.length - 1,
+    },
+    take: PARAMS = {
+      true: 3,
+      false: 4,
+    },
+    navigate = useNavigate();
+
+  const checkItems = () => {
+    if (items.length) {
+      return css`
+        > .container {
+          width: fit-content;
+          transition: 0.7s;
+          transform: ${`translateX(calc(${
+            -(sector * viewNumber) * (228 + marginRight)
+          }px))`};
+          height: 100%;
+          display: flex;
+          align-items: center;
+          > .board {
+            width: 228px;
+            height: 100%;
+            border-radius: 6px;
+            margin-right: ${`${marginRight}px`};
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            font-size: 400px;
+          }
+        }
+      `;
+    } else if (!items.length && checkSelf === 'false') {
+      return css`
+        ${shadow.normal}
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: white;
+      `;
+    }
+  };
+
+  const arrowIcon: { [key: string]: any } = {
+    true: items.length > viewNumber - 1,
+    false: items.length > viewNumber,
+  };
 
   const style = css`
     width: 100%;
@@ -66,22 +127,33 @@ export default function Slide({ onClick, outsideBtn, items, action }: Props) {
         transform: translate(8px, 8px);
         border-radius: 6px;
         > .container {
-          width: fit-content;
-          transition: 0.7s;
-          transform: ${`translateX(calc(${-(sector * 3) * (228 + 32)}px))`};
+          height: 100%;
+        }
+        ${checkItems()};
+        .no-data {
+          width: 100%;
           height: 100%;
           display: flex;
           align-items: center;
-          > .board {
-            width: 228px;
-            height: 100%;
-            border-radius: 6px;
-            margin-right: 32px;
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            font-size: 400px;
-          }
+        }
+      }
+      .add-post {
+        width: 228px;
+        height: 100%;
+        border-radius: 6px;
+        ${shadow.normal};
+        margin-right: 32px;
+        background-color: white;
+        padding: 60px 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+
+        .add-img {
+          width: 24px;
+          height: 24px;
+          transform: rotate(45deg);
         }
       }
     }
@@ -110,20 +182,20 @@ export default function Slide({ onClick, outsideBtn, items, action }: Props) {
         right: -24px;
       `}
       background: ${`url(${
-        arrowBtn.right[`${items.length > 3}`]
+        arrowBtn.right[`${arrowIcon[checkSelf]}`]
       }) no-repeat center/contain;`};
     }
   `;
 
-  const useClickArrowBtn = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const clickArrowBtn = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (e.currentTarget.name === '+') {
-      if (Math.floor((items.length - 1) / 3) > sector) {
+      if (Math.floor(animationLength[checkSelf] / viewNumber) > sector) {
         !cycle &&
           axios
             .get(
-              `${ENDPOINT}${params[action.type]}${userId}&take=3&page=${
-                sector + 3
-              }${targets[action]}`,
+              `${ENDPOINT}${params[action.type]}${userId}&take=${
+                take[checkSelf]
+              }&page=${sector + viewNumber}${targets[action]}`,
               {
                 headers: {
                   accept: 'application/json',
@@ -133,7 +205,6 @@ export default function Slide({ onClick, outsideBtn, items, action }: Props) {
               }
             )
             .then((res) => {
-              // console.log('res :>> ', res.data.response);
               dispatch(action(res.data.response));
             })
             .catch((err) => {
@@ -151,27 +222,43 @@ export default function Slide({ onClick, outsideBtn, items, action }: Props) {
     }
   };
 
-  const viewPosts =
-    items && items.length > 0 ? (
-      items.map((contents: string, index: number) => (
+  const viewPosts = () => {
+    if (items && items.length) {
+      return items.map((contents: string, index: number) => (
         <div className={'board'} key={index}>
           <NewPost page={'inSpec'} board={contents} />
         </div>
-      ))
-    ) : (
-      <span>{'NO DATA'}</span>
-    );
+      ));
+    } else if (checkSelf === 'false') {
+      return <div className={'no-data'}>{text[action.type]}</div>;
+    }
+  };
+
+  const openAddPostModal = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
 
   return (
     <div className={'slide'}>
       <div className={cx(style)}>
         <div className={'whole'}>
           <div className={'box'}>
-            <div className={'container'}>{viewPosts}</div>
+            <div className={'container'}>
+              {checkSelf === 'true' && (
+                <button className={'add-post'} onClick={openAddPostModal}>
+                  <div className={'add-img'}>
+                    <Img src={'/img/close.png'} />
+                  </div>
+                  <div>{'스펙 등록하기'}</div>
+                </button>
+              )}
+              {viewPosts()}
+            </div>
           </div>
         </div>
-        <button className={`btn prev`} onClick={useClickArrowBtn} name="-" />
-        <button className={'btn next'} onClick={useClickArrowBtn} name="+" />
+        <button className={`btn prev`} onClick={clickArrowBtn} name="-" />
+        <button className={'btn next'} onClick={clickArrowBtn} name="+" />
       </div>
     </div>
   );

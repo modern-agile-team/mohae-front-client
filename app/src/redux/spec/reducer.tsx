@@ -11,8 +11,10 @@ import axios from 'axios';
 const GET_USER_SPECS = 'get_user_specs';
 const GET_USER_TOHELP = 'get_user_tohelp';
 const GET_USER_HELPME = 'get_user_helpme';
+const GET_SPEC_INFO = 'get_spec_info';
+const GET_SPEC_NO = 'get_spec_no';
 
-const ENDPOINT = `https://mo-hae.site/profile/`;
+const ENDPOINT = `https://mo-hae.site/specs/spec/`;
 
 const asyncThunk = (name: string, param: string | number) =>
   createAsyncThunk<any, void, {}>(name, async () => {
@@ -20,7 +22,7 @@ const asyncThunk = (name: string, param: string | number) =>
     return response.data;
   });
 
-// export const getHotAll = asyncThunk('getUserInfo', 5);
+export const getHotAll = asyncThunk('getUserInfo', 5);
 
 interface INITSTATE {
   [key: string]: any;
@@ -31,6 +33,8 @@ const initialState: INITSTATE = {
   profileSpecs: [],
   profileToHelp: [],
   profileHelpMe: [],
+  specInfo: null,
+  specNo: null,
 };
 
 export const spec = createSlice({
@@ -45,6 +49,12 @@ export const spec = createSlice({
     },
     [GET_USER_HELPME]: (state, action: PayloadAction<any>) => {
       state.profileHelpMe = [...state.profileHelpMe, ...action.payload];
+    },
+    [GET_SPEC_INFO]: (state, action: PayloadAction<any>) => {
+      state.specInfo = action.payload;
+    },
+    [GET_SPEC_NO]: (state, action: PayloadAction<any>) => {
+      state.specNo = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -64,6 +74,8 @@ export const {
   get_user_specs,
   get_user_tohelp,
   get_user_helpme,
+  get_spec_info,
+  get_spec_no,
 } = spec.actions;
 export default spec.reducer;
 // action, reducer, store

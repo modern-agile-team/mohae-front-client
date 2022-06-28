@@ -7,6 +7,7 @@ import MarkBox from '../markbox/MarkBox';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../redux/root';
 import { Link } from 'react-router-dom';
+import { spec_visit } from '../../redux/modal/reducer';
 
 interface Props {
   [key: string]: any;
@@ -68,7 +69,6 @@ export default function NewPost({ page, board }: Props) {
     overflow: hidden;
     ${shadow.normal};
     ${radius[6]};
-    /* overflow: hidden; */
 
     > .mark-box {
       position: absolute;
@@ -228,8 +228,20 @@ export default function NewPost({ page, board }: Props) {
     <> </>
   );
 
+  const isOpenSpecVisit = useSelector(
+    (state: RootState) => state.modal.openSpecVisit
+  );
+  const dispatch = useDispatch();
+  const openModal = (e: React.MouseEvent) => {
+    dispatch(spec_visit(!isOpenSpecVisit));
+  };
+
   return (
-    <Link to={`post/${board.no}`} className={cx(style)}>
+    <Link
+      to={isNaN(board.target) ? `?spec/${board.no}` : `post/${board.no}`}
+      className={cx(style)}
+      onClick={openModal}
+    >
       <div className={'img'}>
         {board ? (
           <Img src={`${board.photoUrl}`} />

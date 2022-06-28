@@ -39,8 +39,8 @@ export default function MyPage({}: Props) {
     paramNo = useParams().no,
     checkSelf = String(userNo === paramNo),
     take: any = {
-      true: 3,
-      false: 4,
+      true: 5,
+      false: 8,
     },
     userInfo = useSelector((state: RootState) => state.mypage.user.profile),
     posts = useSelector((state: RootState) => state.spec),
@@ -60,17 +60,17 @@ export default function MyPage({}: Props) {
     };
 
   useGetRequest(
-    `${SPEC}user=${paramNo}&take=${take[checkSelf] * 2}&page=1`,
+    `${SPEC}user=${paramNo}&take=${take[checkSelf]}&page=1`,
     TOKEN,
     get_user_specs
   );
   useGetRequest(
-    `${BOARDS}user=${paramNo}&take=${take[checkSelf] * 2}&page=1${target[1]}`,
+    `${BOARDS}user=${paramNo}&take=${take[checkSelf]}&page=1${target[1]}`,
     TOKEN,
     get_user_tohelp
   );
   useGetRequest(
-    `${BOARDS}user=${paramNo}&take=${take[checkSelf] * 2}&page=1${target[0]}`,
+    `${BOARDS}user=${paramNo}&take=${take[checkSelf]}&page=1${target[0]}`,
     TOKEN,
     get_user_helpme
   );

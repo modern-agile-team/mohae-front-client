@@ -76,6 +76,7 @@ export default function Register({ text }: Props) {
           navigate('/');
 
           dispatch(open_login(!isOpenLogin));
+          // console.log(`1`, 1);
           // 모달 내리기
         } else {
           alert('이메일과 비밀번호를 다시 확인해주세요.');

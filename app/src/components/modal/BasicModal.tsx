@@ -5,23 +5,26 @@ import { css, cx } from '@emotion/css';
 import { Box } from '../../components';
 import Img from '../img/Img';
 import { animation } from './modalAnimation';
+import { color, shadow, font } from '../../styles';
 import { close_all } from '../../redux/modal/reducer';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from '../../redux/root';
+import { useNavigate } from 'react-router-dom';
 
 interface Props {
   [key: string]: any;
 }
 
-function BasicModal({ visible, big, preBtn, noCloseBtn, children }: Props) {
+function BasicModal({ visible, big, preBtn, children }: Props) {
   const [modalState, setModalState] = useState(visible);
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
   useEffect(() => {
     let timer: any;
     if (visible) {
       setModalState(true);
     } else {
-      timer = setTimeout(() => setModalState(false), 800);
+      timer = setTimeout(() => setModalState(false), 200);
     }
     return () => {
       clearTimeout(timer);
@@ -49,6 +52,10 @@ function BasicModal({ visible, big, preBtn, noCloseBtn, children }: Props) {
     position: absolute;
     top: 24px;
     right: 24px;
+    border-radius: 50%;
+    :hover {
+      background-color: rgba(231, 231, 232, 0.7);
+    }
   `;
 
   const cursor = css`
@@ -68,6 +75,8 @@ function BasicModal({ visible, big, preBtn, noCloseBtn, children }: Props) {
 
   const close = () => {
     dispatch(close_all(false));
+    setModalState(false);
+    window.history.back();
   };
 
   return (
@@ -86,11 +95,9 @@ function BasicModal({ visible, big, preBtn, noCloseBtn, children }: Props) {
             />
           </div>
         )}
-        {noCloseBtn || (
-          <div className={cx(closeBtn, cursor)}>
-            <Img src={'img/close.png'} onClick={close} />
-          </div>
-        )}
+        <div className={cx(closeBtn, cursor)}>
+          <Img src={'/img/close.png'} onClick={close} />
+        </div>
         {children}
       </Box>
       <div onClick={close} className={cx(overlay)}></div>

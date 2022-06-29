@@ -1,44 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { css, cx } from '@emotion/css';
 import { color, font, radius } from '../../styles';
+import { Link, useParams } from 'react-router-dom';
+import axios from 'axios';
+import { Props } from './Container';
+import { Btn, Popup } from '../../components';
 
 // target, 카테고리, 제목, d-day, 지역, 작성자여부, 좋아요, 조회수, 가격
-interface Props {
+interface PostInfoProps extends Props {
   quickMenu?: boolean;
-  data?: {
-    date: string;
-    msg: string;
-    response: {
-      authorization: boolean;
-      board: {
-        areaName: string;
-        areaNo: number;
-        boardPhotoUrls: string | null;
-        categoryName: string;
-        categoryNo: number;
-        decimalDay: number | null;
-        description?: string;
-        hit: number;
-        isDeadline: number;
-        isLike?: number;
-        likeCount: number;
-        majorName: string;
-        nickname: string;
-        no: number;
-        price: number;
-        summary: null | string;
-        target: number;
-        title: string;
-        userNo: number;
-        userPhotoUrl: string;
-      };
-    };
-  };
 }
 
-function PostInfo(props: Props) {
+function PostInfo(props: PostInfoProps) {
   const { quickMenu, data } = props;
   const datas = data?.response.board;
+  const { no } = useParams();
+  const [popupView, setPopupView] = useState(false);
 
   const wrap = css`
     border-bottom: ${!quickMenu && ` 1px solid ${color.light4}`};
@@ -47,6 +24,10 @@ function PostInfo(props: Props) {
     justify-content: space-between;
     color: ${color.dark1};
     ${font.weight[400]}
+    .popup-btn {
+      width: 74px;
+      height: 43px;
+    }
 
     .sectionWrap2 {
       display: flex;
@@ -59,6 +40,9 @@ function PostInfo(props: Props) {
         justify-content: end;
         margin-top: 4px;
         cursor: pointer;
+        visibility: ${data?.decoded && data?.decoded.userNo === datas?.userNo
+          ? 'visible'
+          : 'hidden'};
         p:nth-child(1) {
           margin-right: 8px;
           padding-right: 8px;
@@ -161,9 +145,47 @@ function PostInfo(props: Props) {
             }
           `;
 
+    const showPopup = () => {
+      return (
+        popupView && (
+          <Popup
+            visible={popupView}
+            text1={'정말 삭제 하시겠습니까? '}
+            text2={'삭제 시 게시판으로 이동합니다.'}
+          >
+            <div className='popup-btn'>
+              <Btn white onClick={() => setPopupView(false)}>
+                닫기
+              </Btn>
+            </div>
+            <div className='popup-btn'>
+              <Link to={'/boards/category/17?take=12&page=1'}>
+                <Btn main onClick={deletePost}>
+                  삭제하기
+                </Btn>
+              </Link>
+            </div>
+          </Popup>
+        )
+      );
+    };
+
+    const deletePost = () => {
+      data &&
+        axios
+          .delete(`https://mo-hae.site/boards/${no}`, {
+            headers: {
+              Authorization: `Bearer ${data.token}`,
+            },
+          })
+          .then(res => console.log(res))
+          .catch(err => console.log(err));
+    };
+
     return !quickMenu ? (
       <>
         <div className={cx(sectionWrap1())}>
+          {showPopup()}
           <div>
             <p className='coordinates'>
               {datas?.target ? '구할래요' : '해줄래요'} {'>'} 카테고리 {'>'}{' '}
@@ -180,8 +202,10 @@ function PostInfo(props: Props) {
         </div>
         <div className='sectionWrap2'>
           <div className='textBtnWrap'>
-            <p>수정하기</p>
-            <p>삭제하기</p>
+            <Link to={`/edit/${datas?.no}`}>
+              <p>수정하기</p>
+            </Link>
+            <p onClick={() => setPopupView(true)}>삭제하기</p>
           </div>
           <div className='textBtnWrap'>
             <p>좋아요 {datas?.likeCount !== null ? datas?.likeCount : 0}개</p>

@@ -2,41 +2,13 @@ import React from 'react';
 import { css, cx } from '@emotion/css';
 import PostInfo from './PostInfo';
 import PostWriter from './PostWriter';
+import { Props } from './Container';
 
-interface Props {
+interface QuickMenuProps extends Props {
   close: () => void;
-  data?: {
-    date: string;
-    msg: string;
-    response: {
-      authorization: boolean;
-      board: {
-        areaName: string;
-        areaNo: number;
-        boardPhotoUrls: string | null;
-        categoryName: string;
-        categoryNo: number;
-        decimalDay: number | null;
-        description?: string;
-        hit: number;
-        isDeadline: number;
-        isLike?: number;
-        likeCount: number;
-        majorName: string;
-        nickname: string;
-        no: number;
-        price: number;
-        summary: null | string;
-        target: number;
-        title: string;
-        userNo: number;
-        userPhotoUrl: string;
-      };
-    };
-  };
 }
 
-function QuickMenu(props: Props) {
+function QuickMenu(props: QuickMenuProps) {
   const { close, data } = props;
 
   const style = css`

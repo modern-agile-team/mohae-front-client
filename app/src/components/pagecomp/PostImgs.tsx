@@ -2,46 +2,17 @@ import React from 'react';
 import { css, cx } from '@emotion/css';
 import { Box, Carousel, MarkBox, OrderedImg, Btn } from '..';
 import { radius } from '../../styles';
+import { Props } from '../../pages/post/Container';
 
 // 이미지s
-interface Props {
+interface PostImgsProps extends Props {
   view?: boolean;
   getValue?: boolean;
-  data?: {
-    date: string;
-    msg: string;
-    response: {
-      authorization: boolean;
-      board: {
-        areaName: string;
-        areaNo: number;
-        boardPhotoUrls: string | null;
-        categoryName: string;
-        categoryNo: number;
-        decimalDay: number | null;
-        description?: string;
-        hit: number;
-        isDeadline: number;
-        isLike?: number;
-        likeCount: number;
-        majorName: string;
-        nickname: string;
-        no: number;
-        price: number;
-        summary: null | string;
-        target: number;
-        title: string;
-        userNo: number;
-        userPhotoUrl: string;
-      };
-    };
-  };
 }
 
-function PostImgs(props: Props) {
+function PostImgs(props: PostImgsProps) {
   const { view, getValue, data } = props;
   const datas = data?.response;
-  console.log('datas :>> ', datas);
 
   const imgs = [
     '/img/camera.png',

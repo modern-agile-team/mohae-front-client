@@ -1,6 +1,6 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { css, cx } from '@emotion/css';
-import { PostIt, Btn, ReportModal, Box, Img } from '../../components';
+import { PostIt, Btn, ReportModal, Box, Img, Mosaic } from '../../components';
 import PostBody from '../../components/pagecomp/PostBody';
 import PostImgs from '../../components/pagecomp/PostImgs';
 import PostInfo from './PostInfo';
@@ -8,38 +8,7 @@ import PostWriter from './PostWriter';
 import QuickMenu from './QuickMenu';
 import useScroll from '../../customhook/useScroll';
 import { color, font, radius, shadow } from '../../styles';
-
-interface Props {
-  data: {
-    date: string;
-    msg: string;
-    response: {
-      authorization: boolean;
-      board: {
-        areaName: string;
-        areaNo: number;
-        boardPhotoUrls: string | null;
-        categoryName: string;
-        categoryNo: number;
-        decimalDay: number | null;
-        description?: string;
-        hit: number;
-        isDeadline: number;
-        isLike?: number;
-        likeCount: number;
-        majorName: string;
-        nickname: string;
-        no: number;
-        price: number;
-        summary: null | string;
-        target: number;
-        title: string;
-        userNo: number;
-        userPhotoUrl: string;
-      };
-    };
-  };
-}
+import { Props } from './Container';
 
 function Presenter({ data }: Props) {
   const [report, setReport] = useState(false);
@@ -51,8 +20,27 @@ function Presenter({ data }: Props) {
     }
   }, []);
 
+  const closeBtn = () => {
+    return (
+      data?.msg === '회원' &&
+      data?.response.authorization && (
+        <div className='cancelCloseBtn'>
+          <Btn main>
+            {data?.response.board.isDeadline ? '마감 취소' : '마감 하기'}
+          </Btn>
+        </div>
+      )
+    );
+  };
+
   return (
     <>
+      {!data?.response.authorization && (
+        <>
+          <Mosaic body />
+          <Mosaic img />
+        </>
+      )}
       <ReportModal visible={report} close={() => setReport(!report)} />
       <div className={cx(wrap)}>
         <div className='topflexWrap'>
@@ -61,7 +49,7 @@ function Presenter({ data }: Props) {
             <PostInfo data={data} />
             <PostWriter data={data} close={() => setReport(!report)} />
             <div className='postIt'>
-              <PostIt small>{data.response.board.summary}</PostIt>
+              <PostIt small>{data?.response.board.summary}</PostIt>
             </div>
           </div>
         </div>
@@ -87,11 +75,7 @@ function Presenter({ data }: Props) {
             </div>
           </div>
         </Box>
-        <div className='cancelCloseBtn'>
-          <Btn main>
-            {data.response.board.isDeadline ? '마감 취소' : '마감 하기'}
-          </Btn>
-        </div>
+        {closeBtn()}
         {useScroll().scrollY > 490 && (
           <div className='quickMenu'>
             <QuickMenu data={data} close={() => setReport(!report)} />
@@ -153,6 +137,8 @@ const wrap = css`
     }
   }
   .text-box {
+    resize: none;
+    overflow: hidden;
     width: 100%;
     min-height: 84px;
     padding: 16px;

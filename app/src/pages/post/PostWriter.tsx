@@ -4,43 +4,16 @@ import Profile from '../../components/profile/Profile';
 import { Btn, Img, PostIt } from '../../components';
 import { color, font } from '../../styles';
 import Btns from './Btns';
+import { Props } from './Container';
 
 // 프로필 이미지, 닉네임, 전공, 로그인 상태(버튼 그려줘야 함),
-interface Props {
+interface PostWriterProps extends Props {
   close: () => void;
-  data?: {
-    date: string;
-    msg: string;
-    response: {
-      authorization: boolean;
-      board: {
-        areaName: string;
-        areaNo: number;
-        boardPhotoUrls: string | null;
-        categoryName: string;
-        categoryNo: number;
-        decimalDay: number | null;
-        description?: string;
-        hit: number;
-        isDeadline: number;
-        isLike?: number;
-        likeCount: number;
-        majorName: string;
-        nickname: string;
-        no: number;
-        price: number;
-        summary: null | string;
-        target: number;
-        title: string;
-        userNo: number;
-        userPhotoUrl: string;
-      };
-    };
-  };
 }
 
-function PostWriter({ close, data }: Props) {
+function PostWriter({ close, data }: PostWriterProps) {
   const datas = data?.response.board;
+
   const userImg =
     datas?.userPhotoUrl !== null
       ? `https://mohaeproj.s3.amazonaws.com/${datas?.userPhotoUrl}`

@@ -48,10 +48,12 @@ function Presenter() {
           ${common}
           justify-content: space-between;
           width: 936px;
-          margin: 64px auto 32px;
+          margin: 64px auto 0px;
         `,
         css`
           ${common}
+          width: 100%;
+          padding-top: 32px;
           color: ${color.dark1};
           p {
             color: ${color.main};
@@ -60,7 +62,7 @@ function Presenter() {
         css`
           ${common}
           overflow: hidden;
-          width: 100%;
+          width: 1128px;
           flex-wrap: wrap;
           margin-bottom: 64px;
           padding-left: 8px;
@@ -88,7 +90,6 @@ function Presenter() {
       .get(`https://mo-hae.site/boards/category/${no}?take=12&page=1`)
       .then(res => {
         setData(res.data.response);
-        console.log('res.data.response :>> ', res.data.response);
       })
       .catch(err => console.log('err', err));
   };
@@ -129,11 +130,13 @@ function Presenter() {
           </Link>
         </div>
       </div>
-      <div className={cx(style.wrap(1))}>
-        총&nbsp;<p>{data?.category.boards.length}</p>
-        &nbsp;건의 게시물
+      <div className={cx(style.wrap(2))}>
+        <div className={cx(style.wrap(1))}>
+          총&nbsp;<p>{data?.category.boards.length}</p>
+          &nbsp;건의 게시물
+        </div>
+        {createPost()}
       </div>
-      <div className={cx(style.wrap(2))}>{createPost()}</div>
     </>
   );
 }

@@ -57,7 +57,7 @@ export default function Header(props: Props): ReactElement {
         <span>{userInfo.nickname}</span>
         <span>{text.sir}</span>
         <div className={'photo'}>
-          <Img src={'/img/profile.png'} />
+          <Img src={'/img/leephoter.png'} />
         </div>
       </div>
     </Link>

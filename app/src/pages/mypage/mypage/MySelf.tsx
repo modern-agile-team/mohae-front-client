@@ -17,7 +17,6 @@ export default function MySelf({
   actions,
   checkSelf,
 }: Props) {
-  // console.log('posts.profileSpecs :>> ', posts.profileSpecs);
   const navigate = useNavigate();
 
   const interested =
@@ -44,7 +43,7 @@ export default function MySelf({
             <div>{text.sir}</div>
           </div>
           <div className={'profile'}>
-            <Profile img={null} size={146} />
+            <Profile size={146} img={'/img/leephoter.png'} />
           </div>
           <div className={'register'}>
             <div>{text.registerDate}</div>

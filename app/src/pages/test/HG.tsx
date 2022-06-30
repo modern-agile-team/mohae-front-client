@@ -22,6 +22,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import TestImg from './test';
 import OtherPage from '../mypage/mypage/OtherPage';
+import { spec_create } from '../../redux/modal/reducer';
 
 interface BODY {
   title: string;
@@ -30,11 +31,18 @@ interface BODY {
 }
 
 export default function HG() {
+  const isOpen = useSelector((state: RootState) => state.modal.openSpecCreate);
+  const dispatch = useDispatch();
+  const openModal = () => {
+    dispatch(spec_create(!isOpen));
+  };
+
   return (
     <>
       {/* <Spec /> */}
-      {/* <Edit /> */}
-      <Visit />
+      {/* <button onClick={openModal}>BUTTON</button> */}
+
+      {/* <Visit /> */}
     </>
   );
 }

@@ -21,7 +21,7 @@ import {
   LoginModal,
   Spec,
 } from './pages';
-import Edit from './pages/profile';
+import Edit from './pages/spec/Edit';
 import Visit from './pages/spec/Visit';
 
 injectGlobal`
@@ -94,9 +94,8 @@ function App({}: Props) {
           element={<Layout component={<CreatePost />} />}
         />
       </Routes>
-      <Edit />
-      <Spec />
       <Visit />
+      <Edit />
       <LoginModal />
     </Router>
   );

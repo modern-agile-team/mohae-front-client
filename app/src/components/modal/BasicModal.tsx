@@ -15,10 +15,9 @@ interface Props {
   [key: string]: any;
 }
 
-function BasicModal({ visible, big, preBtn, children }: Props) {
+function BasicModal({ reset, visible, big, preBtn, children }: Props) {
   const [modalState, setModalState] = useState(visible);
   const dispatch = useDispatch<AppDispatch>();
-  const navigate = useNavigate();
   useEffect(() => {
     let timer: any;
     if (visible) {
@@ -73,9 +72,12 @@ function BasicModal({ visible, big, preBtn, children }: Props) {
     ${modalState || animation.dissappearOverlay};
   `;
 
-  const close = () => {
+  const close = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
     dispatch(close_all(false));
     setModalState(false);
+    reset && reset();
     window.history.back();
   };
 

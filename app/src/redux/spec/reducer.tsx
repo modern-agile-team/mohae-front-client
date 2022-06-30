@@ -13,6 +13,7 @@ const GET_USER_TOHELP = 'get_user_tohelp';
 const GET_USER_HELPME = 'get_user_helpme';
 const GET_SPEC_INFO = 'get_spec_info';
 const GET_SPEC_NO = 'get_spec_no';
+const ADD_IMAGES = 'add_images';
 
 const ENDPOINT = `https://mo-hae.site/specs/spec/`;
 
@@ -35,6 +36,7 @@ const initialState: INITSTATE = {
   profileHelpMe: [],
   specInfo: null,
   specNo: null,
+  addImages: new FormData(),
 };
 
 export const spec = createSlice({
@@ -56,6 +58,9 @@ export const spec = createSlice({
     [GET_SPEC_NO]: (state, action: PayloadAction<any>) => {
       state.specNo = action.payload;
     },
+    [ADD_IMAGES]: (state, action: PayloadAction<any>) => {
+      state.addImages = action.payload;
+    },
   },
   extraReducers: (builder) => {
     // builder
@@ -76,6 +81,7 @@ export const {
   get_user_helpme,
   get_spec_info,
   get_spec_no,
+  add_images,
 } = spec.actions;
 export default spec.reducer;
 // action, reducer, store

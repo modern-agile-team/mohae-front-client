@@ -15,31 +15,82 @@ import {
   BasicModal,
   MarkBox,
   Btn,
-  OrderedImg,
 } from '../../components';
-import { useSelector } from 'react-redux';
+import InputImg from './InputImg';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../redux/root';
+import axios from 'axios';
+import getToken from '../../utils/getToken';
+import { spec_create } from '../../redux/modal/reducer';
 
 export default function Edit() {
-  const isOpen = useSelector((state: RootState) => state.modal.openSpecEdit);
+  const dispatch = useDispatch();
+  const isOpen = useSelector((state: RootState) => state.modal.openSpecCreate);
+  const TOKEN = getToken();
   const text: { [key: string]: any } = {
     edit: '스펙 수정하기',
     register: '스펙 등록하기',
     complete: '완료',
     maxNum: 300,
   };
-
-  const [description, setDescription] = useState(
-    '가나다라마바사아자차카타파하~가나다라마바사아자차카타파하가나다라마바사아자차카타파하~가나다라마바사아자차카타파하~가나다라마바사아자차카타~가나다라마바사아자차카타파하~가나다라마바사아자차카타~가나다라마바사아자차카타파하~가나다라마바사아자차카타~가나다라마바사아자차카타파하~가나다라마바사아자차카타파하~가나다라마바사아자차카타~가나다라마바사아자차카타파하~가나다라마바사아자차카타~가나다라마바사아자차카타파하~가나다라마바사아자차카타~가나다라마바사아자차카타파하~가나다라마바사아자차카타파하~가나다라마바사아자차카타~가나다라마바사아자차카타파하~가나다라마바사아자차카타~가나다라마바사아자차카타파하~가나다라마바사아자차카타~가나다라마바사아자차카타파하~가나다라마바사아자차카타파하~가나다라마바사아자차카타~가나다라마바사아자차카타파하~가나다라마바사아자차카타~가나다라마바사아자차카타파하~가나다라마바사아자차카타~가나다라마바사아자차카타파하~가나다라마바사아자차카타파하~가나다라마바사아자차카타~가나다라마바사아자차카타파하~가나다라마바사아자차카타~가나다라마바사아자차카타파하~가나다라마바사아자차카타~~가나다라마바사아자차카타~가나다라마바사아자차카타파하~가나다라마바사아자차카타~가나다라마바사아자차카타파하~가나다라마바사아자차카타~'
-  );
-  const [title, setTitle] = useState('제목이다~');
+  const [value, setValue] = useState({
+    title: '',
+    description: '',
+  });
 
   const inputDescription = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setDescription(e.currentTarget.value);
+    const inputValue = e.currentTarget.value;
+    setValue({
+      ...value,
+      description: inputValue,
+    });
   };
 
   const inputTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTitle(e.currentTarget.value);
+    const inputValue = e.currentTarget.value;
+    setValue({
+      ...value,
+      title: inputValue,
+    });
+  };
+  const addImages = useSelector((state: RootState) => state.spec.addImages);
+  const createRequest = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!value.title || !value.description) {
+      alert('제목과 내용을 입력해주세요.');
+      return;
+    }
+    e.preventDefault();
+    e.stopPropagation();
+    addImages.append('title', value.title && value.title);
+    addImages.append('description', value.description && value.description);
+    const iterator = addImages.entries();
+    console.log('data ', iterator.next());
+    console.log('data ', iterator.next());
+    console.log('data ', iterator.next());
+    // console.log('data ', iterator.next());
+    // console.log('data ', iterator.next());
+    // console.log('data ', iterator.next());
+
+    axios
+      .post('https://mo-hae.site/specs/regist', addImages, {
+        headers: {
+          accept: 'application/json',
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${TOKEN}`,
+        },
+      })
+      .then((res) => {
+        if (res.data.statusCode >= 200 && res.data.statusCode <= 204) {
+          alert('스펙이 등록되었습니다.');
+          setTimeout(() => {
+            dispatch(spec_create(!isOpen));
+          }, 100);
+        }
+        console.log(`res`, res.data);
+      })
+      .catch((err) => {
+        console.log(`err`, err);
+      });
   };
 
   return (
@@ -49,52 +100,38 @@ export default function Edit() {
         <div className={'wrapper'}>
           <Box size={[600, 470]}>
             <div className={'box'}>
-              <OrderedImg
-                edit
-                imgs={[
-                  'img/camera.png',
-                  'img/edit.png',
-                  'img/filter.png',
-                  'img/heart-main.png',
-                  'img/study.png',
-                  'img/send.png',
-                  'img/star-unfilled.png',
-                ]}
-              />
+              <InputImg edit />
             </div>
           </Box>
           <Box size={[336, 470]}>
             <div className={'box texts'}>
-              {/*  */}
               <input
+                placeholder={'제목을 입력해주세요.'}
                 maxLength={15}
                 className={'title'}
-                value={title}
+                value={value.title}
                 onChange={inputTitle}
                 spellCheck={false}
               />
               <div>
                 <FocusBar light thin />
               </div>
-              {/*  */}
               <textarea
+                placeholder={'내용을 입력해주세요.'}
                 maxLength={300}
                 className={'description'}
-                value={description}
+                value={value.description}
                 onChange={inputDescription}
                 spellCheck={false}
-              >
-                {/* {description} */}
-              </textarea>
+              ></textarea>
 
               <div className={'footer'}>
-                {/*  */}
                 <div className={'number'}>
                   <span>{'?'}</span>
                   <span>{'/'}</span>
                   <span>{text.maxNum}</span>
                 </div>
-                <div className={'complete'}>
+                <div className={'complete'} onClick={createRequest}>
                   <Btn main>{text.complete}</Btn>
                 </div>
               </div>

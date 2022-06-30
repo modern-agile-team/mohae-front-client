@@ -14,14 +14,11 @@ function PostImgs(props: PostImgsProps) {
   const { view, getValue, data } = props;
   const datas = data?.response;
 
-  const imgs = [
-    '/img/camera.png',
-    '/img/camera.png',
-    '/img/camera.png',
-    '/img/camera.png',
-    '/img/camera.png',
-  ];
-
+  const boardPhotoURL = () => {
+    return data && data.response.board.boardPhotoUrls !== null
+      ? data.response.board.boardPhotoUrls.split(', ')
+      : ['/img/logo.png'];
+  };
   const style = css`
     .carouselBox {
       width: 360px;
@@ -47,7 +44,7 @@ function PostImgs(props: PostImgsProps) {
   return view ? (
     <div className={cx(style)}>
       <Box className='carouselBox' size={[360, 360]}>
-        <Carousel images={imgs} />
+        <Carousel imgs={boardPhotoURL()} />
         <div className='markBox'>
           <MarkBox
             shape={datas?.board.target}
@@ -58,7 +55,7 @@ function PostImgs(props: PostImgsProps) {
         </div>
       </Box>
       <Box className='orderImgBox' size={[360, 72]}>
-        <OrderedImg imgs={imgs} inline />
+        <OrderedImg imgs={boardPhotoURL()} inline />
       </Box>
     </div>
   ) : (

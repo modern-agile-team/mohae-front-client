@@ -7,6 +7,8 @@ import PostBody from '../../components/pagecomp/PostBody';
 import { SelectBtn } from '../../components/button';
 import Input from './Input';
 import PostImgs from '../../components/pagecomp/PostImgs';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/root';
 
 function CreatePost() {
   const [view, setView] = useState<{ [key: number]: boolean }>({
@@ -18,6 +20,8 @@ function CreatePost() {
     0: true,
     1: false,
   });
+  const reduxData = useSelector((state: RootState) => state.post.data);
+
   const container = css`
     display: flex;
     justify-content: space-between;
@@ -160,7 +164,7 @@ function CreatePost() {
       <div className={cx(container)}>
         <div className='imgsSection'>
           <p className='pageTitle'>게시글 작성</p>
-          <PostImgs />
+          {/* <PostImgs /> */}
         </div>
         <div>
           {create.btn()}
@@ -178,7 +182,7 @@ function CreatePost() {
           </Box>
         </div>
       </div>
-      <PostBody />
+      {/* <PostBody /> */}
     </>
   );
 }

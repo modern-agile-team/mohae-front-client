@@ -1,12 +1,11 @@
 /** @format */
 
-import React, { Suspense } from 'react';
-import { cx, css } from '@emotion/css';
+import React from 'react';
+
 import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Link,
   Navigate,
 } from 'react-router-dom';
 import { injectGlobal } from '@emotion/css';
@@ -67,12 +66,7 @@ injectGlobal`
 
 `;
 
-interface Props {
-  [key: string]: any;
-}
-function App({}: Props) {
-  let isAuthorized = sessionStorage.getItem('isAuthorized');
-
+const App: React.SFC = () => {
   return (
     <Router>
       <Routes>
@@ -99,6 +93,6 @@ function App({}: Props) {
       <LoginModal />
     </Router>
   );
-}
+};
 
 export default App;

@@ -1,7 +1,8 @@
+/** @format */
+
 import React from 'react';
 import { css, cx } from '@emotion/css';
 import Profile from '../../components/profile/Profile';
-import { Btn, Img, PostIt } from '../../components';
 import { color, font } from '../../styles';
 import Btns from './Btns';
 
@@ -83,7 +84,7 @@ function PostWriter(props: Props) {
   return (
     <>
       <div className={cx(style)}>
-        <div className='userData'>
+        <div className="userData">
           <Profile img={null} size={60} smallShadow />
           <div>
             <p>{dummy.response.userNickname}</p>

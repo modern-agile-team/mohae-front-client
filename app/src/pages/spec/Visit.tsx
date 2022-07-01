@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { css, cx } from '@emotion/css';
-import { color, radius, font, shadow } from '../../styles';
+import { color, radius, font } from '../../styles';
 import { Box, FocusBar, BasicModal, Carousel, PostIt } from '../../components';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../redux/root';

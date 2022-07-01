@@ -4,7 +4,7 @@ import { css, cx } from '@emotion/css';
 import Header from './header/Header';
 import Footer from './footer/Footer';
 import Main from './main/Main';
-import { color, radius, font, shadow } from '../style/palette';
+import { color } from '../style/palette';
 import { ReactElement } from 'react';
 
 type Props = {

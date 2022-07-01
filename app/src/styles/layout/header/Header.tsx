@@ -1,12 +1,12 @@
 /** @format */
 
 import { css, cx } from '@emotion/css';
-import { color, radius, font, shadow } from '../../style/palette';
+import { color, shadow } from '../../style/palette';
 import { ReactElement } from 'react';
 import { Img, Btn } from '../../../components';
 import { open_login } from '../../../redux/modal/reducer';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState, AppDispatch } from '../../../redux/root';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../../redux/root';
 import { Link, useNavigate } from 'react-router-dom';
 import getToken from '../../../utils/getToken';
 import { decodeToken } from 'react-jwt';
@@ -57,7 +57,9 @@ export default function Header(props: Props): ReactElement {
         <span>{userInfo.nickname}</span>
         <span>{text.sir}</span>
         <div className={'photo'}>
-          <Img src={'/img/leephoter.png'} />
+          <Img
+            src={(tokenInfo && tokenInfo.photoUrl) || '/img/leephoter.png'}
+          />
         </div>
       </div>
     </Link>

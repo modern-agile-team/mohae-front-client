@@ -1,9 +1,7 @@
 /** @format */
 
-import { useState, useEffect } from 'react';
 import { css, cx } from '@emotion/css';
-import { keyframes } from '@emotion/react';
-import { color, radius, font, shadow } from '../../../styles';
+import { color, font } from '../../../styles';
 
 import {
   Img,
@@ -13,8 +11,7 @@ import {
   BasicModal,
   Btn,
 } from '../../../components';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../../../redux/root';
+
 import Slide from './Slide';
 
 interface Props {

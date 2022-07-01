@@ -6,7 +6,6 @@ import { color, radius, font, shadow } from '../../styles';
 import Img from '../img/Img';
 import Style from './style';
 import axios from 'axios';
-import { useForm, UseFormReturn } from 'react-hook-form';
 
 interface Props {
   [key: string]: any;

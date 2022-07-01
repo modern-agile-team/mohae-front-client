@@ -2,7 +2,6 @@
 
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-const HOST = `http://localhost:8000/members`;
 
 const USER_LOGIN = 'user_login';
 
@@ -12,7 +11,6 @@ const getData = createAsyncThunk('user_login', async () => {
   );
   return response;
 });
-// console.log('getData :>> ', getData);
 
 const initialState = {
   var: { isLoading: false },

@@ -1,7 +1,6 @@
 /** @format */
 
 import { css, cx } from '@emotion/css';
-import { color, radius, font, shadow } from '../../style/palette';
 import { ReactElement } from 'react';
 
 type Props = {
@@ -14,8 +13,6 @@ export default function Main({ main, children }: Props): ReactElement {
     height: fit-content;
     overflow-x: visible;
   `;
-  const TOKEN = sessionStorage.getItem('userAccessToken');
-  // console.log('TOKEN :>> ', TOKEN);
 
   return <div className={cx(style)}>{children}</div>;
 }

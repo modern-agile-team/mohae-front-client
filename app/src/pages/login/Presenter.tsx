@@ -1,23 +1,8 @@
 /** @format */
 
-import {
-  Img,
-  Poster,
-  NewPost,
-  Box,
-  Profile,
-  FocusBar,
-  Category,
-  BasicModal,
-  MarkBox,
-  Btn,
-  OrderedImg,
-  Report,
-} from '../../components';
+import { Img, FocusBar, BasicModal } from '../../components';
 import { radius, font, color, shadow } from '../../styles';
 import { css, cx } from '@emotion/css';
-import Login from './login/Login';
-import Register from './register';
 
 interface Props {
   [key: string]: any;

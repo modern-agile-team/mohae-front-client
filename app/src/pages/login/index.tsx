@@ -1,17 +1,12 @@
 /** @format */
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import Presenter from './Presenter';
 import Login from './login/Login';
-import Register from './register';
+
 import { RootState } from '../../redux/root';
-import { open_login } from '../../redux/modal/reducer';
 
-interface Props {
-  [key: string]: any;
-}
-
-export default function LoginModal({}: Props) {
+export default function LoginModal() {
   const isOpenModal = useSelector((state: RootState) => state.modal.openLogin);
 
   const text: { [key: string]: any } = {

@@ -1,11 +1,10 @@
 /** @format */
 
 import { css, cx } from '@emotion/css';
-import { useState, useEffect, useRef } from 'react';
-import { color, radius, font, shadow } from '../../styles';
+import { useState, useEffect } from 'react';
+import { color } from '../../styles';
 import { Img } from '../../components';
 import Style from './../../components/img-in-order/style';
-import axios from 'axios';
 import { add_images } from '../../redux/spec/reducer';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../redux/root';
@@ -20,13 +19,13 @@ interface IMAGE {
 }
 
 export default function InputImg({ imgs, edit, inline }: Props) {
-  const [clone, setClone] = useState(
+  const clone =
     imgs &&
-      imgs.map((img: any) => ({
-        img: img,
-        checked: false,
-      }))
-  );
+    imgs.map((img: any) => ({
+      img: img,
+      checked: false,
+    }));
+
   const [alarm, setAlarm] = useState(true);
   const [myImage, setMyImage] = useState<IMAGE[]>(clone || []);
   const addedImages = useSelector((state: RootState) => state.spec.addImages);
@@ -122,7 +121,7 @@ export default function InputImg({ imgs, edit, inline }: Props) {
       newClone.splice(newClone.length - (section - 1), 0, target);
       setMyImage(newClone);
       const formData = new FormData();
-      for (var i = 0; i < myImage.length; i++) {
+      for (let i = 0; i < myImage.length; i++) {
         formData.append('image', newClone[i].File);
       }
       dispatch(add_images(formData));

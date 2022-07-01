@@ -1,8 +1,6 @@
 /** @format */
 
-import { css, cx } from '@emotion/css';
 import { Img, Btn } from '../../components';
-import Title from './Title';
 
 export default function Completion() {
   const text: { [key: string]: any } = {

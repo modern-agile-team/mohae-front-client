@@ -1,21 +1,9 @@
 /** @format */
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { css, cx } from '@emotion/css';
-import { keyframes } from '@emotion/react';
-import { color, radius, font, shadow } from '../../styles';
-import {
-  Img,
-  Poster,
-  NewPost,
-  Box,
-  Profile,
-  FocusBar,
-  Category,
-  BasicModal,
-  MarkBox,
-  Btn,
-} from '../../components';
+import { color, radius, shadow } from '../../styles';
+import { Img, Category } from '../../components';
 import Options from './Options';
 
 interface Props {

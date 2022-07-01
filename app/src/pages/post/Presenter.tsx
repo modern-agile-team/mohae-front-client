@@ -4,7 +4,6 @@ import { PostIt, Btn, ReportModal, Box, Img, Mosaic } from '../../components';
 import PostBody from '../../components/pagecomp/PostBody';
 import PostImgs from '../../components/pagecomp/PostImgs';
 import PostInfo from './PostInfo';
-import PostWriter from './PostWriter';
 import QuickMenu from './QuickMenu';
 import useScroll from '../../customhook/useScroll';
 import { color, font, radius, shadow } from '../../styles';
@@ -12,6 +11,9 @@ import { Props } from './Container';
 
 function Presenter({ data }: Props) {
   const [report, setReport] = useState(false);
+  const [likeCount, setLikeCount] = useState<number>(
+    data.response.board.likeCount
+  );
   const textRef = useRef<HTMLTextAreaElement>(null);
   const handleResizeHeight = useCallback(() => {
     if (textRef.current) {
@@ -22,11 +24,11 @@ function Presenter({ data }: Props) {
 
   const closeBtn = () => {
     return (
-      data?.msg === '회원' &&
-      data?.response.authorization && (
+      data.msg === '회원' &&
+      data.response.authorization && (
         <div className='cancelCloseBtn'>
           <Btn main>
-            {data?.response.board.isDeadline ? '마감 취소' : '마감 하기'}
+            {data.response.board.isDeadline ? '마감 취소' : '마감 하기'}
           </Btn>
         </div>
       )
@@ -35,7 +37,7 @@ function Presenter({ data }: Props) {
 
   return (
     <>
-      {!data?.response.authorization && (
+      {!data.response.authorization && (
         <>
           <Mosaic body />
           <Mosaic img />
@@ -46,10 +48,14 @@ function Presenter({ data }: Props) {
         <div className='topflexWrap'>
           <PostImgs view data={data} />
           <div className='sectionWrap'>
-            <PostInfo data={data} />
-            <PostWriter data={data} close={() => setReport(!report)} />
+            <PostInfo
+              likeCount={likeCount}
+              setLikeCount={setLikeCount}
+              data={data}
+              close={() => setReport(!report)}
+            />
             <div className='postIt'>
-              <PostIt small>{data?.response.board.summary}</PostIt>
+              <PostIt small>{data.response.board.summary}</PostIt>
             </div>
           </div>
         </div>
@@ -78,7 +84,12 @@ function Presenter({ data }: Props) {
         {closeBtn()}
         {useScroll().scrollY > 490 && (
           <div className='quickMenu'>
-            <QuickMenu data={data} close={() => setReport(!report)} />
+            <QuickMenu
+              likeCount={likeCount}
+              setLikeCount={setLikeCount}
+              data={data}
+              close={() => setReport(!report)}
+            />
           </div>
         )}
       </div>

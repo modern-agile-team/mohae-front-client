@@ -10,7 +10,6 @@ interface Props {
 }
 
 function ImgBox({ img, state, shape }: Props) {
-  console.log('img :>> ', img);
   const size = [264, 152];
 
   const zoomIn = keyframes`
@@ -27,11 +26,8 @@ function ImgBox({ img, state, shape }: Props) {
       animation: ${zoomIn} 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.1s both;
     }
   `;
-
-  const posterImg =
-    img && img !== null
-      ? `https://mohaeproj.s3.amazonaws.com/${img}`
-      : '/img/logo.png';
+  // `https://mohaeproj.s3.amazonaws.com/${img}`
+  const posterImg = img && img !== null ? `${img}` : '/img/logo.png';
 
   const box = css`
     background: white url(${posterImg}) no-repeat center/cover;

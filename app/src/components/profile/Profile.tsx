@@ -9,11 +9,13 @@ interface Props {
 
 function Profile(props: Props) {
   const { img, size, smallShadow, noneClick } = props;
+
   const profileImg = img !== null ? img : '/img/profile.png';
+
   const editBtn = size === 160 ? true : false;
 
   const image = css`
-    background: white url(${profileImg}) no-repeat center/cover;
+    background: url(${profileImg}) no-repeat center/cover;
     ${radius.circle};
     ${smallShadow ? shadow.button : shadow.normal};
     width: ${size}px;

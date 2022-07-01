@@ -7,6 +7,7 @@ import { Img, Btn } from '../../../components';
 import { open_login } from '../../../redux/modal/reducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '../../../redux/root';
+import { Link } from 'react-router-dom';
 
 type Props = {
   [key: string]: any;
@@ -88,7 +89,9 @@ export default function Header(props: Props): ReactElement {
         <Img src={'/img/logo.png'} />
       </div>
       <div className={'button-wrapper'}>
-        <button className={'menu'}>{text.boards}</button>
+        <Link to={`/boards/category/17?take=12&page=1`}>
+          <button className={'menu'}>{text.boards}</button>
+        </Link>
         <button className={'menu'}>{text.notice}</button>
         <button className={'menu'}>{text.inquire}</button>
         <div className={'square-buttons'}>

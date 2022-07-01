@@ -5,6 +5,8 @@ import mainReducer from './main/reducer';
 import userReducer from './user/reducer';
 import mypageReducer from './mypage/reducer';
 import modalReducer from './modal/reducer';
+import filterReducer from './filter/reducer';
+import postReducer from './post/reducer';
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +14,8 @@ export const store = configureStore({
     main: mainReducer,
     mypage: mypageReducer,
     modal: modalReducer,
+    post: postReducer,
+    filter: filterReducer,
   },
 });
 

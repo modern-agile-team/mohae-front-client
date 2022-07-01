@@ -1,10 +1,9 @@
 /** @format */
 
 import { ReactElement } from 'react';
-import { color, radius, font, shadow } from '../../style/palette';
+import { color, shadow } from '../../style/palette';
 import { css, cx } from '@emotion/css';
 import { Img } from '../../../components';
-import { Link } from 'react-router-dom';
 
 const style = css`
   height: 120px;

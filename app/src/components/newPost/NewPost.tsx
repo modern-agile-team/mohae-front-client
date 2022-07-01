@@ -236,7 +236,6 @@ export default function NewPost({ page, board }: Props) {
     (state: RootState) => state.modal.openSpecVisit
   );
   const dispatch = useDispatch();
-  const specInfo = useSelector((state: RootState) => state.spec.specInfo);
 
   const openModal = (e: React.MouseEvent) => {
     e.preventDefault();

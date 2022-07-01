@@ -1,21 +1,9 @@
 /** @format */
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { css, cx } from '@emotion/css';
-import { keyframes } from '@emotion/react';
-import { color, radius, font, shadow } from '../../styles';
-import {
-  Img,
-  Poster,
-  NewPost,
-  Box,
-  Profile,
-  FocusBar,
-  Category,
-  BasicModal,
-  MarkBox,
-  Btn,
-} from '../../components';
+import { color, radius, font } from '../../styles';
+import { Box, FocusBar, BasicModal, Btn } from '../../components';
 import InputImg from './InputImg';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../redux/root';
@@ -92,9 +80,12 @@ export default function Edit() {
         console.log(`err`, err);
       });
   };
+  const reset = (e: React.MouseEvent) => {
+    dispatch(spec_create(false));
+  };
 
   return (
-    <BasicModal big visible={isOpen}>
+    <BasicModal big visible={isOpen} reset={reset}>
       <div className={cx(style)}>
         <div className={'title'}>{text.register}</div>
         <div className={'wrapper'}>

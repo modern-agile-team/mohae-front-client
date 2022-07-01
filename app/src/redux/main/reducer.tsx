@@ -1,15 +1,7 @@
 /** @format */
 
-import {
-  createSlice,
-  PayloadAction,
-  createAsyncThunk,
-  AsyncThunkAction,
-} from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-
-const GET_OVER = 'get_over';
-const GET_IN_PROGRESS = 'get_in_progress';
 
 const ENDPOINT = `https://mo-hae.site`;
 
@@ -75,9 +67,9 @@ export const main = createSlice({
   },
 });
 // 생성 추가 삭제
-export const {
-  // get_in_progress, get_over
-} = main.actions;
+// export const {
+// get_in_progress, get_over
+// } = main.actions;
 // create actions & type
 export default main.reducer;
 // action, reducer, store

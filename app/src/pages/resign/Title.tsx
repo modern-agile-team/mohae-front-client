@@ -1,6 +1,5 @@
 /** @format */
 
-import { css, cx } from '@emotion/css';
 import { Img } from '../../components';
 
 export default function Title() {

@@ -1,29 +1,14 @@
 /** @format */
 
-import {
-  Img,
-  Poster,
-  NewPost,
-  Box,
-  Profile,
-  FocusBar,
-  Category,
-  BasicModal,
-  MarkBox,
-  Btn,
-  OrderedImg,
-  Report,
-} from '../../../components';
-import { useState, useEffect } from 'react';
-import { radius, font, color, shadow } from '../../../styles';
-import { css, cx } from '@emotion/css';
-import { decodeToken } from 'react-jwt';
+import { Img, Box, Btn } from '../../../components';
+import { useState } from 'react';
+
 import axios from 'axios';
-import { close_all } from '../../../redux/modal/reducer';
+
 import { open_login } from '../../../redux/modal/reducer';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../redux/root';
-import { useNavigate, Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 interface Props {
   [key: string]: any;
@@ -34,10 +19,8 @@ export default function Register({ text }: Props) {
     id: '',
     password: '',
   });
-  const [token, setToken] = useState<any>('');
-  const [isOpenLogin, setIsOpenLogin] = useState(
-    useSelector((state: RootState) => state.modal.openLogin)
-  );
+  const isOpenLogin = useSelector((state: RootState) => state.modal.openLogin);
+
   //
   const dispatch = useDispatch();
 

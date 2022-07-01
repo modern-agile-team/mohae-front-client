@@ -1,21 +1,10 @@
 /** @format */
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { css, cx } from '@emotion/css';
-import { keyframes } from '@emotion/react';
+
 import { color, radius, font, shadow } from '../../styles';
-import {
-  Img,
-  Poster,
-  NewPost,
-  Box,
-  Profile,
-  FocusBar,
-  Category,
-  BasicModal,
-  MarkBox,
-  Btn,
-} from '../../components';
+import { Profile, BasicModal, Btn } from '../../components';
 import SelectBox from './SelectBox';
 
 interface Object {

@@ -1,11 +1,6 @@
 /** @format */
 
-import {
-  createSlice,
-  PayloadAction,
-  createAsyncThunk,
-  AsyncThunkAction,
-} from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 const GET_USER_INFO = 'get_user_info';

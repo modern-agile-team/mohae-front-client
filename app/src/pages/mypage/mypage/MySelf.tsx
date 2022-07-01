@@ -1,10 +1,12 @@
 /** @format */
 
 import { css, cx } from '@emotion/css';
-import { color, font, shadow } from '../../../styles';
+import { color, font } from '../../../styles';
 import Slide from './Slide';
 import { Img, Box, Profile, FocusBar, Category } from '../../../components';
 import { useNavigate } from 'react-router-dom';
+import { decodeToken } from 'react-jwt';
+import getToken from '../../../utils/getToken';
 
 interface Props {
   [key: string]: any;
@@ -17,7 +19,10 @@ export default function MySelf({
   actions,
   checkSelf,
 }: Props) {
+  const TOKEN = getToken();
   const navigate = useNavigate();
+  const tokenInfo: any = decodeToken(TOKEN);
+  console.log(`tokenInfo`, tokenInfo.photoUrl);
 
   const interested =
     userInfo && userInfo.categories ? (
@@ -43,7 +48,10 @@ export default function MySelf({
             <div>{text.sir}</div>
           </div>
           <div className={'profile'}>
-            <Profile size={146} img={'/img/leephoter.png'} />
+            <Profile
+              size={146}
+              img={(tokenInfo && tokenInfo.photoUrl) || '/img/leephoter.png'}
+            />
           </div>
           <div className={'register'}>
             <div>{text.registerDate}</div>

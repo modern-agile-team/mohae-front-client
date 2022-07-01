@@ -1,16 +1,13 @@
 /** @format */
 
 import { cx, css } from '@emotion/css';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Img, NewPost } from '../../../components';
-import { color, radius, font, shadow } from '../../../styles';
+import { shadow } from '../../../styles';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useGetRequest } from '../../../redux/axios';
 import axios from 'axios';
-import { get_user_specs } from '../../../redux/spec/reducer';
 import { useDispatch, useSelector } from 'react-redux';
 import getToken from '../../../utils/getToken';
-import { spec_edit } from '../../../redux/modal/reducer';
 import { RootState } from '../../../redux/root';
 import { spec_create } from '../../../redux/modal/reducer';
 
@@ -45,7 +42,6 @@ export default function Slide({
       'spec/get_user_tohelp': '&target=true',
       'spec/get_user_helpme': '&target=false',
     },
-    SPEC = `specs/profile?`,
     [cycle, setCycle] = useState(false),
     arrowBtn: PARAMS = {
       right: {

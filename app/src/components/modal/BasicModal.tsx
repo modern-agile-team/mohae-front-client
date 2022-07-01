@@ -9,7 +9,7 @@ import { color, shadow, font } from '../../styles';
 import { close_all } from '../../redux/modal/reducer';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from '../../redux/root';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 
 interface Props {
   [key: string]: any;
@@ -17,6 +17,7 @@ interface Props {
 
 function BasicModal({ reset, visible, big, preBtn, children }: Props) {
   const [modalState, setModalState] = useState(visible);
+  const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
     let timer: any;
@@ -78,7 +79,7 @@ function BasicModal({ reset, visible, big, preBtn, children }: Props) {
     dispatch(close_all(false));
     setModalState(false);
     reset && reset();
-    window.history.back();
+    // navigate(-1);
   };
 
   return (

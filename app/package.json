@@ -14,16 +14,14 @@
     "@types/jest": "^27.0.1",
     "@types/node": "^16.7.13",
     "@types/react": "^17.0.20",
-    "@types/react-dom": "^17.0.9",
     "@types/react-draft-wysiwyg": "^1.13.4",
     "@types/react-router-dom": "^5.3.3",
     "axios": "^0.27.2",
     "draft-js": "^0.11.7",
     "draftjs-to-html": "^0.9.1",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-draft-wysiwyg": "^1.14.7",
-    "react-hook-form": "^7.32.2",
     "react-jwt": "^1.1.6",
     "react-redux": "^8.0.1",
     "react-router-dom": "^6.3.0",
@@ -33,7 +31,7 @@
     "web-vitals": "^2.1.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "go": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -57,6 +55,7 @@
     ]
   },
   "devDependencies": {
+    "@types/react-dom": "^18.0.5",
     "json-server": "^0.17.0"
   },
   "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",

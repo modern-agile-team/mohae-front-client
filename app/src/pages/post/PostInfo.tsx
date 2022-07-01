@@ -1,7 +1,9 @@
+/** @format */
+
 import React from 'react';
 import { css, cx } from '@emotion/css';
 import { Props } from '../../components/button';
-import { color, font, radius } from '../../styles';
+import { color, font } from '../../styles';
 
 // target, 카테고리, 제목, d-day, 지역, 작성자여부, 좋아요, 조회수, 가격
 
@@ -162,25 +164,25 @@ function PostInfo(props: Props) {
       <>
         <div className={cx(sectionWrap1())}>
           <div>
-            <p className='coordinates'>
+            <p className="coordinates">
               {dummy.response.target ? '구할래요' : '해줄래요'} {'>'} 카테고리{' '}
               {'>'} {dummy.response.categoryName}
             </p>
-            <p className='title'>{dummy.response.title}</p>
-            <p className='area'>{dummy.response.areaName}</p>
+            <p className="title">{dummy.response.title}</p>
+            <p className="area">{dummy.response.areaName}</p>
           </div>
-          <p className='price'>
+          <p className="price">
             {dummy.response.price
               ? dummy.response.price.toLocaleString()
               : '무료'}
           </p>
         </div>
-        <div className='sectionWrap2'>
-          <div className='textBtnWrap'>
+        <div className="sectionWrap2">
+          <div className="textBtnWrap">
             <p>수정하기</p>
             <p>삭제하기</p>
           </div>
-          <div className='textBtnWrap'>
+          <div className="textBtnWrap">
             <p>좋아요 {dummy.response.likeCount}개</p>
             <p>조회수 {dummy.response.hit}회</p>
           </div>
@@ -188,8 +190,8 @@ function PostInfo(props: Props) {
       </>
     ) : (
       <div className={cx(sectionWrap1())}>
-        <p className='title'>{dummy.response.title}</p>
-        <p className='price'>
+        <p className="title">{dummy.response.title}</p>
+        <p className="price">
           {dummy.response.price
             ? dummy.response.price.toLocaleString()
             : '무료'}

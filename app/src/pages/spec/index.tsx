@@ -1,22 +1,8 @@
 /** @format */
 
-import { useState, useEffect } from 'react';
 import { css, cx } from '@emotion/css';
-import { keyframes } from '@emotion/react';
-import { color, radius, font, shadow } from '../../styles';
-import {
-  Img,
-  Poster,
-  NewPost,
-  Box,
-  Profile,
-  FocusBar,
-  Category,
-  BasicModal,
-  MarkBox,
-  Btn,
-  OrderedImg,
-} from '../../components';
+import { color, radius, font } from '../../styles';
+import { Box, FocusBar, BasicModal, Btn, OrderedImg } from '../../components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/root';
 

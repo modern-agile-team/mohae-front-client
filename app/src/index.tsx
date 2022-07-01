@@ -1,6 +1,6 @@
 /** @format */
 
-import React from 'react';
+import * as React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
@@ -8,19 +8,24 @@ import reportWebVitals from './reportWebVitals';
 import store from './redux/root';
 import { Provider } from 'react-redux';
 
-// import { createRoot } from 'react-dom/client';
-// const container = document.getElementById('app');
-// const root = createRoot(container); // createRoot(container!) if you use TypeScript
-// root.render(
-//   <Provider store={store}>
-//     <App tab="home" />
-//   </Provider>
-// );
+import * as ReactDOMClient from 'react-dom/client';
 
-ReactDOM.render(
+const root = ReactDOMClient.createRoot(document.getElementById('root')); // createRoot(container!) if you use TypeScript
+root.render(
   <Provider store={store}>
     <App />
-  </Provider>,
-  document.getElementById('root')
+  </Provider>
 );
 reportWebVitals();
+
+// react 18 -v 세팅
+
+// ReactDOM.render(
+//   <Provider store={store}>
+//     <App />
+//   </Provider>,
+//   document.getElementById('root')
+// );
+// reportWebVitals();
+
+// react 17.x -v 세팅

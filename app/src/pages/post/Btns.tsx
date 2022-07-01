@@ -1,3 +1,5 @@
+/** @format */
+
 import React, { useState } from 'react';
 import { css, cx } from '@emotion/css';
 import { Btn, Img } from '../../components';
@@ -33,8 +35,6 @@ function Btns(props: Props) {
     }
   `;
 
-  const attrBtn = () => {};
-
   const onClick = {
     like: () => {
       setImgs({
@@ -49,9 +49,9 @@ function Btns(props: Props) {
 
   return (
     <div className={cx(style)}>
-      <div className='btnWrap'>
+      <div className="btnWrap">
         <Btn white onClick={() => onClick.like()}>
-          <div className='imgWrap'>
+          <div className="imgWrap">
             <Img
               src={
                 !imgs.like.userClick
@@ -62,9 +62,9 @@ function Btns(props: Props) {
           </div>
         </Btn>
       </div>
-      <div className='btnWrap'>
+      <div className="btnWrap">
         <Btn white onClick={() => onClick.report()}>
-          <div className='imgWrap'>
+          <div className="imgWrap">
             <Img src={'/img/report-main.png'} />
           </div>
         </Btn>

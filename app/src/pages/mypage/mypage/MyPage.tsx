@@ -14,13 +14,8 @@ import { useGetRequest } from '../../../redux/axios';
 import { decodeToken } from 'react-jwt';
 import getToken from '../../../utils/getToken';
 
-interface Props {
-  [key: string]: any;
-}
-
-export default function MyPage({}: Props) {
-  const ENDPOINT = `https://mo-hae.site/`,
-    SPEC = `specs/profile?`,
+export default function MyPage() {
+  const SPEC = `specs/profile?`,
     BOARDS = `boards/profile?`,
     target = {
       0: '&target=false',

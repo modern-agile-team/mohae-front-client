@@ -1,7 +1,6 @@
 /** @format */
 
 import { css, cx } from '@emotion/css';
-import { Img, Btn } from '../../components';
 import { font, color, radius, shadow } from '../../styles';
 
 interface Props {

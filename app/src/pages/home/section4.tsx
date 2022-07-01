@@ -1,6 +1,6 @@
 /** @format */
 
-import { Suspense, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 // import { decodeToken } from 'react-jwt';
 import { css, cx } from '@emotion/css';
 import { color, radius, font, shadow } from '../../styles';
@@ -13,7 +13,6 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../redux/root';
 import { AppDispatch } from '../../redux/root';
-import axios from 'axios';
 
 interface Props {
   [key: string]: any;

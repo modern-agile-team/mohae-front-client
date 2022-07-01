@@ -10,6 +10,7 @@ import getToken from '../../utils/getToken';
 import { get_spec_info } from '../../redux/spec/reducer';
 import axios from 'axios';
 import { Btn } from '../../components';
+import { spec_visit } from '../../redux/modal/reducer';
 
 export default function Visit() {
   const isOpen = useSelector((state: RootState) => state.modal.openSpecVisit);
@@ -154,6 +155,7 @@ export default function Visit() {
       title: specInfo.title,
       description: specInfo.description,
     });
+    dispatch(spec_visit(!isOpen));
   };
 
   return (

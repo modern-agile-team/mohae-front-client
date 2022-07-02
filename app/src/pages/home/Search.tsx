@@ -4,56 +4,109 @@ import React, { useEffect, useState } from 'react';
 import { css, cx } from '@emotion/css';
 import { color, font, radius, shadow } from '../../styles';
 import { Img } from '../../components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { stringify } from 'querystring';
 
 interface Props {
   [key: string]: any;
 }
 // 리덕스로 바꾸게 되면 서로 연결 되야 하는 데이터나 코드가 리덕스에 저장이 되어야 함
 export default function MainSearch({ placeholder }: Props) {
+  const navigate = useNavigate();
+
   const text: any = {
     enterWord: '검색어를 입력해 주세요.',
     lastSearchWord: '최근 검색어',
     removeAll: '전체 삭제',
     popularCategory: '인기 카테고리',
+    noSearchedWord: '최근 검색어 내역이 없습니다.',
+  };
+
+  const [searchValue, setSearchValue] = useState<string>(''),
+    [searchedWords, setSearchedWords] = useState<string | null>(
+      localStorage.getItem('lastSearch')
+    );
+
+  const searchHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.currentTarget.value;
+    setSearchValue(inputValue);
   };
 
   const clickSearch = (e: React.FormEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    if (!searchValue) {
+      alert('검색어를 입력해주세요!');
+      return;
+    }
+    if (searchedWords && JSON.parse(searchedWords).length <= 10) {
+      localStorage.setItem(
+        'lastSearch',
+        JSON.stringify([searchValue, ...JSON.parse(searchedWords)])
+      );
+    } else if (searchedWords && JSON.parse(searchedWords).length > 10) {
+      const cloneWords = [...JSON.parse(searchedWords)];
+      cloneWords.pop();
+      cloneWords.unshift(searchValue);
+      console.log('cloneWords :>> ', cloneWords);
+      localStorage.setItem('lastSearch', JSON.stringify(cloneWords));
+    } else {
+      localStorage.setItem('lastSearch', JSON.stringify([searchValue]));
+    }
+
+    setSearchValue('');
+    navigate(`/${searchValue}`);
+  };
+
+  const deleteWord = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    const clickedIndex = e.currentTarget.id;
+    const cloneWords = searchedWords && [...JSON.parse(searchedWords)];
+    const test =
+      cloneWords &&
+      cloneWords.filter(
+        (word: string, index: number) => index !== Number(clickedIndex)
+      );
+    localStorage.setItem('lastSearch', JSON.stringify(test));
+    setSearchedWords(JSON.stringify(test));
+  };
+
+  const lastSearchedWords = searchedWords ? (
+    JSON.parse(searchedWords).map(
+      (word: string, index: number) =>
+        index < 5 && (
+          <li key={index}>
+            {word}
+            <button id={`${index}`} onClick={deleteWord} />
+          </li>
+        )
+    )
+  ) : (
+    <li>{text.noSearchedWord}</li>
+  );
+
+  const removeAll = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setSearchedWords('');
+    localStorage.setItem('lastSearch', JSON.stringify(null));
   };
 
   return (
     <form className={style} onSubmit={clickSearch}>
-      <input placeholder={text.enterWord} />
+      <input
+        placeholder={text.enterWord}
+        onChange={searchHandler}
+        value={searchValue}
+      />
       <button onClick={clickSearch} />
       <div>
         <div className={'part words'}>
           <div>
             <div className={'title'}>{text.lastSearchWord}</div>
-            <button>{text.removeAll}</button>
+            <button onClick={removeAll}>{text.removeAll}</button>
           </div>
-          <ul>
-            <li>
-              1<button />
-            </li>
-
-            <li>
-              2<button />
-            </li>
-
-            <li>
-              3<button />
-            </li>
-
-            <li>
-              4<button />
-            </li>
-
-            <li>
-              5<button />
-            </li>
-          </ul>
+          <ul>{lastSearchedWords}</ul>
         </div>
         <div className={'part popular'}>
           <div>
@@ -99,6 +152,26 @@ const style = css`
   transition: 0.3s all ease-in-out;
   :focus-within {
     height: 302px;
+    :after {
+      content: '검색어는 최대 10개만 기록됩니다.';
+      position: absolute;
+      top: 50px;
+      left: 24px;
+      color: ${color.main};
+      border-radius: 6px;
+      @keyframes fadeout {
+        0% {
+          opacity: 1;
+        }
+        60% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+        }
+      }
+      animation: fadeout 3s ease-in-out forwards;
+    }
   }
 
   > input {
@@ -130,8 +203,8 @@ const style = css`
       width: 100%;
 
       height: fit-content;
-      margin-bottom: 8px;
       div {
+        margin-bottom: 8px;
         > .title {
           display: inline-block;
           width: 117px;
@@ -140,6 +213,7 @@ const style = css`
         > button {
           font-size: 12px;
           margin-left: 112px;
+          color: ${color.dark2};
         }
       }
 
@@ -148,6 +222,7 @@ const style = css`
           display: flex;
           align-items: center;
           font-size: 14px;
+          color: ${color.dark2};
         }
         > :not(:last-child) {
           margin-bottom: 8px;

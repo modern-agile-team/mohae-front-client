@@ -7,11 +7,7 @@ import { Img } from '../../components';
 import { Link, useNavigate } from 'react-router-dom';
 import { stringify } from 'querystring';
 
-interface Props {
-  [key: string]: any;
-}
-// 리덕스로 바꾸게 되면 서로 연결 되야 하는 데이터나 코드가 리덕스에 저장이 되어야 함
-export default function MainSearch({ placeholder }: Props) {
+export default function MainSearch() {
   const navigate = useNavigate();
 
   const text: any = {
@@ -35,16 +31,18 @@ export default function MainSearch({ placeholder }: Props) {
   const clickSearch = (e: React.FormEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    console.log('searchedWords :>> ');
+    const isWords = searchedWords && searchedWords !== 'null';
     if (!searchValue) {
       alert('검색어를 입력해주세요!');
       return;
     }
-    if (searchedWords && JSON.parse(searchedWords).length <= 10) {
+    if (isWords && JSON.parse(searchedWords).length <= 10) {
       localStorage.setItem(
         'lastSearch',
         JSON.stringify([searchValue, ...JSON.parse(searchedWords)])
       );
-    } else if (searchedWords && JSON.parse(searchedWords).length > 10) {
+    } else if (isWords && JSON.parse(searchedWords).length > 10) {
       const cloneWords = [...JSON.parse(searchedWords)];
       cloneWords.pop();
       cloneWords.unshift(searchValue);
@@ -71,19 +69,22 @@ export default function MainSearch({ placeholder }: Props) {
     setSearchedWords(JSON.stringify(test));
   };
 
-  const lastSearchedWords = searchedWords ? (
-    JSON.parse(searchedWords).map(
-      (word: string, index: number) =>
-        index < 5 && (
-          <li key={index}>
-            {word}
-            <button id={`${index}`} onClick={deleteWord} />
-          </li>
-        )
-    )
-  ) : (
-    <li>{text.noSearchedWord}</li>
-  );
+  const lastSearchedWords =
+    searchedWords &&
+    searchedWords !== 'null' &&
+    JSON.parse(searchedWords).length > 0 ? (
+      JSON.parse(searchedWords).map(
+        (word: string, index: number) =>
+          index < 5 && (
+            <li key={index}>
+              {word}
+              <button id={`${index}`} onClick={deleteWord} />
+            </li>
+          )
+      )
+    ) : (
+      <li>{text.noSearchedWord}</li>
+    );
 
   const removeAll = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -156,21 +157,21 @@ const style = css`
       content: '검색어는 최대 10개만 기록됩니다.';
       position: absolute;
       top: 50px;
-      left: 24px;
+      left: -225px;
       color: ${color.main};
       border-radius: 6px;
       @keyframes fadeout {
-        0% {
-          opacity: 1;
+        20% {
+          left: 24px;
         }
-        60% {
-          opacity: 1;
+        80% {
+          left: 24px;
         }
         100% {
-          opacity: 0;
+          left: -225px;
         }
       }
-      animation: fadeout 3s ease-in-out forwards;
+      animation: fadeout 3.5s ease-in-out;
     }
   }
 
@@ -231,7 +232,7 @@ const style = css`
     }
     > .words {
       padding-right: 23px;
-      border-right: solid ${color.light4} 1px;
+
       li {
         justify-content: space-between;
         button {
@@ -243,6 +244,7 @@ const style = css`
     }
     > .popular {
       padding-left: 24px;
+      border-left: solid ${color.light4} 1px;
       span {
         ${font.weight[700]};
         color: ${color.main};

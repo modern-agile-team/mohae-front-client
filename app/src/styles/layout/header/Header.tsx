@@ -18,7 +18,9 @@ type Props = {
 export default function Header(props: Props): ReactElement {
   const text = {
     boards: '게시판',
+    service: '고객지원',
     notice: '공지사항',
+    FAQ: 'FAQ',
     inquire: '문의하기',
     regist: '회원가입',
     login: '로그인',
@@ -71,9 +73,19 @@ export default function Header(props: Props): ReactElement {
         <Img src={'/img/logo.png'} />
       </Link>
       <div className={'button-wrapper'}>
-        <button className={'menu'}>{text.boards}</button>
-        <button className={'menu'}>{text.notice}</button>
-        <button className={'menu'}>{text.inquire}</button>
+        <button className={'menu'}>
+          <Link to={'/boards/1'}>{text.boards}</Link>
+        </button>
+        <button className={'menu FAQ'}>
+          {text.service}
+          <div>
+            <Link to={'/notice'}>{text.notice}</Link>
+            <Link to={'/FAQ'}>{text.FAQ}</Link>
+          </div>
+        </button>
+        <button className={'menu'}>
+          <Link to={'/faq'}>{text.inquire}</Link>
+        </button>
 
         {getToken() !== '' ? userInfoBtn : loginButtons}
       </div>
@@ -118,6 +130,20 @@ const wrapper = css`
       height: 100%;
       margin-right: 40px;
       font-size: 14px;
+    }
+    .FAQ {
+      position: relative;
+      height: 20px;
+      overflow: hidden;
+      > div {
+        position: absolute;
+        top: 32px;
+        left: -16px;
+        width: 84px;
+        height: fit-content;
+        display: flex;
+        flex-direction: column;
+      }
     }
     .square-buttons {
       display: flex;

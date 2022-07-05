@@ -6,7 +6,7 @@ import { color, font, radius, shadow, btnStyle } from '../../styles';
 import Img from '../img/Img';
 
 interface MarkBoxProps {
-  [key: string]: number | boolean | string;
+  [key: string]: number | boolean | string | undefined;
 }
 
 function MarkBox(props: MarkBoxProps) {
@@ -70,7 +70,6 @@ function MarkBox(props: MarkBoxProps) {
       ? css`
           ${markBoxSize()};
           &:hover :after {
-            z-index: 3;
             visibility: visible;
           }
         `
@@ -96,8 +95,8 @@ function MarkBox(props: MarkBoxProps) {
     const prop = String(shape) + String(state);
 
     return Object.keys(attrs)
-      .map((shape) => prop === shape && attrs[shape])
-      .filter((el) => el);
+      .map(shape => prop === shape && attrs[shape])
+      .filter(el => el);
   };
 
   return (

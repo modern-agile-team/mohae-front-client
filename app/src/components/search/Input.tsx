@@ -4,17 +4,26 @@ import { useState } from 'react';
 import Img from '../img/Img';
 import { Props } from '../button';
 import { color, font, radius, shadow } from '../../styles';
+import {
+  useParams,
+  useNavigate,
+  useLocation,
+  useSearchParams,
+} from 'react-router-dom';
 
 interface InputProps extends Props {
-  searchList?: () => React.ReactNode;
   setShowFilter?: Dispatch<SetStateAction<boolean>>;
   showFilter?: boolean;
+  value: string;
+  setValue: Dispatch<SetStateAction<string>>;
 }
 
 function Input(props: InputProps) {
-  const { board, main, showFilter, setShowFilter, searchList } = props;
-  const [value, setValue] = useState('');
+  const { board, main, showFilter, setShowFilter, value, setValue } = props;
   const localValue = JSON.parse(localStorage.getItem('currentSearch') || '[]');
+  const { no } = useParams();
+  const [searchPrams, setSearchPrams] = useSearchParams();
+  const navigate = useNavigate();
 
   const attrProps = () =>
     board
@@ -126,9 +135,9 @@ function Input(props: InputProps) {
           <Img src='/img/close-dark2.png' />
         </div>
         <hr />
-        <div className={cx(iconStyle())} onClick={onClick}>
+        <button className={cx(iconStyle())} type='submit'>
           <Img src='/img/search.png' />
-        </div>
+        </button>
         <div
           className={cx(iconStyle('filter'))}
           onClick={() => setShowFilter && setShowFilter(!showFilter)}
@@ -139,40 +148,28 @@ function Input(props: InputProps) {
         </div>
       </>
     ) : (
-      <Img
-        className={cx(iconStyle())}
-        onClick={onClick}
-        src='/img/search.png'
-      />
+      <button type='submit'>
+        <Img className={cx(iconStyle())} src='/img/search.png' />
+      </button>
     );
   };
-
-  const onKeyPress = () => {
-    const checkValue = () => {
+  //=====================경로 바꾸는 함수--171줄에 사용=====================
+  const onSubmit = (e: any) => {
+    if (value.length > 1) {
+      setSearchPrams(`?categoryNo=${no}&title=${value}`);
       localStorage.setItem(
         'currentSearch',
         JSON.stringify([...localValue, value])
       );
-      setValue('');
-    };
-    value.length > 2 ? checkValue() : alert('두 글자 이상');
-  };
+    } else alert('두 글자 이상');
 
-  const onClick = () => {
     setValue('');
-    return localStorage.setItem(
-      'currentSearch',
-      JSON.stringify([...localValue, value])
-    );
   };
+  //=====================경로 바꾸는 함수=====================
 
   return (
     <>
-      <div
-        id='inputWrap'
-        className={cx(commonStyle)}
-        onKeyPress={e => e.key === 'Enter' && onKeyPress()}
-      >
+      <form id='inputWrap' className={cx(commonStyle)} onSubmit={onSubmit}>
         <input
           type='text'
           src='/img/search.png'
@@ -181,7 +178,7 @@ function Input(props: InputProps) {
           value={value}
         />
         {contents()}
-      </div>
+      </form>
     </>
   );
 }

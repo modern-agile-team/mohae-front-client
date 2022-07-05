@@ -101,7 +101,10 @@ export default function Category({
   };
 
   return !(shape === 'row') ? (
-    <Link to={`/boards/${id}`} className={cx(style[shape])}>
+    <Link
+      to={`/boards/category/${id}?take=12&page=1`}
+      className={cx(style[shape])}
+    >
       {!(shape === 'row') && (
         <>
           <div className={'icon'}>

@@ -1,107 +1,95 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { css, cx } from '@emotion/css';
-import { PostIt, Btn, ReportModal } from '../../components';
+import { PostIt, Btn, ReportModal, Box, Img, Mosaic } from '../../components';
 import PostBody from '../../components/pagecomp/PostBody';
 import PostImgs from '../../components/pagecomp/PostImgs';
 import PostInfo from './PostInfo';
-import PostWriter from './PostWriter';
-import { Props } from '../../components/button';
-import axios from 'axios';
 import QuickMenu from './QuickMenu';
 import useScroll from '../../customhook/useScroll';
+import { color, font, radius, shadow } from '../../styles';
+import { Props } from './Container';
 
-function Presenter(props: Props) {
+function Presenter({ data }: Props) {
   const [report, setReport] = useState(false);
+  const [likeCount, setLikeCount] = useState<number>(
+    data.response.board.likeCount
+  );
+  const textRef = useRef<HTMLTextAreaElement>(null);
+  const handleResizeHeight = useCallback(() => {
+    if (textRef.current) {
+      textRef.current.style.height = 'auto';
+      textRef.current.style.height = textRef.current.scrollHeight + 'px';
+    }
+  }, []);
 
-  const dummy = {
-    statusCode: 200,
-    msg: '게시글 상세 조회가 완료되었습니다.',
-    response: {
-      no: 42,
-      decimalDay: '- 8',
-      title: '카테고리 조회 테스트',
-      description: '생성',
-      isDeadline: 1,
-      hit: 4,
-      likeCount: 0,
-      price: 1000,
-      summary: 'test',
-      target: 1,
-      note1: '첫번째',
-      note2: '두번째',
-      note3: '세번째',
-      areaNo: 1,
-      areaName: '서울특별시',
-      categoryNo: 2,
-      categoryName: '디자인',
-      userNo: 1,
-      userName: '백팀장',
-      userNickname: '내가 관리자다',
-      userPhotoUrl: 'asdfasdf',
-      userSchool: '선택안함',
-      userMajor: '선택안함',
-    },
+  const closeBtn = () => {
+    return (
+      data.msg === '회원' &&
+      data.response.authorization && (
+        <div className='cancelCloseBtn'>
+          <Btn main>
+            {data.response.board.isDeadline ? '마감 취소' : '마감 하기'}
+          </Btn>
+        </div>
+      )
+    );
   };
-
-  const wrap = css`
-    margin-top: 40px;
-    @keyframes fadeInDown {
-      0% {
-        opacity: 0;
-        transform: translate3d(0, -8px, 0);
-      }
-      100% {
-        opacity: 1;
-        transform: translateZ(0);
-      }
-    }
-
-    .topflexWrap {
-      display: flex;
-      justify-content: space-between;
-    }
-
-    .postIt {
-      margin-top: 24px;
-    }
-
-    .cancelCloseBtn {
-      margin: 16px;
-      width: 100px;
-      height: 43px;
-      margin-left: 1028px;
-      margin-bottom: 64px;
-    }
-    .quickMenu {
-      position: fixed;
-      top: 59px;
-      animation: fadeInDown 1s;
-    }
-  `;
 
   return (
     <>
+      {!data.response.authorization && (
+        <>
+          <Mosaic body />
+          <Mosaic img />
+        </>
+      )}
       <ReportModal visible={report} close={() => setReport(!report)} />
       <div className={cx(wrap)}>
         <div className='topflexWrap'>
-          <PostImgs view />
+          <PostImgs view data={data} />
           <div className='sectionWrap'>
-            <PostInfo />
-            <PostWriter close={() => setReport(!report)} />
+            <PostInfo
+              likeCount={likeCount}
+              setLikeCount={setLikeCount}
+              data={data}
+              close={() => setReport(!report)}
+            />
             <div className='postIt'>
-              <PostIt small />
+              <PostIt small>{data.response.board.summary}</PostIt>
             </div>
           </div>
         </div>
-        <PostBody view />
-        <div className='cancelCloseBtn'>
-          <Btn main>
-            {dummy.response.isDeadline ? '마감 취소' : '마감 하기'}
-          </Btn>
-        </div>
+        <PostBody view data={data} />
+        <Box size={[1128]} className='comments-box'>
+          <p className='all-comments'>
+            댓글 <span>({dummy.response.length})</span>
+          </p>
+          <div>
+            <textarea
+              className='text-box'
+              ref={textRef}
+              placeholder='댓글을 입력해 주세요. (최대 500자)'
+              onInput={handleResizeHeight}
+            />
+            <div className='write-btn'>
+              <Btn main>
+                <p>작성</p>
+                <div className='write-img'>
+                  <Img src='/img/write.png' />
+                </div>
+              </Btn>
+            </div>
+          </div>
+        </Box>
+        {closeBtn()}
         {useScroll().scrollY > 490 && (
           <div className='quickMenu'>
-            <QuickMenu close={() => setReport(!report)} />
+            <QuickMenu
+              likeCount={likeCount}
+              setLikeCount={setLikeCount}
+              data={data}
+              close={() => setReport(!report)}
+            />
           </div>
         )}
       </div>
@@ -110,3 +98,166 @@ function Presenter(props: Props) {
 }
 
 export default Presenter;
+
+const wrap = css`
+  margin-top: 40px;
+  @keyframes fadeInDown {
+    0% {
+      opacity: 0;
+      transform: translate3d(0, -8px, 0);
+    }
+    100% {
+      opacity: 1;
+      transform: translateZ(0);
+    }
+  }
+
+  .topflexWrap {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .postIt {
+    margin-top: 24px;
+  }
+
+  .cancelCloseBtn {
+    margin: 16px;
+    width: 100px;
+    height: 43px;
+    margin-left: 1028px;
+    margin-bottom: 64px;
+  }
+  .quickMenu {
+    position: fixed;
+    top: 59px;
+    animation: fadeInDown 1s;
+  }
+  .comments-box {
+    padding: 16px 24px 24px 24px;
+    margin-bottom: 16px;
+  }
+  .all-comments {
+    ${font.size[16]}
+    ${font.weight[700]}
+    padding: 0px 0px 16px 0px;
+    border-bottom: 1px solid ${color.light4};
+    > span {
+      color: ${color.dark3};
+      ${font.weight[400]}
+    }
+  }
+  .text-box {
+    resize: none;
+    overflow: hidden;
+    width: 100%;
+    min-height: 84px;
+    padding: 16px;
+    margin-top: 16px;
+    ${radius[6]}
+    ${shadow.inputGray}
+  }
+  .write-btn {
+    width: 100px;
+    height: 43px;
+    margin-left: 980px;
+  }
+  .write-img {
+    width: 15px;
+    height: 15px;
+  }
+`;
+
+const dummy = {
+  success: true,
+  statusCode: 200,
+  msg: '댓글 전체 조회 완료',
+  response: [
+    {
+      commentNo: 8,
+      commentContent: '댓글을 수정했습니다.',
+      commentCreatedAt: '2022년 06월 17일',
+      commenterNo: 2,
+      commenterNickname: 'hneeddjsjde',
+      commenterPhotoUrl: 'profile/165518423416.jpg',
+      isCommenter: 0,
+      replies: [
+        {
+          replyNo: 1,
+          replyContent: '가ㄷㅏㅁㅏㅏㅏㅏ',
+          replyWriterNo: 1,
+          replyWriterPhotoUrl: 'example.com',
+          replyCreatedAt: '2022년 06월 17일',
+        },
+      ],
+    },
+    {
+      commentNo: 8,
+      commentContent: '댓글을 수정했습니다.',
+      commentCreatedAt: '2022년 06월 17일',
+      commenterNo: 2,
+      commenterNickname: 'hneeddjsjde',
+      commenterPhotoUrl: 'profile/165518423416.jpg',
+      isCommenter: 0,
+      replies: [
+        {
+          replyNo: 1,
+          replyContent: '가ㄷㅏㅁㅏㅏㅏㅏ',
+          replyWriterNo: 1,
+          replyWriterPhotoUrl: 'example.com',
+          replyCreatedAt: '2022년 06월 17일',
+        },
+        {
+          replyNo: 1,
+          replyContent: '가ㄷㅏㅁㅏㅏㅏㅏ',
+          replyWriterNo: 1,
+          replyWriterPhotoUrl: 'example.com',
+          replyCreatedAt: '2022년 06월 17일',
+        },
+        {
+          replyNo: 1,
+          replyContent: '가ㄷㅏㅁㅏㅏㅏㅏ',
+          replyWriterNo: 1,
+          replyWriterPhotoUrl: 'example.com',
+          replyCreatedAt: '2022년 06월 17일',
+        },
+      ],
+    },
+    {
+      commentNo: 8,
+      commentContent: '댓글을 수정했습니다.',
+      commentCreatedAt: '2022년 06월 17일',
+      commenterNo: 2,
+      commenterNickname: 'hneeddjsjde',
+      commenterPhotoUrl: 'profile/165518423416.jpg',
+      isCommenter: 0,
+      replies: [
+        {
+          replyNo: 1,
+          replyContent: '가ㄷㅏㅁㅏㅏㅏㅏ',
+          replyWriterNo: 1,
+          replyWriterPhotoUrl: 'example.com',
+          replyCreatedAt: '2022년 06월 17일',
+        },
+      ],
+    },
+    {
+      commentNo: 8,
+      commentContent: '댓글을 수정했습니다.',
+      commentCreatedAt: '2022년 06월 17일',
+      commenterNo: 2,
+      commenterNickname: 'hneeddjsjde',
+      commenterPhotoUrl: 'profile/165518423416.jpg',
+      isCommenter: 0,
+      replies: [
+        {
+          replyNo: 1,
+          replyContent: '가ㄷㅏㅁㅏㅏㅏㅏ',
+          replyWriterNo: 1,
+          replyWriterPhotoUrl: 'example.com',
+          replyCreatedAt: '2022년 06월 17일',
+        },
+      ],
+    },
+  ],
+};

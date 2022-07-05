@@ -171,7 +171,7 @@ const style = css`
           left: -225px;
         }
       }
-      animation: fadeout 3.5s ease-in-out;
+      animation: fadeout 3.5s cubic-bezier(0.26, -0.02, 0.4, 1) 0.2s;
     }
   }
 
@@ -186,8 +186,9 @@ const style = css`
 
   > button {
     position: absolute;
-    z-index: 2;
+    z-index: 10;
     top: 16px;
+
     right: 24px;
     width: 31px;
     height: 31px;

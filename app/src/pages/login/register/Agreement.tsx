@@ -21,7 +21,7 @@ interface Props {
   [key: string]: any;
 }
 
-export default function Agreement({}: Props) {
+export default function Agreement({ next }: Props) {
   const text: { [key: string]: any } = {
     agree: '약관 동의',
     terms: {
@@ -33,11 +33,18 @@ export default function Agreement({}: Props) {
     next: '다음',
   };
   const style = css`
-    width: 100%;
+    width: calc(100% / 4);
+
     > .terms {
       margin-bottom: 149px;
     }
   `;
+
+  const clickNext = (e: React.MouseEvent<Element, MouseEvent>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    next();
+  };
   return (
     <div className={cx(style)}>
       <div>{text.agree}</div>
@@ -59,10 +66,18 @@ export default function Agreement({}: Props) {
         <input type="checkbox" />
         <label>{text.terms.all}</label>
       </div>
-      <Box size={[480, 52]}>
+      <div
+        className={cx(
+          css`
+            width: 480px;
+            height: 52px;
+          `
+        )}
+        onClick={clickNext}
+      >
         <Btn main>{text.next}</Btn>
         {/* <Btn white>다음</Btn> */}
-      </Box>
+      </div>
     </div>
   );
 }

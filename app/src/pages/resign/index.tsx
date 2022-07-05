@@ -8,17 +8,12 @@ import { BasicModal } from '../../components';
 
 export default function Resign() {
   return (
-    <BasicModal
-      preBtn
-      small
-      visible={true}
-      contents={
-        <Wrapper>
-          <Title />
-          {/* <Request /> */}
-          <Completion />
-        </Wrapper>
-      }
-    />
+    <BasicModal preBtn small visible={true}>
+      <Wrapper>
+        <Title />
+        {/* <Request /> */}
+        <Completion />
+      </Wrapper>
+    </BasicModal>
   );
 }

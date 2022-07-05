@@ -43,12 +43,49 @@ export default function PersonalInfo({}: Props) {
     next: '다음',
   };
   const style = css`
-    width: 100%;
+    width: calc(100% / 4);
+    > .sub-description {
+      margin-top: 16px;
+      font-size: 14px;
+      > :first-child {
+        color: ${color.main};
+        margin-right: 16px;
+      }
+    }
+
+    > .inputs {
+      li span {
+        width: 96px;
+        height: 23px;
+        text-align: center;
+      }
+    }
   `;
   return (
     <div className={cx(style)}>
-      <span>{text.required}</span>
-      <span>{text.desc}</span>
+      <div className={'sub-description'}>
+        <span>{text.required}</span>
+        <span>{text.desc}</span>
+      </div>
+      <div className={'inputs'}>
+        <li>
+          <span>{'1'}</span>
+          <input id={'name'} type="text" />
+        </li>
+        <li>
+          <span>{'2'}</span>
+          <input id={'email'} type="text" />
+        </li>
+        <li>
+          <span>{'3'}</span>
+          <input id={'password'} type="text" />
+          <input id={'check-password'} type="text" />
+        </li>
+        <li>
+          <span>{'5'}</span>
+          <input id={'nickname'} type="text" />
+        </li>
+      </div>
     </div>
   );
 }

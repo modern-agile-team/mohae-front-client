@@ -6,6 +6,7 @@ import { color, radius, font, shadow } from '../../styles';
 import Img from '../img/Img';
 import Style from './style';
 import axios from 'axios';
+import { ENDPOINT } from '../../utils/ENDPOINT';
 
 interface Props {
   [key: string]: any;
@@ -131,7 +132,7 @@ export default function OrderedImg({ imgs, edit, inline }: Props) {
       formData.append('image', myImage[i].File);
     }
     axios
-      .post('https://mo-hae.site/specs/regist', formData, {
+      .post(`${ENDPOINT}/specs/regist`, formData, {
         headers: {
           accept: 'application/json',
           'Content-Type': 'multipart/form-data',

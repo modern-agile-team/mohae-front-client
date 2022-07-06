@@ -11,6 +11,7 @@ import { get_spec_info } from '../../redux/spec/reducer';
 import axios from 'axios';
 import { Btn } from '../../components';
 import { spec_visit } from '../../redux/modal/reducer';
+import { ENDPOINT } from '../../utils/ENDPOINT';
 
 export default function Visit() {
   const isOpen = useSelector((state: RootState) => state.modal.openSpecVisit);
@@ -79,17 +80,13 @@ export default function Visit() {
     setIsEdit(!isEdit);
 
     axios
-      .patch(
-        `https://mo-hae.site/specs/${specInfo.no && specInfo.no}`,
-        formData,
-        {
-          headers: {
-            accept: 'application/json',
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${TOKEN}`,
-          },
-        }
-      )
+      .patch(`${ENDPOINT}specs/${specInfo.no && specInfo.no}`, formData, {
+        headers: {
+          accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${TOKEN}`,
+        },
+      })
       .then((res) => {
         console.log(`res.data`, res.data);
       })

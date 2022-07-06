@@ -10,6 +10,7 @@ import { RootState } from '../../redux/root';
 import axios from 'axios';
 import getToken from '../../utils/getToken';
 import { spec_create } from '../../redux/modal/reducer';
+import { ENDPOINT } from '../../utils/ENDPOINT';
 
 export default function Edit() {
   const dispatch = useDispatch();
@@ -60,7 +61,7 @@ export default function Edit() {
     // console.log('data ', iterator.next());
 
     axios
-      .post('https://mo-hae.site/specs/regist', addImages, {
+      .post(`${ENDPOINT}specs/regist`, addImages, {
         headers: {
           accept: 'application/json',
           'Content-Type': 'multipart/form-data',

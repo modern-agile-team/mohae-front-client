@@ -17,6 +17,7 @@
     "@types/react-draft-wysiwyg": "^1.13.4",
     "@types/react-router-dom": "^5.3.3",
     "axios": "^0.27.2",
+    "cross-env": "^7.0.3",
     "draft-js": "^0.11.7",
     "draftjs-to-html": "^0.9.1",
     "react": "^18.2.0",
@@ -31,7 +32,7 @@
     "web-vitals": "^2.1.0"
   },
   "scripts": {
-    "go": "react-scripts start",
+    "go": "cross-env REACT_APP_ENDPOINT=https://mo-hae.site/ react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

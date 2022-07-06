@@ -32,8 +32,7 @@ export default function Header(props: Props): ReactElement {
     nickname: TOKEN !== '' && tokenInfo.nickname,
     userNo: TOKEN !== '' && tokenInfo.userNo,
   };
-  // console.log('userInfo :>> ', userInfo);
-  console.log('tokenInfo :>> ', tokenInfo);
+  // console.log('userInfo :>> ', userInfo)
 
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();

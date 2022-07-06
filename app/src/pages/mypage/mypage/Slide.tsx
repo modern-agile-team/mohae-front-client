@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import getToken from '../../../utils/getToken';
 import { RootState } from '../../../redux/root';
 import { spec_create } from '../../../redux/modal/reducer';
+import { ENDPOINT } from '../../../utils/ENDPOINT';
 
 interface Props {
   [key: string]: any;
@@ -29,7 +30,6 @@ export default function Slide({
 }: Props) {
   const [sector, setSector] = useState(0),
     dispatch = useDispatch(),
-    ENDPOINT = `https://mo-hae.site/`,
     TOKEN = getToken(),
     userId = useParams().no,
     params: PARAMS = {

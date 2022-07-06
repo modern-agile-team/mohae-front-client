@@ -21,9 +21,6 @@ export default function Presenter({
   part,
   onClick,
 }: Props): ReactElement {
-  // const move = `transform: translateX(calc((480px * 3) / 2 - ${part} * 480px));`;
-  const move = `translateX(calc((480px * 3) / 2 - ${part} * 480px));`;
-
   const mainContents = [
     <Login text={text} />,
     <Main text={text} next={onClick.enterRegister} />,
@@ -31,6 +28,7 @@ export default function Presenter({
     <PersonalInfo text={text} part={part} next={onClick.finishedInputInfo} />,
     <SelectInfo next={onClick.finishedAll} />,
   ];
+
   const style = css`
     width: 100%;
     height: 100%;
@@ -46,7 +44,6 @@ export default function Presenter({
       height: ${`${part < 2 ? '50px' : '0'}`};
       transition: 0.3s all ease-in-out;
       overflow: hidden;
-      /* margin-bottom: ${`${part < 2 ? '50px' : '0'}`}; */
     }
     > ul {
       display: flex;
@@ -110,14 +107,25 @@ export default function Presenter({
       width: 100%;
       height: 52px;
     }
-    > .main {
+    > .container {
+      width: calc(480px + 16px);
+      padding: 0 8px;
+      overflow-x: hidden;
+      overflow-y: visible;
       display: flex;
-      width: ${`calc(480px * ${mainContents.length})`};
-      transition: 0.3s all ease-in-out;
-      transform: ${move};
-
-      > * :not(:last-child) {
-        /* margin */
+      justify-content: flex-start;
+      > .main {
+        display: flex;
+        justify-content: flex-start;
+        width: fit-content;
+        transition: 0.3s all ease-in-out;
+        transform: ${`translateX(calc(${(480 + 16) * -part}px))`};
+        & > * {
+          width: 480px;
+        }
+        & > *:not(:last-child) {
+          margin-right: 16px;
+        }
       }
     }
   `;
@@ -133,7 +141,9 @@ export default function Presenter({
           <button onClick={onClick.register}>{text.register}</button>
         </ul>
         <FocusBar thin />
-        <div className={'main'}>{mainContents}</div>
+        <div className={'container'}>
+          <div className={'main'}>{mainContents}</div>
+        </div>
       </div>
     </BasicModal>
   );

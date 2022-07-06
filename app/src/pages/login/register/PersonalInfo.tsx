@@ -22,6 +22,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../redux/root';
 import { update_regist_info } from '../../../redux/user/reducer';
 import axios from 'axios';
+import { ENDPOINT } from '../../../utils/ENDPOINT';
+import getToken from '../../../utils/getToken';
 
 interface Object {
   [key: string]: any;
@@ -62,8 +64,8 @@ export default function PersonalInfo({ part, next }: Object) {
   const dispatch = useDispatch();
   const registInfo = useSelector((state: RootState) => state.user.registInfo);
   const style = css`
-    width: 480px;
     height: fit-content;
+    padding-bottom: 8px;
     > .sub-description {
       margin-top: 16px;
       font-size: 14px;
@@ -142,9 +144,14 @@ export default function PersonalInfo({ part, next }: Object) {
             text-align: left;
             ${shadow.normal};
           }
-          /* :focus-within {
-            height: 211px;
-          } */
+        }
+        #nickname {
+          width: 268px;
+          ~ button {
+            width: 100px;
+            height: 43px;
+            margin-left: 16px;
+          }
         }
         .arrow-down {
           width: 24px;
@@ -191,42 +198,56 @@ export default function PersonalInfo({ part, next }: Object) {
     setFocus(false);
   };
 
+  const clickCheck = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    // 수형이 닉네임 체크 API 끝나면 바로
+    // axios.post(`${ENDPOINT}profile/check-nickname`, {
+    //   "no": 1,
+    //   "nickname": "subro"
+    // }, {
+    //   headers:{
+    //     'accept': 'application/json' ,
+    //     'Content-Type':'application/json' ,
+    //     'Authorization': `Bearer ${getToken()}` ,
+    // }});
+  };
+
   const clickNext = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    if (
-      !inputValue.name.length ||
-      !inputValue.email.length ||
-      !inputValue.password.length ||
-      !inputValue.nickname.length
-    ) {
-      alert('모든 필수 항목을 작성해주세요.');
-      return;
-    }
-    if (inputValue.emailCompany === text.selectEmail) {
-      alert('메일 주소를 선택해주세요.');
-      return;
-    }
-    if (inputValue.password !== inputValue.checkPassword) {
-      alert('비밀번호가 일치하지 않습니다.');
-      return;
-    }
 
-    const finalRegistInfo: Object = {
-      ...registInfo,
-      ...inputValue,
-      email: `${inputValue.email}@${inputValue.emailCompany}`,
-    };
-    delete finalRegistInfo.emailCompany;
-    delete finalRegistInfo.checkPassword;
-    console.log('state :>> ', finalRegistInfo);
-    dispatch(update_regist_info(finalRegistInfo));
+    // if (
+    //   !inputValue.name.length ||
+    //   !inputValue.email.length ||
+    //   !inputValue.password.length ||
+    //   !inputValue.nickname.length
+    // ) {
+    //   alert('모든 필수 항목을 작성해주세요.');
+    //   return;
+    // }
+    // if (inputValue.emailCompany === text.selectEmail) {
+    //   alert('메일 주소를 선택해주세요.');
+    //   return;
+    // }
+    // if (inputValue.password !== inputValue.checkPassword) {
+    //   alert('비밀번호가 일치하지 않습니다.');
+    //   return;
+    // }
 
+    // const finalRegistInfo: Object = {
+    //   ...registInfo,
+    //   ...inputValue,
+    //   email: `${inputValue.email}@${inputValue.emailCompany}`,
+    // };
+    // delete finalRegistInfo.emailCompany;
+    // delete finalRegistInfo.checkPassword;
+    // dispatch(update_regist_info(finalRegistInfo));
+    next();
     // response 받은 이메일을 로그인 화면에 이메일 입력란에 값으로 바로 들어갈 수 있게
 
-    // const ENDPOINT = 'https://mo-hae.site/auth/signup';
     // axios
-    //   .post(`${ENDPOINT}`, finalRegistInfo, {
+    //   .post(`${ENDPOINT}auth/signup`, finalRegistInfo, {
     //     headers: {
     //       accept: 'application/json',
     //       'Content-Type': 'application/json',
@@ -329,6 +350,9 @@ export default function PersonalInfo({ part, next }: Object) {
             id={'nickname'}
             type="text"
           />
+          <Btn white onClick={clickCheck}>
+            {text.check}
+          </Btn>
         </li>
       </div>
       {part > 2 && (

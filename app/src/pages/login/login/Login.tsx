@@ -9,6 +9,7 @@ import { open_login } from '../../../redux/modal/reducer';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../redux/root';
 import { useNavigate } from 'react-router-dom';
+import { ENDPOINT } from '../../../utils/ENDPOINT';
 
 interface Props {
   [key: string]: any;
@@ -20,10 +21,7 @@ export default function Register({ text }: Props) {
     password: '',
   });
   const isOpenLogin = useSelector((state: RootState) => state.modal.openLogin);
-
-  //
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
 
   const handleId = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,7 +42,7 @@ export default function Register({ text }: Props) {
     e.preventDefault();
     axios
       .post(
-        `https://mo-hae.site/auth/signin`,
+        `${ENDPOINT}/auth/signin`,
         { email: inputValue.id, password: inputValue.password },
         {
           headers: {
@@ -71,42 +69,40 @@ export default function Register({ text }: Props) {
   };
 
   return (
-    <>
-      <form onSubmit={requestLogin}>
-        <div className={'input'}>
-          <div className={'icon'}>
-            <Img src={'/img/id.png'} />
-          </div>
-          <input
-            placeholder={text.placeholder.id}
-            value={inputValue.id}
-            onChange={handleId}
-          />
+    <form onSubmit={requestLogin}>
+      <div className={'input'}>
+        <div className={'icon'}>
+          <Img src={'/img/id.png'} />
         </div>
-        <div className={'input'}>
-          <div className={'icon'}>
-            <Img src={'/img/password.png'} />
-          </div>
-          <input
-            placeholder={text.placeholder.pw}
-            onChange={handlePW}
-            value={inputValue.password}
-            type={'password'}
-          />
+        <input
+          placeholder={text.placeholder.id}
+          value={inputValue.id}
+          onChange={handleId}
+        />
+      </div>
+      <div className={'input'}>
+        <div className={'icon'}>
+          <Img src={'/img/password.png'} />
         </div>
-        <div className={'option'}>
-          <div>
-            <input id="keep-login" type="checkbox" />
-            <label htmlFor="keep-login">{text.stayLogin}</label>
-          </div>
-          <button>{text.forgotPw}</button>
+        <input
+          placeholder={text.placeholder.pw}
+          onChange={handlePW}
+          value={inputValue.password}
+          type={'password'}
+        />
+      </div>
+      <div className={'option'}>
+        <div>
+          <input id="keep-login" type="checkbox" />
+          <label htmlFor="keep-login">{text.stayLogin}</label>
         </div>
-        <Box size={[480, 52]}>
-          <Btn main onClick={requestLogin}>
-            {text.login}
-          </Btn>
-        </Box>
-      </form>
-    </>
+        <button>{text.forgotPw}</button>
+      </div>
+      <Box size={[480, 52]}>
+        <Btn main onClick={requestLogin}>
+          {text.login}
+        </Btn>
+      </Box>
+    </form>
   );
 }

@@ -2,6 +2,7 @@
 
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { ENDPOINT } from '../../utils/ENDPOINT';
 
 const GET_USER_SPECS = 'get_user_specs';
 const GET_USER_TOHELP = 'get_user_tohelp';
@@ -9,8 +10,6 @@ const GET_USER_HELPME = 'get_user_helpme';
 const GET_SPEC_INFO = 'get_spec_info';
 const GET_SPEC_NO = 'get_spec_no';
 const ADD_IMAGES = 'add_images';
-
-const ENDPOINT = `https://mo-hae.site/specs/spec/`;
 
 const asyncThunk = (name: string, param: string | number) =>
   createAsyncThunk<any, void, {}>(name, async () => {

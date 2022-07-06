@@ -2,8 +2,7 @@
 
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-
-const ENDPOINT = `https://mo-hae.site`;
+import { ENDPOINT } from '../../utils/ENDPOINT';
 
 const asyncThunk = (name: string, param: string) =>
   createAsyncThunk<any, void, {}>(name, async () => {

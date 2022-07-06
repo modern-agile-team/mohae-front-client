@@ -11,6 +11,7 @@ import { spec_visit } from '../../redux/modal/reducer';
 import { get_spec_info } from '../../redux/spec/reducer';
 import axios from 'axios';
 import getToken from '../../utils/getToken';
+import { ENDPOINT } from '../../utils/ENDPOINT';
 
 interface Props {
   [key: string]: any;
@@ -243,7 +244,7 @@ export default function NewPost({ page, board }: Props) {
     dispatch(spec_visit(!isOpenSpecVisit));
     if (page === 'inSpec') {
       axios
-        .get(`https://mo-hae.site/specs/spec/${board.no}`, {
+        .get(`${ENDPOINT}/specs/spec/${board.no}`, {
           headers: {
             accept: 'application/json',
             Authorization: `Bearer ${TOKEN}`,

@@ -3,8 +3,7 @@
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
-
-const ENDPOINT = 'https://mo-hae.site/';
+import { ENDPOINT } from '../utils/ENDPOINT';
 
 interface HEADERS {
   [key: string]: any;

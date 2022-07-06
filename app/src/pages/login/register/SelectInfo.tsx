@@ -129,7 +129,6 @@ export default function SelectInfo({ part, next }: Props) {
 }
 
 const style = css`
-  width: 480px;
   height: fit-content;
   > .sub-description {
     margin-top: 16px;

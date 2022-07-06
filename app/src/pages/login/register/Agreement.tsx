@@ -104,7 +104,7 @@ export default function Agreement({ next }: Object) {
 }
 
 const style = css`
-  width: 480px;
+  /* width: 480px; */
 
   > .terms {
     margin-bottom: 149px;

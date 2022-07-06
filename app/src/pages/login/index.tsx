@@ -44,9 +44,17 @@ export default function LoginModal(): ReactElement {
       setPart(2);
     },
     agreement: () => {
-      // e.preventDefault();
-      // e.stopPropagation();
       setPart(3);
+    },
+    finishedInputInfo: (e: React.MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setPart(4);
+    },
+    finishedAll: (e: React.MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setPart(5);
     },
   };
 

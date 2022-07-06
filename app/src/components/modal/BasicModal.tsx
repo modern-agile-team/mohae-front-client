@@ -17,7 +17,6 @@ interface Props {
 
 function BasicModal({ reset, visible, big, preBtn, children }: Props) {
   const [modalState, setModalState] = useState(visible);
-  const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
     let timer: any;
@@ -79,11 +78,17 @@ function BasicModal({ reset, visible, big, preBtn, children }: Props) {
     dispatch(close_all(false));
     setModalState(false);
     reset && reset();
-    // navigate(-1);
   };
 
   return (
-    <div>
+    <div
+      className={cx(
+        css`
+          height: fit-content;
+          overflow: hidden;
+        `
+      )}
+    >
       <Box
         light
         bigRadius

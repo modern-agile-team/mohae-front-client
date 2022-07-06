@@ -49,7 +49,7 @@ export default function Main({ text, next }: Props) {
 }
 
 const style = css`
-  width: calc(100% / 4);
+  width: 480px;
   display: flex;
   flex-direction: column;
   align-items: center;

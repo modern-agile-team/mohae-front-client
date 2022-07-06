@@ -8,6 +8,7 @@ import Login from './login/Login';
 import Agreement from './register/Agreement';
 import Main from './register/Main';
 import PersonalInfo from './register/PersonalInfo';
+import SelectInfo from './register/SelectInfo';
 
 interface Props {
   [key: string]: any;
@@ -22,21 +23,30 @@ export default function Presenter({
 }: Props): ReactElement {
   // const move = `transform: translateX(calc((480px * 3) / 2 - ${part} * 480px));`;
   const move = `translateX(calc((480px * 3) / 2 - ${part} * 480px));`;
+
+  const mainContents = [
+    <Login text={text} />,
+    <Main text={text} next={onClick.enterRegister} />,
+    <Agreement text={text} next={onClick.agreement} />,
+    <PersonalInfo text={text} part={part} next={onClick.finishedInputInfo} />,
+    // <SelectInfo next={onClick.finishedAll} />,
+  ];
   const style = css`
     width: 100%;
     height: 100%;
     overflow: hidden;
     ${radius[24]}
-    padding: 45px 228px 0;
+    padding: ${`${part < 2 ? '45px 228px 0' : '37px 228px 0'}`};
     display: flex;
     flex-direction: column;
+    justify-content: flex-start;
     align-items: center;
     > .logo {
       width: 66px;
       height: ${`${part < 2 ? '50px' : '0'}`};
       transition: 0.3s all ease-in-out;
       overflow: hidden;
-      margin-bottom: 12px;
+      /* margin-bottom: ${`${part < 2 ? '50px' : '0'}`}; */
     }
     > ul {
       display: flex;
@@ -102,11 +112,9 @@ export default function Presenter({
     }
     > .main {
       display: flex;
-      width: calc(480px * 4);
+      width: ${`calc(480px * ${mainContents.length})`};
       transition: 0.3s all ease-in-out;
-      /* transform: translateX(calc((480px * 3) / 2 - ${part}px)); */
       transform: ${move};
-      /* transform: translateX(calc((480px * 3) / 2 - 0 * 480px)); */
 
       > * :not(:last-child) {
         /* margin */
@@ -114,7 +122,7 @@ export default function Presenter({
     }
   `;
   return (
-    <BasicModal small visible={true}>
+    <BasicModal small visible={isOpenModal}>
       {/* edit visible={isOpenModal} after test */}
       <div className={cx(style)}>
         <div className={'logo'}>
@@ -125,12 +133,7 @@ export default function Presenter({
           <button onClick={onClick.register}>{text.register}</button>
         </ul>
         <FocusBar thin />
-        <div className={'main'}>
-          <Login text={text} />
-          <Main text={text} next={onClick.enterRegister} />
-          <Agreement text={text} next={onClick.agreement} />
-          <PersonalInfo text={text} />
-        </div>
+        <div className={'main'}>{mainContents}</div>
       </div>
     </BasicModal>
   );

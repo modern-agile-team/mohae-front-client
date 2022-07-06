@@ -93,7 +93,7 @@ const App: React.SFC = () => {
       </Routes>
       <Visit />
       <Edit />
-      {/* <LoginModal /> */}
+      <LoginModal />
       {/* cancel this comment after test*/}
     </Router>
   );

@@ -5,18 +5,19 @@ import { radius } from '../../styles';
 import { Props } from '../../pages/post/Container';
 
 // 이미지s
-interface PostImgsProps extends Props {
+interface PostImgsProps {
+  data?: Props;
   view?: boolean;
   getValue?: boolean;
 }
 
 function PostImgs(props: PostImgsProps) {
   const { view, getValue, data } = props;
-  const datas = data?.response;
+  const datas = data?.data.response;
 
   const boardPhotoURL = () => {
-    return data && data.response.board.boardPhotoUrls !== null
-      ? data.response.board.boardPhotoUrls.split(', ')
+    return data && datas?.board.boardPhotoUrls !== null
+      ? datas?.board.boardPhotoUrls.split(', ')
       : ['/img/logo.png'];
   };
   const style = css`

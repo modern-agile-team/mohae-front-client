@@ -46,7 +46,7 @@ function Presenter({ data }: Props) {
       <ReportModal visible={report} close={() => setReport(!report)} />
       <div className={cx(wrap)}>
         <div className='topflexWrap'>
-          <PostImgs view data={data} />
+          <PostImgs view data={{ data: data }} />
           <div className='sectionWrap'>
             <PostInfo
               likeCount={likeCount}

@@ -8,7 +8,7 @@ interface Props {
   medium?: boolean;
   small?: boolean;
   children: React.ReactNode;
-  checked: boolean | undefined;
+  checked: boolean;
   setShow?: Dispatch<SetStateAction<boolean>>;
   onChange: () => void;
   type: string;

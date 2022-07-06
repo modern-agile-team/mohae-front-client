@@ -51,7 +51,7 @@ const initialState: Props = {
 // initialState에 받을 key가 있어야 함.
 
 export const post = createSlice({
-  name: 'msgbox',
+  name: 'post',
   initialState,
   reducers: {
     setPostData: (state, action: PayloadAction<any>) => {

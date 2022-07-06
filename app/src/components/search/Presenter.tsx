@@ -20,9 +20,9 @@ interface InputProps extends Props {
   deleteAll: () => void;
   deleteList: (i: number) => void;
   hotKeyClick: (e: React.MouseEvent) => void;
+  setLocalValue: Dispatch<React.SetStateAction<string[]>>;
 }
 
-// =======최근 검색어, 필터, Input을 그려주는 것=======
 function Presenter(props: InputProps) {
   const {
     style,
@@ -35,11 +35,12 @@ function Presenter(props: InputProps) {
     hotKeyClick,
     value,
     setValue,
+    setLocalValue,
   } = props;
   const list: string[] = localValue;
 
   useEffect(() => {
-    localValue.reverse().slice(0, 5);
+    localValue.slice(0, 5);
   }, []);
 
   const realBoxStyle = () => {
@@ -259,6 +260,7 @@ function Presenter(props: InputProps) {
         board
         showFilter={showFilter}
         setShowFilter={setShowFilter}
+        setLocalValue={setLocalValue}
       />
     ) : (
       <Input
@@ -267,6 +269,7 @@ function Presenter(props: InputProps) {
         main
         showFilter={showFilter}
         setShowFilter={setShowFilter}
+        setLocalValue={setLocalValue}
       />
     );
 

@@ -2,15 +2,18 @@
 
 import { useSelector } from 'react-redux';
 import Presenter from './Presenter';
-import Login from './login/Login';
 
 import { RootState } from '../../redux/root';
+import { useState, ReactElement } from 'react';
+import { jsx } from '@emotion/react';
 
-export default function LoginModal() {
+export default function LoginModal(): ReactElement {
   const isOpenModal = useSelector((state: RootState) => state.modal.openLogin);
+  const [part, setPart] = useState<number>(0);
 
   const text: { [key: string]: any } = {
     login: '로그인',
+    register: '회원가입',
     placeholder: {
       id: '이메일을 입력해 주세요',
       pw: '비밀번호를 입력해 주세요',
@@ -23,9 +26,44 @@ export default function LoginModal() {
     signUp: '가입하기',
   };
 
+  const clickHandler = {
+    login: (e: React.MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setPart(0);
+    },
+    register: (e: React.MouseEvent) => {
+      if (part > 0) return;
+      e.preventDefault();
+      e.stopPropagation();
+      setPart(1);
+    },
+    enterRegister: (e: React.MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setPart(2);
+    },
+    agreement: () => {
+      setPart(3);
+    },
+    finishedInputInfo: (e: React.MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setPart(4);
+    },
+    finishedAll: (e: React.MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setPart(5);
+    },
+  };
+
   return (
-    <Presenter isOpenModal={isOpenModal}>
-      <Login text={text} />
-    </Presenter>
+    <Presenter
+      text={text}
+      isOpenModal={isOpenModal}
+      part={part}
+      onClick={clickHandler}
+    />
   );
 }

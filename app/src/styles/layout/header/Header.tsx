@@ -78,7 +78,7 @@ export default function Header(props: Props): ReactElement {
         </button>
         <button className={'menu FAQ'}>
           {text.service}
-          <div>
+          <div className={'dropbox'}>
             <Link to={'/notice'}>{text.notice}</Link>
             <Link to={'/FAQ'}>{text.FAQ}</Link>
           </div>
@@ -103,7 +103,7 @@ const wrapper = css`
   top: 0;
   left: 0;
   width: 100%;
-  ${shadow.normal}
+  ${shadow.normal};
   @media (max-width: 1200px) {
     padding: 0 calc(calc(1200px - 1128px) / 2);
   }
@@ -114,7 +114,7 @@ const wrapper = css`
 
   justify-content: space-between;
   height: 59px;
-  overflow: hidden;
+  /* overflow: hidden; */
 
   .logo {
     width: 57px;
@@ -132,17 +132,46 @@ const wrapper = css`
       font-size: 14px;
     }
     .FAQ {
+      height: 23px;
+      display: flex;
+      flex-direction: column;
       position: relative;
-      height: 20px;
-      overflow: hidden;
-      > div {
+      /* overflow: hidden; */
+      > .dropbox {
         position: absolute;
-        top: 32px;
-        left: -16px;
-        width: 84px;
-        height: fit-content;
         display: flex;
         flex-direction: column;
+        justify-content: space-around;
+        width: 84px;
+        height: fit-content;
+        top: calc(100% + 8px);
+        left: -16px;
+        border-radius: 6px;
+        ${shadow.normal};
+        bottom: -100%;
+        display: flex;
+        flex-direction: column;
+        visibility: hidden;
+      }
+      :focus,
+      :focus-within {
+        > .dropbox {
+          visibility: visible;
+          overflow: hidden;
+          > * {
+            width: 100%;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            :hover {
+              background-color: ${color.subtle};
+            }
+            :active {
+              background-color: ${color.lighter};
+            }
+          }
+        }
       }
     }
     .square-buttons {

@@ -16,12 +16,13 @@ import {
 } from '../../../components';
 import { radius, font, color, shadow } from '../../../styles';
 import { css, cx } from '@emotion/css';
+import { useState } from 'react';
 
 interface Props {
   [key: string]: any;
 }
 
-export default function Agreement({}: Props) {
+export default function Agreement({ next }: Props) {
   const text: { [key: string]: any } = {
     agree: '약관 동의',
     terms: {
@@ -32,37 +33,68 @@ export default function Agreement({}: Props) {
     },
     next: '다음',
   };
-  const style = css`
-    width: 100%;
-    > .terms {
-      margin-bottom: 149px;
-    }
-  `;
+  const [terms, setTerms] = useState<boolean[]>([false, false, false]);
+
+  const clickNext = (e: React.MouseEvent<Element, MouseEvent>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    next();
+  };
+  const checkTerm1 = (e: any) => {
+    console.log('e.currentTarget :>> ', e.currentTarget.checked);
+    console.log('1 :>> ', 1);
+  };
+  const checkTerm2 = (e: any) => {
+    console.log('2 :>> ', 2);
+  };
+  const checkTerm3 = (e: any) => {
+    console.log('3 :>> ', 3);
+  };
+  const checkTerm4 = (e: any) => {
+    console.log('4 :>> ', 4);
+  };
+
   return (
     <div className={cx(style)}>
       <div>{text.agree}</div>
       <div className="terms">
         <div>
-          <input type="checkbox" />
+          <input type="checkbox" onChange={checkTerm1} />
           <label>{text.terms.one}</label>
         </div>
         <div>
-          <input type="checkbox" />
+          <input type="checkbox" onChange={checkTerm2} />
           <label>{text.terms.two}</label>
         </div>
         <div>
-          <input type="checkbox" />
+          <input type="checkbox" onChange={checkTerm3} />
           <label>{text.terms.three}</label>
         </div>
       </div>
       <div className="agreeAll">
-        <input type="checkbox" />
+        <input type="checkbox" onChange={checkTerm4} />
         <label>{text.terms.all}</label>
       </div>
-      <Box size={[480, 52]}>
+      <div
+        className={cx(
+          css`
+            width: 480px;
+            height: 52px;
+          `
+        )}
+        onClick={clickNext}
+      >
         <Btn main>{text.next}</Btn>
         {/* <Btn white>다음</Btn> */}
-      </Box>
+      </div>
     </div>
   );
 }
+
+const style = css`
+  width: 480px;
+
+  > .terms {
+    margin-bottom: 149px;
+  }
+`;

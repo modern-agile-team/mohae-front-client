@@ -94,6 +94,7 @@ const style = css`
         width: 552px;
         height: 391px;
         position: absolute;
+        z-index: 3;
         top: -290px;
         right: -480px;
         background: url('/img/main.png') no-repeat center/contain;

@@ -44,6 +44,9 @@ injectGlobal`
   ul {
     list-style: none;
   }
+  li {
+    list-style:none;
+  }
   a, a:visited, a:link {
     color: inherit;
     text-decoration: none;
@@ -91,6 +94,7 @@ const App: React.SFC = () => {
       <Visit />
       <Edit />
       <LoginModal />
+      {/* cancel this comment after test*/}
     </Router>
   );
 };

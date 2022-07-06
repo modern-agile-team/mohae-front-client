@@ -1,15 +1,20 @@
 /** @format */
 
-import { useState, useEffect } from 'react';
 import { css, cx } from '@emotion/css';
 import { color, radius, font, shadow } from '../../styles';
-import { Snap, Category, Img } from '../../components';
 
-interface Props {
-  [key: string]: any;
-}
+export default function Part2() {
+  const text = {
+    recommend: {
+      '1-1': `쉽고 빠르게 내가 원하는 분야의`,
+      '1-2': `전문가를 찾을 수 있어요.`,
+      '2-1': `나의 재능을 활용해서 필요한 사람들에게`,
+      '2-2': `도움을 줄 수 있어요.`,
+      '3-1': `다양한 경험을 통해`,
+      '3-2': `나만의 스펙을 쌓을 수 있어요.`,
+    },
+  };
 
-export default function Part2(props: Props) {
   const style = css`
     height: 100%;
     display: flex;
@@ -38,6 +43,35 @@ export default function Part2(props: Props) {
       margin: 0 0 32px;
       background-color: white;
       ${radius[6]};
+      overflow: hidden;
+      ${shadow.normal};
+    }
+
+    .recommend1 {
+      background: url('/img/recommend1-1.jpg') no-repeat center/contain;
+      transition: 0.3s all ease-in-out;
+      :hover {
+        transition: 0.3s all ease-in-out;
+        background: url('/img/recommend1-2.jpg') no-repeat center/contain;
+      }
+    }
+
+    .recommend2 {
+      background: url('/img/recommend2-1.jpg') no-repeat center/contain;
+      transition: 0.3s all ease-in-out;
+      :hover {
+        transition: 0.3s all ease-in-out;
+        background: url('/img/recommend2-2.jpg') no-repeat center/contain;
+      }
+    }
+
+    .recommend3 {
+      background: url('/img/recommend3-1.jpg') no-repeat center/contain;
+      transition: 0.3s all ease-in-out;
+      :hover {
+        transition: 0.3s all ease-in-out;
+        background: url('/img/recommend3-2.jpg') no-repeat center/contain;
+      }
     }
 
     .description {
@@ -53,36 +87,24 @@ export default function Part2(props: Props) {
       <span className={'title'}>{'이런 사람들이 사용하면 좋아요!'}</span>
       <div className={'container'}>
         <div>
-          <div className={'img'}>
-            <Img src={'img/category-3.png'} />
-          </div>
+          <div className={'img recommend1'} />
           <div className={'description'}>
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Explicabo
-            dolore obcaecati debitis voluptate, voluptatum vero nobis nemo,
-            soluta laborum cum quos, aspernatur rerum perspiciatis aliquam
-            tempore incidunt totam sit impedit.
+            <div>{text.recommend['1-1']}</div>
+            <div>{text.recommend['1-2']}</div>
           </div>
         </div>
         <div>
-          <div className={'img'}>
-            <Img src={'img/category-3.png'} />
-          </div>
+          <div className={'img recommend2'} />
           <div className={'description'}>
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Explicabo
-            dolore obcaecati debitis voluptate, voluptatum vero nobis nemo,
-            soluta laborum cum quos, aspernatur rerum perspiciatis aliquam
-            tempore incidunt totam sit impedit.
+            <div>{text.recommend['2-1']}</div>
+            <div>{text.recommend['2-2']}</div>
           </div>
         </div>
         <div>
-          <div className={'img'}>
-            <Img src={'img/category-3.png'} />
-          </div>
+          <div className={'img recommend3'} />
           <div className={'description'}>
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Explicabo
-            dolore obcaecati debitis voluptate, voluptatum vero nobis nemo,
-            soluta laborum cum quos, aspernatur rerum perspiciatis aliquam
-            tempore incidunt totam sit impedit.
+            <div>{text.recommend['3-1']}</div>
+            <div>{text.recommend['3-2']}</div>
           </div>
         </div>
       </div>

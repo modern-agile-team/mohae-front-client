@@ -1,7 +1,6 @@
 /** @format */
 
 import { useState, useEffect } from 'react';
-// import { decodeToken } from 'react-jwt';
 import { css, cx } from '@emotion/css';
 import { color, radius, font, shadow } from '../../styles';
 import { Img, NewPost } from '../../components';

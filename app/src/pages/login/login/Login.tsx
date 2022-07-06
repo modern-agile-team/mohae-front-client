@@ -16,7 +16,7 @@ interface Props {
 
 export default function Register({ text }: Props) {
   const [inputValue, setInputValue] = useState({
-    id: '',
+    id: sessionStorage.getItem('userEmail') || '',
     password: '',
   });
   const isOpenLogin = useSelector((state: RootState) => state.modal.openLogin);

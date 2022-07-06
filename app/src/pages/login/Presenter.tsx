@@ -29,7 +29,7 @@ export default function Presenter({
     <Main text={text} next={onClick.enterRegister} />,
     <Agreement text={text} next={onClick.agreement} />,
     <PersonalInfo text={text} part={part} next={onClick.finishedInputInfo} />,
-    // <SelectInfo next={onClick.finishedAll} />,
+    <SelectInfo next={onClick.finishedAll} />,
   ];
   const style = css`
     width: 100%;

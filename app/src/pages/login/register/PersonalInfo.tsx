@@ -17,12 +17,17 @@ import {
 } from '../../../components';
 import { radius, font, color, shadow } from '../../../styles';
 import { css, cx } from '@emotion/css';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../../redux/root';
+import { update_regist_info } from '../../../redux/user/reducer';
+import axios from 'axios';
 
-interface Props {
+interface Object {
   [key: string]: any;
 }
 
-export default function PersonalInfo({ part, next }: Props) {
+export default function PersonalInfo({ part, next }: Object) {
   const text: { [key: string]: any } = {
     required: '*은 필수 항목입니다.',
     desc: '닉네임 미입력 시 이메일이 닉네임으로 설정됩니다.',
@@ -40,37 +45,217 @@ export default function PersonalInfo({ part, next }: Props) {
       email: '이메일을 입력해 주세요.',
       password: '비밀먼호를 입력해 주세요. (8 ~ 15자)',
       checkPassword: '비밀번호를 다시 한번 입력해 주세요.',
-      nickname: '닉네임을 입려해 주세요. (3 ~ 8자)',
+      nickname: '닉네임을 입력해 주세요. (3 ~ 8자)',
     },
+    companies: ['naver.com', 'daum.net', 'gmail.com', 'nate.com'],
   };
 
-  const inputHandler: { [key: string]: any } = {
-    name: (e: React.ChangeEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-    },
-    email: (e: React.ChangeEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-    },
-    password: (e: React.ChangeEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-    },
-    checkPassword: (e: React.ChangeEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-    },
-    nickname: (e: React.ChangeEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-    },
+  const [inputValue, setInputValue] = useState<Object>({
+    name: '',
+    email: '',
+    emailCompany: '이메일 선택',
+    password: '',
+    checkPassword: '',
+    nickname: '',
+  });
+  const [focus, setFocus] = useState<boolean>(false);
+  const dispatch = useDispatch();
+  const registInfo = useSelector((state: RootState) => state.user.registInfo);
+  const style = css`
+    width: 480px;
+    height: fit-content;
+    > .sub-description {
+      margin-top: 16px;
+      font-size: 14px;
+      > :first-child {
+        color: ${color.main};
+        margin-right: 16px;
+      }
+    }
+
+    > .inputs {
+      margin: 16px 0;
+      > .email {
+        position: relative;
+        > span {
+          color: ${color.main};
+        }
+      }
+      li {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        align-content: space-between;
+        margin: 8px 0;
+        * {
+          font-size: 14px;
+        }
+        > .label {
+          padding-left: 4px;
+          display: inline-block;
+          width: 96px;
+          height: 23px;
+          font-size: 16px;
+          text-align: center;
+        }
+        input {
+          border-radius: 6px;
+          ${shadow.inputGray}
+          width: 384px;
+          height: 100%;
+          font-size: 14px;
+          padding: 16px;
+        }
+        #email {
+          width: 192px;
+        }
+        > .select {
+          * {
+            color: ${color.dark2};
+          }
+          position: absolute;
+          top: 0;
+          right: 0;
+          width: 146px;
+          height: ${`${focus ? '211px' : '52px'}`};
+          display: flex;
+          flex-direction: column;
+          background-color: white;
+          ${shadow.normal}
+          border-radius: 6px;
+          overflow: hidden;
+          float: right;
+          transition: 0.2s all ease-in-out;
+          .option {
+            padding: 8px 0;
+            :hover {
+              background-color: ${color.subtle};
+            }
+            :active {
+              background-color: ${color.lighter};
+            }
+          }
+          > :first-child {
+            padding: 16px 0 12px 16px;
+            z-index: 1;
+            text-align: left;
+            ${shadow.normal};
+          }
+          /* :focus-within {
+            height: 211px;
+          } */
+        }
+        .arrow-down {
+          width: 24px;
+          height: 24px;
+          position: absolute;
+          z-index: 2;
+          top: 14px;
+          right: 14px;
+        }
+      }
+      > .email > :not(:first-child, :last-child) {
+        margin-right: 16px;
+      }
+
+      .password {
+        justify-content: flex-end;
+        > #check {
+          margin-top: 8px;
+        }
+      }
+    }
+    .next-btn {
+      height: 52px;
+    }
+  `;
+
+  const testInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const target = e.currentTarget.id;
+    console.log('target :>> ', target);
+    e.preventDefault();
+    e.stopPropagation();
+    setInputValue({ ...inputValue, [target]: e.currentTarget.value });
+  };
+
+  const focusSelect = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setFocus(true);
+  };
+
+  const clickCompanyHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const target = e.currentTarget.value;
+    setInputValue({ ...inputValue, emailCompany: target });
+    setFocus(false);
   };
 
   const clickNext = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    if (
+      !inputValue.name.length ||
+      !inputValue.email.length ||
+      !inputValue.password.length ||
+      !inputValue.nickname.length
+    ) {
+      alert('모든 필수 항목을 작성해주세요.');
+      return;
+    }
+    if (inputValue.emailCompany === text.selectEmail) {
+      alert('메일 주소를 선택해주세요.');
+      return;
+    }
+    if (inputValue.password !== inputValue.checkPassword) {
+      alert('비밀번호가 일치하지 않습니다.');
+      return;
+    }
+
+    const finalRegistInfo: Object = {
+      ...registInfo,
+      ...inputValue,
+      email: `${inputValue.email}@${inputValue.emailCompany}`,
+    };
+    delete finalRegistInfo.emailCompany;
+    delete finalRegistInfo.checkPassword;
+    console.log('state :>> ', finalRegistInfo);
+    dispatch(update_regist_info(finalRegistInfo));
+
+    // response 받은 이메일을 로그인 화면에 이메일 입력란에 값으로 바로 들어갈 수 있게
+
+    // const ENDPOINT = 'https://mo-hae.site/auth/signup';
+    // axios
+    //   .post(`${ENDPOINT}`, finalRegistInfo, {
+    //     headers: {
+    //       accept: 'application/json',
+    //       'Content-Type': 'application/json',
+    //     },
+    //   })
+    //   .then((res) => {
+    //     if (res.data.statusCode >= 200 && res.data.statusCode <= 204) {
+    //       console.log(`요청 성공`);
+    //       // sessionStorage.setItem('userEmail', res.data.response.email);
+    //       next();
+    //     } else {
+    //       alert('다시 가입 해주세요');
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     console.log('err :>> ', err);
+    //   });
   };
+
+  const selectCompany = text.companies.map((company: string, index: number) => (
+    <button
+      key={index}
+      onClick={clickCompanyHandler}
+      className={'option'}
+      value={company}
+    >
+      {company}
+    </button>
+  ));
 
   return (
     <div className={cx(style)}>
@@ -83,24 +268,29 @@ export default function PersonalInfo({ part, next }: Props) {
           <div className={'label'}>
             <Text star={16}>{text.title.name}</Text>
           </div>
-          <input placeholder={text.placeholder.name} id={'name'} type="text" />
+          <input
+            value={inputValue.name}
+            onChange={testInput}
+            placeholder={text.placeholder.name}
+            id={'name'}
+            type="text"
+          />
         </li>
         <li className={'email'}>
           <div className={'label'}>
             <Text star={16}>{text.title.email}</Text>
           </div>
           <input
+            value={inputValue.email}
+            onChange={testInput}
             placeholder={text.placeholder.email}
             id={'email'}
             type="text"
           />
           <span>{'@'}</span>
           <div className={'select'}>
-            <button>{text.selectEmail}</button>
-            <button className={'option'}>{'naver.com'}</button>
-            <button className={'option'}>{'daum.net'}</button>
-            <button className={'option'}>{'google.com'}</button>
-            <button className={'option'}>{'nate.com'}</button>
+            <button onClick={focusSelect}>{inputValue.emailCompany}</button>
+            {selectCompany}
             <button className={'arrow-down'}>
               <Img src={'/img/arrow-down-dark3.png'} />
             </button>
@@ -111,14 +301,20 @@ export default function PersonalInfo({ part, next }: Props) {
             <Text star={16}>{text.title.password}</Text>
           </div>
           <input
+            value={inputValue.password}
+            onChange={testInput}
             placeholder={text.placeholder.password}
+            maxLength={15}
             id={'password'}
-            type="text"
+            type="password"
           />
           <input
+            value={inputValue.checkPassword}
+            onChange={testInput}
             placeholder={text.placeholder.checkPassword}
-            id={'check-password'}
-            type="text"
+            maxLength={15}
+            id={'checkPassword'}
+            type="password"
           />
         </li>
         <li>
@@ -126,7 +322,10 @@ export default function PersonalInfo({ part, next }: Props) {
             <Text star={16}>{text.title.nickname}</Text>
           </div>
           <input
+            value={inputValue.nickname}
+            onChange={testInput}
             placeholder={text.placeholder.nickname}
+            maxLength={8}
             id={'nickname'}
             type="text"
           />
@@ -140,114 +339,3 @@ export default function PersonalInfo({ part, next }: Props) {
     </div>
   );
 }
-
-const style = css`
-  width: 480px;
-  height: fit-content;
-  /* background-color: lightblue; */
-  > .sub-description {
-    margin-top: 16px;
-    font-size: 14px;
-    > :first-child {
-      color: ${color.main};
-      margin-right: 16px;
-    }
-  }
-
-  > .inputs {
-    margin: 16px 0;
-    > .email {
-      position: relative;
-      > span {
-        color: ${color.main};
-      }
-    }
-    li {
-      width: 100%;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      align-content: space-between;
-      margin: 8px 0;
-      * {
-        font-size: 14px;
-      }
-      > .label {
-        padding-left: 4px;
-        display: inline-block;
-        width: 96px;
-        height: 23px;
-        font-size: 16px;
-        text-align: center;
-      }
-      input {
-        border-radius: 6px;
-        ${shadow.inputGray}
-        width: 384px;
-        height: 100%;
-        font-size: 14px;
-        padding: 16px;
-      }
-      #email {
-        width: 192px;
-      }
-      > .select {
-        * {
-          color: ${color.dark2};
-        }
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 146px;
-        height: 52px;
-        display: flex;
-        flex-direction: column;
-        background-color: white;
-        ${shadow.normal}
-        border-radius: 6px;
-        overflow: hidden;
-        float: right;
-        transition: 0.2s all ease-in-out;
-        .option {
-          padding: 8px 0;
-          :hover {
-            background-color: ${color.subtle};
-          }
-          :active {
-            background-color: ${color.lighter};
-          }
-        }
-        > :first-child {
-          padding: 16px 0 12px 16px;
-          z-index: 1;
-          text-align: left;
-          ${shadow.normal};
-        }
-        :focus-within {
-          height: 211px;
-        }
-      }
-      .arrow-down {
-        width: 24px;
-        height: 24px;
-        position: absolute;
-        z-index: 2;
-        top: 14px;
-        right: 14px;
-      }
-    }
-    > .email > :not(:first-child, :last-child) {
-      margin-right: 16px;
-    }
-
-    .password {
-      justify-content: flex-end;
-      > #check {
-        margin-top: 8px;
-      }
-    }
-  }
-  .next-btn {
-    height: 52px;
-  }
-`;

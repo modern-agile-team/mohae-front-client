@@ -4,7 +4,7 @@ import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 const USER_LOGIN = 'user_login';
-const REGIST_INFO = 'regist_info';
+const UPDATE_REGIST_INFO = 'update_regist_info';
 
 const getData = createAsyncThunk('user_login', async () => {
   const response = await axios('http://localhost:8000/response').then(
@@ -17,15 +17,15 @@ const initialState = {
   var: { isLoading: false },
   user: { name: 'lee', age: 0, id: 0 },
   token: 0,
-  regist: {
+  registInfo: {
     email: '',
     password: '',
     name: '',
     nickname: '',
-    phone: '',
+    phone: '01064888321',
     manager: false,
-    school: 0,
-    major: 0,
+    school: 1,
+    major: 1,
     categories: [
       // 0,
       // 0
@@ -54,8 +54,8 @@ export const userSlice = createSlice({
     updateToken: (state, action: PayloadAction<any>) => {
       state.token = action.payload;
     },
-    [REGIST_INFO]: (state, action: PayloadAction<any>) => {
-      state.regist = action.payload;
+    [UPDATE_REGIST_INFO]: (state, action: PayloadAction<any>) => {
+      state.registInfo = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -70,7 +70,7 @@ export const {
   user_login,
   addAge,
   updateToken,
-  regist_info,
+  update_regist_info,
 } = userSlice.actions;
 // create actions & type
 export default userSlice.reducer;

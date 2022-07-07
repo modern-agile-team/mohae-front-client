@@ -50,8 +50,14 @@ export default function Presenter({
       * {
         font-size: 24px;
       }
-      > :first-child {
+      > *:not(:last-child) {
         margin-right: 161px;
+      }
+      > .login {
+        color: ${`${part ? color.dark1 : color.main}`};
+      }
+      > .register {
+        color: ${`${part ? color.main : color.dark1}`};
       }
       margin-bottom: 16px;
     }
@@ -112,8 +118,14 @@ export default function Presenter({
       padding: 0 8px;
       overflow-x: hidden;
       overflow-y: visible;
+      height: fit-content;
+      padding-bottom: 8px;
+
       display: flex;
       justify-content: flex-start;
+      ::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Opera*/
+      }
       > .main {
         display: flex;
         justify-content: flex-start;
@@ -128,6 +140,20 @@ export default function Presenter({
         }
       }
     }
+    > .focusbar {
+      width: 100%;
+      height: 6px;
+      background-color: ${color.light4};
+      border-radius: 4px;
+      overflow: hidden;
+      > div {
+        height: 100%;
+        width: 50%;
+        background-color: ${color.main};
+        transition: 0.3s all ease-in-out;
+        transform: ${`translate(${part ? '100%' : '0'})`};
+      }
+    }
   `;
   return (
     <BasicModal small visible={isOpenModal}>
@@ -137,10 +163,16 @@ export default function Presenter({
           <Img src={'/img/logo.png'} />
         </div>
         <ul className={'menu'}>
-          <button onClick={onClick.login}>{text.login}</button>
-          <button onClick={onClick.register}>{text.register}</button>
+          <button className={'login'} onClick={onClick.login}>
+            {text.login}
+          </button>
+          <button className={'register'} onClick={onClick.register}>
+            {text.register}
+          </button>
         </ul>
-        <FocusBar thin />
+        <div className={'focusbar'}>
+          <div />
+        </div>
         <div className={'container'}>
           <div className={'main'}>{mainContents}</div>
         </div>

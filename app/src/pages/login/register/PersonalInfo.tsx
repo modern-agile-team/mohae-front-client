@@ -189,7 +189,7 @@ export default function PersonalInfo({ part, next }: Object) {
   const focusSelect = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    setFocus(true);
+    setFocus(!focus);
   };
 
   const clickCompanyHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -312,7 +312,7 @@ export default function PersonalInfo({ part, next }: Object) {
           <div className={'select'}>
             <button onClick={focusSelect}>{inputValue.emailCompany}</button>
             {selectCompany}
-            <button className={'arrow-down'}>
+            <button className={'arrow-down'} onClick={focusSelect}>
               <Img src={'/img/arrow-down-dark3.png'} />
             </button>
           </div>

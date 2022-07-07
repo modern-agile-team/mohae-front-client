@@ -32,7 +32,6 @@ export default function Options({
       display: flex;
       flex-direction: column;
       align-items: center;
-      /* padding: 0 40px 0 8px; */
       .sub {
         width: 100%;
         padding: 2px 8px 0;

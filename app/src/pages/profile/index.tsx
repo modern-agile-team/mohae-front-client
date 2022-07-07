@@ -362,7 +362,7 @@ export default function Edit() {
   );
 
   return (
-    <BasicModal small visible={false}>
+    <BasicModal small visible={true}>
       {contents}
     </BasicModal>
   );

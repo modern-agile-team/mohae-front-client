@@ -1,10 +1,12 @@
-import styled from "@emotion/styled";
-import CommentInputForm from "./CommentInputForm";
+import styled from '@emotion/styled';
+import CommentInputForm from './CommentInputForm';
+import CommentList from './CommentList';
 
 const Comment = () => {
   return (
     <Wrapper>
       <CommentInputForm />
+      <CommentList />
     </Wrapper>
   );
 };

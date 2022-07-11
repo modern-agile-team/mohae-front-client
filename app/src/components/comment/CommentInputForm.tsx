@@ -1,11 +1,26 @@
 import styled from '@emotion/styled';
-import { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import useResizeTextArea from '../../customhook/useResizeTextArea';
 import Img from '../img/Img';
+import { createComment } from '../../apis/comment';
 
 const CommentInputForm = () => {
+  const [comment, setComment] = useState<string>('');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const resizeTextArea = useResizeTextArea(textareaRef);
+
+  const handleChangeComment = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setComment(e.target.value);
+  };
+
+  const handleSubmit = async () => {
+    try {
+      await createComment({ no: 4, body: { content: comment } });
+      setComment('');
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <Wrapper>
@@ -17,9 +32,11 @@ const CommentInputForm = () => {
         <textarea
           ref={textareaRef}
           onKeyUp={resizeTextArea}
+          onChange={handleChangeComment}
           placeholder="댓글을 입력해 주세요. (최대 500자)"
+          value={comment}
         />
-        <button type="submit">
+        <button type="button" onClick={handleSubmit}>
           작성
           <ImageContainer>
             <Img src="/img/write.png" />

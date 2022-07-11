@@ -1,13 +1,22 @@
 import styled from '@emotion/styled';
+import { useRef } from 'react';
+import useResizeTextArea from '../../customhook/useResizeTextArea';
 
 const CommentInputForm = () => {
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const resizeTextArea = useResizeTextArea(textareaRef);
+
   return (
     <Wrapper>
       <CommentCounter>
         <p>댓글 (5)</p>
       </CommentCounter>
       <FormContainer>
-        <input type="text" placeholder="댓글을 입력해 주세요. (최대 500자)" />
+        <textarea
+          ref={textareaRef}
+          onKeyUp={resizeTextArea}
+          placeholder="댓글을 입력해 주세요. (최대 500자)"
+        />
         <button type="submit">작성</button>
       </FormContainer>
     </Wrapper>
@@ -25,14 +34,13 @@ const CommentCounter = styled.div`
   }
 `;
 
-const FormContainer = styled.form`
+const FormContainer = styled.div`
   padding-top: 16px;
-  input {
+  textarea {
     width: 100%;
     padding: 16px;
     background: #ffffff;
     box-shadow: inset 0px 0px 8px rgba(132, 131, 141, 0.2);
     border-radius: 6px;
-    min-height: 100px;
   }
 `;

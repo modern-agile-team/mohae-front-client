@@ -42,16 +42,16 @@ export default function Register({ text }: Props) {
     e.preventDefault();
     axios
       .post(
-        `${ENDPOINT}auth/signin`,
+        `${ENDPOINT}/auth/signin`,
         { email: inputValue.id, password: inputValue.password },
         {
           headers: {
             accept: 'application/json',
             'Content-Type': 'application/json',
           },
-        },
+        }
       )
-      .then(res => {
+      .then((res) => {
         if (res.data.statusCode >= 200 && res.data.statusCode <= 204) {
           sessionStorage.setItem('userAccessToken', res.data.response);
           navigate('/');
@@ -61,7 +61,7 @@ export default function Register({ text }: Props) {
           alert('이메일과 비밀번호를 다시 확인해주세요.');
         }
       })
-      .catch(err => {
+      .catch((err) => {
         alert(err.response.data.error.message);
       });
   };

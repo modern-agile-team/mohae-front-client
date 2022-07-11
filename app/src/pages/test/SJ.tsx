@@ -3,23 +3,32 @@ import { css, cx } from '@emotion/css';
 import { SelectBtn } from '../../components/button';
 import { color, radius } from '../../styles';
 import { Box, Report, ReportModal, Btn, BasicModal } from '../../components';
+import EmptySpinner from '../../components/emptySpinner/EmptySpinner';
+import { useLocation } from 'react-router-dom';
 
 function SJ() {
   const wrap = css`
-    width: 1128px;
-    height: 1000px;
+    display: flex;
+    flex-direction: column;
   `;
-  const btn = css`
-    width: 100px;
-    height: 40px;
-    border: 1px solid ${color.main};
-    ${radius[6]}
-  `;
-
+  const url = useLocation().pathname;
+  console.log('url :>> ', url);
   return (
-    <>
-      <div className={cx(wrap)}></div>
-    </>
+    // <div className={cx(wrap)s}>
+    <div className={cx(wrap)}>
+      <EmptySpinner searchNone text={'안녕'} />
+      {/* <Comments reply>
+        으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아
+      </Comments>
+      <Comments>
+        으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아
+      </Comments>
+      <Comments>으아아아으아아아으아아아으아</Comments>
+      <Comments>
+        으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아으아아아
+      </Comments> */}
+    </div>
+    // </div>
   );
 }
 

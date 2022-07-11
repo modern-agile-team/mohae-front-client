@@ -1,46 +1,50 @@
 import React, { Dispatch } from 'react';
 import { css, cx } from '@emotion/css';
 import { Btn, SelectBtn } from '../button';
-import MarkBox from '../markbox/MarkBox';
 import { color, font } from '../../styles';
 import Slider from './Silder';
 import SelectBox from '../selectbox/SelectBox';
 import Img from '../img/Img';
 import type { type } from './Container';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/root';
 
 interface Props {
   texts: type;
   contents: type;
-  priceArea: (minValue: number, maxValue: number) => string;
+  priceRange: (minValue: number, maxValue: number) => string;
   minValue: number;
   setMinValue: Dispatch<React.SetStateAction<number>>;
   maxValue: number;
   setMaxValue: Dispatch<React.SetStateAction<number>>;
   view: { [key: number]: boolean };
   setView: Dispatch<React.SetStateAction<{ [key: number]: boolean }>>;
-  filterChecked: { [key: string]: { [key: number]: boolean | undefined } };
-  setItemCheck: (list: string, i: number) => void;
+  setItemCheck: (list: string, i: string) => void;
+  resetSetting: () => void;
 }
 
 function Presenter(props: Props) {
   const {
     texts,
     contents,
-    priceArea,
+    priceRange,
     minValue,
     setMinValue,
     maxValue,
     setMaxValue,
     view,
     setView,
-    filterChecked,
     setItemCheck,
+    resetSetting,
   } = props;
+  const checked: { [key: string]: { [key: number]: boolean } } = useSelector(
+    (state: RootState) => state.filter.data.check
+  );
 
   const title = (section: string) => {
     return (
       <div className='title'>
-        {texts[section].map((text, i) => (
+        {texts[section].map((text: any, i: any) => (
           <p className='filterTitle' key={i}>
             {text}
           </p>
@@ -50,13 +54,13 @@ function Presenter(props: Props) {
   };
 
   const selectBtnText = (list: string) => {
-    return contents[list].map((text, i) =>
-      list !== '대상' ? (
+    return contents[list].map((text: any, i: any) =>
+      list !== 'target' ? (
         <div key={i}>
           <SelectBtn
             onChange={() => setItemCheck(list, i)}
             small
-            checked={filterChecked[list][i]}
+            checked={checked[list][i]}
             type={list}
           >
             {text}
@@ -67,7 +71,7 @@ function Presenter(props: Props) {
           <SelectBtn
             onChange={() => setItemCheck(list, i)}
             medium
-            checked={filterChecked[list][i]}
+            checked={checked[list][i]}
             type={list}
           >
             {text}
@@ -79,7 +83,7 @@ function Presenter(props: Props) {
 
   const parentWrap = css`
     position: absolute;
-    top: 42.5px;
+    top: 43.5px;
     left: 0px;
     z-index: 1;
 
@@ -169,22 +173,23 @@ function Presenter(props: Props) {
         <div className='top'>
           {title('top')}
           <div className='wrap'>
-            <div className='row'>{selectBtnText('정렬')}</div>
-            <div className='rowLeft'>{selectBtnText('대상')}</div>
+            <div className='row'>{selectBtnText('sort')}</div>
+            <div className='rowLeft'>{selectBtnText('target')}</div>
           </div>
         </div>
         <div className='mid'>
           {title('mid')}
           <div className='wrap'>
-            <div className='row'>{selectBtnText('기간')}</div>
+            <div className='row'>{selectBtnText('date')}</div>
             <div className='rowLeft'>
               <div className='selectBox'>
                 <SelectBox
                   view={view[0]}
                   onClick={() => setView({ 0: !view[0] })}
                   size='small'
-                  placeholder='지역'
+                  placeholder='전체 지역'
                   style='text'
+                  filter
                 />
               </div>
             </div>
@@ -193,9 +198,9 @@ function Presenter(props: Props) {
         <div className='bottom'>
           <div>
             <p className='filterTitle'>가격</p>
-            <p>{priceArea(minValue, maxValue)}</p>
+            <p>{priceRange(minValue, maxValue)}</p>
           </div>
-          {selectBtnText('무료')}
+          {selectBtnText('free')}
         </div>
         <Slider
           min={0}
@@ -210,9 +215,9 @@ function Presenter(props: Props) {
             <Btn main>설정 완료</Btn>
           </div>
           <div className='reset'>
-            <Btn white>
+            <Btn white onClick={resetSetting}>
               <div className='resetImg'>
-                <Img src={'/img/alarm-bell.png'} />
+                <Img src={'/img/reset.png'} />
               </div>
             </Btn>
           </div>

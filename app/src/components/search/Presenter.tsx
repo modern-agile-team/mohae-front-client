@@ -1,4 +1,4 @@
-import React, { Dispatch } from 'react';
+import React, { Dispatch, SetStateAction, useEffect } from 'react';
 import { css, cx } from '@emotion/css';
 import { Props } from '../button';
 import { color, font, radius } from '../../styles';
@@ -8,7 +8,8 @@ import Filter from '../filter/Container';
 import type { DataList } from './Container';
 
 interface InputProps extends Props {
-  value?: string | number;
+  value: string;
+  setValue: Dispatch<SetStateAction<string>>;
   style: string;
   onChange?: () => any;
   showFilter: boolean;
@@ -19,9 +20,9 @@ interface InputProps extends Props {
   deleteAll: () => void;
   deleteList: (i: number) => void;
   hotKeyClick: (e: React.MouseEvent) => void;
+  setLocalValue: Dispatch<React.SetStateAction<string[]>>;
 }
 
-// 리덕스로 바꾸게 되면 서로 연결 되야 하는 데이터나 코드가 리덕스에 저장이 되어야 함
 function Presenter(props: InputProps) {
   const {
     style,
@@ -32,7 +33,15 @@ function Presenter(props: InputProps) {
     deleteAll,
     deleteList,
     hotKeyClick,
+    value,
+    setValue,
+    setLocalValue,
   } = props;
+  const list: string[] = localValue;
+
+  useEffect(() => {
+    localValue.slice(0, 5);
+  }, []);
 
   const realBoxStyle = () => {
     const common = css`
@@ -79,6 +88,7 @@ function Presenter(props: InputProps) {
     width: fit-content;
     height: fit-content;
     position: relative;
+    z-index: 4;
     ${realBoxStyle()}
   `;
 
@@ -133,8 +143,6 @@ function Presenter(props: InputProps) {
   };
 
   const searchList = () => {
-    const list: string[] = localValue.reverse().slice(0, 5);
-
     const searchStyle = css`
       display: flex;
       align-items: center;
@@ -171,14 +179,27 @@ function Presenter(props: InputProps) {
         <div id='list'>최근 검색 내역이 없습니다.</div>
       </div>
     ) : (
-      list.map((el, i) => (
-        <div className={cx(searchStyle, hover)} key={i}>
-          <div id='list'>{el}</div>
-          <div id='delete' onClick={() => deleteList(i)}>
-            <Img src='/img/close.png' />
-          </div>
-        </div>
-      ))
+      list.map(
+        (el, i) =>
+          i < 5 && (
+            <div
+              className={cx(searchStyle, hover)}
+              key={i}
+              onClick={() => setValue(el)}
+            >
+              <div id='list'>{el}</div>
+              <div
+                id='delete'
+                onClick={e => {
+                  e.stopPropagation();
+                  deleteList(i);
+                }}
+              >
+                <Img src='/img/close.png' />
+              </div>
+            </div>
+          )
+      )
     );
   };
 
@@ -233,13 +254,27 @@ function Presenter(props: InputProps) {
 
   const show = () =>
     style === 'board' ? (
-      <Input board showFilter={showFilter} setShowFilter={setShowFilter} />
+      <Input
+        value={value}
+        setValue={setValue}
+        board
+        showFilter={showFilter}
+        setShowFilter={setShowFilter}
+        setLocalValue={setLocalValue}
+      />
     ) : (
-      <Input main showFilter={showFilter} setShowFilter={setShowFilter} />
+      <Input
+        value={value}
+        setValue={setValue}
+        main
+        showFilter={showFilter}
+        setShowFilter={setShowFilter}
+        setLocalValue={setLocalValue}
+      />
     );
 
   return (
-    <form className={cx(parentWrap)}>
+    <div className={cx(parentWrap)}>
       {show()}
       <div id='dataListWrap'>
         <div className={cx(userSearchWrap())}>
@@ -257,7 +292,7 @@ function Presenter(props: InputProps) {
         </div>
       </div>
       {showFilter && <Filter />}
-    </form>
+    </div>
   );
 }
 

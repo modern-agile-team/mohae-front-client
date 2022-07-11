@@ -1,17 +1,24 @@
-import React, { Dispatch } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { css, cx } from '@emotion/css';
 import { Btn } from '../button';
 import { color, shadow } from '../../styles';
+import { useDispatch } from 'react-redux';
+import { setAreaName, setAreaNo } from '../../redux/filter/reducer';
 
+interface Contents {
+  no: string;
+  name: string;
+}
 interface Props {
-  setPlaceholder: Dispatch<React.SetStateAction<string>>;
   size: string[];
-  contents: string[];
+  contents: Contents[];
   style: string;
+  setSelected: Dispatch<SetStateAction<string>>;
 }
 
 function SelectList(props: Props) {
-  const { setPlaceholder, size, contents, style } = props;
+  const { size, contents, style, setSelected } = props;
+  const dispatch = useDispatch();
 
   const wrap = css`
     position: relative;
@@ -46,22 +53,53 @@ function SelectList(props: Props) {
       }
     }
   `;
-
-  const onClick = (e: React.MouseEvent) => {
-    setPlaceholder(e.currentTarget.id === null ? '' : e.currentTarget.id);
+  const onClick = {
+    area: (e: React.MouseEvent, selected: string) => {
+      dispatch(setAreaNo(e.currentTarget.id));
+      dispatch(
+        setAreaName(
+          e.currentTarget.textContent === null
+            ? ''
+            : e.currentTarget.textContent
+        )
+      );
+      setSelected(selected);
+    },
+    date: (e: React.MouseEvent, selected: string) => {
+      dispatch(setAreaNo(e.currentTarget.id));
+      dispatch(
+        setAreaName(
+          e.currentTarget.textContent === null
+            ? ''
+            : e.currentTarget.textContent
+        )
+      );
+      setSelected(selected);
+    },
+    category: (e: React.MouseEvent, selected: string) => {
+      dispatch(setAreaNo(e.currentTarget.id));
+      dispatch(
+        setAreaName(
+          e.currentTarget.textContent === null
+            ? ''
+            : e.currentTarget.textContent
+        )
+      );
+      setSelected(selected);
+    },
   };
 
   const lists = () =>
-    contents.map((el, i) =>
+    contents.map((el, i: any) =>
       style === 'text' ? (
-        <ul key={i} id={el} onClick={e => onClick(e)}>
-          {el}
+        <ul key={i} id={el.no} onClick={e => onClick.area(e, el.name)}>
+          {el.name}
         </ul>
       ) : (
-        <ul key={i} id={el} onClick={e => onClick(e)}>
+        <ul key={i} id={i} onClick={e => onClick.category(e, el.name)}>
           <div className='category'>
             <Btn white category>
-              {el}
+              {el.name}
             </Btn>
           </div>
         </ul>

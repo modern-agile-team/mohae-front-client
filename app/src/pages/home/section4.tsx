@@ -1,7 +1,7 @@
 /** @format */
 
 import { Suspense, useState, useEffect } from 'react';
-import { decodeToken } from 'react-jwt';
+// import { decodeToken } from 'react-jwt';
 import { css, cx } from '@emotion/css';
 import { color, radius, font, shadow } from '../../styles';
 import { Img, NewPost } from '../../components';
@@ -42,20 +42,20 @@ export default function Part4(props: Props) {
     boardsInMain.allBoard[1] || null,
     boardsInMain.allBoard[0] || null,
     boardsInMain.allBoard[2] || null,
-  ].filter((board) => !!board);
+  ].filter(board => !!board);
   const hotBoardProgressing = [
     boardsInMain.inProgressBoard[1] || null,
     boardsInMain.inProgressBoard[0] || null,
     boardsInMain.inProgressBoard[2] || null,
-  ].filter((board) => !!board);
+  ].filter(board => !!board);
   const hotBoardOver = [
     boardsInMain.overedBoard[1] || null,
     boardsInMain.overedBoard[0] || null,
     boardsInMain.overedBoard[2] || null,
-  ].filter((board) => !!board);
+  ].filter(board => !!board);
   const TOKEN =
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVzdGFyZzFAaGFubWFpbC5uZXQiLCJ1c2VyTm8iOjUsImlzc3VlciI6Im1vZGVybi1hZ2lsZSIsImV4cGlyYXRpb24iOiIzNjAwMCIsImlhdCI6MTY1NTY5OTA4MywiZXhwIjoxNjU1NzM1MDgzfQ.6Ds_HrZym2ZCNyus8jAqvHXh1hde5d_CSgYD1nH5m18';
-  const decodedToken = decodeToken(TOKEN);
+  // const decodedToken = decodeToken(TOKEN);
   // console.log('decodedToken :>> ', decodedToken);
 
   useEffect(() => {
@@ -69,10 +69,10 @@ export default function Part4(props: Props) {
           Authorization: `Bearer ${TOKEN}`,
         },
       })
-      .then((res) => {
+      .then(res => {
         // console.log('res >>', res.data);
       })
-      .catch((err) => {
+      .catch(err => {
         // console.log(`err`, err);
       });
   }, []);

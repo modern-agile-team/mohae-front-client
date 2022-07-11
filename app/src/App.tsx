@@ -27,7 +27,6 @@ injectGlobal`
     -webkit-box-sizing: border-box;
     box-sizing: border-box; 
     line-height: 170%;
-    color: ${color.dark1};
   }
   textarea {
     resize: none;
@@ -74,7 +73,7 @@ function App({}: Props) {
         <Route path={'/hl'} element={<Layout component={<div />} />} />
         <Route path={'/sj'} element={<Layout component={<SJ />} />} />
         <Route
-          path={'/boards/:no'}
+          path={'/boards/category/:no/'}
           element={<Layout component={<Board />} />}
         />
         <Route
@@ -103,7 +102,11 @@ function App({}: Props) {
         <Route path={'/spec/:no'} element={<Layout component={<Spec />} />} />
         <Route path={'/post/:no'} element={<Layout component={<Post />} />} />
         <Route
-          path={'/write'}
+          path={'/create'}
+          element={<Layout component={<CreatePost />} />}
+        />
+        <Route
+          path={'/edit/:no'}
           element={<Layout component={<CreatePost />} />}
         />
       </Routes>

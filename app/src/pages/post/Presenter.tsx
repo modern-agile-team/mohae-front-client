@@ -59,7 +59,7 @@ function Presenter({ data }: Props) {
             </div>
           </div>
         </div>
-        <PostBody view data={data} />
+        <PostBody view data={{ data: data }} />
         <Box size={[1128]} className='comments-box'>
           <p className='all-comments'>
             댓글 <span>({dummy.response.length})</span>

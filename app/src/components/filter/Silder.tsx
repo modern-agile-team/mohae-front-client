@@ -8,6 +8,9 @@ import React, {
 } from 'react';
 import { css, cx } from '@emotion/css';
 import { color, radius } from '../../styles';
+import { useDispatch, useSelector } from 'react-redux';
+import { setMax, setMin } from '../../redux/filter/reducer';
+import { RootState } from '../../redux/root';
 
 interface Props {
   min: number;
@@ -23,7 +26,9 @@ const Slider = (props: Props) => {
   const minValRef = useRef(min);
   const maxValRef = useRef(max);
   const range = useRef<HTMLDivElement>(null);
-
+  const dispatch = useDispatch();
+  const minval = useSelector((state: RootState) => state.filter.data.price.min);
+  const maxval = useSelector((state: RootState) => state.filter.data.price.max);
   const wrapSlider = css`
     position: relative;
     width: 748px;
@@ -139,6 +144,7 @@ const Slider = (props: Props) => {
           const value = Math.min(Number(e.target.value), maxValue - 1000);
           setMinValue(Math.floor(value / 1000) * 1000);
           minValRef.current = value;
+          dispatch(setMin(Math.floor(value / 1000) * 1000));
         }}
         className='thumb--min'
       />
@@ -151,6 +157,7 @@ const Slider = (props: Props) => {
           const value = Math.max(Number(e.target.value), minValue + 1000);
           setMaxValue(Math.floor(value / 1000) * 1000);
           maxValRef.current = value;
+          dispatch(setMax(Math.floor(value / 1000) * 1000));
         }}
         className='thumb--max'
       />

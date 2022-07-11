@@ -89,7 +89,7 @@ export default function Header(props: Props): ReactElement {
         <Img src={'/img/logo.png'} />
       </div>
       <div className={'button-wrapper'}>
-        <Link to={`/boards/category/17?take=12&page=1`}>
+        <Link to={`/boards/category/17`}>
           <button className={'menu'}>{text.boards}</button>
         </Link>
         <button className={'menu'}>{text.notice}</button>

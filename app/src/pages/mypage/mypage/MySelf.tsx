@@ -3,10 +3,21 @@
 import { css, cx } from '@emotion/css';
 import { color, font } from '../../../styles';
 import Slide from './Slide';
-import { Img, Box, Profile, FocusBar, Category } from '../../../components';
+import {
+  Img,
+  Box,
+  Profile,
+  FocusBar,
+  Category,
+  BasicModal,
+} from '../../../components';
 import { useNavigate } from 'react-router-dom';
 import { decodeToken } from 'react-jwt';
 import getToken from '../../../utils/getToken';
+import axios from 'axios';
+import { ENDPOINT } from '../../../utils/ENDPOINT';
+import { useState } from 'react';
+import QuitModal from '../../../components/modal/QuitModal';
 
 interface Props {
   [key: string]: any;
@@ -22,6 +33,8 @@ export default function MySelf({
   const TOKEN = getToken();
   const navigate = useNavigate();
   const tokenInfo: any = decodeToken(TOKEN);
+
+  const [isOpen, setIsOpen] = useState(false);
   console.log(`tokenInfo`, tokenInfo.photoUrl);
 
   const interested =
@@ -41,11 +54,20 @@ export default function MySelf({
 
   return (
     <div className={cx(style)}>
+      {isOpen && <QuitModal isOpen={isOpen} userName={userInfo.nickname} />}
       <div className={'user'}>
         <Box className={'box'} size={[304, 724]}>
           <div className={'name'}>
             <div>{userInfo && userInfo.nickname}</div>
             <div>{text.sir}</div>
+            <button
+              onClick={() => {
+                //modal open
+                setIsOpen(!isOpen);
+              }}
+            >
+              회원탈퇴
+            </button>
           </div>
           <div className={'profile'}>
             <Profile

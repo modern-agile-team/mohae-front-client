@@ -12,7 +12,7 @@ import Categories from '../../components/category/Categories';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/root';
-import { setCategoryName, setCategorys } from '../../redux/board/reducer';
+import EmptySpinner from '../../components/spinner/Spinner';
 
 interface PostData {
   decimalDay: number | null;
@@ -32,50 +32,76 @@ export interface Data {
   categoryName: string;
 }
 
-//===========게시판 페이지==========
 function Presenter() {
   const reduxData = useSelector((state: RootState) => state.board);
   const dispatch = useDispatch();
   const { no } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
   const location = useLocation();
+  const categories = [
+    { no: '1', name: '전체' },
+    { no: '2', name: '디자인' },
+    { no: '3', name: 'IT/개발' },
+    { no: '4', name: '사진/영상' },
+    { no: '5', name: '기획/마케팅' },
+    { no: '6', name: '번역/통역' },
+    { no: '7', name: '문서작업' },
+    { no: '8', name: '컨설팅' },
+    { no: '9', name: '법률' },
+    { no: '10', name: '과외/레슨' },
+    { no: '11', name: '상담/운세' },
+    { no: '12', name: '이벤트' },
+    { no: '13', name: '핸드메이드' },
+    { no: '14', name: '취미' },
+    { no: '15', name: '생활서비스' },
+    { no: '16', name: '기타' },
+  ];
 
   const getData = () => {
     axios
       .get(
-        // location.search
-        `https://mo-hae.site/boards/category/${no}?take=12&page=1`
-        // : `https://mo-hae.site/boards/filter?categoryNo=${no}&take=12&page=1&title=${searchParams.get(
-        //     'title'
-        //   )}`
+        location.search
+          ? `https://mo-hae.site/boards/filter?categoryNo=${no}&take=12&page=1&title=${searchParams.get(
+              'title'
+            )}`
+          : `https://mo-hae.site/boards/category/${no}?take=12&page=1`
       )
       .then(res => {
-        console.log('res.data.response :>> ', res.data.response);
-        dispatch(setCategoryName(res.data.response.categoryName));
-        dispatch(setCategorys(res.data.response.category));
+        console.log('res.data.response :>> ', res.data);
+        // dispatch(setCategoryName(res.data.response.categoryName));
+        // dispatch(setCategorys(res.data.response.category));
       })
       .catch(err => console.log('err', err));
   };
 
   useEffect(() => {
     getData();
-  }, [no]);
+  }, [location.search, no]);
 
   const createPost = () => {
     const gap = (i: number) => css`
       margin-top: 24px;
       margin-right: ${i % 4 && '16px'};
     `;
-    return reduxData.category.boards.map((el: any, i: any) => (
-      <Link key={i} className={cx(gap(i + 1))} to={`/post/${el.no}`}>
-        <Poster data={reduxData.category.boards[i]} />
-      </Link>
-    ));
+    return reduxData.category.boards.length ? (
+      reduxData.category.boards.map((el: any, i: any) => (
+        <Link key={i} className={cx(gap(i + 1))} to={`/post/${el.no}`}>
+          <Poster data={reduxData.category.boards[i]} />
+        </Link>
+      ))
+    ) : (
+      <EmptySpinner
+        boardNone
+        text={categories[Number(no) - 1].name + ' 게시판'}
+      />
+    );
   };
 
   return (
     <>
-      <div className={cx(title)}>{reduxData.categoryName}</div>
+      <div className={cx(title)}>
+        {categories[Number(no) - 1].name}&nbsp;게시판
+      </div>
       <Categories num={7} />
       <div className={cx(style.wrap(0))}>
         <Search board />

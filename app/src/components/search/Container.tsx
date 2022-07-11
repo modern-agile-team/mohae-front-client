@@ -69,13 +69,13 @@ function Search(props: Props) {
   //&page=${페이지숫자}
   //&categoryNo=${카테고리숫자}
   //&sort=${'정렬값'} || &popular=1
-  //&target=${'대상'} || undefined -> ex) 0=해줄래요(!), 1=구할래요(?)
-  //&date=${일수} || undefined -> ex) 일주일(7), 1개월(30), 3개월(60)
-  //&free=${1} || undefined
-  //&min=${최소값} || undefined
-  //&max=${최대값} || undefined
-  //&areaNo=${지역숫자} || undefined
-  //&title=${검색값} || undefined
+  //&target=${'대상'} || null -> ex) 0=해줄래요(!), 1=구할래요(?)
+  //&date=${일수} || null -> ex) 일주일(7), 1개월(30), 3개월(60)
+  //&free=${1} || null
+  //&min=${최소값} || null
+  //&max=${최대값} || null
+  //&areaNo=${지역숫자} || null
+  //&title=${검색값} || null
 
   const hotKeyClick = (e: React.MouseEvent) =>
     console.log(

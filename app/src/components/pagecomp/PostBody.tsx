@@ -5,13 +5,14 @@ import { color, font, radius } from '../../styles';
 import { Props } from '../../pages/post/Container';
 
 // 본문, 거래 참고 사항
-interface PostBodyProps extends Props {
+interface PostBodyProps {
+  data?: Props;
   view?: boolean;
   getValue?: boolean;
 }
 function PostBody(props: PostBodyProps) {
   const { view, getValue, data } = props;
-  const datas = data?.response;
+  const datas = data?.data.response;
 
   const style = css`
     margin: 32px 0px 16px 0px;

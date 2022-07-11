@@ -20,6 +20,8 @@ function CreatePost() {
     0: true,
     1: false,
   });
+  const [boxPlaceholder, setBoxPlaceholder] = useState('전체 지역');
+  const [selectedArea, setSelectedArea] = useState<string>('0');
   const reduxData = useSelector((state: RootState) => state.post.data);
 
   const container = css`
@@ -145,7 +147,7 @@ function CreatePost() {
   };
 
   const createSelectBox = () => {
-    const placeholders = ['카테고리', '지역', '기간'];
+    const placeholders = ['카테고리', '전체 지역', '기간'];
 
     return placeholders.map((el, i) => (
       <SelectBox
@@ -164,7 +166,7 @@ function CreatePost() {
       <div className={cx(container)}>
         <div className='imgsSection'>
           <p className='pageTitle'>게시글 작성</p>
-          {/* <PostImgs /> */}
+          <PostImgs />
         </div>
         <div>
           {create.btn()}
@@ -182,7 +184,7 @@ function CreatePost() {
           </Box>
         </div>
       </div>
-      {/* <PostBody /> */}
+      <PostBody />
     </>
   );
 }

@@ -166,13 +166,13 @@ export default function OrderedImg({ imgs, edit, inline }: Props) {
             (myImage.length < 10 && !inline)) && (
             <>
               <input
-                id="input-file"
-                type="file"
+                id='input-file'
+                type='file'
                 onChange={addImage}
                 multiple
-                accept=".jpg,.jpeg,.png"
+                accept='.jpg,.jpeg,.png'
               />
-              <label htmlFor="input-file">
+              <label htmlFor='input-file'>
                 <div className={'item-box add'}>
                   <div className={'icon'} />
                 </div>
@@ -199,7 +199,7 @@ export default function OrderedImg({ imgs, edit, inline }: Props) {
       <>
         <div className={cx(style)}>
           {alarm && (
-            <div className="alarm">
+            <div className='alarm'>
               {'사진을 클릭하여 순서설정 및 삭제를 할 수 있습니다'}
             </div>
           )}
@@ -213,19 +213,6 @@ export default function OrderedImg({ imgs, edit, inline }: Props) {
             <div className={'container'}>{images()}</div>
           </div>
         </div>
-        <button
-          className={cx(css`
-            position: absolute;
-            background-color: red;
-            width: 40px;
-            height: 30px;
-            top: 100px;
-            left: 20px;
-          `)}
-          onClick={request}
-        >
-          {'호출'}
-        </button>
       </>
     );
   } else if (imgs) {

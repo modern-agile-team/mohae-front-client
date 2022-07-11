@@ -10,19 +10,31 @@ import {
   useLocation,
   useSearchParams,
 } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/root';
 
 interface InputProps extends Props {
   setShowFilter?: Dispatch<SetStateAction<boolean>>;
   showFilter?: boolean;
   value: string;
   setValue: Dispatch<SetStateAction<string>>;
+  setLocalValue: Dispatch<React.SetStateAction<string[]>>;
 }
 
 function Input(props: InputProps) {
-  const { board, main, showFilter, setShowFilter, value, setValue } = props;
+  const {
+    board,
+    main,
+    showFilter,
+    setShowFilter,
+    value,
+    setValue,
+    setLocalValue,
+  } = props;
   const localValue = JSON.parse(localStorage.getItem('currentSearch') || '[]');
   const { no } = useParams();
-  const [searchPrams, setSearchPrams] = useSearchParams();
+  const filterData = useSelector((state: RootState) => state.filter.data);
+  const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
 
   const attrProps = () =>
@@ -153,23 +165,50 @@ function Input(props: InputProps) {
       </button>
     );
   };
-  //=====================경로 바꾸는 함수--171줄에 사용=====================
+
+  const searchParamsURL = () => {
+    Object.keys(filterData).map(el => {
+      Object.keys(filterData[el]).map(key => {
+        typeof filterData[el][key] === 'object'
+          ? Object.keys(filterData[el][key]).map((numKey, i) => {
+              console.log('numKey', filterData[el][key][numKey] ? key : null);
+            })
+          : console.log(filterData[el][key]);
+      });
+    });
+  };
+
+  // Object.keys(filterData).map(el => {
+  //   Object.keys(filterData[el]).map(key => {
+  //     typeof filterData[el][key] === 'object'
+  //       ? Object.keys(filterData[el][key]).map(numKey => {
+  //           console.log('numKey', filterData[el][key][numKey] ? key : null);
+  //         })
+  //       : console.log(filterData[el][key]);
+  //   });
+  // });
+
   const onSubmit = (e: any) => {
+    e.preventDefault();
     if (value.length > 1) {
-      setSearchPrams(`?categoryNo=${no}&title=${value}`);
+      setSearchParams(`?categoryNo=${no}&title=${value}`);
       localStorage.setItem(
         'currentSearch',
-        JSON.stringify([...localValue, value])
+        JSON.stringify([value, ...localValue])
       );
+      setLocalValue(JSON.parse(localStorage.getItem('currentSearch') || '[]'));
     } else alert('두 글자 이상');
 
     setValue('');
   };
-  //=====================경로 바꾸는 함수=====================
 
   return (
     <>
-      <form id='inputWrap' className={cx(commonStyle)} onSubmit={onSubmit}>
+      <form
+        id='inputWrap'
+        className={cx(commonStyle)}
+        onSubmit={e => onSubmit(e)}
+      >
         <input
           type='text'
           src='/img/search.png'

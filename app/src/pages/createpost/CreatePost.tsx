@@ -7,6 +7,8 @@ import PostBody from '../../components/pagecomp/PostBody';
 import { SelectBtn } from '../../components/button';
 import Input from './Input';
 import PostImgs from '../../components/pagecomp/PostImgs';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/root';
 
 function CreatePost() {
   const [view, setView] = useState<{ [key: number]: boolean }>({
@@ -18,6 +20,10 @@ function CreatePost() {
     0: true,
     1: false,
   });
+  const [boxPlaceholder, setBoxPlaceholder] = useState('전체 지역');
+  const [selectedArea, setSelectedArea] = useState<string>('0');
+  const reduxData = useSelector((state: RootState) => state.post.data);
+
   const container = css`
     display: flex;
     justify-content: space-between;
@@ -141,7 +147,7 @@ function CreatePost() {
   };
 
   const createSelectBox = () => {
-    const placeholders = ['카테고리', '지역', '기간'];
+    const placeholders = ['카테고리', '전체 지역', '기간'];
 
     return placeholders.map((el, i) => (
       <SelectBox

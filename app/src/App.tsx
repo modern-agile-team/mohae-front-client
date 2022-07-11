@@ -32,7 +32,7 @@ injectGlobal`
     -webkit-box-sizing: border-box;
     box-sizing: border-box; 
     line-height: 170%;
-    color: ${color.dark1};
+    /* color: ${color.dark1}; */
   }
   textarea {
     resize: none;
@@ -85,9 +85,13 @@ const App: React.SFC = () => {
           element={<Layout component={<MyPage />} />}
         />
         <Route path={'/spec/:no'} element={<Layout component={<Spec />} />} />
-        <Route path={'/post'} element={<Layout component={<Post />} />} />
+        <Route path={'/post/:no'} element={<Layout component={<Post />} />} />
         <Route
-          path={'/write'}
+          path={'/createpost'}
+          element={<Layout component={<CreatePost />} />}
+        />
+        <Route
+          path={'/edit/:no'}
           element={<Layout component={<CreatePost />} />}
         />
       </Routes>

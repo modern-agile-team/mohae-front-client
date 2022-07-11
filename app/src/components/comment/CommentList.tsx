@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { getCommentList } from '../../apis/comment';
+import CommentItem from './CommentItem';
 
-type CommentType = {
+export type CommentType = {
   commentContent: string;
   commentCreatedAt: string;
   commentNo: number;
@@ -27,7 +28,7 @@ const CommentList = () => {
   return (
     <ul>
       {commentList.map(comment => {
-        return <li>{comment.commentContent}</li>;
+        return <CommentItem {...comment} />;
       })}
     </ul>
   );

@@ -1,12 +1,37 @@
 import { css, cx } from '@emotion/css';
+import axios from 'axios';
+import { useState } from 'react';
+import { ENDPOINT } from '../../utils/ENDPOINT';
+import getToken from '../../utils/getToken';
 import Img from '../img/Img';
 import BasicModal from './BasicModal';
 
 interface Props {
   isOpen: boolean;
   userName: string;
+  setIsOpen: Function;
 }
-export default function QuitModal({ isOpen, userName }: Props) {
+export default function QuitModal({ isOpen, userName, setIsOpen }: Props) {
+  const [password, setPassword] = useState<string>('');
+  const [isFail, setIsFail] = useState<boolean>(false);
+  const TOKEN = getToken();
+
+  function checkMySelf(password: string) {
+    console.log(TOKEN);
+    console.log(password);
+    return axios.patch(
+      `${ENDPOINT}auth`,
+      { password },
+      {
+        headers: {
+          accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${TOKEN}`,
+        },
+      },
+    );
+  }
+
   const wrap = css`
     width: 100%;
     height: 100%;
@@ -113,6 +138,18 @@ export default function QuitModal({ isOpen, userName }: Props) {
         margin-left: 4px;
       }
     }
+    .hidden {
+      width: 178px;
+      height: 24px;
+      left: 146px;
+      top: 477px;
+      font-family: 'Noto Sans KR';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 170%;
+      color: #ff3b3b;
+    }
   `;
 
   return (
@@ -139,16 +176,40 @@ export default function QuitModal({ isOpen, userName }: Props) {
           <span className="pw">비밀번호</span>
           <input
             className="input"
-            type="text"
-            id="input"
+            type="password"
             placeholder="비밀번호를 입력해 주세요."
+            onChange={e => setPassword(e.target.value)}
           />
         </div>
+        {isFail && (
+          <span className="hidden">비밀번호가 일치하지 않습니다.</span>
+        )}
         <div className="btnContainer">
-          <button className="quitBtn">탈퇴</button>
-          <button className="cancelBtn">취소</button>
+          <button
+            className="quitBtn"
+            onClick={() => {
+              checkMySelf(password)
+                .then(() => console.log(1))
+                .catch(err => console.log(err));
+              // .catch(() => setIsFail(true));
+            }}
+          >
+            탈퇴
+          </button>
+          <button
+            className="cancelBtn"
+            onClick={() => {
+              setIsOpen(!isOpen);
+            }}
+          >
+            취소
+          </button>
         </div>
       </div>
     </BasicModal>
   );
 }
+
+//TODO 탈퇴 후 화면전환 boolean 값으로 다른 화면 모달창에 띄우기
+//TODO 탈퇴 실패 시 span 하나 띄워주기
+//TODO 탈퇴 후 로그아웃? => 재희님한테 물어보기

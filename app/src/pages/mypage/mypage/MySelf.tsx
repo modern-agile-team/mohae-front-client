@@ -54,7 +54,13 @@ export default function MySelf({
 
   return (
     <div className={cx(style)}>
-      {isOpen && <QuitModal isOpen={isOpen} userName={userInfo.nickname} />}
+      {isOpen && (
+        <QuitModal
+          isOpen={isOpen}
+          userName={userInfo.nickname}
+          setIsOpen={setIsOpen}
+        />
+      )}
       <div className={'user'}>
         <Box className={'box'} size={[304, 724]}>
           <div className={'name'}>

@@ -1,21 +1,7 @@
 /** @format */
 
-import {
-  Img,
-  Poster,
-  NewPost,
-  Box,
-  Profile,
-  FocusBar,
-  Category,
-  BasicModal,
-  MarkBox,
-  Btn,
-  OrderedImg,
-  Text,
-  Report,
-} from '../../../components';
-import { radius, font, color, shadow } from '../../../styles';
+import { Img, Btn, Text } from '../../../components';
+import { color, shadow } from '../../../styles';
 import { css, cx } from '@emotion/css';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -217,34 +203,37 @@ export default function PersonalInfo({ part, next }: Object) {
     e.preventDefault();
     e.stopPropagation();
 
-    // if (
-    //   !inputValue.name.length ||
-    //   !inputValue.email.length ||
-    //   !inputValue.password.length ||
-    //   !inputValue.nickname.length
-    // ) {
-    //   alert('모든 필수 항목을 작성해주세요.');
-    //   return;
-    // }
-    // if (inputValue.emailCompany === text.selectEmail) {
-    //   alert('메일 주소를 선택해주세요.');
-    //   return;
-    // }
-    // if (inputValue.password !== inputValue.checkPassword) {
-    //   alert('비밀번호가 일치하지 않습니다.');
-    //   return;
-    // }
+    // 조건 통과 안 하고 다음 누르고 싶으면 아래 if문 세개 주석 ㄱㄱ
+    if (
+      !inputValue.name.length ||
+      !inputValue.email.length ||
+      !inputValue.password.length ||
+      !inputValue.nickname.length
+    ) {
+      alert('모든 필수 항목을 작성해주세요.');
+      return;
+    }
+    if (inputValue.emailCompany === text.selectEmail) {
+      alert('메일 주소를 선택해주세요.');
+      return;
+    }
+    if (inputValue.password !== inputValue.checkPassword) {
+      alert('비밀번호가 일치하지 않습니다.');
+      return;
+    }
 
-    // const finalRegistInfo: Object = {
-    //   ...registInfo,
-    //   ...inputValue,
-    //   email: `${inputValue.email}@${inputValue.emailCompany}`,
-    // };
-    // delete finalRegistInfo.emailCompany;
-    // delete finalRegistInfo.checkPassword;
+    const finalRegistInfo: Object = {
+      ...registInfo,
+      ...inputValue,
+      email: `${inputValue.email}@${inputValue.emailCompany}`,
+    };
+    delete finalRegistInfo.emailCompany;
+    delete finalRegistInfo.checkPassword;
+
+    // console.log('finalRegistInfo :>> ', finalRegistInfo);
     // dispatch(update_regist_info(finalRegistInfo));
     next();
-    // response 받은 이메일을 로그인 화면에 이메일 입력란에 값으로 바로 들어갈 수 있게
+    // response 받은 이메일을 로그인 화면에 이메일 입력란에 값으로 바로 들어갈 수 있게 해달라고 함
 
     // axios
     //   .post(`${ENDPOINT}auth/signup`, finalRegistInfo, {

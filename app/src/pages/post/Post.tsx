@@ -9,6 +9,7 @@ import { Props } from '../../components/button';
 import axios from 'axios';
 import QuickMenu from './QuickMenu';
 import useScroll from '../../customhook/useScroll';
+import Comment from '../../components/comment/Comment';
 
 function Post(props: Props) {
   const [report, setReport] = useState(false);
@@ -90,24 +91,25 @@ function Post(props: Props) {
     <>
       <ReportModal visible={report} close={() => setReport(!report)} />
       <div className={cx(wrap)}>
-        <div className='topflexWrap'>
+        <div className="topflexWrap">
           <PostImgs view />
-          <div className='sectionWrap'>
+          <div className="sectionWrap">
             <PostInfo />
             <PostWriter close={() => setReport(!report)} />
-            <div className='postIt'>
+            <div className="postIt">
               <PostIt small />
             </div>
           </div>
         </div>
         <PostBody view />
-        <div className='cancelCloseBtn'>
+        <Comment />
+        <div className="cancelCloseBtn">
           <Btn main>
             {dummy.response.isDeadline ? '마감 취소' : '마감 하기'}
           </Btn>
         </div>
         {useScroll().scrollY > 490 && (
-          <div className='quickMenu'>
+          <div className="quickMenu">
             <QuickMenu close={() => setReport(!report)} />
           </div>
         )}

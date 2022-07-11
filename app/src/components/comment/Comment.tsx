@@ -1,7 +1,12 @@
 import styled from "@emotion/styled";
+import CommentInputForm from "./CommentInputForm";
 
 const Comment = () => {
-  return <Wrapper>Comment Wrapper</Wrapper>;
+  return (
+    <Wrapper>
+      <CommentInputForm />
+    </Wrapper>
+  );
 };
 
 export default Comment;

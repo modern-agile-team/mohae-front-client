@@ -201,7 +201,7 @@ export default function Part4(props: Props) {
   };
   return (
     <div className={cx(style)}>
-      <span className={'title'}>{'사용법이 궁금하다면?'}</span>
+      <span className={'title'}>{'인기 게시글 Top3'}</span>
       <div className={'filter'}>
         <div className={'focus'} />
         {filter}

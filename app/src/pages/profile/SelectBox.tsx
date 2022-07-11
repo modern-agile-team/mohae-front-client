@@ -22,7 +22,6 @@ export default function SelectBox({
   blocks,
   open,
   list,
-  onClick,
 }: Props) {
   const [isOpen, setIsOpen] = useState(open),
     [target, setTarget] = useState(children),

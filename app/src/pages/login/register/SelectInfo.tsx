@@ -50,7 +50,7 @@ export default function SelectInfo({ part, next }: Object) {
     check: '중복확인',
     ignore: '건너뛰기',
     finish: '가입하기',
-    phoneNumbers: ['010', '011', '016', '017', '031'],
+    phoneNumbers: ['010', '011', '02', '031'],
     schools: ['인덕대학교', '광운대학교'],
     majors: [
       '건축',

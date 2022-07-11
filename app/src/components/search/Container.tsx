@@ -70,7 +70,7 @@ function Search(props: Props) {
   //&categoryNo=${카테고리숫자}
   //&sort=${'정렬값'} || &popular=1
   //&target=${'대상'} || undefined -> ex) 0=해줄래요(!), 1=구할래요(?)
-  //&data=${일수} || undefined -> ex) 일주일(7), 1개월(30), 3개월(60)
+  //&date=${일수} || undefined -> ex) 일주일(7), 1개월(30), 3개월(60)
   //&free=${1} || undefined
   //&min=${최소값} || undefined
   //&max=${최대값} || undefined
@@ -107,6 +107,7 @@ function Search(props: Props) {
       setDataList={setDataList}
       localValue={localValue}
       hotKeyClick={hotKeyClick}
+      setLocalValue={setLocalValue}
     />
   );
 }

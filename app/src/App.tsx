@@ -1,15 +1,15 @@
 /** @format */
 
-import React from 'react';
+import React from "react";
 
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
-} from 'react-router-dom';
-import { injectGlobal } from '@emotion/css';
-import { color, Layout } from './styles';
+} from "react-router-dom";
+import { injectGlobal } from "@emotion/css";
+import { color, Layout } from "./styles";
 import {
   Board,
   CreatePost,
@@ -19,9 +19,10 @@ import {
   Post,
   LoginModal,
   Spec,
-} from './pages';
-import Edit from './pages/spec/Edit';
-import Visit from './pages/spec/Visit';
+} from "./pages";
+import Edit from "./pages/spec/Edit";
+import Visit from "./pages/spec/Visit";
+import Notice from "./pages/faq/notice/Notice";
 
 injectGlobal`
   * {
@@ -74,22 +75,23 @@ const App: React.SFC = () => {
     <Router>
       <Routes>
         <Route path="*" element={<Navigate to="/" replace />} />
-        <Route path={'/'} element={<Layout main component={<Home />} />} />
-        <Route path={'/hg'} element={<Layout component={<HG />} />} />
+        <Route path={"/"} element={<Layout main component={<Home />} />} />
+        <Route path={"/hg"} element={<Layout component={<HG />} />} />
         <Route
-          path={'/boards/:no'}
+          path={"/boards/:no"}
           element={<Layout component={<Board />} />}
         />
         <Route
-          path={'/mypage/:no'}
+          path={"/mypage/:no"}
           element={<Layout component={<MyPage />} />}
         />
-        <Route path={'/spec/:no'} element={<Layout component={<Spec />} />} />
-        <Route path={'/post'} element={<Layout component={<Post />} />} />
+        <Route path={"/spec/:no"} element={<Layout component={<Spec />} />} />
+        <Route path={"/post"} element={<Layout component={<Post />} />} />
         <Route
-          path={'/write'}
+          path={"/write"}
           element={<Layout component={<CreatePost />} />}
         />
+        <Route path={"/notice"} element={<Layout component={<Notice />} />} />
       </Routes>
       <Visit />
       <Edit />

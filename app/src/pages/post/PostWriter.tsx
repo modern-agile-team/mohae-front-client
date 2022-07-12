@@ -1,47 +1,25 @@
-/** @format */
-
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { css, cx } from '@emotion/css';
 import Profile from '../../components/profile/Profile';
+import { Btn, Img, PostIt } from '../../components';
 import { color, font } from '../../styles';
 import Btns from './Btns';
+import { Props } from './Container';
 
 // 프로필 이미지, 닉네임, 전공, 로그인 상태(버튼 그려줘야 함),
-interface Props {
+interface PostWriterProps extends Props {
   close: () => void;
+  likeCount: number;
+  setLikeCount: Dispatch<SetStateAction<number>>;
 }
 
-function PostWriter(props: Props) {
-  const { close } = props;
-  const dummy = {
-    statusCode: 200,
-    msg: '게시글 상세 조회가 완료되었습니다.',
-    response: {
-      no: 42,
-      decimalDay: '- 8',
-      title: '카테고리 조회 테스트',
-      description: '생성',
-      isDeadline: 1,
-      hit: 4,
-      likeCount: 0,
-      price: 1000,
-      summary: 'test',
-      target: 1,
-      note1: '첫번째',
-      note2: '두번째',
-      note3: '세번째',
-      areaNo: 1,
-      areaName: '서울특별시',
-      categoryNo: 2,
-      categoryName: '디자인',
-      userNo: 1,
-      userName: '백팀장',
-      userNickname: '내가 관리자다',
-      userPhotoUrl: 'asdfasdf',
-      userSchool: '선택안함',
-      userMajor: '선택안함',
-    },
-  };
+function PostWriter({ close, data, likeCount, setLikeCount }: PostWriterProps) {
+  const datas = data.response.board;
+
+  const userImg =
+    datas.userPhotoUrl !== null
+      ? `https://mohaeproj.s3.amazonaws.com/${datas.userPhotoUrl}`
+      : null;
 
   const style = css`
     margin-top: 16px;
@@ -84,14 +62,19 @@ function PostWriter(props: Props) {
   return (
     <>
       <div className={cx(style)}>
-        <div className="userData">
-          <Profile img={null} size={60} smallShadow />
+        <div className='userData'>
+          <Profile img={userImg} size={60} smallShadow />
           <div>
-            <p>{dummy.response.userNickname}</p>
-            <p>{dummy.response.userMajor}</p>
+            <p>{datas.nickname}</p>
+            <p>{datas.majorName}</p>
           </div>
         </div>
-        <Btns close={close} />
+        <Btns
+          data={data}
+          close={close}
+          setLikeCount={setLikeCount}
+          likeCount={likeCount}
+        />
       </div>
     </>
   );

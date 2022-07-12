@@ -1,12 +1,19 @@
-import React, { useState } from 'react';
+import React, { Dispatch, useState } from 'react';
 import { css, cx } from '@emotion/css';
 import SelectList from './SelectList';
 import { color, font, radius, shadow } from '../../styles';
 import Img from '../img/Img';
 import { Btn } from '../button';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/root';
 
+interface Contents {
+  no: string;
+  name: string;
+}
 interface Props {
   view: boolean;
+  filter?: boolean;
   onClick: () => void;
   size: string;
   placeholder: string;
@@ -14,30 +21,11 @@ interface Props {
 }
 
 function SelectBox(props: Props) {
-  const { view, onClick, size, placeholder, style } = props;
-  const [value, setValue] = useState(placeholder);
-  const list: { [placeholder: string]: string[] } = {
-    카테고리: [
-      '카테고리',
-      '카테고리',
-      '응애',
-      '애기',
-      '성제',
-      '미안',
-      '한결이형',
-    ],
-    지역: [
-      '강남구',
-      '논현동',
-      '남양주시',
-      '도농동',
-      '노원구',
-      '한남동',
-      '해방촌',
-    ],
-    기간: ['일주일', '1개월', '3개월', '상시'],
-  };
-
+  const { view, onClick, size, placeholder, style, filter } = props;
+  const filterSelected = useSelector(
+    (state: RootState) => state.filter.data.area.areaName
+  );
+  const [selected, setSelected] = useState<string>(placeholder);
   const sizeList: { [size: string]: string[] } = {
     big: [
       css`
@@ -114,13 +102,13 @@ function SelectBox(props: Props) {
   const contentsStyle = () => {
     return style === 'text' ? (
       <div className='placeholderWrap'>
-        <div className='placeholder'>{value}</div>
+        <div className='placeholder'>{filter ? filterSelected : selected}</div>
       </div>
     ) : (
       <div className='placeholderWrap'>
         <div className='category'>
           <Btn white category>
-            {value}
+            {selected}
           </Btn>
         </div>
       </div>
@@ -137,10 +125,10 @@ function SelectBox(props: Props) {
       </div>
       {view && (
         <SelectList
-          setPlaceholder={setValue}
           size={sizeList[size]}
           contents={list[placeholder]}
           style={style}
+          setSelected={setSelected}
         />
       )}
     </>
@@ -148,3 +136,43 @@ function SelectBox(props: Props) {
 }
 
 export default SelectBox;
+
+const list: { [placeholder: string]: Contents[] } = {
+  카테고리: [
+    { no: '1', name: 'All' },
+    { no: '2', name: '디자인' },
+    { no: '3', name: 'IT/개발' },
+    { no: '4', name: '사진/영상' },
+    { no: '5', name: '기획/마케팅' },
+    { no: '6', name: '번역/통역' },
+    { no: '7', name: '문서작업' },
+    { no: '8', name: '컨설팅' },
+    { no: '9', name: '법률' },
+    { no: '10', name: '과외/레슨' },
+    { no: '11', name: '상담/운세' },
+    { no: '12', name: '이벤트' },
+    { no: '13', name: '핸드메이드' },
+    { no: '14', name: '취미' },
+    { no: '15', name: '생활서비스' },
+    { no: '16', name: '기타' },
+  ],
+  '전체 지역': [
+    { no: '1', name: '서울' },
+    { no: '2', name: '경기도' },
+    { no: '3', name: '강원도' },
+    { no: '4', name: '대전' },
+    { no: '5', name: '세종시' },
+    { no: '6', name: '전라도' },
+    { no: '7', name: '광주' },
+    { no: '8', name: '경상도' },
+    { no: '9', name: '부산' },
+    { no: '10', name: '울산' },
+    { no: '11', name: '제주도' },
+  ],
+  기간: [
+    { no: '7', name: '일주일' },
+    { no: '30', name: '1개월' },
+    { no: '60', name: '3개월' },
+    { no: '0', name: '상시' },
+  ],
+};

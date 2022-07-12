@@ -1,4 +1,9 @@
-import React, { useState } from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation, useParams, useSearchParams } from 'react-router-dom';
+import { setCategorys } from '../../redux/board/reducer';
+import { RootState } from '../../redux/root';
 import { Props } from '../button';
 import Presenter from './Presenter';
 
@@ -18,9 +23,16 @@ interface DataList {
 
 function Search(props: Props) {
   const { board, main } = props;
+  const dispatch = useDispatch();
+  const [value, setValue] = useState<string>('');
+  const boardData = useSelector((state: RootState) => state.board);
   const [localValue, setLocalValue] = useState<string[]>(
     JSON.parse(localStorage.getItem('currentSearch') || '[]')
   );
+
+  const [searchPrams, setSearchPrams] = useSearchParams();
+  const { no } = useParams();
+
   const [showFilter, setShowFilter] = useState(false);
   const [dataList, setDataList] = useState<DataList>({
     hotKey: {
@@ -51,6 +63,20 @@ function Search(props: Props) {
     },
   });
 
+  // 쿼리 순서 상관 없음
+  //https://mo-hae.site//boards/filter
+  //?take=12
+  //&page=${페이지숫자}
+  //&categoryNo=${카테고리숫자}
+  //&sort=${'정렬값'} || &popular=1
+  //&target=${'대상'} || null -> ex) 0=해줄래요(!), 1=구할래요(?)
+  //&date=${일수} || null -> ex) 일주일(7), 1개월(30), 3개월(60)
+  //&free=${1} || null
+  //&min=${최소값} || null
+  //&max=${최대값} || null
+  //&areaNo=${지역숫자} || null
+  //&title=${검색값} || null
+
   const hotKeyClick = (e: React.MouseEvent) =>
     console.log(
       'e.target',
@@ -63,14 +89,16 @@ function Search(props: Props) {
   };
 
   const deleteList = (i: number) => {
-    const newLocal = localValue.reverse().filter((el, index) => index != i);
-    localStorage.setItem('currentSearch', JSON.stringify(newLocal.reverse()));
+    const newLocal = localValue.filter((el, index) => index != i);
+    localStorage.setItem('currentSearch', JSON.stringify(newLocal));
     setLocalValue(newLocal);
   };
 
   return (
     <Presenter
       style={board ? 'board' : 'main'}
+      value={value}
+      setValue={setValue}
       deleteAll={deleteAll}
       deleteList={deleteList}
       showFilter={showFilter}
@@ -79,6 +107,7 @@ function Search(props: Props) {
       setDataList={setDataList}
       localValue={localValue}
       hotKeyClick={hotKeyClick}
+      setLocalValue={setLocalValue}
     />
   );
 }

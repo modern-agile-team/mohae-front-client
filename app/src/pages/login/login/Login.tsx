@@ -17,7 +17,7 @@ interface Props {
 
 export default function Register({ text }: Props) {
   const [inputValue, setInputValue] = useState({
-    id: sessionStorage.getItem('userEmail') || '',
+    id: '',
     password: '',
   });
   const isOpenLogin = useSelector((state: RootState) => state.modal.openLogin);
@@ -57,8 +57,6 @@ export default function Register({ text }: Props) {
           navigate('/');
 
           dispatch(open_login(!isOpenLogin));
-          // console.log(`1`, 1);
-          // 모달 내리기
         } else {
           alert('이메일과 비밀번호를 다시 확인해주세요.');
         }

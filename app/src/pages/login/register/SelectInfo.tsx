@@ -5,7 +5,7 @@ import { css, cx } from '@emotion/css';
 
 import { color, radius, font, shadow } from '../../../styles';
 import { Btn } from '../../../components';
-import SelectBox from '../../profile/SelectBox';
+import SelectBox from '../../modifyProfile/SelectBox';
 
 interface Object {
   [key: string]: any;

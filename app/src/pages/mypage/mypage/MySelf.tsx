@@ -7,6 +7,8 @@ import { Img, Box, Profile, FocusBar, Category } from '../../../components';
 import { useNavigate } from 'react-router-dom';
 import { decodeToken } from 'react-jwt';
 import getToken from '../../../utils/getToken';
+import ModifyProfile from '../../modifyProfile';
+import { useEffect, useState } from 'react';
 
 interface Props {
   [key: string]: any;
@@ -22,7 +24,7 @@ export default function MySelf({
   const TOKEN = getToken();
   const navigate = useNavigate();
   const tokenInfo: any = decodeToken(TOKEN);
-  console.log(`tokenInfo`, tokenInfo.photoUrl);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const interested =
     userInfo && userInfo.categories ? (
@@ -41,11 +43,23 @@ export default function MySelf({
 
   return (
     <div className={cx(style)}>
+      {isOpen && <ModifyProfile />}
       <div className={'user'}>
         <Box className={'box'} size={[304, 724]}>
-          <div className={'name'}>
-            <div>{userInfo && userInfo.nickname}</div>
-            <div>{text.sir}</div>
+          <div className="profileHeader">
+            <div className="blank"></div>
+            <div className={'name'}>
+              <div>{userInfo && userInfo.nickname}</div>
+              <div>{text.sir}</div>
+            </div>
+            <div
+              className="modifyBtn"
+              onClick={() => {
+                setIsOpen(!isOpen);
+              }}
+            >
+              <Img src={'/img/edit.png'} />
+            </div>
           </div>
           <div className={'profile'}>
             <Profile
@@ -148,18 +162,46 @@ const style = css`
       flex-direction: column;
       align-items: center;
       padding: 24px 24px 73px;
-      .name {
-        padding-bottom: 24px;
-        width: fit-content;
-        * {
-          display: inline-block;
+
+      .profileHeader {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+        .blank {
+          width: 24px;
         }
-        > :nth-child(1) {
-          font-size: 22px;
-          line-height: 170%;
-          ${font.weight[700]}
+        .name {
+          padding-bottom: 24px;
+          width: fit-content;
+          position: static;
+          * {
+            display: inline-block;
+          }
+          > :nth-child(1) {
+            font-size: 22px;
+            line-height: 170%;
+            ${font.weight[700]}
+          }
+        }
+
+        .modifyBtn {
+          width: 24px;
+          height: 24px;
+          background: #ffffff;
+          box-shadow: 0px 0px 4px rgba(132, 131, 141, 0.25);
+          border-radius: 6px;
+          padding: 6px;
+          cursor: pointer;
+          &:hover {
+            background: ${color.light4};
+          }
+          &:active {
+            background: ${color.main};
+          }
         }
       }
+
       .profile {
         padding-bottom: 16px;
       }
@@ -244,3 +286,5 @@ const style = css`
     }
   }
 `;
+
+//TODO 정보수정 창 끈 후 다시 들어갈때 더블클릭 해야하는 이슈

@@ -11,7 +11,7 @@ interface Object {
   [key: string]: any;
 }
 
-export default function Edit() {
+export default function ModifyProfile() {
   const [open, setOpen] = useState<Object>({
     one: false,
     two: false,

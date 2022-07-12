@@ -4,7 +4,7 @@ import Img from '../img/Img';
 import { color } from '../../styles';
 
 interface Props {
-  [key: string]: boolean | string;
+  [key: string]: boolean | string | null;
 }
 
 function EmptySpinner(props: Props) {
@@ -80,7 +80,7 @@ function EmptySpinner(props: Props) {
 
   return (
     <div className={cx(style, checkAttrProps(attrStyle))}>
-      <div className='img-wrap'>
+      <div className="img-wrap">
         <Img src={checkAttrProps(imgs)} />
       </div>
       <p>{checkAttrProps(texts)}</p>

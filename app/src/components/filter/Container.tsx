@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { Dispatch, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { setCheck, setAreaName, setAreaNo } from '../../redux/filter/reducer';
 import { RootState } from '../../redux/root';
 import MarkBox from '../markbox/MarkBox';
@@ -9,14 +10,16 @@ interface type {
   [title: string]: any;
 }
 
-function Filter() {
-  const checked: { [key: string]: { [key: string]: boolean } } = useSelector(
-    (state: RootState) => state.filter.data.check
-  );
-  const area = useSelector((state: RootState) => state.filter.data.area);
+interface Props {
+  setShowFilter: Dispatch<React.SetStateAction<boolean>>;
+  showFilter: boolean;
+}
+
+function Filter({ setShowFilter, showFilter }: Props) {
+  const filterData: any = useSelector((state: RootState) => state.filter.data);
+  const { no } = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const dispatch = useDispatch();
-  const [minValue, setMinValue] = useState(0);
-  const [maxValue, setMaxValue] = useState(1000000);
   const [view, setView] = useState<{ [key: number]: boolean }>({ 0: false });
 
   const resetSetting = () => {
@@ -31,27 +34,27 @@ function Filter() {
     dispatch(setAreaName('전체 지역'));
     dispatch(setAreaNo('0'));
   };
-  console.log('area :>> ', area);
 
   const setItemCheck = (list: string, key: string) => {
-    const reset = Object.keys(checked[list]).map((el: any, i) => false);
+    const reset = Object.keys(filterData.check[list]).map(
+      (el: any, i) => false,
+    );
 
     const newItem = {
-      sort: { ...checked.sort },
-      target: { ...checked.target },
-      date: { ...checked.date },
-      free: { ...checked.free },
+      sort: { ...filterData.check.sort },
+      target: { ...filterData.check.target },
+      date: { ...filterData.check.date },
+      free: { ...filterData.check.free },
       [list]: {
         ...reset,
-        [key]: !checked[list][key],
+        [key]: !filterData.check[list][key],
       },
     };
     dispatch(setCheck(newItem));
   };
-  console.log('checked :>> ', checked);
 
   const priceRange = (minValue: number, maxValue: number) => {
-    if (checked.free[0]) {
+    if (filterData.check.free[0]) {
       return `무료`;
     }
     if (0 < minValue && maxValue < 1000000) {
@@ -66,19 +69,112 @@ function Filter() {
 
     return '모든 가격대';
   };
+
+  const objDataProcessing = (): any => {
+    const changeNull = (filteringValue: boolean | number | string) => {
+      if (
+        filteringValue === false ||
+        filteringValue === 0 ||
+        filteringValue === 1000000
+      ) {
+        return null;
+      } else return filteringValue;
+    };
+
+    return {
+      check: {
+        sort: {
+          1: changeNull(filterData.check.sort[0]),
+          DESC: changeNull(filterData.check.sort[1]),
+          ASC: changeNull(filterData.check.sort[2]),
+        },
+        target: {
+          0: changeNull(filterData.check.target[0]),
+          1: changeNull(filterData.check.target[1]),
+        },
+        date: {
+          7: changeNull(filterData.check.date[0]),
+          30: changeNull(filterData.check.date[1]),
+          60: changeNull(filterData.check.date[2]),
+          0: changeNull(filterData.check.date[3]),
+        },
+        free: { 1: changeNull(filterData.check.free[0]) },
+      },
+      area: {
+        areaNo: changeNull(filterData.area.areaNo),
+      },
+      price: {
+        min: changeNull(filterData.price.min),
+        max: changeNull(filterData.price.max),
+      },
+    };
+  };
+
+  const sortQuery = () => {
+    if (objDataProcessing().check.sort[1] !== null) {
+      return '&popular=1';
+    } else
+      return (
+        '&sort=' +
+        Object.keys(objDataProcessing().check.sort)
+          .map((el, i) => {
+            if (objDataProcessing().check.sort[el] !== null) {
+              return Object.keys(objDataProcessing().check.sort)[i];
+            }
+          })
+          .filter(el => el)[0]
+      );
+  };
+
+  const drawObjKey = (obj: any) => {
+    const value = Object.keys(obj)
+      .map((el, i) => {
+        if (obj[el] !== null) {
+          return Object.keys(obj)[i];
+        }
+      })
+      .filter(el => el)[0];
+    return value ? value : null;
+  };
+
+  const onSubmit = (e: any) => {
+    const titleQuery = () => {
+      return (
+        searchParams.get('title') !== null &&
+        `&title=${searchParams.get('title')}`
+      );
+    };
+
+    const query = `?categoryNo=${no}${titleQuery()}${sortQuery()}&target=${drawObjKey(
+      objDataProcessing().check.target,
+    )}&date=${drawObjKey(objDataProcessing().check.date)}&free=${drawObjKey(
+      objDataProcessing().check.free,
+    )}&min=${
+      objDataProcessing().check.free[1] === null
+        ? objDataProcessing().price.min
+        : null
+    }&max=${
+      objDataProcessing().check.free[1] === null
+        ? objDataProcessing().price.max
+        : null
+    }&areaNo=${objDataProcessing().area.areaNo}`;
+    e.preventDefault();
+
+    setSearchParams(query);
+  };
+
   return (
     <Presenter
       contents={contents}
       texts={texts}
       priceRange={priceRange}
-      minValue={minValue}
-      setMinValue={setMinValue}
-      maxValue={maxValue}
-      setMaxValue={setMaxValue}
       view={view}
       setView={setView}
       setItemCheck={setItemCheck}
       resetSetting={resetSetting}
+      onSubmit={onSubmit}
+      setShowFilter={setShowFilter}
+      showFilter={showFilter}
     />
   );
 }

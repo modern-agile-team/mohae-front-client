@@ -176,7 +176,7 @@ function Presenter(props: InputProps) {
 
     return list.length === 0 ? (
       <div className={cx(searchStyle)}>
-        <div id='list'>최근 검색 내역이 없습니다.</div>
+        <div id="list">최근 검색 내역이 없습니다.</div>
       </div>
     ) : (
       list.map(
@@ -187,18 +187,18 @@ function Presenter(props: InputProps) {
               key={i}
               onClick={() => setValue(el)}
             >
-              <div id='list'>{el}</div>
+              <div id="list">{el}</div>
               <div
-                id='delete'
+                id="delete"
                 onClick={e => {
                   e.stopPropagation();
                   deleteList(i);
                 }}
               >
-                <Img src='/img/close.png' />
+                <Img src="/img/close.png" />
               </div>
             </div>
-          )
+          ),
       )
     );
   };
@@ -246,8 +246,8 @@ function Presenter(props: InputProps) {
         className={cx(hotKeyStyle)}
         onClick={e => hotKeyClick(e)}
       >
-        <div id='no'>{el.no}</div>
-        <div id='categoryName'>{el.name}</div>
+        <div id="no">{el.no}</div>
+        <div id="categoryName">{el.name}</div>
       </div>
     ));
   };
@@ -276,11 +276,11 @@ function Presenter(props: InputProps) {
   return (
     <div className={cx(parentWrap)}>
       {show()}
-      <div id='dataListWrap'>
+      <div id="dataListWrap">
         <div className={cx(userSearchWrap())}>
-          <div id='titleWrap'>
+          <div id="titleWrap">
             <p className={cx(title)}>최근 검색어</p>
-            <div id='allClear' onClick={deleteAll}>
+            <div id="allClear" onClick={deleteAll}>
               전체 삭제
             </div>
           </div>
@@ -291,7 +291,9 @@ function Presenter(props: InputProps) {
           {HotKeyList()}
         </div>
       </div>
-      {showFilter && <Filter />}
+      {showFilter && (
+        <Filter showFilter={showFilter} setShowFilter={setShowFilter} />
+      )}
     </div>
   );
 }

@@ -14,10 +14,11 @@ interface Props {
   contents: Contents[];
   style: string;
   setSelected: Dispatch<SetStateAction<string>>;
+  handleView: () => void;
 }
 
 function SelectList(props: Props) {
-  const { size, contents, style, setSelected } = props;
+  const { size, contents, style, setSelected, handleView } = props;
   const dispatch = useDispatch();
 
   const wrap = css`
@@ -60,10 +61,11 @@ function SelectList(props: Props) {
         setAreaName(
           e.currentTarget.textContent === null
             ? ''
-            : e.currentTarget.textContent
-        )
+            : e.currentTarget.textContent,
+        ),
       );
       setSelected(selected);
+      handleView();
     },
     date: (e: React.MouseEvent, selected: string) => {
       dispatch(setAreaNo(e.currentTarget.id));
@@ -71,10 +73,11 @@ function SelectList(props: Props) {
         setAreaName(
           e.currentTarget.textContent === null
             ? ''
-            : e.currentTarget.textContent
-        )
+            : e.currentTarget.textContent,
+        ),
       );
       setSelected(selected);
+      handleView();
     },
     category: (e: React.MouseEvent, selected: string) => {
       dispatch(setAreaNo(e.currentTarget.id));
@@ -82,10 +85,11 @@ function SelectList(props: Props) {
         setAreaName(
           e.currentTarget.textContent === null
             ? ''
-            : e.currentTarget.textContent
-        )
+            : e.currentTarget.textContent,
+        ),
       );
       setSelected(selected);
+      handleView();
     },
   };
 
@@ -97,18 +101,18 @@ function SelectList(props: Props) {
         </ul>
       ) : (
         <ul key={i} id={i} onClick={e => onClick.category(e, el.name)}>
-          <div className='category'>
+          <div className="category">
             <Btn white category>
               {el.name}
             </Btn>
           </div>
         </ul>
-      )
+      ),
     );
 
   return (
     <div className={cx(wrap)}>
-      <div className='container'>{lists()}</div>
+      <div className="container">{lists()}</div>
     </div>
   );
 }

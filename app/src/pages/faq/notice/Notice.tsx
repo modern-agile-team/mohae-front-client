@@ -1,19 +1,25 @@
-import { css, cx } from "@emotion/css";
-import SideBar from "../notice/NoticeWriteSidebar";
-import ArticleTitle from "../notice/NoticeWriteAriticleTitle";
-import HeaderSearch from "../notice/NoticeWriteSearchHeader";
-import CommetContainer from "../notice/NoticeCommentWrapper";
-import TextArea from "../notice/NoticeWriteTextArea";
+import { css, cx } from '@emotion/css';
+import SideBar from '../notice/NoticeWriteSidebar';
+import ArticleTitle from '../notice/NoticeWriteAriticleTitle';
+import HeaderSearch from '../notice/NoticeWriteSearchHeader';
+import CommetContainer from '../notice/NoticeCommentWrapper';
+import TextArea from '../notice/NoticeWriteTextArea';
+import { useState } from 'react';
 
 const Notice = () => {
+  const [isWrite, setIsWrite] = useState<boolean>(false);
   return (
     <div className={cx(wholeStyle)}>
-      <HeaderSearch />
+      <HeaderSearch isWrite={isWrite} setIsWrite={setIsWrite} />
       <section className={cx(sectionStyle)}>
         <SideBar />
         <article className={cx(container)}>
-          <ArticleTitle />
-          <TextArea />
+          {isWrite && (
+            <>
+              <ArticleTitle />
+              <TextArea />
+            </>
+          )}
           <CommetContainer />
         </article>
       </section>

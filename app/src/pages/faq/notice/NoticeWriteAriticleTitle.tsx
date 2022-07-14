@@ -84,8 +84,4 @@ const writeButtonText = css`
   text-align: center;
   color: #ffffff;
 `;
-const writeImg = css`
-  width: 15px;
-  height: 15px;
-  padding-left: 8px;
-`;
+

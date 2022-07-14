@@ -1,15 +1,15 @@
 /** @format */
 
-import React from "react";
+import React from 'react';
 
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
-} from "react-router-dom";
-import { injectGlobal } from "@emotion/css";
-import { color, Layout } from "./styles";
+} from 'react-router-dom';
+import { injectGlobal } from '@emotion/css';
+import { color, Layout } from './styles';
 import {
   Board,
   CreatePost,
@@ -19,10 +19,10 @@ import {
   Post,
   LoginModal,
   Spec,
-} from "./pages";
-import Edit from "./pages/spec/Edit";
-import Visit from "./pages/spec/Visit";
-import Notice from "./pages/faq/notice/Notice";
+} from './pages';
+import Edit from './pages/spec/Edit';
+import Visit from './pages/spec/Visit';
+import Notice from './pages/faq/notice/Notice';
 
 injectGlobal`
   * {
@@ -75,22 +75,16 @@ const App: React.SFC = () => {
     <Router>
       <Routes>
         <Route path="*" element={<Navigate to="/" replace />} />
-        <Route path={"/"} element={<Layout main component={<Home />} />} />
-        <Route path={"/hg"} element={<Layout component={<HG />} />} />
+        <Route path={'/'} element={<Layout main component={<Home />} />} />
+        <Route path={'/hg'} element={<Layout component={<HG />} />} />
         <Route
-          path={"/boards/:no"}
+          path={'/boards/:no'}
           element={<Layout component={<Board />} />}
         />
         <Route
-          path={"/mypage/:no"}
+          path={'/mypage/:no'}
           element={<Layout component={<MyPage />} />}
         />
-<<<<<<< HEAD
-        <Route path={"/spec/:no"} element={<Layout component={<Spec />} />} />
-        <Route path={"/post"} element={<Layout component={<Post />} />} />
-        <Route
-          path={"/write"}
-=======
         <Route path={'/spec/:no'} element={<Layout component={<Spec />} />} />
         <Route path={'/post/:no'} element={<Layout component={<Post />} />} />
         <Route
@@ -99,10 +93,9 @@ const App: React.SFC = () => {
         />
         <Route
           path={'/edit/:no'}
->>>>>>> d5832733217f741e8ccd3fe34cf69baaa0e826d1
           element={<Layout component={<CreatePost />} />}
         />
-        <Route path={"/notice"} element={<Layout component={<Notice />} />} />
+        <Route path={'/notice'} element={<Layout component={<Notice />} />} />
       </Routes>
       <Visit />
       <Edit />

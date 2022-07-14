@@ -1,11 +1,14 @@
-import React from "react";
-import { css, cx } from "@emotion/css";
-import { Img } from "../../../components";
+import React from 'react';
+import { css, cx } from '@emotion/css';
+import { Img } from '../../../components';
+import { SearchProps } from './NoticeWriteSearchHeader';
 
-const search = () => {
+const search = ({ setIsWrite, isWrite }: SearchProps) => {
   return (
     <div className={cx(container)}>
-      <div className={cx(write)}>작성취소</div>
+      <div className={cx(write)} onClick={() => setIsWrite(!isWrite)}>
+        {isWrite ? '작성취소' : '작성하기'}
+      </div>
       <div className={cx(wrap)}>
         <input type="text" placeholder="무엇이 궁금한가요?" id="placeHolder" />
         <div
@@ -51,7 +54,7 @@ const wrap = css`
     width: 428px;
     height: 24px;
     border: 0px;
-    font-family: "Noto Sans KR";
+    font-family: 'Noto Sans KR';
     font-style: normal;
     font-weight: 400;
     font-size: 14px;

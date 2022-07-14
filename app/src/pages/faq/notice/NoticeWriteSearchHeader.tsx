@@ -1,14 +1,19 @@
-import React from "react";
-import { css, cx } from "@emotion/css";
-import Search from "./NoticeWriteSearch";
-import Header from "./NoticeWriteheader";
+import React from 'react';
+import { css, cx } from '@emotion/css';
+import Search from './NoticeWriteSearch';
+import Header from './NoticeWriteheader';
 
-const serchHeader = () => {
+export interface SearchProps {
+  setIsWrite: React.Dispatch<React.SetStateAction<boolean>>;
+  isWrite: boolean;
+}
+
+const serchHeader = ({ setIsWrite, isWrite }: SearchProps) => {
   return (
     <div className={cx(wholeStyle)}>
       <Header />
       <div className={cx(searchStyle)}>
-        <Search />
+        <Search setIsWrite={setIsWrite} isWrite={isWrite} />
       </div>
     </div>
   );

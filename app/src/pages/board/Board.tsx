@@ -13,6 +13,7 @@ import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/root';
 import EmptySpinner from '../../components/emptySpinner/EmptySpinner';
+import { setCategorys } from '../../redux/board/reducer';
 
 interface PostData {
   decimalDay: number | null;
@@ -28,12 +29,11 @@ interface PostData {
 }
 
 export interface Data {
-  category: { boards: PostData[] };
-  categoryName: string;
+  response: PostData[];
 }
 
 function Presenter() {
-  const reduxData = useSelector((state: RootState) => state.board);
+  const reduxData = useSelector((state: RootState) => state.board.response);
   const dispatch = useDispatch();
   const { no } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -62,14 +62,13 @@ function Presenter() {
       .get(
         location.search
           ? `https://mo-hae.site/boards/filter?categoryNo=${no}&take=12&page=1&title=${searchParams.get(
-              'title'
+              'title',
             )}`
-          : `https://mo-hae.site/boards/category/${no}?take=12&page=1`
+          : `https://mo-hae.site/boards/category/${no}?take=12&page=1`,
       )
       .then(res => {
         console.log('res.data.response :>> ', res.data);
-        // dispatch(setCategoryName(res.data.response.categoryName));
-        // dispatch(setCategorys(res.data.response.category));
+        dispatch(setCategorys(res.data.response));
       })
       .catch(err => console.log('err', err));
   };
@@ -83,18 +82,25 @@ function Presenter() {
       margin-top: 24px;
       margin-right: ${i % 4 && '16px'};
     `;
-    return reduxData.category.boards.length ? (
-      reduxData.category.boards.map((el: any, i: any) => (
-        <Link key={i} className={cx(gap(i + 1))} to={`/post/${el.no}`}>
-          <Poster data={reduxData.category.boards[i]} />
-        </Link>
-      ))
-    ) : (
-      <EmptySpinner
-        boardNone
-        text={categories[Number(no) - 1].name + ' 게시판'}
-      />
-    );
+    const showContents = () => {
+      if (!reduxData.length && searchParams.get('title')) {
+        return <EmptySpinner searchNone text={searchParams.get('title')} />;
+      } else if (!reduxData.length) {
+        return (
+          <EmptySpinner
+            boardNone
+            text={categories[Number(no) - 1].name + ' 게시판'}
+          />
+        );
+      } else {
+        return reduxData.map((el: any, i: any) => (
+          <Link key={i} className={cx(gap(i + 1))} to={`/post/${el.no}`}>
+            <Poster data={reduxData[i]} />
+          </Link>
+        ));
+      }
+    };
+    return showContents();
   };
 
   return (
@@ -109,8 +115,8 @@ function Presenter() {
           <Link to={'/write'}>
             <Btn main>
               <p>글쓰기</p>
-              <div className='imgWrap'>
-                <Img src='/img/write.png' />
+              <div className="imgWrap">
+                <Img src="/img/write.png" />
               </div>
             </Btn>
           </Link>
@@ -118,7 +124,7 @@ function Presenter() {
       </div>
       <div className={cx(style.wrap(2))}>
         <div className={cx(style.wrap(1))}>
-          총&nbsp;<p>{reduxData.category.boards.length}</p>
+          총&nbsp;<p>{reduxData.length}</p>
           &nbsp;건의 게시물
         </div>
         {createPost()}

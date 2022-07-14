@@ -26,8 +26,11 @@ function ImgBox({ img, state, shape }: Props) {
       animation: ${zoomIn} 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.1s both;
     }
   `;
-  // `https://mohaeproj.s3.amazonaws.com/${img}`
-  const posterImg = img && img !== null ? `${img}` : '/img/logo.png';
+
+  const posterImg =
+    img && img !== null
+      ? `https://d2ffbnf2hpheay.cloudfront.net/${img}`
+      : '/img/logo.png';
 
   const box = css`
     background: white url(${posterImg}) no-repeat center/cover;
@@ -52,10 +55,10 @@ function ImgBox({ img, state, shape }: Props) {
 
   return (
     <Box size={size} className={box}>
-      <div className='markBox'>
+      <div className="markBox">
         <MarkBox shape={shape} state={state} hover />
       </div>
-      {state ? <div id='find' className={'mosaic'} /> : <></>}
+      {state ? <div id="find" className={'mosaic'} /> : <></>}
     </Box>
   );
 }

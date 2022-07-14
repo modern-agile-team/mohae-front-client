@@ -43,7 +43,7 @@ export default function MySelf({
 
   return (
     <div className={cx(style)}>
-      {isOpen && <ModifyProfile />}
+      {isOpen && <ModifyProfile userInfo={userInfo} />}
       <div className={'user'}>
         <Box className={'box'} size={[304, 724]}>
           <div className="profileHeader">

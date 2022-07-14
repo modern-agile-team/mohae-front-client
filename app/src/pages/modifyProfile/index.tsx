@@ -11,7 +11,11 @@ interface Object {
   [key: string]: any;
 }
 
-export default function ModifyProfile() {
+interface Props {
+  userInfo: Object;
+}
+
+export default function ModifyProfile({ userInfo }: Props) {
   const [open, setOpen] = useState<Object>({
     one: false,
     two: false,
@@ -19,6 +23,7 @@ export default function ModifyProfile() {
     four: false,
   });
 
+  console.log(userInfo);
   const toggleSelectBox = (e: React.MouseEvent<HTMLDivElement>) => {
     const target = e.currentTarget.id;
     setOpen({
@@ -43,7 +48,6 @@ export default function ModifyProfile() {
       interested: '관심사',
     },
     placeholder: {
-      nickname: '닉네임을 입력해 주세요. (3~8자)',
       phone: `'-' 제외하고 숫자만 입력`,
       school: '학교를 선택해 주세요.',
       major: '전공을 선택해 주세요.',
@@ -215,19 +219,19 @@ export default function ModifyProfile() {
       <div className={'wrapper'}>
         <div className={'left'}>
           <div className={'name'}>
-            <span>{'모던애자일'}</span>
-            <span>{'님'}</span>
+            <span>{userInfo.nickname}</span>
+            <span>{text.sir}</span>
           </div>
           <div>
             <Profile size={160} />
           </div>
-          <div className={'light'}>{'비번변경'}</div>
-          <div className={'light'}>{'회원 탈탈퇴'}</div>
+          <div className={'light'}>{'비밀번호 변경'}</div>
+          <div className={'light'}>{'회원 탈퇴'}</div>
         </div>
         <div className={'right'}>
           <div className={'line'}>
             <div className={'label'}>{text.label.mail}</div>
-            <div className={'input'}>{'사용자'}</div>
+            <div className={'input'}>{userInfo.email}</div>
           </div>
           <div className={'line'}>
             <div className={'label'}>{text.label.nickname}</div>
@@ -235,7 +239,7 @@ export default function ModifyProfile() {
               <div className={'inset text'}>
                 <input
                   spellCheck={false}
-                  placeholder={text.placeholder.nickname}
+                  placeholder={userInfo.nickname}
                   className={''}
                 />
               </div>
@@ -255,14 +259,18 @@ export default function ModifyProfile() {
                     noneScroll
                     list={['010', '011', '016', '017', '031']}
                   >
-                    {'선택'}
+                    {userInfo.phone ? userInfo.phone.substring(0, 3) : '선택'}
                   </SelectBox>
                 </div>
               </div>
               <div className={'inset text'}>
                 <input
                   spellCheck={false}
-                  placeholder={text.placeholder.phone}
+                  placeholder={
+                    userInfo.phone
+                      ? userInfo.phone.substring(3, 11)
+                      : text.placeholder.phone
+                  }
                   className={''}
                 />
               </div>
@@ -286,7 +294,9 @@ export default function ModifyProfile() {
                     'dd',
                   ]}
                 >
-                  {text.placeholder.school}
+                  {userInfo.schoolName
+                    ? userInfo.schoolName
+                    : text.placeholder.school}
                 </SelectBox>
               </div>
             </div>
@@ -311,7 +321,9 @@ export default function ModifyProfile() {
                     'dd',
                   ]}
                 >
-                  {text.placeholder.major}
+                  {userInfo.majorName
+                    ? userInfo.majorName
+                    : text.placeholder.major}
                 </SelectBox>
               </div>
             </div>
@@ -367,3 +379,5 @@ export default function ModifyProfile() {
     </BasicModal>
   );
 }
+
+//TODO 관심사 SELECTED 할때 3개 배열에 저장하는거 PUBLISHING 해야댐

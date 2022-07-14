@@ -4,16 +4,13 @@ import { color, font, radius } from '../../styles';
 import { Props } from './Container';
 import PostWriter from './PostWriter';
 
-// target, 카테고리, 제목, d-day, 지역, 작성자여부, 좋아요, 조회수, 가격
 interface PostInfoProps extends Props {
   quickMenu?: boolean;
   close: () => void;
-  likeCount: number;
-  setLikeCount: Dispatch<SetStateAction<number>>;
 }
 
 function PostInfo(props: PostInfoProps) {
-  const { data, close, likeCount, setLikeCount } = props;
+  const { data, close } = props;
   const datas = data.response.board;
 
   const showDDAYContent = () => {
@@ -86,17 +83,12 @@ function PostInfo(props: PostInfoProps) {
   return (
     <div className={cx(common)}>
       <div>
-        <p className='title'>{datas.title}</p>
-        <p className='price'>
+        <p className="title">{datas.title}</p>
+        <p className="price">
           {datas.price ? datas.price.toLocaleString() : '무료'}
         </p>
       </div>
-      <PostWriter
-        close={close}
-        data={data}
-        likeCount={likeCount}
-        setLikeCount={setLikeCount}
-      />
+      <PostWriter close={close} data={data} />
     </div>
   );
 }

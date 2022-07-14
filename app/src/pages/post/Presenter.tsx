@@ -12,7 +12,7 @@ import { Props } from './Container';
 function Presenter({ data }: Props) {
   const [report, setReport] = useState(false);
   const [likeCount, setLikeCount] = useState<number>(
-    data.response.board.likeCount
+    data.response.board.likeCount,
   );
   const textRef = useRef<HTMLTextAreaElement>(null);
   const handleResizeHeight = useCallback(() => {
@@ -26,7 +26,7 @@ function Presenter({ data }: Props) {
     return (
       data.msg === '회원' &&
       data.response.authorization && (
-        <div className='cancelCloseBtn'>
+        <div className="cancelCloseBtn">
           <Btn main>
             {data.response.board.isDeadline ? '마감 취소' : '마감 하기'}
           </Btn>
@@ -45,37 +45,32 @@ function Presenter({ data }: Props) {
       )}
       <ReportModal visible={report} close={() => setReport(!report)} />
       <div className={cx(wrap)}>
-        <div className='topflexWrap'>
+        <div className="topflexWrap">
           <PostImgs view data={{ data: data }} />
-          <div className='sectionWrap'>
-            <PostInfo
-              likeCount={likeCount}
-              setLikeCount={setLikeCount}
-              data={data}
-              close={() => setReport(!report)}
-            />
-            <div className='postIt'>
+          <div className="sectionWrap">
+            <PostInfo data={data} close={() => setReport(!report)} />
+            <div className="postIt">
               <PostIt small>{data.response.board.summary}</PostIt>
             </div>
           </div>
         </div>
         <PostBody view data={{ data: data }} />
-        <Box size={[1128]} className='comments-box'>
-          <p className='all-comments'>
+        <Box size={[1128]} className="comments-box">
+          <p className="all-comments">
             댓글 <span>({dummy.response.length})</span>
           </p>
           <div>
             <textarea
-              className='text-box'
+              className="text-box"
               ref={textRef}
-              placeholder='댓글을 입력해 주세요. (최대 500자)'
+              placeholder="댓글을 입력해 주세요. (최대 500자)"
               onInput={handleResizeHeight}
             />
-            <div className='write-btn'>
+            <div className="write-btn">
               <Btn main>
                 <p>작성</p>
-                <div className='write-img'>
-                  <Img src='/img/write.png' />
+                <div className="write-img">
+                  <Img src="/img/write.png" />
                 </div>
               </Btn>
             </div>
@@ -83,13 +78,8 @@ function Presenter({ data }: Props) {
         </Box>
         {closeBtn()}
         {useScroll().scrollY > 490 && (
-          <div className='quickMenu'>
-            <QuickMenu
-              likeCount={likeCount}
-              setLikeCount={setLikeCount}
-              data={data}
-              close={() => setReport(!report)}
-            />
+          <div className="quickMenu">
+            <QuickMenu data={data} close={() => setReport(!report)} />
           </div>
         )}
       </div>

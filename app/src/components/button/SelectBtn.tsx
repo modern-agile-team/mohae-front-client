@@ -1,7 +1,6 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import { css, cx } from '@emotion/css';
 import { color, shadow, font, btnStyle, radius } from '../../styles';
-import MarkBox from '../markbox/MarkBox';
 
 interface Props {
   large?: boolean;
@@ -114,11 +113,11 @@ function SelectBtn(props: Props) {
   const attrProps = Object.keys(props).map(attr => attrs[attr]);
 
   const createInput = () => {
-    return type === 'radio' || type === '정렬' ? (
-      <input type='radio' name='radio' checked={checked} onChange={onChange} />
+    return type === 'radio' || type === 'sort' ? (
+      <input type="radio" name="radio" checked={checked} onChange={onChange} />
     ) : (
       <input
-        type='checkbox'
+        type="checkbox"
         name={`${children}`}
         checked={checked}
         onChange={onChange}

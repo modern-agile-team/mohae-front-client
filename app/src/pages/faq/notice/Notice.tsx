@@ -4,10 +4,37 @@ import ArticleTitle from '../notice/NoticeWriteAriticleTitle';
 import HeaderSearch from '../notice/NoticeWriteSearchHeader';
 import CommetContainer from '../notice/NoticeCommentWrapper';
 import TextArea from '../notice/NoticeWriteTextArea';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { createNoticePost, getNotices } from '../../../redux/notice/reducer';
+import { createNotice, getNoticePost } from '../../../apis/notice';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch } from '../../../redux/root';
+import { RootState } from '../../../redux/root';
+import { NoticeTYPE } from '../notice/NoticeCommentWrapper';
 
 const Notice = () => {
   const [isWrite, setIsWrite] = useState<boolean>(false);
+  const [form, setForm] = useState<{ title: string; description: string }>({
+    title: '',
+    description: '',
+  });
+  const dispatch = useDispatch<AppDispatch>();
+  const notices: any = useSelector((state: RootState) => state.notice.post);
+
+  const onSubmit = () => {
+    if (form.title === '' || form.description === '') {
+      alert('내용을 입력해주세요');
+      return;
+    }
+    const { title, description } = form;
+    dispatch(createNoticePost({ title, description, params: 'notices' }));
+    setIsWrite(false);
+  };
+
+  useEffect(() => {
+    dispatch(getNotices('notices'));
+  }, [dispatch, isWrite]);
+
   return (
     <div className={cx(wholeStyle)}>
       <HeaderSearch isWrite={isWrite} setIsWrite={setIsWrite} />
@@ -16,11 +43,11 @@ const Notice = () => {
         <article className={cx(container)}>
           {isWrite && (
             <>
-              <ArticleTitle />
-              <TextArea />
+              <ArticleTitle form={form} setForm={setForm} onSubmit={onSubmit} />
+              <TextArea form={form} setForm={setForm} />
             </>
           )}
-          <CommetContainer />
+          <CommetContainer notices={notices} />
         </article>
       </section>
     </div>

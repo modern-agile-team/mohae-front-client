@@ -2,9 +2,20 @@ import React, { useState } from 'react';
 import { css, cx } from '@emotion/css';
 import { Img } from '../../../components';
 
-function subArticle() {
+interface Props {
+  notice: {
+    no: number;
+    title: string;
+    description: string;
+    createdAt: string;
+  };
+  key: number;
+}
+
+function subArticle({ notice }: Props) {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [isView, setIsView] = useState<boolean>(false);
+
   return (
     <div
       className={cx(
@@ -29,7 +40,7 @@ function subArticle() {
     >
       <div className={cx(wrap)}>
         <div className={cx(left)}>
-          <div className={cx(title)}>공지사항이 써져있는곳입니다.</div>
+          <div className={cx(title)}>{notice.title}</div>
           <div className={cx(uploadDate)}>2020년12월12일</div>
         </div>
         <div className={cx(right)}>

@@ -95,7 +95,10 @@ const App: React.SFC = () => {
           path={'/edit/:no'}
           element={<Layout component={<CreatePost />} />}
         />
-        <Route path={'/notice'} element={<Layout component={<Notice />} />} />
+        <Route
+          path={'/support/notice'}
+          element={<Layout component={<Notice />} />}
+        />
       </Routes>
       <Visit />
       <Edit />

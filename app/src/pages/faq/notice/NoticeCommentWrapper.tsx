@@ -1,22 +1,21 @@
-import SubArticle from "./NoticeWriteSubAriticle";
+import SubArticle from './NoticeWriteSubAriticle';
 
-const CommentContainer = () => {
+interface Props {
+  notices: NoticeTYPE[];
+}
+
+export interface NoticeTYPE {
+  no: number;
+  title: string;
+  description: string;
+  createdAt: string;
+}
+const CommentContainer = ({ notices }: Props) => {
   return (
     <section>
-      <SubArticle />
-      <SubArticle />
-      <SubArticle />
-      <SubArticle />
-      <SubArticle />
-      <SubArticle />
-      <SubArticle />
-      <SubArticle />
-      <SubArticle />
-      <SubArticle />
-      <SubArticle />
-      <SubArticle />
-      <SubArticle />
-      <SubArticle />
+      {notices.map((notice: NoticeTYPE, index: number) => (
+        <SubArticle key={index} notice={notice} />
+      ))}
     </section>
   );
 };

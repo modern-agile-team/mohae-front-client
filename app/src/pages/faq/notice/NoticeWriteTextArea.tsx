@@ -1,11 +1,30 @@
-import { css, cx } from "@emotion/css";
+import { css, cx } from '@emotion/css';
 
-const TextArea = () => {
+export interface FormProps {
+  form: {
+    title: string;
+    description: string;
+  };
+  setForm: React.Dispatch<
+    React.SetStateAction<{
+      title: string;
+      description: string;
+    }>
+  >;
+}
+
+const TextArea = ({ form, setForm }: FormProps) => {
   return (
     <div className={cx(wrap)}>
       <textarea
         placeholder="본문을 입력해 주세요. (최대 100자)"
         className={cx(TextOfArticle)}
+        onChange={e =>
+          setForm({
+            ...form,
+            description: e.target.value,
+          })
+        }
       />
     </div>
   );
@@ -24,7 +43,7 @@ const wrap = css`
 const TextOfArticle = css`
   width: 888px;
   height: 365px;
-  font-family: "Noto Sans KR";
+  font-family: 'Noto Sans KR';
   font-style: normal;
   font-weight: 400;
   font-size: 14px;

@@ -1,8 +1,22 @@
-import React from "react";
-import { css, cx } from "@emotion/css";
-import { Img } from "../../../components";
+import React from 'react';
+import { css, cx } from '@emotion/css';
+import { Img } from '../../../components';
 
-const articleTitle = () => {
+interface Props {
+  form: {
+    title: string;
+    description: string;
+  };
+  setForm: React.Dispatch<
+    React.SetStateAction<{
+      title: string;
+      description: string;
+    }>
+  >;
+  onSubmit: () => void;
+}
+
+const articleTitle = ({ form, setForm, onSubmit }: Props) => {
   const dateObject = new Date();
   const year = dateObject.getFullYear();
   const month = dateObject.getMonth() + 1;
@@ -15,10 +29,16 @@ const articleTitle = () => {
           type="text"
           placeholder="제목을 입력해 주세요."
           className={cx(title)}
+          onChange={e =>
+            setForm({
+              ...form,
+              title: e.target.value,
+            })
+          }
         />
         <div className={cx(uploadDate)}>{`${year}년 ${month}월 ${date}일`}</div>
       </div>
-      <button className={cx(rightWriteButton)}>
+      <button className={cx(rightWriteButton)} onClick={() => onSubmit()}>
         <div className={cx(writeButtonText)}>작성</div>
         <div
           className={cx(css`
@@ -43,7 +63,7 @@ const titleWrap = css`
 const title = css`
   width: 508px;
   height: 26px;
-  font-family: "Noto Sans KR";
+  font-family: 'Noto Sans KR';
   font-style: normal;
   font-weight: 700;
   font-size: 16px;
@@ -64,7 +84,7 @@ const rightWriteButton = css`
   cursor: pointer;
 `;
 const uploadDate = css`
-  font-family: "Noto Sans KR";
+  font-family: 'Noto Sans KR';
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
@@ -84,4 +104,3 @@ const writeButtonText = css`
   text-align: center;
   color: #ffffff;
 `;
-

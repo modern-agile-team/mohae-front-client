@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { css, cx } from '@emotion/css';
 import { Box, Carousel, MarkBox, OrderedImg, Btn } from '..';
 import { radius } from '../../styles';
 import { Props } from '../../pages/post/Container';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/root';
 
 interface PostImgsProps {
   data?: Props;
@@ -12,15 +14,15 @@ interface PostImgsProps {
 
 function PostImgs(props: PostImgsProps) {
   const { view, getValue, data } = props;
-  const datas = data?.data.response;
-
-  const boardPhotoURL = () => {
-    return data && datas?.board.boardPhotoUrls !== null
-      ? datas?.board.boardPhotoUrls
-          .split(', ')
-          .map(el => 'https://d2ffbnf2hpheay.cloudfront.net/' + el)
+  const reduxDatas = useSelector(
+    (state: RootState) => state.post.data.response.board,
+  );
+  const boardPhotoURL = () =>
+    reduxDatas.boardPhotoUrls !== null && reduxDatas.boardPhotoUrls !== ''
+      ? reduxDatas.boardPhotoUrls.split(', ').map(el => {
+          return 'https://d2ffbnf2hpheay.cloudfront.net/' + el;
+        })
       : ['/img/logo.png'];
-  };
 
   const style = css`
     .carouselBox {
@@ -47,8 +49,8 @@ function PostImgs(props: PostImgsProps) {
         <Carousel imgs={boardPhotoURL()} />
         <div className="markBox">
           <MarkBox
-            shape={datas?.board.target}
-            state={datas?.board.isDeadline}
+            shape={reduxDatas.target}
+            state={reduxDatas.isDeadline}
             big
             hover
           />

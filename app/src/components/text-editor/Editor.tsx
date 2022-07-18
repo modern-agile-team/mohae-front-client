@@ -109,7 +109,7 @@ export default function TextEditor({ size }: Props) {
   `;
 
   const [editorState, setEditorState] = useState(() =>
-      EditorState.createEmpty()
+      EditorState.createEmpty(),
     ),
     [text, setText] = useState('');
 
@@ -122,7 +122,7 @@ export default function TextEditor({ size }: Props) {
     setText(editorToHtml(editorState));
   };
 
-  console.log('text :>> ', text);
+  // console.log('text :>> ', text);
 
   return (
     <>

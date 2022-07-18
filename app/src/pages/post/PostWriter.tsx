@@ -15,8 +15,9 @@ function PostWriter({ close, data }: PostWriterProps) {
 
   const userImg =
     datas.userPhotoUrl !== null
-      ? `https://mohaeproj.s3.amazonaws.com/${datas.userPhotoUrl}`
-      : null;
+      ? `https://d2ffbnf2hpheay.cloudfront.net/${datas.userPhotoUrl}`
+      : // + '?w=60'
+        null;
 
   const style = css`
     margin-top: 16px;

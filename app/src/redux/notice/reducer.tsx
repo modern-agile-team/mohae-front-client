@@ -1,7 +1,7 @@
 /** @format */
 
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getNoticePost, createNotice } from '../../apis/notice';
+import { getNoticePost, createNotice, editNoticePost } from '../../apis/notice';
 import { ENDPOINT } from '../../utils/ENDPOINT';
 import { NoticePostType } from '../../apis/notice';
 
@@ -16,7 +16,9 @@ export const getNotices = createAsyncThunk(
 export const createNoticePost = createAsyncThunk(
   'notices/createNoticePost',
   async (data: NoticePostType) => {
-    const response = await createNotice(data);
+    const response = data.editForm
+      ? await editNoticePost(data)
+      : await createNotice(data);
     return response.data;
   },
 );

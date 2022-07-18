@@ -4,11 +4,15 @@ export interface FormProps {
   form: {
     title: string;
     description: string;
+    postNo: number;
+    editForm: boolean;
   };
   setForm: React.Dispatch<
     React.SetStateAction<{
       title: string;
       description: string;
+      postNo: number;
+      editForm: boolean;
     }>
   >;
 }
@@ -25,6 +29,7 @@ const TextArea = ({ form, setForm }: FormProps) => {
             description: e.target.value,
           })
         }
+        value={form.description}
       />
     </div>
   );

@@ -1,11 +1,17 @@
-import React from "react";
-import { css, cx } from "@emotion/css";
+import React from 'react';
+import { css, cx } from '@emotion/css';
 
-const header = () => {
+interface Props {
+  param?: string;
+}
+
+const header = ({ param }: Props) => {
   return (
     <div className={cx(topWrap)}>
       <div className={cx(MainTitle)}>고객지원</div>
-      <div className={cx(subTitle)}>공지사항</div>
+      <div className={cx(subTitle)}>
+        {param === 'notices' ? '공지사항' : 'FAQ'}
+      </div>
     </div>
   );
 };
@@ -17,7 +23,7 @@ const topWrap = css`
   margin-left: 190px;
 `;
 const MainTitle = css`
-  font-family: "Noto Sans KR";
+  font-family: 'Noto Sans KR';
   font-style: normal;
   font-weight: 700;
   font-size: 28px;
@@ -26,7 +32,7 @@ const MainTitle = css`
   margin-right: 16px;
 `;
 const subTitle = css`
-  font-family: "Roboto";
+  font-family: 'Roboto';
   font-style: normal;
   font-weight: 700;
   font-size: 16px;

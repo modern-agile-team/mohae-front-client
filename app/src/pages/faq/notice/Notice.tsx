@@ -4,42 +4,77 @@ import ArticleTitle from '../notice/NoticeWriteAriticleTitle';
 import HeaderSearch from '../notice/NoticeWriteSearchHeader';
 import CommetContainer from '../notice/NoticeCommentWrapper';
 import TextArea from '../notice/NoticeWriteTextArea';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { createNoticePost, getNotices } from '../../../redux/notice/reducer';
-import { createNotice, getNoticePost } from '../../../apis/notice';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '../../../redux/root';
 import { RootState } from '../../../redux/root';
-import { NoticeTYPE } from '../notice/NoticeCommentWrapper';
+import { useParams } from 'react-router-dom';
+import { deleteNoticePost } from '../../../apis/notice';
 
 const Notice = () => {
   const [isWrite, setIsWrite] = useState<boolean>(false);
-  const [form, setForm] = useState<{ title: string; description: string }>({
+  const [form, setForm] = useState<{
+    title: string;
+    description: string;
+    postNo: number;
+    editForm: boolean;
+  }>({
     title: '',
     description: '',
+    postNo: 0,
+    editForm: false,
   });
+  const { name } = useParams();
   const dispatch = useDispatch<AppDispatch>();
   const notices: any = useSelector((state: RootState) => state.notice.post);
 
-  const onSubmit = () => {
+  const onSubmit = useCallback(() => {
     if (form.title === '' || form.description === '') {
       alert('내용을 입력해주세요');
       return;
     }
-    const { title, description } = form;
-    dispatch(createNoticePost({ title, description, params: 'notices' }));
-    setIsWrite(false);
+    const { title, description, editForm, postNo } = form;
+    dispatch(
+      createNoticePost({ title, description, params: name!, editForm, postNo }),
+    ).then(res => {
+      if (res.payload.success) setIsWrite(false);
+    });
+  }, [form]);
+
+  const onEdit = (no: number, title: string, description: string) => {
+    setForm({
+      ...form,
+      title,
+      description,
+      editForm: true,
+      postNo: no,
+    });
+    setIsWrite(true);
+  };
+
+  const onDelete = async (no: number) => {
+    const data = { params: name, postNo: no };
+    await deleteNoticePost(data).then(res => {
+      if (res.data.success) dispatch(getNotices(name!));
+    });
   };
 
   useEffect(() => {
-    dispatch(getNotices('notices'));
-  }, [dispatch, isWrite]);
+    dispatch(getNotices(name!));
+  }, [dispatch, isWrite, name]);
 
   return (
     <div className={cx(wholeStyle)}>
-      <HeaderSearch isWrite={isWrite} setIsWrite={setIsWrite} />
+      <HeaderSearch
+        isWrite={isWrite}
+        setIsWrite={setIsWrite}
+        form={form}
+        setForm={setForm}
+        param={name}
+      />
       <section className={cx(sectionStyle)}>
-        <SideBar />
+        <SideBar name={name!} />
         <article className={cx(container)}>
           {isWrite && (
             <>
@@ -47,7 +82,11 @@ const Notice = () => {
               <TextArea form={form} setForm={setForm} />
             </>
           )}
-          <CommetContainer notices={notices} />
+          <CommetContainer
+            notices={notices}
+            onEdit={onEdit}
+            onDelete={onDelete}
+          />
         </article>
       </section>
     </div>

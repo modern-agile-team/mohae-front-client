@@ -3,11 +3,23 @@ import { css, cx } from '@emotion/css';
 import { Img } from '../../../components';
 import { SearchProps } from './NoticeWriteSearchHeader';
 
-const search = ({ setIsWrite, isWrite }: SearchProps) => {
+const search = ({ setIsWrite, isWrite, form, setForm }: SearchProps) => {
   return (
     <div className={cx(container)}>
       <div className={cx(write)} onClick={() => setIsWrite(!isWrite)}>
-        {isWrite ? '작성취소' : '작성하기'}
+        <span
+          onClick={() =>
+            setForm({
+              ...form,
+              title: '',
+              description: '',
+              editForm: false,
+              postNo: 0,
+            })
+          }
+        >
+          {isWrite ? '작성취소' : '작성하기'}
+        </span>
       </div>
       <div className={cx(wrap)}>
         <input type="text" placeholder="무엇이 궁금한가요?" id="placeHolder" />

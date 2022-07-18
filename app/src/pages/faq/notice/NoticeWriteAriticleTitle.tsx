@@ -6,11 +6,15 @@ interface Props {
   form: {
     title: string;
     description: string;
+    postNo: number;
+    editForm: boolean;
   };
   setForm: React.Dispatch<
     React.SetStateAction<{
       title: string;
       description: string;
+      postNo: number;
+      editForm: boolean;
     }>
   >;
   onSubmit: () => void;
@@ -35,11 +39,14 @@ const articleTitle = ({ form, setForm, onSubmit }: Props) => {
               title: e.target.value,
             })
           }
+          value={form.title}
         />
         <div className={cx(uploadDate)}>{`${year}년 ${month}월 ${date}일`}</div>
       </div>
       <button className={cx(rightWriteButton)} onClick={() => onSubmit()}>
-        <div className={cx(writeButtonText)}>작성</div>
+        <div className={cx(writeButtonText)}>
+          {form.editForm ? '수정' : '작성'}
+        </div>
         <div
           className={cx(css`
             width: 20px;

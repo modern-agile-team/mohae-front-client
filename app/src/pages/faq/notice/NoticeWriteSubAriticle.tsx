@@ -10,9 +10,11 @@ interface Props {
     createdAt: string;
   };
   key: number;
+  onEdit: (no: number, title: string, description: string) => void;
+  onDelete: (no: number) => void;
 }
 
-function subArticle({ notice }: Props) {
+function subArticle({ notice, onEdit, onDelete }: Props) {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [isView, setIsView] = useState<boolean>(false);
 
@@ -41,11 +43,20 @@ function subArticle({ notice }: Props) {
       <div className={cx(wrap)}>
         <div className={cx(left)}>
           <div className={cx(title)}>{notice.title}</div>
-          <div className={cx(uploadDate)}>2020년12월12일</div>
+          <div className={cx(uploadDate)}>{notice.createdAt}</div>
         </div>
         <div className={cx(right)}>
-          <div className={cx(edit)}>수정</div>
-          <div className={cx(d2lete)}>삭제</div>
+          <div
+            className={cx(edit)}
+            onClick={() => {
+              onEdit(notice.no, notice.title, notice.description);
+            }}
+          >
+            수정
+          </div>
+          <div className={cx(d2lete)} onClick={() => onDelete(notice.no)}>
+            삭제
+          </div>
           <div
             className={cx(css`
               width: 16px;
@@ -80,12 +91,7 @@ function subArticle({ notice }: Props) {
                 `
           }
         >
-          <span>
-            안녕하세요 모던 애자일입니다 저희는 개발팀입니다 회장은 누구누구이며
-            서비스 개발을 목표로 합니다
-          </span>
-          <br />
-          <span>sdfsrfsdsfsdsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdf</span>
+          <span>{notice.description}</span>
         </div>
       </div>
     </div>

@@ -6,14 +6,40 @@ import Header from './NoticeWriteheader';
 export interface SearchProps {
   setIsWrite: React.Dispatch<React.SetStateAction<boolean>>;
   isWrite: boolean;
+  form: {
+    title: string;
+    description: string;
+    postNo: number;
+    editForm: boolean;
+  };
+  setForm: React.Dispatch<
+    React.SetStateAction<{
+      title: string;
+      description: string;
+      postNo: number;
+      editForm: boolean;
+    }>
+  >;
+  param?: string;
 }
 
-const serchHeader = ({ setIsWrite, isWrite }: SearchProps) => {
+const serchHeader = ({
+  setIsWrite,
+  isWrite,
+  form,
+  setForm,
+  param,
+}: SearchProps) => {
   return (
     <div className={cx(wholeStyle)}>
-      <Header />
+      <Header param={param} />
       <div className={cx(searchStyle)}>
-        <Search setIsWrite={setIsWrite} isWrite={isWrite} />
+        <Search
+          setIsWrite={setIsWrite}
+          isWrite={isWrite}
+          form={form}
+          setForm={setForm}
+        />
       </div>
     </div>
   );

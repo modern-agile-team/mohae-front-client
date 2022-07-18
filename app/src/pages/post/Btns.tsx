@@ -53,17 +53,21 @@ function Btns(props: BtnsProps) {
       : dispatch(minusLikeCount(likeCount - 1));
   };
 
+  console.log(data.token);
+
   useEffect(() => {
-    const debounceAxios = setTimeout(() => {
-      axios
-        .post(`https://mo-hae.site/like/board/${no}`, isLike, header)
-        .then(res => {
-          console.log('res.data :>> ', res.data);
-          handleLikeCount();
-        })
-        .catch(err => err);
-    }, 300);
-    return () => clearTimeout(debounceAxios);
+    if (data.token !== null) {
+      const debounceAxios = setTimeout(() => {
+        axios
+          .post(`https://mo-hae.site/like/board/${no}`, isLike, header)
+          .then(res => {
+            console.log('res.data :>> ', res.data);
+            handleLikeCount();
+          })
+          .catch(err => err);
+      }, 300);
+      return () => clearTimeout(debounceAxios);
+    }
   }, [reduxIsLike]);
 
   const btnImg = {

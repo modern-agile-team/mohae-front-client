@@ -13,14 +13,13 @@ interface Props {
   texts: type;
   contents: type;
   priceRange: (minValue: number, maxValue: number) => string;
-  minValue: number;
-  setMinValue: Dispatch<React.SetStateAction<number>>;
-  maxValue: number;
-  setMaxValue: Dispatch<React.SetStateAction<number>>;
   view: { [key: number]: boolean };
   setView: Dispatch<React.SetStateAction<{ [key: number]: boolean }>>;
   setItemCheck: (list: string, i: string) => void;
   resetSetting: () => void;
+  onSubmit: (e: any) => void;
+  setShowFilter: Dispatch<React.SetStateAction<boolean>>;
+  showFilter: boolean;
 }
 
 function Presenter(props: Props) {
@@ -28,24 +27,25 @@ function Presenter(props: Props) {
     texts,
     contents,
     priceRange,
-    minValue,
-    setMinValue,
-    maxValue,
-    setMaxValue,
     view,
     setView,
     setItemCheck,
     resetSetting,
+    onSubmit,
+    setShowFilter,
+    showFilter,
   } = props;
+  const minVal = useSelector((state: RootState) => state.filter.data.price.min);
+  const maxVal = useSelector((state: RootState) => state.filter.data.price.max);
   const checked: { [key: string]: { [key: number]: boolean } } = useSelector(
-    (state: RootState) => state.filter.data.check
+    (state: RootState) => state.filter.data.check,
   );
 
   const title = (section: string) => {
     return (
-      <div className='title'>
+      <div className="title">
         {texts[section].map((text: any, i: any) => (
-          <p className='filterTitle' key={i}>
+          <p className="filterTitle" key={i}>
             {text}
           </p>
         ))}
@@ -77,7 +77,7 @@ function Presenter(props: Props) {
             {text}
           </SelectBtn>
         </div>
-      )
+      ),
     );
   };
 
@@ -169,54 +169,55 @@ function Presenter(props: Props) {
 
   return (
     <div className={cx(parentWrap)}>
-      <div id='realBox'>
-        <div className='top'>
+      <div id="realBox">
+        <div className="top">
           {title('top')}
-          <div className='wrap'>
-            <div className='row'>{selectBtnText('sort')}</div>
-            <div className='rowLeft'>{selectBtnText('target')}</div>
+          <div className="wrap">
+            <div className="row">{selectBtnText('sort')}</div>
+            <div className="rowLeft">{selectBtnText('target')}</div>
           </div>
         </div>
-        <div className='mid'>
+        <div className="mid">
           {title('mid')}
-          <div className='wrap'>
-            <div className='row'>{selectBtnText('date')}</div>
-            <div className='rowLeft'>
-              <div className='selectBox'>
+          <div className="wrap">
+            <div className="row">{selectBtnText('date')}</div>
+            <div className="rowLeft">
+              <div className="selectBox">
                 <SelectBox
                   view={view[0]}
                   onClick={() => setView({ 0: !view[0] })}
-                  size='small'
-                  placeholder='전체 지역'
-                  style='text'
+                  size="small"
+                  placeholder="전체 지역"
+                  style="text"
                   filter
                 />
               </div>
             </div>
           </div>
         </div>
-        <div className='bottom'>
+        <div className="bottom">
           <div>
-            <p className='filterTitle'>가격</p>
-            <p>{priceRange(minValue, maxValue)}</p>
+            <p className="filterTitle">가격</p>
+            <p>{priceRange(minVal, maxVal)}</p>
           </div>
           {selectBtnText('free')}
         </div>
-        <Slider
-          min={0}
-          max={1000000}
-          minValue={minValue}
-          maxValue={maxValue}
-          setMinValue={setMinValue}
-          setMaxValue={setMaxValue}
-        />
-        <div className='bottomBtn'>
-          <div className='compliteBtn'>
-            <Btn main>설정 완료</Btn>
+        <Slider min={0} max={1000000} />
+        <div className="bottomBtn">
+          <div className="compliteBtn">
+            <Btn
+              main
+              onClick={e => {
+                onSubmit(e);
+                setShowFilter(!showFilter);
+              }}
+            >
+              설정 완료
+            </Btn>
           </div>
-          <div className='reset'>
+          <div className="reset">
             <Btn white onClick={resetSetting}>
-              <div className='resetImg'>
+              <div className="resetImg">
                 <Img src={'/img/reset.png'} />
               </div>
             </Btn>

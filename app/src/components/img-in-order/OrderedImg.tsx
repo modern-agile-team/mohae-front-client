@@ -7,6 +7,8 @@ import Img from '../img/Img';
 import Style from './style';
 import axios from 'axios';
 import { ENDPOINT } from '../../utils/ENDPOINT';
+import { useDispatch } from 'react-redux';
+import { setImgs } from '../../redux/createpost/reducer';
 
 interface Props {
   [key: string]: any;
@@ -24,10 +26,11 @@ export default function OrderedImg({ imgs, edit, inline }: Props) {
       imgs.map((img: any) => ({
         img: img,
         checked: false,
-      }))
+      })),
   );
   const [alarm, setAlarm] = useState(true);
   const [myImage, setMyImage] = useState<IMAGE[]>(clone || []);
+  const dispatch = useDispatch();
 
   const addImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.currentTarget.files || [];
@@ -42,6 +45,7 @@ export default function OrderedImg({ imgs, edit, inline }: Props) {
         files &&
           urls.push({ img: imageURL, checked: false, File: files[count] });
         setMyImage(urls);
+        inline && dispatch(setImgs(urls));
       }
     }
   };
@@ -84,7 +88,7 @@ export default function OrderedImg({ imgs, edit, inline }: Props) {
     if (!target.checked) {
       target.checked = !target.checked;
       const newClone = myImage.filter(
-        (each: any, index: number) => index !== idx
+        (each: any, index: number) => index !== idx,
       );
 
       const section = myImage.reduce((acc: any, cur: any) => {
@@ -97,6 +101,7 @@ export default function OrderedImg({ imgs, edit, inline }: Props) {
       newClone.splice(section - 1, 0, target);
 
       setMyImage(newClone);
+      inline && dispatch(setImgs(newClone));
     } else {
       target.checked = !target.checked;
       const newClone = myImage.filter((each: any, index: any) => index !== idx);
@@ -110,6 +115,7 @@ export default function OrderedImg({ imgs, edit, inline }: Props) {
       }, 0);
       newClone.splice(newClone.length - (section - 1), 0, target);
       setMyImage(newClone);
+      inline && dispatch(setImgs(newClone));
     }
   };
 
@@ -120,6 +126,7 @@ export default function OrderedImg({ imgs, edit, inline }: Props) {
     const newImage = [...myImage];
     newImage.splice(index, 1);
     setMyImage(newImage);
+    inline && dispatch(setImgs(newImage));
   };
 
   const request = (e: React.FormEvent<HTMLFormElement>) => {
@@ -140,10 +147,10 @@ export default function OrderedImg({ imgs, edit, inline }: Props) {
             'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVzdGFyZzFAaGFubWFpbC5uZXQiLCJ1c2VyTm8iOjUsImlzc3VlciI6Im1vZGVybi1hZ2lsZSIsImV4cGlyYXRpb24iOiIzNjAwMCIsImlhdCI6MTY1NjAzNDE4NCwiZXhwIjoxNjU2MDcwMTg0fQ.BZ_K0FHz0EFFeYHOuwMf_VYL3MRLjow-TctQiWAJvB8',
         },
       })
-      .then((res) => {
+      .then(res => {
         console.log(`res`, res.data);
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(`err`, err);
       });
   };
@@ -203,7 +210,7 @@ export default function OrderedImg({ imgs, edit, inline }: Props) {
                     <div className={'icon'} />
                   </div>
                 </label>
-                <input type={'submit'} />
+                {/* <input type={'submit'} /> */}
               </form>
             </>
           )}

@@ -1,7 +1,12 @@
 /** @format */
 
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getNoticePost, createNotice, editNoticePost } from '../../apis/notice';
+import {
+  getNoticePost,
+  createNotice,
+  editNoticePost,
+  searchNoticePost,
+} from '../../apis/notice';
 import { ENDPOINT } from '../../utils/ENDPOINT';
 import { NoticePostType } from '../../apis/notice';
 
@@ -19,6 +24,14 @@ export const createNoticePost = createAsyncThunk(
     const response = data.editForm
       ? await editNoticePost(data)
       : await createNotice(data);
+    return response.data;
+  },
+);
+
+export const searchNotices = createAsyncThunk(
+  'notices/searchNotices',
+  async (data: { params?: string; search: string }) => {
+    const response = await searchNoticePost(data);
     return response.data;
   },
 );
@@ -54,6 +67,16 @@ export const notice = createSlice({
         state.isLoading = false;
       })
       .addCase(getNotices.rejected, (state, action) => {
+        state.isLoading = false;
+      })
+      .addCase(searchNotices.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(searchNotices.fulfilled, (state, action) => {
+        state.post = action.payload.response;
+        state.isLoading = false;
+      })
+      .addCase(searchNotices.rejected, (state, action) => {
         state.isLoading = false;
       });
   },

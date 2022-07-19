@@ -29,3 +29,8 @@ export const deleteNoticePost = (data: {
   const { params, postNo } = data;
   return instance.delete(`/${params}/${postNo}`);
 };
+
+export const searchNoticePost = (data: { params?: string; search: string }) => {
+  const { params, search } = data;
+  return instance.get(`/${params}/search?title=${search}&take=5&page=1`);
+};

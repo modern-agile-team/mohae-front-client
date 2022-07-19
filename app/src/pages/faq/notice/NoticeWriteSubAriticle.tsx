@@ -67,7 +67,9 @@ function subArticle({ notice, onEdit, onDelete }: Props) {
           >
             <Img
               src={
-                isView ? `/img/arrow-up-dark3.png` : `/img/arrow-down-dark3.png`
+                !isView
+                  ? '/img/arrow-down-dark3.png'
+                  : '/img/arrow-up-dark3.png'
               }
             />
           </div>

@@ -1,9 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { css, cx } from '@emotion/css';
 import { Img } from '../../../components';
 import { SearchProps } from './NoticeWriteSearchHeader';
 
-const search = ({ setIsWrite, isWrite, form, setForm }: SearchProps) => {
+const search = ({
+  setIsWrite,
+  isWrite,
+  form,
+  setForm,
+  onSearch,
+}: SearchProps) => {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const [searchItem, setSearchItem] = useState<string>('');
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchItem(e.target.value);
+  };
+
   return (
     <div className={cx(container)}>
       <div className={cx(write)} onClick={() => setIsWrite(!isWrite)}>
@@ -21,8 +33,20 @@ const search = ({ setIsWrite, isWrite, form, setForm }: SearchProps) => {
           {isWrite ? '작성취소' : '작성하기'}
         </span>
       </div>
-      <div className={cx(wrap)}>
-        <input type="text" placeholder="무엇이 궁금한가요?" id="placeHolder" />
+      <form
+        className={cx(wrap)}
+        onSubmit={e => {
+          e.preventDefault();
+          onSearch(searchItem);
+        }}
+      >
+        <input
+          type="text"
+          placeholder="무엇이 궁금한가요?"
+          id="placeHolder"
+          value={searchItem}
+          onChange={e => onChange(e)}
+        />
         <div
           className={cx(css`
             width: 16px;
@@ -31,7 +55,7 @@ const search = ({ setIsWrite, isWrite, form, setForm }: SearchProps) => {
         >
           <Img src="/img/search.png" />
         </div>
-      </div>
+      </form>
     </div>
   );
 };

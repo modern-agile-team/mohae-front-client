@@ -5,11 +5,15 @@ import HeaderSearch from '../notice/NoticeWriteSearchHeader';
 import CommetContainer from '../notice/NoticeCommentWrapper';
 import TextArea from '../notice/NoticeWriteTextArea';
 import { useCallback, useEffect, useState } from 'react';
-import { createNoticePost, getNotices } from '../../../redux/notice/reducer';
+import {
+  createNoticePost,
+  getNotices,
+  searchNotices,
+} from '../../../redux/notice/reducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '../../../redux/root';
 import { RootState } from '../../../redux/root';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { deleteNoticePost } from '../../../apis/notice';
 
 const Notice = () => {
@@ -26,8 +30,12 @@ const Notice = () => {
     editForm: false,
   });
   const { name } = useParams();
+  const [searchParams] = useSearchParams();
   const dispatch = useDispatch<AppDispatch>();
   const notices: any = useSelector((state: RootState) => state.notice.post);
+  const user = useSelector((state: RootState) => state.user);
+  const navigate = useNavigate();
+  const searchItem = searchParams.get('title');
 
   const onSubmit = useCallback(() => {
     if (form.title === '' || form.description === '') {
@@ -60,10 +68,26 @@ const Notice = () => {
     });
   };
 
-  useEffect(() => {
-    dispatch(getNotices(name!));
-  }, [dispatch, isWrite, name]);
+  const onSearch = (searchBy: string) => {
+    navigate({
+      pathname: `/support/${name}`,
+      search: `?title=${searchBy}`,
+    });
+  };
 
+  useEffect(() => {
+    if (searchItem) {
+      dispatch(
+        searchNotices({
+          params: name,
+          search: searchItem,
+        }),
+      );
+    } else {
+      dispatch(getNotices(name!));
+    }
+  }, [dispatch, isWrite, name, searchItem]);
+  console.log(user);
   return (
     <div className={cx(wholeStyle)}>
       <HeaderSearch
@@ -72,6 +96,7 @@ const Notice = () => {
         form={form}
         setForm={setForm}
         param={name}
+        onSearch={onSearch}
       />
       <section className={cx(sectionStyle)}>
         <SideBar name={name!} />
@@ -101,6 +126,7 @@ const wholeStyle = css`
   flex-direction: column;
   justify-content: left;
   width: 1128px;
+  min-height: 80vh;
 `;
 const container = css`
   width: 936px;

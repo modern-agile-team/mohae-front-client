@@ -21,6 +21,7 @@ export interface SearchProps {
     }>
   >;
   param?: string;
+  onSearch: (searchBy: string) => void;
 }
 
 const serchHeader = ({
@@ -29,6 +30,7 @@ const serchHeader = ({
   form,
   setForm,
   param,
+  onSearch,
 }: SearchProps) => {
   return (
     <div className={cx(wholeStyle)}>
@@ -39,6 +41,7 @@ const serchHeader = ({
           isWrite={isWrite}
           form={form}
           setForm={setForm}
+          onSearch={onSearch}
         />
       </div>
     </div>

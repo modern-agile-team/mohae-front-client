@@ -6,20 +6,18 @@ import { color, font } from '../../styles';
 import Btns from './Btns';
 import { Props } from './Container';
 
-// 프로필 이미지, 닉네임, 전공, 로그인 상태(버튼 그려줘야 함),
 interface PostWriterProps extends Props {
   close: () => void;
-  likeCount: number;
-  setLikeCount: Dispatch<SetStateAction<number>>;
 }
 
-function PostWriter({ close, data, likeCount, setLikeCount }: PostWriterProps) {
+function PostWriter({ close, data }: PostWriterProps) {
   const datas = data.response.board;
 
   const userImg =
     datas.userPhotoUrl !== null
-      ? `https://mohaeproj.s3.amazonaws.com/${datas.userPhotoUrl}`
-      : null;
+      ? `https://d2ffbnf2hpheay.cloudfront.net/${datas.userPhotoUrl}`
+      : // + '?w=60'
+        null;
 
   const style = css`
     margin-top: 16px;
@@ -62,19 +60,14 @@ function PostWriter({ close, data, likeCount, setLikeCount }: PostWriterProps) {
   return (
     <>
       <div className={cx(style)}>
-        <div className='userData'>
+        <div className="userData">
           <Profile img={userImg} size={60} smallShadow />
           <div>
             <p>{datas.nickname}</p>
             <p>{datas.majorName}</p>
           </div>
         </div>
-        <Btns
-          data={data}
-          close={close}
-          setLikeCount={setLikeCount}
-          likeCount={likeCount}
-        />
+        <Btns data={data} close={close} />
       </div>
     </>
   );

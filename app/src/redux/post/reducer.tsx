@@ -33,6 +33,7 @@ const initialState: Props = {
         decimalDay: 0,
         hit: 0,
         isDeadline: 0,
+        isLike: false,
         likeCount: 0,
         majorName: '',
         nickname: '',
@@ -48,17 +49,30 @@ const initialState: Props = {
   },
 };
 
-// initialState에 받을 key가 있어야 함.
-
 export const post = createSlice({
   name: 'post',
   initialState,
   reducers: {
     setPostData: (state, action: PayloadAction<any>) => {
       state.data = action.payload;
+      state.data.response.board.isLike =
+        action.payload.response.board.isLike === true ||
+        action.payload.response.board.isLike === 1
+          ? true
+          : false;
+    },
+    setIsLike: (state, action: PayloadAction<any>) => {
+      state.data.response.board.isLike = action.payload;
+    },
+    plusLikeCount: (state, action: PayloadAction<any>) => {
+      state.data.response.board.likeCount = action.payload;
+    },
+    minusLikeCount: (state, action: PayloadAction<any>) => {
+      state.data.response.board.likeCount = action.payload;
     },
   },
 });
 
-export const { setPostData } = post.actions;
+export const { setPostData, setIsLike, plusLikeCount, minusLikeCount } =
+  post.actions;
 export default post.reducer;

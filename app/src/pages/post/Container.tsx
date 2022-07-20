@@ -6,6 +6,7 @@ import { decodeToken } from 'react-jwt';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/root';
 import { setPostData } from '../../redux/post/reducer';
+import getToken from '../../utils/getToken';
 
 export interface Props {
   data: {
@@ -43,7 +44,7 @@ interface Board {
   description?: string;
   hit: number;
   isDeadline: number;
-  isLike?: boolean;
+  isLike?: boolean | null | number;
   likeCount: number;
   majorName: string;
   nickname: string;
@@ -57,14 +58,15 @@ interface Board {
 }
 
 function Post() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const { no } = useParams();
   const dispatch = useDispatch();
   const reduxData = useSelector((state: RootState) => state.post.data);
 
-  const token =
-    // /*subro*/ 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTm8iOjEsImVtYWlsIjoic3Vicm9AbmF2ZXIuY29tIiwibmlja25hbWUiOiJobmVlZGRqamRlIiwicGhvdG9VcmwiOiJodHRwczovL21vaGFlcHJvai5zMy5hbWF6b25hd3MuY29tL3Byb2ZpbGUvMTY1NTk2MzczODQ5MF9kb2VrY3JpbWcuUE5HIiwiaXNzdWVyIjoibW9kZXJuLWFnaWxlIiwiZXhwaXJhdGlvbiI6IjM2MDAwIiwiaWF0IjoxNjU2OTg1Nzg0LCJleHAiOjE2NTcwMjE3ODR9.thVCKfXz4xPz7BxzmUog6BjwimKQ_uH1soPBtZ6lLKY';
-    // /*wer06099*/ 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTm8iOjIsImVtYWlsIjoid2VyMDYwOTlAbmF2ZXIuY29tIiwibmlja25hbWUiOiIxMDBfc2IiLCJwaG90b1VybCI6InByb2ZpbGUvMTY1NTE4NDIzNDE2NV9cdTAwMDTvv70477-9UO-_vS5qcGciLCJpc3N1ZXIiOiJtb2Rlcm4tYWdpbGUiLCJleHBpcmF0aW9uIjoiMzYwMDAiLCJpYXQiOjE2NTY5ODU4MzQsImV4cCI6MTY1NzAyMTgzNH0.J5uQImwBROoCk8smbwkAMhf-ZPS7ESzZuCSaS9hYiVM';
-    /*비회원*/ null;
+  const token = getToken() || null;
+
   const decoded = () => {
     return token !== null ? decodeToken(token) : token;
   };
@@ -80,7 +82,6 @@ function Post() {
         const visitor = res.data.msg
           .replace(/[^회원|^비회원]/g, '')
           .substring(1, 4);
-        console.log('res.data :>> ', res.data);
         dispatch(
           setPostData({
             ...res.data,

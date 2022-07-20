@@ -6,20 +6,22 @@ import axios from 'axios';
 import { Props } from './Container';
 import { Btn, Popup } from '../../components';
 import PostWriter from './PostWriter';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/root';
 
-// target, 카테고리, 제목, d-day, 지역, 작성자여부, 좋아요, 조회수, 가격
 interface PostInfoProps extends Props {
   quickMenu?: boolean;
   close: () => void;
-  likeCount: number;
-  setLikeCount: Dispatch<SetStateAction<number>>;
 }
 
 function PostInfo(props: PostInfoProps) {
-  const { quickMenu, data, close, likeCount, setLikeCount } = props;
+  const { quickMenu, data, close } = props;
   const datas = data.response.board;
   const { no } = useParams();
   const [popupView, setPopupView] = useState(false);
+  const likeCount = useSelector(
+    (state: RootState) => state.post.data.response.board.likeCount,
+  );
 
   const showDDAYContent = () => {
     if (!datas.isDeadline) {
@@ -129,12 +131,12 @@ function PostInfo(props: PostInfoProps) {
           text1={'정말 삭제 하시겠습니까? '}
           text2={'삭제 시 게시판으로 이동합니다.'}
         >
-          <div className='popup-btn'>
+          <div className="popup-btn">
             <Btn white onClick={() => setPopupView(false)}>
               닫기
             </Btn>
           </div>
-          <div className='popup-btn'>
+          <div className="popup-btn">
             <Link to={'/boards/category/17?take=12&page=1'}>
               <Btn main onClick={deletePost}>
                 삭제하기
@@ -160,41 +162,36 @@ function PostInfo(props: PostInfoProps) {
   return (
     <>
       <div className={cx(wrap)}>
-        <div className='sectionWrap-1'>
+        <div className="sectionWrap-1">
           {showPopup()}
           <div>
-            <p className='coordinates'>
+            <p className="coordinates">
               {datas.target ? '구할래요' : '해줄래요'} {'>'} 카테고리 {'>'}{' '}
               {datas.categoryName}
             </p>
-            <p className='title'>{datas.title}</p>
-            <p className='area'>
+            <p className="title">{datas.title}</p>
+            <p className="area">
               {datas.areaName ? datas.areaName : '지역 선택 없음'}
             </p>
           </div>
-          <p className='price'>
+          <p className="price">
             {datas.price ? datas.price.toLocaleString() : '무료'}
           </p>
         </div>
-        <div className='sectionWrap-2'>
-          <div className='textBtnWrap'>
+        <div className="sectionWrap-2">
+          <div className="textBtnWrap">
             <Link to={`/edit/${datas.no}`}>
               <p>수정하기</p>
             </Link>
             <p onClick={() => setPopupView(true)}>삭제하기</p>
           </div>
-          <div className='textBtnWrap'>
+          <div className="textBtnWrap">
             <p>좋아요 {likeCount}개</p>
             <p>조회수 {datas.hit}회</p>
           </div>
         </div>
       </div>
-      <PostWriter
-        close={close}
-        data={data}
-        likeCount={likeCount}
-        setLikeCount={setLikeCount}
-      />
+      <PostWriter close={close} data={data} />
     </>
   );
 }

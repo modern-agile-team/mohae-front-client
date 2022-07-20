@@ -8,7 +8,7 @@ const UPDATE_REGIST_INFO = 'update_regist_info';
 
 const getData = createAsyncThunk('user_login', async () => {
   const response = await axios('http://localhost:8000/response').then(
-    (res) => res.data.response
+    res => res.data.response,
   );
   return response;
 });
@@ -56,22 +56,19 @@ export const userSlice = createSlice({
     },
     [UPDATE_REGIST_INFO]: (state, action: PayloadAction<any>) => {
       state.registInfo = action.payload;
+      console.log('여기있다');
     },
   },
-  extraReducers: (builder) => {
+  extraReducers: builder => {
     builder
-      .addCase(getData.pending, (state) => {})
+      .addCase(getData.pending, state => {})
       .addCase(getData.fulfilled, (state, { payload }) => {})
       .addCase(getData.rejected, (state, { payload }) => {});
   },
 });
 // 생성 추가 삭제
-export const {
-  user_login,
-  addAge,
-  updateToken,
-  update_regist_info,
-} = userSlice.actions;
+export const { user_login, addAge, updateToken, update_regist_info } =
+  userSlice.actions;
 // create actions & type
 export default userSlice.reducer;
 // action, reducer, store

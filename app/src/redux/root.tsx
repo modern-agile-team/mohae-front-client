@@ -10,6 +10,7 @@ import filterReducer from './filter/reducer';
 import boardReducer from './board/reducer';
 import createPostReducer from './createpost/reducer';
 import postReducer from './post/reducer';
+import noticeReducer from './notice/reducer';
 
 export const store = configureStore({
   reducer: {
@@ -22,6 +23,7 @@ export const store = configureStore({
     board: boardReducer,
     createPost: createPostReducer,
     post: postReducer,
+    notice: noticeReducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({

@@ -23,6 +23,7 @@ function PostWriteInput(props: Props) {
     ${radius[6]}
     ${shadow.inputGray}
     resize: none;
+
   `;
 
   function axiosFunc() {

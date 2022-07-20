@@ -7,25 +7,34 @@ import PostBody from '../../components/pagecomp/PostBody';
 import { SelectBtn } from '../../components/button';
 import Input from './Input';
 import PostImgs from '../../components/pagecomp/PostImgs';
+import { useDispatch } from 'react-redux';
+import { setTarget } from '../../redux/createpost/reducer';
 
 interface Props {
   selectBoxClick: (i: number) => void;
   selectedList: (e?: React.MouseEvent) => void;
   setTargetCheck: (i: number) => void;
   view: { [key: number]: boolean };
-  checked: { [key: number]: boolean };
+  targetChecked: { [key: number]: boolean };
 }
 
 function Presenter(props: Props) {
-  const { selectBoxClick, selectedList, setTargetCheck, view, checked } = props;
+  const { selectBoxClick, selectedList, setTargetCheck, view, targetChecked } =
+    props;
+  const dispatch = useDispatch();
 
   const createSelectBtn = () => {
     return contents.map((el, i) => (
-      <div className="markBox" key={i}>
+      <div
+        className="markBox"
+        id={`${i}`}
+        key={i}
+        onClick={e => dispatch(setTarget(e.currentTarget.id))}
+      >
         <SelectBtn
           large
           onChange={() => setTargetCheck(i)}
-          checked={checked[i]}
+          checked={targetChecked[i]}
           type={'radio'}
         >
           {el}

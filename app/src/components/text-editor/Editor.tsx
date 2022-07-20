@@ -1,12 +1,16 @@
 /** @format */
 
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import { EditorState, convertToRaw } from 'draft-js';
+import { EditorState, convertToRaw, ContentState } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
+// import htmlToDraft from 'html-to-draftjs';
 import { color } from '../../styles';
 import { css, cx } from '@emotion/css';
+import { useDispatch, useSelector } from 'react-redux';
+import { setDescription } from '../../redux/createpost/reducer';
+import { RootState } from '../../redux/root';
 
 interface Props {
   [key: string]: any;
@@ -107,22 +111,65 @@ export default function TextEditor({ size }: Props) {
       height: 18px;
     }
   `;
+  //********************************* */
+  // const [editorState, setEditorState] = useState<EditorState>(() =>
+  //     EditorState.createEmpty(),
+  //   ),
+  //   [text, setText] = useState('');
+  // const editorToHtml = (editorState: any) => {
+  //   return draftToHtml(convertToRaw(editorState.getCurrentContent()));
+  // };
 
-  const [editorState, setEditorState] = useState(() =>
-      EditorState.createEmpty(),
-    ),
-    [text, setText] = useState('');
+  // const onEditorStateChange = (e: any) => {
+  //   setEditorState(() => e);
+  //   setText(editorToHtml(editorState));
+  // };
 
+  // useEffect(() => {
+  //   console.log('text :>> ', text);
+  // }, [editorState]);
+  //******************************** */
+  const dispatch = useDispatch();
+  const description = useSelector(
+    (state: RootState) => state.createPost.data.description,
+  );
+  const [editorState, setEditorState] = useState(EditorState.createEmpty());
+  const rendered = useRef(false);
+
+  // 리덕스 스토어 연결
+  const onChangeField = useCallback(
+    payload => dispatch(setDescription(payload)),
+    [dispatch],
+  );
+
+  // HTML 변환 공통 함수
   const editorToHtml = (editorState: any) => {
     return draftToHtml(convertToRaw(editorState.getCurrentContent()));
   };
 
-  const onEditorStateChange = (e: any) => {
-    setEditorState(e);
-    setText(editorToHtml(editorState));
+  const onEditorStateChange = (editorState: any) => {
+    setEditorState(editorState);
+    // 리덕스 changeField
+    onChangeField({
+      key: 'content',
+      value: editorToHtml(editorState),
+    });
   };
 
-  // console.log('text :>> ', text);
+  // useEffect(() => {
+  //   if (rendered.current) return;
+  //   rendered.current = true;
+  //   const blocksFromHtml = htmlToDraft(description);
+  //   if (blocksFromHtml) {
+  //     const { contentBlocks, entityMap } = blocksFromHtml;
+  //     const contentState = ContentState.createFromBlockArray(
+  //       contentBlocks,
+  //       entityMap,
+  //     );
+  //     const editorState = EditorState.createWithContent(contentState);
+  //     setEditorState(editorState);
+  //   }
+  // }, [description]);
 
   return (
     <>
@@ -132,17 +179,7 @@ export default function TextEditor({ size }: Props) {
           onEditorStateChange={onEditorStateChange}
           editorClassName="editor"
           toolbar={{
-            options: [
-              'blockType',
-              'fontSize',
-              'inline',
-              // 'fontFamily',
-              // 'list',
-              'textAlign',
-              // 'colorPicker',
-              // 'link',
-              'emoji',
-            ],
+            options: ['blockType', 'fontSize', 'inline', 'textAlign', 'emoji'],
             inline: {
               options: ['bold', 'italic', 'underline', 'strikethrough'],
               inDropdown: false,
@@ -181,7 +218,6 @@ export default function TextEditor({ size }: Props) {
           }}
         />
       </div>
-      {/* <div dangerouslySetInnerHTML={{ __html: text }}></div> */}
     </>
   );
 }

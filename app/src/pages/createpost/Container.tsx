@@ -1,13 +1,19 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/root';
 import Presenter from './Presenter';
 
 function CreateAndEditPost() {
+  const reduxData = useSelector((state: RootState) => state.createPost.data);
+  console.log(reduxData);
   const [view, setView] = useState<{ [key: number]: boolean }>({
     0: false,
     1: false,
     2: false,
   });
-  const [checked, setChecked] = useState<{ [key: number]: boolean }>({
+  const [targetChecked, setTargetChecked] = useState<{
+    [key: number]: boolean;
+  }>({
     0: true,
     1: false,
   });
@@ -22,13 +28,13 @@ function CreateAndEditPost() {
   };
 
   const setTargetCheck = (i: number) => {
-    setChecked({ 0: false, 1: false, [i]: !checked[i] });
+    setTargetChecked({ 0: false, 1: false, [i]: !targetChecked[i] });
   };
 
   return (
     <Presenter
       view={view}
-      checked={checked}
+      targetChecked={targetChecked}
       selectBoxClick={selectBoxClick}
       selectedList={selectedList}
       setTargetCheck={setTargetCheck}

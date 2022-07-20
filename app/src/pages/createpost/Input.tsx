@@ -1,20 +1,49 @@
-import React, { useRef, useCallback } from 'react';
+import React, { useRef, useCallback, useState, useEffect } from 'react';
 import { css, cx } from '@emotion/css';
 import { color, radius } from '../../styles';
 import { Props } from '../../components/button';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../redux/root';
+import { setPrice, setSummary, setTitle } from '../../redux/createpost/reducer';
 
 function Input(props: Props) {
   const { small, big } = props;
-  const textRef = useRef<HTMLTextAreaElement>(null);
+  const dispatch = useDispatch();
+  const { title, price, summary } = useSelector(
+    (state: RootState) => state.createPost.data,
+  );
 
-  //***************************************** */
+  useEffect(() => {
+    if (price.toString().length > 7 || Number(price) > 1000001) {
+      dispatch(setPrice('1000000'));
+    }
+    if (title.length > 15) {
+      dispatch(setTitle(title.slice(0, 15)));
+    }
+    if (summary.length > 100) {
+      dispatch(setSummary(summary.slice(0, 100)));
+    }
+  }, [price, title, summary]);
+
+  const onChange = {
+    title: (e: React.ChangeEvent<HTMLInputElement>) => {
+      dispatch(setTitle(e.target.value));
+    },
+    price: (e: React.ChangeEvent<HTMLInputElement>) => {
+      dispatch(setPrice(e.target.value));
+    },
+    summary: (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      dispatch(setSummary(e.target.value));
+    },
+  };
+
+  const textRef = useRef<HTMLTextAreaElement>(null);
   const resizingHeight = useCallback(() => {
     if (textRef.current) {
       textRef.current.style.height = 'auto';
       textRef.current.style.height = textRef.current.scrollHeight + 'px';
     }
   }, []);
-  //***************************************** */
 
   const common = css`
     &:focus-within input::-webkit-input-placeholder,
@@ -65,7 +94,7 @@ function Input(props: Props) {
         border-bottom: 2px solid ${color.light4};
       }
     `,
-    //***************************************** */
+
     big: css`
       .big:focus-within textarea::-webkit-input-placeholder {
         visibility: hidden;
@@ -96,7 +125,6 @@ function Input(props: Props) {
         padding-right: 8px;
       }
     `,
-    //***************************************** */
   };
 
   const attrStyle = Object.keys(props).map(el => style[el]);
@@ -104,23 +132,35 @@ function Input(props: Props) {
   const show = () => {
     return small ? (
       <>
-        <form className='title'>
-          <input type='text' placeholder={`제목을 입력해주세요. (3~15자)`} />
+        <form className="title">
+          <input
+            value={title}
+            type="text"
+            placeholder={`제목을 입력해주세요. (3~15자)`}
+            onChange={e => onChange.title(e)}
+            minLength={3}
+            maxLength={16}
+          />
         </form>
-        <form className='price'>
-          <input type='number' placeholder={'0 ~ 1,000,000'} />
+        <form className="price">
+          <input
+            value={price}
+            type="number"
+            placeholder={'0 ~ 1,000,000'}
+            onChange={e => onChange.price(e)}
+          />
         </form>
       </>
     ) : (
-      //***************************************** */
-      <form className='big'>
+      <form className="big">
         <textarea
+          value={summary}
+          onChange={e => onChange.summary(e)}
           ref={textRef}
           onInput={resizingHeight}
           placeholder={'한 줄 요약을 입력해주세요. (최대 100자)'}
         />
       </form>
-      //***************************************** */
     );
   };
 

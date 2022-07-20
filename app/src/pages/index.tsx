@@ -4,7 +4,7 @@ import HG from './test/HG';
 import Home from './home/Home';
 import { MyPage } from './mypage';
 import Resign from './resign';
-import Profile from './profile';
+import ModifyProfile from './modifyProfile';
 import Spec from './spec';
 import LoginModal from './login';
 import CreatePost from './createpost/CreatePost';
@@ -16,7 +16,7 @@ export {
   Home,
   MyPage,
   Resign,
-  Profile,
+  ModifyProfile,
   CreatePost,
   Board,
   Post,

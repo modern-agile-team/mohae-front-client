@@ -14,8 +14,11 @@ function Input(props: Props) {
   );
 
   useEffect(() => {
-    if (price.toString().length > 7 || Number(price) > 1000001) {
-      dispatch(setPrice('1000000'));
+    if (
+      price.toString().length > 8 ||
+      Number(price.toString().replace(/,/g, '')) > 1000001
+    ) {
+      dispatch(setPrice('1,000,000'));
     }
     if (title.length > 15) {
       dispatch(setTitle(title.slice(0, 15)));
@@ -25,12 +28,20 @@ function Input(props: Props) {
     }
   }, [price, title, summary]);
 
+  console.log('title :>> ', title);
+
   const onChange = {
     title: (e: React.ChangeEvent<HTMLInputElement>) => {
       dispatch(setTitle(e.target.value));
     },
     price: (e: React.ChangeEvent<HTMLInputElement>) => {
-      dispatch(setPrice(e.target.value));
+      const toLocaleStringPrice = Number(
+        e.target.value
+          .replace(/[^0-9.]/g, '')
+          .replace(/(\..*)\./g, '$1')
+          .slice(0, 7),
+      ).toLocaleString();
+      dispatch(setPrice(toLocaleStringPrice));
     },
     summary: (e: React.ChangeEvent<HTMLTextAreaElement>) => {
       dispatch(setSummary(e.target.value));
@@ -144,8 +155,8 @@ function Input(props: Props) {
         </form>
         <form className="price">
           <input
-            value={price}
-            type="number"
+            value={price === '0' ? '' : price}
+            type="text"
             placeholder={'0 ~ 1,000,000'}
             onChange={e => onChange.price(e)}
           />

@@ -158,8 +158,6 @@ export default function TextEditor({ size }: Props) {
     }
   }, [description]);
 
-  console.log('description :>> ', description);
-
   return (
     <>
       <div className={cx(style)}>

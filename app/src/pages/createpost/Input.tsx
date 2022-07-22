@@ -28,8 +28,6 @@ function Input(props: Props) {
     }
   }, [price, title, summary]);
 
-  console.log('title :>> ', title);
-
   const onChange = {
     title: (e: React.ChangeEvent<HTMLInputElement>) => {
       dispatch(setTitle(e.target.value));

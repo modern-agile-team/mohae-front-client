@@ -7,8 +7,9 @@ import Img from '../img/Img';
 import Style from './style';
 import axios from 'axios';
 import { ENDPOINT } from '../../utils/ENDPOINT';
-import { useDispatch } from 'react-redux';
-import { setImgs } from '../../redux/createpost/reducer';
+import { useDispatch, useSelector } from 'react-redux';
+import { setImgArr, setImgs } from '../../redux/createpost/reducer';
+import { RootState } from '../../redux/root';
 
 interface Props {
   [key: string]: any;
@@ -30,6 +31,7 @@ export default function OrderedImg({ imgs, edit, inline }: Props) {
   );
   const [alarm, setAlarm] = useState(true);
   const [myImage, setMyImage] = useState<IMAGE[]>(clone || []);
+  const imgFormData = useSelector((state: RootState) => state.createPost.form);
   const dispatch = useDispatch();
 
   const addImage = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,10 +44,14 @@ export default function OrderedImg({ imgs, edit, inline }: Props) {
       const urls = [...myImage];
       for (let count = 0; count < files.length; count++) {
         const imageURL = URL.createObjectURL(files[count]);
+        imgFormData.append('image', files[count]);
         files &&
           urls.push({ img: imageURL, checked: false, File: files[count] });
         setMyImage(urls);
-        inline && dispatch(setImgs(urls));
+      }
+      if (inline) {
+        dispatch(setImgs(imgFormData));
+        dispatch(setImgArr(urls));
       }
     }
   };
@@ -101,7 +107,14 @@ export default function OrderedImg({ imgs, edit, inline }: Props) {
       newClone.splice(section - 1, 0, target);
 
       setMyImage(newClone);
-      inline && dispatch(setImgs(newClone));
+      const formData = new FormData();
+      for (var i = 0; i < myImage.length; i++) {
+        formData.append('image', newClone[i].File);
+      }
+      if (inline) {
+        dispatch(setImgArr(newClone));
+        dispatch(setImgs(newClone));
+      }
     } else {
       target.checked = !target.checked;
       const newClone = myImage.filter((each: any, index: any) => index !== idx);
@@ -115,7 +128,14 @@ export default function OrderedImg({ imgs, edit, inline }: Props) {
       }, 0);
       newClone.splice(newClone.length - (section - 1), 0, target);
       setMyImage(newClone);
-      inline && dispatch(setImgs(newClone));
+      const formData = new FormData();
+      for (let i = 0; i < myImage.length; i++) {
+        formData.append('image', newClone[i].File);
+      }
+      if (inline) {
+        dispatch(setImgArr(newClone));
+        dispatch(setImgs(newClone));
+      }
     }
   };
 
@@ -126,33 +146,20 @@ export default function OrderedImg({ imgs, edit, inline }: Props) {
     const newImage = [...myImage];
     newImage.splice(index, 1);
     setMyImage(newImage);
-    inline && dispatch(setImgs(newImage));
-  };
-
-  const request = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData();
-
-    formData.append('title', 'newTitle');
-    formData.append('description', 'newDescript');
-    for (var i = 0; i < myImage.length; i++) {
-      formData.append('image', myImage[i].File);
+    const targetName = e.currentTarget.name;
+    // 삭제버튼을 누른 File.name
+    const imagesNumber = imgFormData.entries();
+    const formDataLenth = Array.from(imgFormData.keys()).length;
+    const newFormData = new FormData();
+    // imagesNumber.next().value[1].name
+    // formData 내부의 파일 명
+    for (let i = 0; i < formDataLenth; i++) {
+      const target = imagesNumber.next().value[1];
+      if (targetName !== target.name) {
+        newFormData.append('image', target);
+      }
     }
-    axios
-      .post(`${ENDPOINT}/specs/regist`, formData, {
-        headers: {
-          accept: 'application/json',
-          'Content-Type': 'multipart/form-data',
-          Authorization:
-            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVzdGFyZzFAaGFubWFpbC5uZXQiLCJ1c2VyTm8iOjUsImlzc3VlciI6Im1vZGVybi1hZ2lsZSIsImV4cGlyYXRpb24iOiIzNjAwMCIsImlhdCI6MTY1NjAzNDE4NCwiZXhwIjoxNjU2MDcwMTg0fQ.BZ_K0FHz0EFFeYHOuwMf_VYL3MRLjow-TctQiWAJvB8',
-        },
-      })
-      .then(res => {
-        console.log(`res`, res.data);
-      })
-      .catch(err => {
-        console.log(`err`, err);
-      });
+    inline && dispatch(setImgs(newImage));
   };
 
   const show = () => {
@@ -197,7 +204,7 @@ export default function OrderedImg({ imgs, edit, inline }: Props) {
           ((myImage.length < 5 && inline) ||
             (myImage.length < 10 && !inline)) && (
             <>
-              <form onSubmit={request}>
+              <form>
                 <input
                   id="input-file"
                   type="file"

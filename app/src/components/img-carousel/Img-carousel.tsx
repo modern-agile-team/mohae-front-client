@@ -13,7 +13,7 @@ interface Props {
 
 export default function Carousel({ onClick, imgs, outsideBtn }: Props) {
   const reduxImgs = useSelector(
-    (state: RootState) => state.createPost.data.img,
+    (state: RootState) => state.createPost.data.imgArr,
   );
   const IMAGES = imgs || [...reduxImgs];
 

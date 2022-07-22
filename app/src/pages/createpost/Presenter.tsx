@@ -16,11 +16,18 @@ interface Props {
   setTargetCheck: (i: number) => void;
   view: { [key: number]: boolean };
   targetChecked: { [key: number]: boolean };
+  postingAxios: (e: React.MouseEvent) => void;
 }
 
 function Presenter(props: Props) {
-  const { selectBoxClick, selectedList, setTargetCheck, view, targetChecked } =
-    props;
+  const {
+    selectBoxClick,
+    selectedList,
+    setTargetCheck,
+    view,
+    targetChecked,
+    postingAxios,
+  } = props;
   const dispatch = useDispatch();
 
   const createSelectBtn = () => {
@@ -29,7 +36,7 @@ function Presenter(props: Props) {
         className="markBox"
         id={`${i}`}
         key={i}
-        onClick={e => dispatch(setTarget(e.currentTarget.id))}
+        onClick={e => dispatch(setTarget(Number(e.currentTarget.id)))}
       >
         <SelectBtn
           large
@@ -67,7 +74,7 @@ function Presenter(props: Props) {
           <PostImgs />
         </div>
         <div>
-          <div className="write-btn">
+          <div className="write-btn" onClick={e => postingAxios(e)}>
             <Btn main>
               <p>작성</p>
               <div className="imgWrap">

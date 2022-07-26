@@ -1,12 +1,10 @@
 /** @format */
 
 import { css, cx } from '@emotion/css';
-import { useState, useEffect, useRef } from 'react';
-import { color, radius, font, shadow } from '../../styles';
+import { useState, useEffect, useMemo } from 'react';
+import { color } from '../../styles';
 import Img from '../img/Img';
 import Style from './style';
-import axios from 'axios';
-import { ENDPOINT } from '../../utils/ENDPOINT';
 import { useDispatch, useSelector } from 'react-redux';
 import { setImgArr, setImgs } from '../../redux/createpost/reducer';
 import { RootState } from '../../redux/root';
@@ -19,6 +17,7 @@ interface IMAGE {
   img: string;
   checked: boolean;
   File: FormData | any;
+  size: number;
 }
 
 export default function OrderedImg({ imgs, edit, inline }: Props) {
@@ -31,28 +30,73 @@ export default function OrderedImg({ imgs, edit, inline }: Props) {
   );
   const [alarm, setAlarm] = useState(true);
   const [myImage, setMyImage] = useState<IMAGE[]>(clone || []);
-  const imgFormData = useSelector((state: RootState) => state.createPost.form);
+  const formData = useSelector((state: RootState) => state.createPost.form);
+  const reduxData: { [key: string]: any } = useSelector(
+    (state: RootState) => state.createPost.data,
+  );
   const dispatch = useDispatch();
+
+  const refactorPriceData = useMemo((): number => {
+    const newData = Number(reduxData.price.replace(/,/g, ''));
+    return newData;
+  }, [reduxData.price]);
+  const refactorCategoryNo = useMemo((): number => {
+    const newData = Number(reduxData.categoryNo);
+    return newData;
+  }, [reduxData.categoryNo]);
+  const refactorAreaNo = useMemo((): number => {
+    const newData = Number(reduxData.areaNo);
+    return newData;
+  }, [reduxData.areaNo]);
+  const refactorDeadline = useMemo((): number => {
+    const newData = Number(reduxData.deadline);
+    return newData;
+  }, [reduxData.deadline]);
+  const refactorSummary = useMemo((): string | null => {
+    const newData = reduxData.summary === '' ? null : reduxData.summary;
+    return newData;
+  }, [reduxData.summary]);
+  const refactorDescription = useMemo((): string => {
+    const newData = reduxData.description;
+    return newData;
+  }, [reduxData.description]);
+  const refactorTitle = useMemo((): string => {
+    const newData = reduxData.title;
+    return newData;
+  }, [reduxData.title]);
+
+  const refactorReduxData: { [key: string]: string | number | null } = {
+    price: refactorPriceData,
+    title: refactorTitle,
+    description: refactorDescription,
+    summary: refactorSummary,
+    target: reduxData.target,
+    categoryNo: refactorCategoryNo,
+    areaNo: refactorAreaNo,
+    deadline: refactorDeadline,
+  };
 
   const addImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.currentTarget.files || [];
     if (inline && files.length + myImage.length > 5) {
       alert('사진은 최대 5개만 업로드 할 수 있습니다.');
-    } else if (!inline && files.length + myImage.length > 10) {
-      alert('사진은 최대 10개만 업로드 할 수 있습니다.');
     } else {
       const urls = [...myImage];
       for (let count = 0; count < files.length; count++) {
         const imageURL = URL.createObjectURL(files[count]);
-        imgFormData.append('image', files[count]);
+        formData.append('image', files[count]);
         files &&
-          urls.push({ img: imageURL, checked: false, File: files[count] });
+          urls.push({
+            img: imageURL,
+            checked: false,
+            File: files[count],
+            size: files[count].size,
+          });
         setMyImage(urls);
       }
-      if (inline) {
-        dispatch(setImgs(imgFormData));
-        dispatch(setImgArr(urls));
-      }
+
+      dispatch(setImgs(formData));
+      dispatch(setImgArr(urls));
     }
   };
 
@@ -107,14 +151,13 @@ export default function OrderedImg({ imgs, edit, inline }: Props) {
       newClone.splice(section - 1, 0, target);
 
       setMyImage(newClone);
-      const formData = new FormData();
+      formData.delete('image');
       for (var i = 0; i < myImage.length; i++) {
         formData.append('image', newClone[i].File);
       }
-      if (inline) {
-        dispatch(setImgArr(newClone));
-        dispatch(setImgs(newClone));
-      }
+
+      dispatch(setImgArr(newClone));
+      dispatch(setImgs(formData));
     } else {
       target.checked = !target.checked;
       const newClone = myImage.filter((each: any, index: any) => index !== idx);
@@ -128,38 +171,36 @@ export default function OrderedImg({ imgs, edit, inline }: Props) {
       }, 0);
       newClone.splice(newClone.length - (section - 1), 0, target);
       setMyImage(newClone);
-      const formData = new FormData();
-      for (let i = 0; i < myImage.length; i++) {
+      formData.delete('image');
+      for (var i = 0; i < myImage.length; i++) {
         formData.append('image', newClone[i].File);
       }
-      if (inline) {
-        dispatch(setImgArr(newClone));
-        dispatch(setImgs(newClone));
-      }
+
+      dispatch(setImgArr(newClone));
+      dispatch(setImgs(formData));
     }
   };
 
-  const deleteImg = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const deleteImg = (e: React.MouseEvent<HTMLButtonElement>, num: number) => {
     e.preventDefault();
     e.stopPropagation();
+
+    const newFormData = new FormData();
+    for (const key in refactorReduxData) {
+      newFormData.set(`${key}`, JSON.stringify(refactorReduxData[key]));
+    }
+
     const index = Number(e.currentTarget.id);
     const newImage = [...myImage];
     newImage.splice(index, 1);
     setMyImage(newImage);
-    const targetName = e.currentTarget.name;
-    // 삭제버튼을 누른 File.name
-    const imagesNumber = imgFormData.entries();
-    const formDataLenth = Array.from(imgFormData.keys()).length;
-    const newFormData = new FormData();
-    // imagesNumber.next().value[1].name
-    // formData 내부의 파일 명
-    for (let i = 0; i < formDataLenth; i++) {
-      const target = imagesNumber.next().value[1];
-      if (targetName !== target.name) {
-        newFormData.append('image', target);
-      }
+
+    for (let i = 0; i < newImage.length; i++) {
+      newFormData.append('image', newImage[i].File);
     }
-    inline && dispatch(setImgs(newImage));
+
+    dispatch(setImgArr(newImage));
+    dispatch(setImgs(newFormData));
   };
 
   const show = () => {
@@ -193,7 +234,7 @@ export default function OrderedImg({ imgs, edit, inline }: Props) {
                 <Img src={each.img} />
                 <div className={cx(sequence, order)}>{index + 1}</div>
                 <button
-                  onClick={deleteImg}
+                  onClick={e => deleteImg(e, index)}
                   id={`${index}`}
                   className={'delete'}
                 />
@@ -217,7 +258,6 @@ export default function OrderedImg({ imgs, edit, inline }: Props) {
                     <div className={'icon'} />
                   </div>
                 </label>
-                {/* <input type={'submit'} /> */}
               </form>
             </>
           )}

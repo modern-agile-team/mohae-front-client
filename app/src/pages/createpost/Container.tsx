@@ -10,7 +10,6 @@ function CreateAndEditPost() {
     (state: RootState) => state.createPost.data,
   );
   const form = useSelector((state: RootState) => state.createPost.form);
-  const a = form.entries();
 
   const refactorPriceData = useMemo((): number => {
     const newData = Number(reduxData.price.replace(/,/g, ''));
@@ -74,8 +73,8 @@ function CreateAndEditPost() {
           Authorization: `Bearer ${getToken()}`,
         },
       })
-      .then(res => console.log('createpost', res))
-      .catch(err => console.log('createpost', err));
+      .then(res => res)
+      .catch(err => alert('작성 실패'));
   };
 
   const [view, setView] = useState<{ [key: number]: boolean }>({
@@ -115,33 +114,3 @@ function CreateAndEditPost() {
 }
 
 export default CreateAndEditPost;
-
-interface InitialState {
-  data: {
-    price: number | string;
-    title: string;
-    description: string;
-    summary: string;
-    target: number | null;
-    categoryNo: string | number | null;
-    areaNo: string | number | null;
-    deadline: string | number | null;
-    imgArr: string[];
-  };
-  form: FormData;
-}
-
-const initialState: InitialState = {
-  data: {
-    price: '0', // 정수형
-    title: '', // '제목'
-    description: '', // '본문 내용'
-    summary: '', //없으면 null || '한 줄 요약 내용'
-    target: 0, // 0, 1 === 정수형
-    categoryNo: null, // 정수형
-    areaNo: null, // 정수형
-    deadline: null, // 정수형
-    imgArr: ['logo.jpg'], // string[]
-  },
-  form: new FormData(),
-};

@@ -7,8 +7,9 @@ import PostBody from '../../components/pagecomp/PostBody';
 import { SelectBtn } from '../../components/button';
 import Input from './Input';
 import PostImgs from '../../components/pagecomp/PostImgs';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setTarget } from '../../redux/createpost/reducer';
+import { RootState } from '../../redux/root';
 
 interface Props {
   selectBoxClick: (i: number) => void;
@@ -28,7 +29,38 @@ function Presenter(props: Props) {
     targetChecked,
     postingAxios,
   } = props;
+  const requiredItems = 1;
+  const { title, price, categoryNo, areaNo, deadline, description } =
+    useSelector((state: RootState) => state.createPost.data);
   const dispatch = useDispatch();
+
+  const handleWriteBtn = () => {
+    return title.length > 2 &&
+      15 > title.length &&
+      price &&
+      categoryNo !== null &&
+      areaNo !== null &&
+      deadline !== null &&
+      description.length > 8 ? (
+      <div className="write-btn" onClick={e => postingAxios(e)}>
+        <Btn main>
+          <p>작성</p>
+          <div className="imgWrap">
+            <Img src="/img/write.png" />
+          </div>
+        </Btn>
+      </div>
+    ) : (
+      <div className="write-btn">
+        <Btn main disable>
+          <p>작성</p>
+          <div className="imgWrap">
+            <Img src="/img/write.png" />
+          </div>
+        </Btn>
+      </div>
+    );
+  };
 
   const createSelectBtn = () => {
     return contents.map((el, i) => (
@@ -74,14 +106,15 @@ function Presenter(props: Props) {
           <PostImgs />
         </div>
         <div>
-          <div className="write-btn" onClick={e => postingAxios(e)}>
+          {handleWriteBtn()}
+          {/* <div className="write-btn" onClick={e => postingAxios(e)}>
             <Btn main>
               <p>작성</p>
               <div className="imgWrap">
                 <Img src="/img/write.png" />
               </div>
             </Btn>
-          </div>
+          </div> */}
           <Box size={[736, 448]} className="writeWrap">
             <div className="topWrap">
               <div className="left">

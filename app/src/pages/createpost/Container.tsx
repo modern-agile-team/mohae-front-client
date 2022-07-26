@@ -1,12 +1,11 @@
 import axios from 'axios';
-import React, { useEffect, useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useMemo, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/root';
 import getToken from '../../utils/getToken';
 import Presenter from './Presenter';
 
 function CreateAndEditPost() {
-  const dispatch = useDispatch();
   const reduxData: { [key: string]: any } = useSelector(
     (state: RootState) => state.createPost.data,
   );
@@ -14,25 +13,32 @@ function CreateAndEditPost() {
   const a = form.entries();
 
   const refactorPriceData = useMemo((): number => {
-    return Number(reduxData.price.replace(/,/g, ''));
+    const newData = Number(reduxData.price.replace(/,/g, ''));
+    return newData;
   }, [reduxData.price]);
   const refactorCategoryNo = useMemo((): number => {
-    return Number(reduxData.categoryNo);
+    const newData = Number(reduxData.categoryNo);
+    return newData;
   }, [reduxData.categoryNo]);
   const refactorAreaNo = useMemo((): number => {
-    return Number(reduxData.areaNo);
+    const newData = Number(reduxData.areaNo);
+    return newData;
   }, [reduxData.areaNo]);
   const refactorDeadline = useMemo((): number => {
-    return Number(reduxData.deadline);
+    const newData = Number(reduxData.deadline);
+    return newData;
   }, [reduxData.deadline]);
   const refactorSummary = useMemo((): string | null => {
-    return reduxData.summary === '' ? null : reduxData.summary;
+    const newData = reduxData.summary === '' ? null : reduxData.summary;
+    return newData;
   }, [reduxData.summary]);
   const refactorDescription = useMemo((): string => {
-    return reduxData.description;
+    const newData = reduxData.description;
+    return newData;
   }, [reduxData.description]);
   const refactorTitle = useMemo((): string => {
-    return reduxData.title;
+    const newData = reduxData.title;
+    return newData;
   }, [reduxData.title]);
 
   const refactorReduxData: { [key: string]: string | number | null } = {
@@ -48,8 +54,16 @@ function CreateAndEditPost() {
 
   const postingAxios = (e: React.MouseEvent) => {
     e.preventDefault();
+
     for (const key in refactorReduxData) {
       form.set(`${key}`, JSON.stringify(refactorReduxData[key]));
+    }
+
+    if (form.getAll('image').length === 0) {
+      const file = new File(['logo.jpg'], 'logo.jpg', {
+        type: 'image/jpg',
+      });
+      form.append('image', file);
     }
 
     axios
@@ -81,7 +95,6 @@ function CreateAndEditPost() {
   };
 
   const selectedList = (e?: React.MouseEvent) => {
-    console.log(e?.currentTarget.textContent);
     setView({ 0: false, 1: false, 2: false });
   };
 
@@ -102,3 +115,33 @@ function CreateAndEditPost() {
 }
 
 export default CreateAndEditPost;
+
+interface InitialState {
+  data: {
+    price: number | string;
+    title: string;
+    description: string;
+    summary: string;
+    target: number | null;
+    categoryNo: string | number | null;
+    areaNo: string | number | null;
+    deadline: string | number | null;
+    imgArr: string[];
+  };
+  form: FormData;
+}
+
+const initialState: InitialState = {
+  data: {
+    price: '0', // 정수형
+    title: '', // '제목'
+    description: '', // '본문 내용'
+    summary: '', //없으면 null || '한 줄 요약 내용'
+    target: 0, // 0, 1 === 정수형
+    categoryNo: null, // 정수형
+    areaNo: null, // 정수형
+    deadline: null, // 정수형
+    imgArr: ['logo.jpg'], // string[]
+  },
+  form: new FormData(),
+};

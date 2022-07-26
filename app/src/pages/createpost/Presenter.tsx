@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { css, cx } from '@emotion/css';
-import { Box, Btn, Img, MarkBox } from '../../components';
+import { Box, Btn, Img, MarkBox, Popup } from '../../components';
 import SelectBox from '../../components/selectbox/SelectBox';
 import { color, font } from '../../styles';
 import PostBody from '../../components/pagecomp/PostBody';
@@ -8,8 +8,9 @@ import { SelectBtn } from '../../components/button';
 import Input from './Input';
 import PostImgs from '../../components/pagecomp/PostImgs';
 import { useDispatch, useSelector } from 'react-redux';
-import { setTarget } from '../../redux/createpost/reducer';
+import { setInitialState, setTarget } from '../../redux/createpost/reducer';
 import { RootState } from '../../redux/root';
+import { Link } from 'react-router-dom';
 
 interface Props {
   selectBoxClick: (i: number) => void;
@@ -29,37 +30,48 @@ function Presenter(props: Props) {
     targetChecked,
     postingAxios,
   } = props;
-  const requiredItems = 1;
   const { title, price, categoryNo, areaNo, deadline, description } =
     useSelector((state: RootState) => state.createPost.data);
+  const [popupView, setPopupView] = useState(false);
   const dispatch = useDispatch();
 
+  const creationCompleteAction = (e: React.MouseEvent) => {
+    setPopupView(true);
+    postingAxios(e);
+  };
+
   const handleWriteBtn = () => {
-    return title.length > 2 &&
+    if (
+      title.length > 2 &&
       15 > title.length &&
       price &&
       categoryNo !== null &&
       areaNo !== null &&
       deadline !== null &&
-      description.length > 8 ? (
-      <div className="write-btn" onClick={e => postingAxios(e)}>
-        <Btn main>
-          <p>작성</p>
-          <div className="imgWrap">
-            <Img src="/img/write.png" />
-          </div>
-        </Btn>
-      </div>
-    ) : (
-      <div className="write-btn">
-        <Btn main disable>
-          <p>작성</p>
-          <div className="imgWrap">
-            <Img src="/img/write.png" />
-          </div>
-        </Btn>
-      </div>
-    );
+      description.length > 8
+    ) {
+      return (
+        <div className="write-btn" onClick={e => creationCompleteAction(e)}>
+          <Btn main>
+            <p>작성</p>
+            <div className="imgWrap">
+              <Img src="/img/write.png" />
+            </div>
+          </Btn>
+        </div>
+      );
+    } else {
+      return (
+        <div className="write-btn">
+          <Btn main disable>
+            <p>작성</p>
+            <div className="imgWrap">
+              <Img src="/img/write.png" />
+            </div>
+          </Btn>
+        </div>
+      );
+    }
   };
 
   const createSelectBtn = () => {
@@ -107,14 +119,6 @@ function Presenter(props: Props) {
         </div>
         <div>
           {handleWriteBtn()}
-          {/* <div className="write-btn" onClick={e => postingAxios(e)}>
-            <Btn main>
-              <p>작성</p>
-              <div className="imgWrap">
-                <Img src="/img/write.png" />
-              </div>
-            </Btn>
-          </div> */}
           <Box size={[736, 448]} className="writeWrap">
             <div className="topWrap">
               <div className="left">
@@ -130,11 +134,30 @@ function Presenter(props: Props) {
         </div>
       </div>
       <PostBody />
+      {popupView && (
+        <Popup
+          visible={popupView}
+          text1={'게시글이 성공적으로 작성 되었습니다.'}
+        >
+          <div className={cx(popupCloseBtn)}>
+            <Link to={'/boards/1'}>
+              <Btn main onClick={dispatch(setInitialState)}>
+                닫기
+              </Btn>
+            </Link>
+          </div>
+        </Popup>
+      )}
     </>
   );
 }
 
 export default Presenter;
+
+const popupCloseBtn = css`
+  width: 74px;
+  height: 43px;
+`;
 
 const container = css`
   display: flex;

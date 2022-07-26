@@ -17,15 +17,15 @@ interface InitialState {
 
 const initialState: InitialState = {
   data: {
-    price: '0', // 정수형
-    title: '', // '제목'
-    description: '', // '본문 내용'
-    summary: '', //없으면 null || '한 줄 요약 내용'
-    target: 0, // 0, 1 === 정수형
-    categoryNo: null, // 정수형
-    areaNo: null, // 정수형
-    deadline: null, // 정수형
-    imgArr: ['logo.jpg'], // string[]
+    price: '0',
+    title: '',
+    description: '',
+    summary: '',
+    target: 0,
+    categoryNo: null,
+    areaNo: null,
+    deadline: null,
+    imgArr: ['logo.jpg'],
   },
   form: new FormData(),
 };
@@ -66,6 +66,20 @@ const createPost = createSlice({
         ? [...action.payload.map((el: any) => el.img)]
         : ['logo.jpg'];
     },
+    setInitialState: state => {
+      state.data = {
+        price: '0',
+        title: '',
+        description: '',
+        summary: '',
+        target: 0,
+        categoryNo: null,
+        areaNo: null,
+        deadline: null,
+        imgArr: ['logo.jpg'],
+      };
+      state.form = new FormData();
+    },
   },
 });
 
@@ -80,5 +94,6 @@ export const {
   setSummary,
   setTarget,
   setImgArr,
+  setInitialState,
 } = createPost.actions;
 export default createPost.reducer;

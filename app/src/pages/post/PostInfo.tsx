@@ -144,11 +144,9 @@ function PostInfo(props: PostInfoProps) {
             </Btn>
           </div>
           <div className="popup-btn">
-            <Link to={'/boards/category/17?take=12&page=1'}>
-              <Btn main onClick={deletePost}>
-                삭제하기
-              </Btn>
-            </Link>
+            <Btn main onClick={deletePost}>
+              삭제하기
+            </Btn>
           </div>
         </Popup>
       )
@@ -164,6 +162,7 @@ function PostInfo(props: PostInfoProps) {
       })
       .then(res => console.log(res))
       .catch(err => console.log(err));
+    window.location.replace('/boards/1');
   };
 
   return (

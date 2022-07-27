@@ -1,7 +1,6 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 import { css, cx } from '@emotion/css';
-import { color, font, radius } from '../../styles';
-import { Props } from './Container';
+import { color, font } from '../../styles';
 import PostWriter from './PostWriter';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/root';
@@ -11,7 +10,7 @@ interface PostInfoProps {
   close: () => void;
 }
 
-function PostInfo(props: PostInfoProps) {
+function QuickMenu(props: PostInfoProps) {
   const { close } = props;
   const reduxData = useSelector(
     (state: RootState) => state.post.data.response.board,
@@ -20,11 +19,17 @@ function PostInfo(props: PostInfoProps) {
   const showDDAYContent = () => {
     if (!reduxData.isDeadline) {
       if (reduxData.decimalDay !== null) {
-        return css`
-          background-color: ${color.subtle};
-          color: ${color.main};
-          content: 'D ${reduxData.decimalDay}';
-        `;
+        return reduxData.decimalDay
+          ? css`
+              background-color: ${color.subtle};
+              color: ${color.main};
+              content: 'D ${reduxData.decimalDay}';
+            `
+          : css`
+              background-color: ${color.main};
+              color: white;
+              content: 'D-DAY';
+            `;
       }
       return css`
         background-color: ${color.main};
@@ -97,4 +102,4 @@ function PostInfo(props: PostInfoProps) {
   );
 }
 
-export default PostInfo;
+export default QuickMenu;

@@ -27,11 +27,17 @@ function PostInfo(props: PostInfoProps) {
   const showDDAYContent = () => {
     if (!response.board.isDeadline) {
       if (response.board.decimalDay !== null) {
-        return css`
-          background-color: ${color.subtle};
-          color: ${color.main};
-          content: 'D ${response.board.decimalDay}';
-        `;
+        return response.board.decimalDay
+          ? css`
+              background-color: ${color.subtle};
+              color: ${color.main};
+              content: 'D ${response.board.decimalDay}';
+            `
+          : css`
+              background-color: ${color.main};
+              color: white;
+              content: 'D-DAY';
+            `;
       }
       return css`
         background-color: ${color.main};

@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { css, cx } from '@emotion/css';
-import { Box, Carousel, MarkBox, OrderedImg, Btn } from '..';
+import { Box, Carousel, MarkBox, OrderedImg } from '..';
 import { radius } from '../../styles';
 import { Props } from '../../pages/post/Container';
 import { useSelector } from 'react-redux';
@@ -17,33 +17,28 @@ function PostImgs(props: PostImgsProps) {
   const reduxDatas = useSelector(
     (state: RootState) => state.post.data.response.board,
   );
+  const loading = useSelector((state: RootState) => state.post.loading);
   const boardPhotoURL = () => {
-    return reduxDatas.boardPhotoUrls !== null &&
-      reduxDatas.boardPhotoUrls !== ''
-      ? reduxDatas.boardPhotoUrls.split(', ').map(el => {
-          return 'https://d2ffbnf2hpheay.cloudfront.net/' + el;
-        })
-      : ['/img/logo.png'];
+    if (reduxDatas.boardPhotoUrls !== null && !loading) {
+      return reduxDatas.boardPhotoUrls
+        .split(', ')
+        .map(el => 'https://d2ffbnf2hpheay.cloudfront.net/' + el);
+    } else if (reduxDatas.boardPhotoUrls === null) {
+      return ['/img/logo.png'];
+    }
   };
 
-  const style = css`
-    .carouselBox {
-      width: 360px;
-      height: 360px;
-      ${radius[6]}
-      position: relative;
+  const createOrderedImg = () => {
+    if (!loading) {
+      return (
+        <Box className="orderImgBox" size={[360, 72]}>
+          <OrderedImg imgs={boardPhotoURL()} inline />
+        </Box>
+      );
+    } else {
+      return <Box className="orderImgBox" size={[360, 72]}></Box>;
     }
-
-    .markBox {
-      position: absolute;
-      top: 16px;
-      left: 314px;
-    }
-
-    .orderImgBox {
-      margin-top: 16px;
-    }
-  `;
+  };
 
   return view ? (
     <div className={cx(style)}>
@@ -58,9 +53,7 @@ function PostImgs(props: PostImgsProps) {
           />
         </div>
       </Box>
-      <Box className="orderImgBox" size={[360, 72]}>
-        <OrderedImg imgs={boardPhotoURL()} inline />
-      </Box>
+      {createOrderedImg()}
     </div>
   ) : (
     <>
@@ -75,3 +68,22 @@ function PostImgs(props: PostImgsProps) {
 }
 
 export default PostImgs;
+
+const style = css`
+  .carouselBox {
+    width: 360px;
+    height: 360px;
+    ${radius[6]}
+    position: relative;
+  }
+
+  .markBox {
+    position: absolute;
+    top: 16px;
+    left: 314px;
+  }
+
+  .orderImgBox {
+    margin-top: 16px;
+  }
+`;

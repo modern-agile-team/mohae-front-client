@@ -3,23 +3,27 @@ import { css, cx } from '@emotion/css';
 import { color, font, radius } from '../../styles';
 import { Props } from './Container';
 import PostWriter from './PostWriter';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/root';
 
-interface PostInfoProps extends Props {
+interface PostInfoProps {
   quickMenu?: boolean;
   close: () => void;
 }
 
 function PostInfo(props: PostInfoProps) {
-  const { data, close } = props;
-  const datas = data.response.board;
+  const { close } = props;
+  const reduxData = useSelector(
+    (state: RootState) => state.post.data.response.board,
+  );
 
   const showDDAYContent = () => {
-    if (!datas.isDeadline) {
-      if (datas.decimalDay !== null) {
+    if (!reduxData.isDeadline) {
+      if (reduxData.decimalDay !== null) {
         return css`
           background-color: ${color.subtle};
           color: ${color.main};
-          content: 'D ${datas.decimalDay}';
+          content: 'D ${reduxData.decimalDay}';
         `;
       }
       return css`
@@ -71,7 +75,7 @@ function PostInfo(props: PostInfoProps) {
       ${font.weight[400]}
       height: 24px;
       :after {
-        content: '${datas.price ? '원' : ''}';
+        content: '${reduxData.price ? '원' : ''}';
         margin: 0px 0px 0px 4px;
       }
     }
@@ -83,12 +87,12 @@ function PostInfo(props: PostInfoProps) {
   return (
     <div className={cx(common)}>
       <div>
-        <p className="title">{datas.title}</p>
+        <p className="title">{reduxData.title}</p>
         <p className="price">
-          {datas.price ? datas.price.toLocaleString() : '무료'}
+          {reduxData.price ? reduxData.price.toLocaleString() : '무료'}
         </p>
       </div>
-      <PostWriter close={close} data={data} />
+      <PostWriter close={close} />
     </div>
   );
 }

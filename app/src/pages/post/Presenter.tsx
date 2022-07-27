@@ -8,12 +8,11 @@ import QuickMenu from './QuickMenu';
 import useScroll from '../../customhook/useScroll';
 import { color, font, radius, shadow } from '../../styles';
 import { Props } from './Container';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/root';
 
-function Presenter({ data }: Props) {
+function Presenter() {
   const [report, setReport] = useState(false);
-  const [likeCount, setLikeCount] = useState<number>(
-    data.response.board.likeCount,
-  );
   const textRef = useRef<HTMLTextAreaElement>(null);
   const handleResizeHeight = useCallback(() => {
     if (textRef.current) {
@@ -21,14 +20,15 @@ function Presenter({ data }: Props) {
       textRef.current.style.height = textRef.current.scrollHeight + 'px';
     }
   }, []);
-
+  const reduxData = useSelector((state: RootState) => state.post.data);
+  console.log('reduxData :>> ', reduxData);
   const closeBtn = () => {
     return (
-      data.msg === '회원' &&
-      data.response.authorization && (
+      reduxData.msg === '회원' &&
+      reduxData.response.authorization && (
         <div className="cancelCloseBtn">
           <Btn main>
-            {data.response.board.isDeadline ? '마감 취소' : '마감 하기'}
+            {reduxData.response.board.isDeadline ? '마감 취소' : '마감 하기'}
           </Btn>
         </div>
       )
@@ -37,7 +37,7 @@ function Presenter({ data }: Props) {
 
   return (
     <>
-      {!data.response.authorization && (
+      {!reduxData.response.authorization && (
         <>
           <Mosaic body />
           <Mosaic img />
@@ -46,15 +46,15 @@ function Presenter({ data }: Props) {
       <ReportModal visible={report} close={() => setReport(!report)} />
       <div className={cx(wrap)}>
         <div className="topflexWrap">
-          <PostImgs view data={{ data: data }} />
+          <PostImgs view />
           <div className="sectionWrap">
-            <PostInfo data={data} close={() => setReport(!report)} />
+            <PostInfo close={() => setReport(!report)} />
             <div className="postIt">
-              <PostIt small>{data.response.board.summary}</PostIt>
+              <PostIt small>{reduxData.response.board.summary}</PostIt>
             </div>
           </div>
         </div>
-        <PostBody view data={{ data: data }} />
+        <PostBody view />
         <Box size={[1128]} className="comments-box">
           <p className="all-comments">
             댓글 <span>({dummy.response.length})</span>
@@ -79,7 +79,7 @@ function Presenter({ data }: Props) {
         {closeBtn()}
         {useScroll().scrollY > 490 && (
           <div className="quickMenu">
-            <QuickMenu data={data} close={() => setReport(!report)} />
+            <QuickMenu close={() => setReport(!report)} />
           </div>
         )}
       </div>

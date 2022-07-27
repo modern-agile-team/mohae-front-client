@@ -13,16 +13,18 @@ interface PostImgsProps {
 }
 
 function PostImgs(props: PostImgsProps) {
-  const { view, getValue, data } = props;
+  const { view, getValue } = props;
   const reduxDatas = useSelector(
     (state: RootState) => state.post.data.response.board,
   );
-  const boardPhotoURL = () =>
-    reduxDatas.boardPhotoUrls !== null && reduxDatas.boardPhotoUrls !== ''
+  const boardPhotoURL = () => {
+    return reduxDatas.boardPhotoUrls !== null &&
+      reduxDatas.boardPhotoUrls !== ''
       ? reduxDatas.boardPhotoUrls.split(', ').map(el => {
           return 'https://d2ffbnf2hpheay.cloudfront.net/' + el;
         })
       : ['/img/logo.png'];
+  };
 
   const style = css`
     .carouselBox {

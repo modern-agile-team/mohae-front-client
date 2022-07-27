@@ -5,17 +5,21 @@ import { Btn, Img, PostIt } from '../../components';
 import { color, font } from '../../styles';
 import Btns from './Btns';
 import { Props } from './Container';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/root';
 
-interface PostWriterProps extends Props {
+interface PostWriterProps {
   close: () => void;
 }
 
-function PostWriter({ close, data }: PostWriterProps) {
-  const datas = data.response.board;
+function PostWriter({ close }: PostWriterProps) {
+  const reduxData = useSelector(
+    (state: RootState) => state.post.data.response.board,
+  );
 
   const userImg =
-    datas.userPhotoUrl !== null
-      ? `https://d2ffbnf2hpheay.cloudfront.net/${datas.userPhotoUrl}`
+    reduxData.userPhotoUrl !== null
+      ? `https://d2ffbnf2hpheay.cloudfront.net/${reduxData.userPhotoUrl}`
       : // + '?w=60'
         null;
 
@@ -63,11 +67,11 @@ function PostWriter({ close, data }: PostWriterProps) {
         <div className="userData">
           <Profile img={userImg} size={60} smallShadow />
           <div>
-            <p>{datas.nickname}</p>
-            <p>{datas.majorName}</p>
+            <p>{reduxData.nickname}</p>
+            <p>{reduxData.majorName}</p>
           </div>
         </div>
-        <Btns data={data} close={close} />
+        <Btns close={close} />
       </div>
     </>
   );

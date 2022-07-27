@@ -96,7 +96,7 @@ function Post() {
 
   return (
     <>
-      <Presenter data={reduxData} />
+      <Presenter />
     </>
   );
 }

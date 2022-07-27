@@ -7,7 +7,6 @@ import PostInfo from './PostInfo';
 import QuickMenu from './QuickMenu';
 import useScroll from '../../customhook/useScroll';
 import { color, font, radius, shadow } from '../../styles';
-import { Props } from './Container';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/root';
 
@@ -21,7 +20,6 @@ function Presenter() {
     }
   }, []);
   const reduxData = useSelector((state: RootState) => state.post.data);
-  console.log('reduxData :>> ', reduxData);
   const closeBtn = () => {
     return (
       reduxData.msg === '회원' &&

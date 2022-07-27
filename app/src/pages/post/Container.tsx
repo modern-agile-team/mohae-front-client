@@ -1,10 +1,9 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Presenter from './Presenter';
 import { decodeToken } from 'react-jwt';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../redux/root';
+import { useDispatch } from 'react-redux';
 import { setPostData } from '../../redux/post/reducer';
 import getToken from '../../utils/getToken';
 
@@ -63,10 +62,7 @@ function Post() {
   }, []);
   const { no } = useParams();
   const dispatch = useDispatch();
-  const reduxData = useSelector((state: RootState) => state.post.data);
-
   const token = getToken() || null;
-
   const decoded = () => {
     return token !== null ? decodeToken(token) : token;
   };

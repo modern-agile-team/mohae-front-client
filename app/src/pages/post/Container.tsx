@@ -3,9 +3,11 @@ import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Presenter from './Presenter';
 import { decodeToken } from 'react-jwt';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setPostData } from '../../redux/post/reducer';
 import getToken from '../../utils/getToken';
+import { RootState } from '../../redux/root';
+import EmptySpinner from '../../components/emptySpinner/EmptySpinner';
 
 export interface Props {
   data: {
@@ -66,6 +68,7 @@ function Post() {
   const decoded = () => {
     return token !== null ? decodeToken(token) : token;
   };
+  const loading = useSelector((state: RootState) => state.post.loading);
 
   useEffect(() => {
     axios
@@ -90,11 +93,11 @@ function Post() {
       .catch(err => console.log('err', err));
   }, []);
 
-  return (
-    <>
-      <Presenter />
-    </>
-  );
+  const returnComp = () => {
+    return !loading ? <Presenter /> : <EmptySpinner loading />;
+  };
+
+  return <>{returnComp()}</>;
 }
 
 export default Post;

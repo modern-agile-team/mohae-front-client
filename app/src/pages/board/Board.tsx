@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/root';
 import EmptySpinner from '../../components/emptySpinner/EmptySpinner';
 import { setCategorys } from '../../redux/board/reducer';
+import { setInitialState } from '../../redux/post/reducer';
 
 interface PostData {
   decimalDay: number | null;
@@ -56,9 +57,6 @@ function Presenter() {
       : queryBase + `&sort=${getPrams('sort')}`;
   };
 
-  // console.log('filteringQuery() :>> ', filteringQuery());
-  // console.log('location.search :>> ', location.search);
-
   const getData = () => {
     const filteringBaseURL = `https://mo-hae.site/boards/filter?take=12&page=1`;
     const categoryBaseURL = `https://mo-hae.site/boards/category/${no}?take=12&page=1`;
@@ -67,15 +65,13 @@ function Presenter() {
       .get(
         location.search ? filteringBaseURL + filteringQuery() : categoryBaseURL,
       )
-      .then(res => {
-        console.log('res.data :>> ', res.data);
-        dispatch(setCategorys(res.data.response));
-      })
+      .then(res => dispatch(setCategorys(res.data.response)))
       .catch(err => console.log('err', err));
   };
 
   useEffect(() => {
     getData();
+    dispatch(setInitialState());
   }, [location.search, no]);
 
   const createPost = () => {

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
-import useInput from '../../customhook/useInput';
-import { FileUpload } from '../../components/fileUpload/FileUpLoad';
+import { useInput } from '../../customhook/useInput';
+import { FileUpload } from '../../components/FileUpload/FileUpload';
 import { Img } from '../../components';
 import { getByteSize } from '../../utils/getByteSize';
-import { postQuestion } from '../../apis/question';
+import { postQuestion } from '../../apis/postQuestion';
 
 const Inquire = () => {
   const title = useInput(45);
@@ -20,11 +20,11 @@ const Inquire = () => {
   });
 
   const onSubmit = () => {
-    postQuestion({
-      title: title.value,
-      description: contents.value,
-      image: fileData.formData,
-    });
+    if (title.value.length && contents.value.length === 0) return;
+    fileData.formData.set(`title`, JSON.stringify(title.value));
+    fileData.formData.set('description', JSON.stringify(contents.value));
+
+    postQuestion(fileData.formData);
   };
 
   return (
@@ -75,7 +75,13 @@ const Inquire = () => {
           파일첨부는 JPG, GIF, PSD, MS Office 파일, 한글, PDF만 가능합니다.
         </span>
       </ExplainWrapper>
-      <SubmitButton onClick={() => onSubmit()}>제출</SubmitButton>
+      <SubmitButton
+        titleValue={title.value}
+        contentsValue={contents.value}
+        onClick={() => onSubmit()}
+      >
+        제출
+      </SubmitButton>
     </Wrapper>
   );
 };
@@ -196,10 +202,16 @@ const ExplainWrapper = styled.div`
   }
 `;
 
-const SubmitButton = styled.button`
+const SubmitButton = styled.button<{
+  titleValue: string;
+  contentsValue: string;
+}>`
   width: 480px;
   height: 52px;
-  background-color: #ff445e;
+  background-color: ${props =>
+    props.titleValue.length && props.contentsValue.length > 0
+      ? '#FF445E'
+      : '#E7E7E8'};
   border-radius: 6px;
   color: #ffffff;
   font-size: 16px;

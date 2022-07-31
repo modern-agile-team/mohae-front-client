@@ -47,3 +47,23 @@ export const FileUpload = ({ fileData, setFileData }: Props) => {
     </>
   );
 };
+
+const Input = styled.input`
+  display: none;
+`;
+
+const UpLoadButton = styled.label`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 86px;
+  height: 40px;
+  background-color: #ff445e;
+  border-radius: 6px;
+  cursor: pointer;
+  span {
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 700;
+  }
+`;

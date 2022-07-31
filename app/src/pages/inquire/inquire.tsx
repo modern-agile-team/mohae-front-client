@@ -1,0 +1,242 @@
+import React, { useState } from 'react';
+import styled from '@emotion/styled';
+import useInput from '../../customhook/useInput';
+import { FileUpload } from '../../components/fileUpload/FileUpLoad';
+import { Img } from '../../components';
+import { getByteSize } from '../../utils/getByteSize';
+import { postQuestion } from '../../apis/question';
+
+const Inquire = () => {
+  const title = useInput(45);
+  const contents = useInput(500);
+  const [fileData, setFileData] = useState<{
+    formData: FormData;
+    fileName: string;
+    size: number;
+  }>({
+    formData: new FormData(),
+    fileName: '',
+    size: 0,
+  });
+
+  const onSubmit = () => {
+    postQuestion({
+      title: title.value,
+      description: contents.value,
+      image: fileData.formData,
+    });
+  };
+
+  return (
+    <Wrapper>
+      <h3>문의하기</h3>
+      <span>Modern@gmail.com</span>
+      <TitleInput placeholder="문의제목을 입력해주세요. (3~45자)" {...title} />
+      <Contents>
+        <TextWrapper>
+          <Text
+            placeholder="문의내용을 입력해주세요. (최대 500자)"
+            {...contents}
+          />
+        </TextWrapper>
+        <TextLength>
+          <span>{`${contents.value.length}/500`}</span>
+        </TextLength>
+      </Contents>
+
+      {fileData.fileName !== '' ? (
+        <FileStorage>
+          <span>{fileData.fileName}</span>
+          <p>{getByteSize(fileData.size)}</p>
+          <CloseImg
+            onClick={() =>
+              setFileData({
+                formData: new FormData(),
+                fileName: '',
+                size: 0,
+              })
+            }
+          >
+            <Img src="/img/close.png" />
+          </CloseImg>
+        </FileStorage>
+      ) : (
+        <FileWrapper>
+          <AddFile>
+            <span>첨부파일을 추가해주세요.</span>
+          </AddFile>
+          <FileUpload fileData={fileData} setFileData={setFileData} />
+        </FileWrapper>
+      )}
+
+      <ExplainWrapper>
+        <span>첨부한 파일의 전체 크기는 5Mbyte 미만이어야 합니다.</span>
+        <span>
+          파일첨부는 JPG, GIF, PSD, MS Office 파일, 한글, PDF만 가능합니다.
+        </span>
+      </ExplainWrapper>
+      <SubmitButton onClick={() => onSubmit()}>제출</SubmitButton>
+    </Wrapper>
+  );
+};
+
+export default Inquire;
+
+const Wrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 32px;
+
+  h3 {
+    font-size: 28px;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 30px;
+    color: #4f4e5c;
+  }
+
+  span {
+    display: block;
+    font-weight: 700;
+    font-size: 14px;
+    color: #4f4e5c;
+  }
+`;
+
+const TitleInput = styled.input`
+  width: 540px;
+  height: 56px;
+  border-radius: 6px;
+  padding: 16px;
+  margin-top: 25px;
+  box-shadow: 0px 0px 8px 0px rgba(132, 131, 141, 0.2);
+  font-weight: 400;
+  font-size: 14px;
+  color: #4f4e5c;
+
+  ::placeholder {
+    font-weight: 400;
+    font-size: 14px;
+    color: #84838d;
+  }
+`;
+
+const Contents = styled.div`
+  width: 540px;
+  height: 156px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 8px 0px rgba(132, 131, 141, 0.2);
+  background-color: #ffffff;
+  margin-top: 15px;
+  margin-bottom: 15px;
+`;
+
+const TextWrapper = styled.div`
+  width: 100%;
+  height: 80%;
+  padding: 15px;
+`;
+
+const Text = styled.textarea`
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  padding-right: 7px;
+  font-weight: 400;
+  font-size: 14px;
+  color: #4f4e5c;
+`;
+
+const TextLength = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: flex-end;
+
+  span {
+    font-size: 12px;
+    font-weight: 400;
+    color: #84838d;
+    margin-right: 13px;
+  }
+`;
+const FileWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
+const AddFile = styled.div`
+  width: 438px;
+  height: 49px;
+  box-shadow: 0px 0px 8px 0px rgba(132, 131, 141, 0.2);
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  border-radius: 6px;
+  margin-right: 13px;
+  span {
+    color: #84838d;
+    font-size: 12px;
+    font-weight: 400;
+    margin-left: 16px;
+  }
+`;
+
+const ExplainWrapper = styled.div`
+  width: 540px;
+  margin-top: 15px;
+  span {
+    display: block;
+    font-weight: 400;
+    font-size: 12px;
+    color: #84838d;
+  }
+`;
+
+const SubmitButton = styled.button`
+  width: 480px;
+  height: 52px;
+  background-color: #ff445e;
+  border-radius: 6px;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 400;
+  margin-top: 70px;
+  margin-bottom: 90px;
+`;
+
+const FileStorage = styled.div`
+  width: 540px;
+  height: 56px;
+  background-color: #ffffff;
+  box-shadow: 0px 0px 8px 0px rgba(132, 131, 141, 0.2);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+
+  span {
+    color: #4f4e5c;
+    font-size: 14px;
+    font-weight: 400;
+    flex: 1;
+  }
+
+  p {
+    color: #84838d;
+    font-size: 14px;
+    font-weight: 400;
+    margin-right: 19px;
+  }
+`;
+
+const CloseImg = styled.div`
+  width: 22px;
+  height: 22px;
+  color: #4f4e5c;
+  cursor: pointer;
+  margin-right: 12px;
+`;

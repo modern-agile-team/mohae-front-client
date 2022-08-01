@@ -56,9 +56,6 @@ function Presenter() {
       : queryBase + `&sort=${getPrams('sort')}`;
   };
 
-  // console.log('filteringQuery() :>> ', filteringQuery());
-  // console.log('location.search :>> ', location.search);
-
   const getData = () => {
     const filteringBaseURL = `https://mo-hae.site/boards/filter?take=12&page=1`;
     const categoryBaseURL = `https://mo-hae.site/boards/category/${no}?take=12&page=1`;
@@ -113,7 +110,7 @@ function Presenter() {
       <div className={cx(style.wrap(0))}>
         <Search board />
         <div className={cx(style.btn)}>
-          <Link to={'/write'}>
+          <Link to={'/createpost'}>
             <Btn main>
               <p>글쓰기</p>
               <div className="imgWrap">

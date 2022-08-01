@@ -12,7 +12,7 @@ import { injectGlobal } from '@emotion/css';
 import { color, Layout } from './styles';
 import {
   Board,
-  CreatePost,
+  CreateAndEditPost,
   HG,
   Home,
   MyPage,
@@ -88,11 +88,11 @@ const App: React.SFC = () => {
         <Route path={'/post/:no'} element={<Layout component={<Post />} />} />
         <Route
           path={'/createpost'}
-          element={<Layout component={<CreatePost />} />}
+          element={<Layout component={<CreateAndEditPost />} />}
         />
         <Route
           path={'/edit/:no'}
-          element={<Layout component={<CreatePost />} />}
+          element={<Layout component={<CreateAndEditPost />} />}
         />
       </Routes>
       <Visit />

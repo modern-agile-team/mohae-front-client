@@ -18,10 +18,12 @@ interface Props {
   size: string;
   placeholder: string;
   style: string;
+  selectedList?: (e: React.MouseEvent) => void;
 }
 
 function SelectBox(props: Props) {
-  const { view, onClick, size, placeholder, style, filter } = props;
+  const { view, onClick, size, placeholder, style, filter, selectedList } =
+    props;
   const filterSelected = useSelector(
     (state: RootState) => state.filter.data.area.areaName,
   );
@@ -90,7 +92,7 @@ function SelectBox(props: Props) {
       height: 36px;
     }
     .placeholderWrap {
-      width: ${size === 'big' ? '344px' : '114px'};
+      width: ${!filter ? '344px' : '114px'};
       display: flex;
       align-items: center;
     }
@@ -130,6 +132,9 @@ function SelectBox(props: Props) {
           style={style}
           setSelected={setSelected}
           handleView={onClick}
+          selectedList={selectedList}
+          filter={filter}
+          placeholder={placeholder}
         />
       )}
     </>

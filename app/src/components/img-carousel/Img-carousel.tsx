@@ -4,21 +4,18 @@ import { cx, css } from '@emotion/css';
 import { useState } from 'react';
 import Img from '../img/Img';
 import { color, radius, font, shadow } from '../../styles';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/root';
 
 interface Props {
   [key: string]: any;
 }
 
 export default function Carousel({ onClick, imgs, outsideBtn }: Props) {
-  const IMAGES = imgs || [
-    'img/camera.png',
-    'img/edit.png',
-    'img/filter.png',
-    'img/heart-main.png',
-    'img/study.png',
-    'img/send.png',
-    'img/star-unfilled.png',
-  ];
+  const reduxImgs = useSelector(
+    (state: RootState) => state.createPost.data.imgArr,
+  );
+  const IMAGES = imgs || [...reduxImgs];
 
   const [sector, setSector] = useState(0);
 

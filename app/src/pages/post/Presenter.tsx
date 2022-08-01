@@ -25,19 +25,29 @@ function Presenter({ requestHandleDeadline }: Props) {
     }
   }, []);
   const reduxData = useSelector((state: RootState) => state.post.data);
+
+  // decoded && decoded.userNo === response.board.userNo
   const closeBtn = () => {
+    const style = css`
+      margin: 16px;
+      width: 100px;
+      height: 43px;
+      margin-left: 1028px;
+      margin-bottom: 64px;
+      visibility: ${reduxData.decoded &&
+      reduxData.decoded.userNo === reduxData.response.board.userNo
+        ? 'visible'
+        : 'hidden'};
+    `;
     return (
-      reduxData.msg === '회원' &&
-      reduxData.response.authorization && (
-        <div
-          className="cancelCloseBtn"
-          onClick={() => requestHandleDeadline(reduxData.response.board)}
-        >
-          <Btn main>
-            {reduxData.response.board.isDeadline ? '마감 취소' : '마감 하기'}
-          </Btn>
-        </div>
-      )
+      <div
+        className={cx(style)}
+        onClick={() => requestHandleDeadline(reduxData.response.board)}
+      >
+        <Btn main>
+          {reduxData.response.board.isDeadline ? '마감 취소' : '마감 하기'}
+        </Btn>
+      </div>
     );
   };
 
@@ -117,13 +127,6 @@ const wrap = css`
     margin-top: 24px;
   }
 
-  .cancelCloseBtn {
-    margin: 16px;
-    width: 100px;
-    height: 43px;
-    margin-left: 1028px;
-    margin-bottom: 64px;
-  }
   .quickMenu {
     position: fixed;
     top: 59px;

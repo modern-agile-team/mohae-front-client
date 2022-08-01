@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import Presenter from './Presenter';
 import { decodeToken } from 'react-jwt';
 import { useDispatch, useSelector } from 'react-redux';
-import { setPostData } from '../../redux/post/reducer';
+import { setIsDeadline, setPostData } from '../../redux/post/reducer';
 import getToken from '../../utils/getToken';
 import { RootState } from '../../redux/root';
 import EmptySpinner from '../../components/emptySpinner/EmptySpinner';
@@ -105,7 +105,7 @@ function Post() {
       .patch(URL, null, config)
       .then(res => {
         console.log('res', res.data);
-        // dispatch(set)
+        dispatch(setIsDeadline());
       })
       .catch(err => console.log('err', err));
   };

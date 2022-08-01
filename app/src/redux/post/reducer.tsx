@@ -70,6 +70,11 @@ export const post = createSlice({
     minusLikeCount: (state, action: PayloadAction<any>) => {
       state.data.response.board.likeCount = action.payload;
     },
+    setIsDeadline: state => {
+      state.data.response.board.isDeadline = Number(
+        !state.data.response.board.isDeadline,
+      );
+    },
     setInitialState: state => {
       state.loading = true;
       state.data = initialState.data;
@@ -83,5 +88,6 @@ export const {
   plusLikeCount,
   minusLikeCount,
   setInitialState,
+  setIsDeadline,
 } = post.actions;
 export default post.reducer;

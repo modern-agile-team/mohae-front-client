@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Presenter from './Presenter';
 import { decodeToken } from 'react-jwt';
@@ -69,6 +69,17 @@ function Post() {
   const decoded = () => {
     return token !== null ? decodeToken(token) : token;
   };
+  const [view, setView] = useState<{ [key: string]: boolean }>({
+    report: false,
+    isDeadline: false,
+  });
+  const textRef = useRef<HTMLTextAreaElement>(null);
+  const handleResizeHeight = useCallback(() => {
+    if (textRef.current) {
+      textRef.current.style.height = 'auto';
+      textRef.current.style.height = textRef.current.scrollHeight + 'px';
+    }
+  }, []);
   const loading = useSelector((state: RootState) => state.post.loading);
 
   const config = {
@@ -104,7 +115,7 @@ function Post() {
     axios
       .patch(URL, null, config)
       .then(res => {
-        console.log('res', res.data);
+        setView({ ...view, isDeadline: true });
         dispatch(setIsDeadline());
       })
       .catch(err => console.log('err', err));
@@ -112,7 +123,15 @@ function Post() {
 
   const returnComp = () => {
     return !loading ? (
-      <Presenter requestHandleDeadline={requestHandleDeadline} />
+      <Presenter
+        view={view}
+        setView={(str: string) => {
+          setView({ ...view, [str]: !view[str] });
+        }}
+        textRef={textRef}
+        handleResizeHeight={handleResizeHeight}
+        requestHandleDeadline={requestHandleDeadline}
+      />
     ) : (
       <EmptySpinner loading />
     );

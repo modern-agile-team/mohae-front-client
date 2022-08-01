@@ -1,6 +1,14 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { RefObject } from 'react';
 import { css, cx } from '@emotion/css';
-import { PostIt, Btn, ReportModal, Box, Img, Mosaic } from '../../components';
+import {
+  PostIt,
+  Btn,
+  ReportModal,
+  Box,
+  Img,
+  Mosaic,
+  Popup,
+} from '../../components';
 import PostBody from '../../components/pagecomp/PostBody';
 import PostImgs from '../../components/pagecomp/PostImgs';
 import PostInfo from './PostInfo';
@@ -13,20 +21,21 @@ import type { Board } from './Container';
 
 interface Props {
   requestHandleDeadline: (data: Board) => void;
+  textRef: RefObject<HTMLTextAreaElement>;
+  handleResizeHeight: () => void;
+  view: { [key: string]: boolean };
+  setView: (str: string) => void;
 }
 
-function Presenter({ requestHandleDeadline }: Props) {
-  const [report, setReport] = useState(false);
-  const textRef = useRef<HTMLTextAreaElement>(null);
-  const handleResizeHeight = useCallback(() => {
-    if (textRef.current) {
-      textRef.current.style.height = 'auto';
-      textRef.current.style.height = textRef.current.scrollHeight + 'px';
-    }
-  }, []);
+function Presenter({
+  requestHandleDeadline,
+  textRef,
+  handleResizeHeight,
+  view,
+  setView,
+}: Props) {
   const reduxData = useSelector((state: RootState) => state.post.data);
 
-  // decoded && decoded.userNo === response.board.userNo
   const closeBtn = () => {
     const style = css`
       margin: 16px;
@@ -42,7 +51,10 @@ function Presenter({ requestHandleDeadline }: Props) {
     return (
       <div
         className={cx(style)}
-        onClick={() => requestHandleDeadline(reduxData.response.board)}
+        onClick={() => {
+          requestHandleDeadline(reduxData.response.board);
+          setView('isDeadline');
+        }}
       >
         <Btn main>
           {reduxData.response.board.isDeadline ? '마감 취소' : '마감 하기'}
@@ -50,21 +62,16 @@ function Presenter({ requestHandleDeadline }: Props) {
       </div>
     );
   };
+  console.log('view. :>> ', view.isDeadline);
 
   return (
     <>
-      {!reduxData.response.authorization && (
-        <>
-          <Mosaic body />
-          <Mosaic img />
-        </>
-      )}
-      <ReportModal visible={report} close={() => setReport(!report)} />
+      <ReportModal visible={view.report} close={() => setView('report')} />
       <div className={cx(wrap)}>
         <div className="topflexWrap">
           <PostImgs view />
           <div className="sectionWrap">
-            <PostInfo close={() => setReport(!report)} />
+            <PostInfo close={() => setView('report')} />
             <div className="postIt">
               <PostIt small>{reduxData.response.board.summary}</PostIt>
             </div>
@@ -95,10 +102,32 @@ function Presenter({ requestHandleDeadline }: Props) {
         {closeBtn()}
         {useScroll().scrollY > 490 && (
           <div className="quickMenu">
-            <QuickMenu close={() => setReport(!report)} />
+            <QuickMenu close={() => setView('report')} />
           </div>
         )}
       </div>
+      {!reduxData.response.authorization && (
+        <>
+          <Mosaic body />
+          <Mosaic img />
+        </>
+      )}
+      {view.isDeadline && (
+        <Popup
+          visible={view.isDeadline}
+          text1={
+            reduxData.response.board.isDeadline
+              ? '마감 되었습니다.'
+              : '마감 취소 되었습니다.'
+          }
+        >
+          <div className={cx(isDeadlineBtn)}>
+            <Btn white onClick={() => setView('isDeadline')}>
+              닫기
+            </Btn>
+          </div>
+        </Popup>
+      )}
     </>
   );
 }
@@ -165,6 +194,11 @@ const wrap = css`
     width: 15px;
     height: 15px;
   }
+`;
+
+const isDeadlineBtn = css`
+  width: 100px;
+  height: 43px;
 `;
 
 const dummy = {

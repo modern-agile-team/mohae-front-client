@@ -8,6 +8,7 @@ import { setPostData } from '../../redux/post/reducer';
 import getToken from '../../utils/getToken';
 import { RootState } from '../../redux/root';
 import EmptySpinner from '../../components/emptySpinner/EmptySpinner';
+import { ENDPOINT } from '../../utils/ENDPOINT';
 
 export interface Props {
   data: {
@@ -70,13 +71,15 @@ function Post() {
   };
   const loading = useSelector((state: RootState) => state.post.loading);
 
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
   useEffect(() => {
     axios
-      .get(`https://mo-hae.site/boards/${no}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      .get(`${ENDPOINT}boards/${no}`, config)
       .then(res => {
         const visitor = res.data.msg
           .replace(/[^회원|^비회원]/g, '')
@@ -93,11 +96,30 @@ function Post() {
       .catch(err => console.log('err', err));
   }, []);
 
+  const requestHandleDeadline = (data: Board) => {
+    const URL = !data.isDeadline
+      ? `${ENDPOINT}boards/close/${no}`
+      : `${ENDPOINT}boards/cancel/${no}`;
+
+    axios
+      .patch(URL, null, config)
+      .then(res => {
+        console.log('res', res.data);
+        // dispatch(set)
+      })
+      .catch(err => console.log('err', err));
+  };
+
   const returnComp = () => {
-    return !loading ? <Presenter /> : <EmptySpinner loading />;
+    return !loading ? (
+      <Presenter requestHandleDeadline={requestHandleDeadline} />
+    ) : (
+      <EmptySpinner loading />
+    );
   };
 
   return <>{returnComp()}</>;
 }
 
 export default Post;
+export type { Board };

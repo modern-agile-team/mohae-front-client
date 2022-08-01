@@ -9,8 +9,13 @@ import useScroll from '../../customhook/useScroll';
 import { color, font, radius, shadow } from '../../styles';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/root';
+import type { Board } from './Container';
 
-function Presenter() {
+interface Props {
+  requestHandleDeadline: (data: Board) => void;
+}
+
+function Presenter({ requestHandleDeadline }: Props) {
   const [report, setReport] = useState(false);
   const textRef = useRef<HTMLTextAreaElement>(null);
   const handleResizeHeight = useCallback(() => {
@@ -24,7 +29,10 @@ function Presenter() {
     return (
       reduxData.msg === '회원' &&
       reduxData.response.authorization && (
-        <div className="cancelCloseBtn">
+        <div
+          className="cancelCloseBtn"
+          onClick={() => requestHandleDeadline(reduxData.response.board)}
+        >
           <Btn main>
             {reduxData.response.board.isDeadline ? '마감 취소' : '마감 하기'}
           </Btn>

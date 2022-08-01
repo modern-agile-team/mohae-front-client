@@ -17,12 +17,19 @@ function PostBody(props: PostBodyProps) {
   const reduxData = useSelector((state: RootState) => state.post.data.response);
 
   const style = css`
-    margin: 32px 0px 16px 0px;
+    margin: ${view ? '32px 0px 16px 0px' : '32px 0px 64px 0px'};
     .body {
       padding: ${view && '16px 0px 16px 24px'};
       ${font.size[14]}
       ${font.weight[400]}
       word-break: break-all;
+      .rdw-editor-main {
+        height: 349px !important;
+        padding: 0px !important;
+      }
+      .DraftEditor-editorContainer {
+        padding: 6px;
+      }
     }
 
     .description-scrollBox {

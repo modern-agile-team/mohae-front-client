@@ -109,7 +109,7 @@ function Presenter() {
       <div className={cx(style.wrap(0))}>
         <Search board />
         <div className={cx(style.btn)}>
-          <Link to={'/write'}>
+          <Link to={'/createpost'}>
             <Btn main>
               <p>글쓰기</p>
               <div className="imgWrap">

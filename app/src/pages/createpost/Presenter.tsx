@@ -19,6 +19,7 @@ interface Props {
   view: { [key: number]: boolean };
   targetChecked: { [key: number]: boolean };
   postingAxios: (e: React.MouseEvent) => void;
+  type: string;
 }
 
 function Presenter(props: Props) {
@@ -29,6 +30,7 @@ function Presenter(props: Props) {
     view,
     targetChecked,
     postingAxios,
+    type,
   } = props;
   const { title, price, categoryNo, areaNo, deadline, description } =
     useSelector((state: RootState) => state.createPost.data);
@@ -114,7 +116,9 @@ function Presenter(props: Props) {
     <>
       <div className={cx(container)}>
         <div className="imgsSection">
-          <p className="pageTitle">게시글 작성</p>
+          <p className="pageTitle">
+            {type === 'create' ? '게시글 작성' : '게시글 수정'}
+          </p>
           <PostImgs />
         </div>
         <div>

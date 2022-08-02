@@ -80,6 +80,9 @@ const createPost = createSlice({
       };
       state.form = new FormData();
     },
+    setForEdit: (state, action: PayloadAction<any>) => {
+      state.data = action.payload;
+    },
   },
 });
 
@@ -95,5 +98,6 @@ export const {
   setTarget,
   setImgArr,
   setInitialState,
+  setForEdit,
 } = createPost.actions;
 export default createPost.reducer;

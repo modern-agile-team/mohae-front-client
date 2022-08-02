@@ -1,14 +1,44 @@
 import axios from 'axios';
-import React, { useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setForEdit } from '../../redux/createpost/reducer';
 import { RootState } from '../../redux/root';
 import getToken from '../../utils/getToken';
 import Presenter from './Presenter';
 
-function CreateAndEditPost() {
+interface Props {
+  type: string;
+}
+
+function CreateAndEditPost({ type }: Props) {
+  const dispatch = useDispatch();
   const reduxData: { [key: string]: any } = useSelector(
     (state: RootState) => state.createPost.data,
   );
+  const postingData = useSelector(
+    (state: RootState) => state.post.data.response.board,
+  );
+
+  useEffect(() => {
+    const obj = {
+      price: String(Number(postingData.price).toLocaleString()),
+      title: postingData.title,
+      description: '',
+      summary: postingData.summary === null ? '' : postingData.summary,
+      target: postingData.target,
+      categoryNo: postingData.categoryNo,
+      areaNo: postingData.areaNo,
+      deadline: null,
+      imgArr:
+        postingData.boardPhotoUrls !== null && postingData.boardPhotoUrls !== ''
+          ? postingData.boardPhotoUrls.split(', ').map(el => {
+              return 'https://d2ffbnf2hpheay.cloudfront.net/' + el;
+            })
+          : [],
+    };
+    console.log('obj :>> ', obj);
+    dispatch(setForEdit(obj));
+  }, []);
   const form = useSelector((state: RootState) => state.createPost.form);
 
   const refactorPriceData = useMemo((): number => {
@@ -84,10 +114,17 @@ function CreateAndEditPost() {
   });
   const [targetChecked, setTargetChecked] = useState<{
     [key: number]: boolean;
-  }>({
-    0: true,
-    1: false,
-  });
+  }>(
+    reduxData.target
+      ? {
+          0: false,
+          1: true,
+        }
+      : {
+          0: true,
+          1: false,
+        },
+  );
 
   const selectBoxClick = (i: number) => {
     setView({ 0: false, 1: false, 2: false, [i]: !view[i] });
@@ -109,6 +146,7 @@ function CreateAndEditPost() {
       selectedList={selectedList}
       setTargetCheck={setTargetCheck}
       postingAxios={postingAxios}
+      type={type}
     />
   );
 }

@@ -1,8 +1,4 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, useParams, useSearchParams } from 'react-router-dom';
-import { RootState } from '../../redux/root';
 import Presenter from './Presenter';
 
 interface DataList {
@@ -27,15 +23,10 @@ interface Props {
 
 function Search(props: Props) {
   const { board, main, resetPageInfo } = props;
-  const dispatch = useDispatch();
   const [value, setValue] = useState<string>('');
-  const boardData = useSelector((state: RootState) => state.board);
   const [localValue, setLocalValue] = useState<string[]>(
     JSON.parse(localStorage.getItem('currentSearch') || '[]'),
   );
-
-  const [searchPrams, setSearchPrams] = useSearchParams();
-  const { no } = useParams();
 
   const [showFilter, setShowFilter] = useState(false);
   const [dataList, setDataList] = useState<DataList>({

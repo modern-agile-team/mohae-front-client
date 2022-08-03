@@ -18,7 +18,7 @@ interface Props {
   setTargetCheck: (i: number) => void;
   view: { [key: number]: boolean };
   targetChecked: { [key: number]: boolean };
-  postingAxios: (e: React.MouseEvent) => void;
+  postingAxios: (e: React.MouseEvent, type: string) => void;
   type: string;
 }
 
@@ -39,8 +39,9 @@ function Presenter(props: Props) {
 
   const creationCompleteAction = (e: React.MouseEvent) => {
     setPopupView(true);
-    postingAxios(e);
+    postingAxios(e, type);
   };
+  console.log('type :>> ', type);
 
   const handleWriteBtn = () => {
     if (
@@ -119,7 +120,7 @@ function Presenter(props: Props) {
           <p className="pageTitle">
             {type === 'create' ? '게시글 작성' : '게시글 수정'}
           </p>
-          <PostImgs />
+          <PostImgs type={type} />
         </div>
         <div>
           {handleWriteBtn()}
@@ -137,7 +138,7 @@ function Presenter(props: Props) {
           </Box>
         </div>
       </div>
-      <PostBody />
+      <PostBody type={type} />
       {popupView && (
         <Popup
           visible={popupView}

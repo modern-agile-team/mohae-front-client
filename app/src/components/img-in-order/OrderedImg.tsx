@@ -20,7 +20,7 @@ interface IMAGE {
   size: number;
 }
 
-export default function OrderedImg({ imgs, edit, inline }: Props) {
+export default function OrderedImg({ imgs, edit, inline, postEdit }: Props) {
   const [clone, setClone] = useState(
     imgs &&
       imgs.map((img: any) => ({
@@ -104,8 +104,27 @@ export default function OrderedImg({ imgs, edit, inline }: Props) {
     setTimeout(() => {
       setAlarm(false);
     }, 5000);
-  }, []);
 
+    if (postEdit && clone) {
+      const newFileArr: File[] = clone.map((el: any) => {
+        const fileName = el.img
+          .replace('https://d2ffbnf2hpheay.cloudfront.net/board/', '')
+          .substring(14);
+        const buffer = new ArrayBuffer(1024 ** 2);
+        const newFile = new File([buffer], fileName, {
+          type: 'image/jpeg',
+        });
+        return newFile;
+      });
+
+      const newMyimage = clone.map((el: any, i: any) => {
+        return { img: el.img, checked: false, File: newFileArr[i] };
+      });
+      setMyImage(newMyimage);
+      newMyimage.map((el: any, i: any) => formData.append('image', el.File));
+    }
+  }, []);
+  console.log(formData.getAll('image'));
   const style = Style({ inline: inline });
 
   const sequence = css`
@@ -282,7 +301,11 @@ export default function OrderedImg({ imgs, edit, inline }: Props) {
         <div className={cx(style)}>
           {alarm && (
             <div className="alarm">
-              {'사진을 클릭하여 순서설정 및 삭제를 할 수 있습니다'}
+              <div>{'사진을 클릭하여 순서설정 및 삭제를 할 수 있습니다'}</div>
+
+              {/* <div>{'사진을 클릭하여'}</div>
+              <div>{'순서설정 및 삭제를'}</div>
+              <div>{'할 수 있습니다'}</div> */}
             </div>
           )}
           {!inline && (

@@ -10,21 +10,27 @@ interface PostImgsProps {
   data?: Props;
   view?: boolean;
   getValue?: boolean;
+  type?: string;
 }
 
 function PostImgs(props: PostImgsProps) {
-  const { view, getValue } = props;
+  const { view, getValue, type } = props;
   const reduxDatas = useSelector(
     (state: RootState) => state.post.data.response.board,
   );
   const loading = useSelector((state: RootState) => state.post.loading);
   const boardPhotoURL = () => {
     if (reduxDatas.boardPhotoUrls !== null && !loading) {
-      return reduxDatas.boardPhotoUrls
-        .split(', ')
-        .map(el => 'https://d2ffbnf2hpheay.cloudfront.net/' + el);
+      return reduxDatas.boardPhotoUrls.split(', ').map(el => {
+        return 'https://d2ffbnf2hpheay.cloudfront.net/' + el;
+      });
     } else if (reduxDatas.boardPhotoUrls === null) {
       return ['/img/logo.png'];
+    }
+  };
+  const files = () => {
+    if (reduxDatas.boardPhotoUrls !== null && !loading) {
+      reduxDatas.boardPhotoUrls.split(', ').map(el => el.substring(20));
     }
   };
 
@@ -40,7 +46,7 @@ function PostImgs(props: PostImgsProps) {
     }
   };
 
-  return view ? (
+  return view && !type ? (
     <div className={cx(style)}>
       <Box className="carouselBox" size={[360, 360]}>
         <Carousel imgs={boardPhotoURL()} />
@@ -58,10 +64,10 @@ function PostImgs(props: PostImgsProps) {
   ) : (
     <>
       <Box size={[360, 360]}>
-        <Carousel />
+        <Carousel postEdit />
       </Box>
       <Box size={[360, 72]}>
-        <OrderedImg inline edit />
+        <OrderedImg inline edit imgs={boardPhotoURL()} postEdit />
       </Box>
     </>
   );

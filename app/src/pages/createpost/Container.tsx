@@ -1,7 +1,9 @@
 import axios from 'axios';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setForEdit } from '../../redux/createpost/reducer';
+import { useParams } from 'react-router-dom';
+import EmptySpinner from '../../components/emptySpinner/EmptySpinner';
+import { setForEdit, setLoading } from '../../redux/createpost/reducer';
 import { RootState } from '../../redux/root';
 import getToken from '../../utils/getToken';
 import Presenter from './Presenter';
@@ -11,33 +13,38 @@ interface Props {
 }
 
 function CreateAndEditPost({ type }: Props) {
+  const { no } = useParams();
   const dispatch = useDispatch();
+  const loadingState = useSelector(
+    (state: RootState) => state.createPost.loading,
+  );
   const reduxData: { [key: string]: any } = useSelector(
     (state: RootState) => state.createPost.data,
   );
   const postingData = useSelector(
     (state: RootState) => state.post.data.response.board,
   );
+  const dataBeforeeEdit: { [key: string]: any } = {
+    price: String(Number(postingData.price).toLocaleString()),
+    title: postingData.title,
+    description: postingData.description,
+    summary: postingData.summary === null ? '' : postingData.summary,
+    target: postingData.target,
+    categoryNo: postingData.categoryNo,
+    areaNo: postingData.areaNo,
+    deadline: null,
+    imgArr:
+      postingData.boardPhotoUrls !== null && postingData.boardPhotoUrls !== ''
+        ? postingData.boardPhotoUrls.split(', ').map(el => {
+            return 'https://d2ffbnf2hpheay.cloudfront.net/' + el;
+          })
+        : [],
+  };
 
   useEffect(() => {
-    const obj = {
-      price: String(Number(postingData.price).toLocaleString()),
-      title: postingData.title,
-      description: '',
-      summary: postingData.summary === null ? '' : postingData.summary,
-      target: postingData.target,
-      categoryNo: postingData.categoryNo,
-      areaNo: postingData.areaNo,
-      deadline: null,
-      imgArr:
-        postingData.boardPhotoUrls !== null && postingData.boardPhotoUrls !== ''
-          ? postingData.boardPhotoUrls.split(', ').map(el => {
-              return 'https://d2ffbnf2hpheay.cloudfront.net/' + el;
-            })
-          : [],
-    };
-    console.log('obj :>> ', obj);
-    dispatch(setForEdit(obj));
+    if (type === 'edit') {
+      dispatch(setForEdit(dataBeforeeEdit));
+    } else dispatch(setLoading(false));
   }, []);
   const form = useSelector((state: RootState) => state.createPost.form);
 
@@ -81,11 +88,24 @@ function CreateAndEditPost({ type }: Props) {
     deadline: refactorDeadline,
   };
 
-  const postingAxios = (e: React.MouseEvent) => {
+  console.log('dataBeforeeEdit :>> ', dataBeforeeEdit);
+  console.log('refactorReduxData :>> ', refactorReduxData);
+
+  const postingAxios = (e: React.MouseEvent, type: string) => {
     e.preventDefault();
 
-    for (const key in refactorReduxData) {
-      form.set(`${key}`, JSON.stringify(refactorReduxData[key]));
+    if (type === 'edit') {
+      for (const key in dataBeforeeEdit) {
+        if (key !== 'imgArr') {
+          refactorReduxData[key] !== dataBeforeeEdit[key]
+            ? form.set(`${key}`, JSON.stringify(refactorReduxData[key]))
+            : form.set(`${key}`, JSON.stringify(null));
+        }
+      }
+    } else {
+      for (const key in refactorReduxData) {
+        form.set(`${key}`, JSON.stringify(refactorReduxData[key]));
+      }
     }
 
     if (form.getAll('image').length === 0) {
@@ -95,16 +115,43 @@ function CreateAndEditPost({ type }: Props) {
       form.append('image', file);
     }
 
-    axios
-      .post(`https://mo-hae.site/boards`, form, {
-        headers: {
-          accept: 'application/json',
-          'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${getToken()}`,
-        },
-      })
-      .then(res => res)
-      .catch(err => alert('작성 실패'));
+    console.log('image :>> ', form.getAll('image'));
+    console.log('price :>> ', form.getAll('price'));
+    console.log('title :>> ', form.getAll('title'));
+    console.log('description :>> ', form.getAll('description'));
+    console.log('summary :>> ', form.getAll('summary'));
+    console.log('target :>> ', form.getAll('target'));
+    console.log('categoryNo :>> ', form.getAll('categoryNo'));
+    console.log('areaNo :>> ', form.getAll('areaNo'));
+    console.log('deadline :>> ', form.getAll('deadline'));
+
+    type === 'create'
+      ? axios
+          .post(`https://mo-hae.site/boards`, form, {
+            headers: {
+              accept: 'application/json',
+              'Content-Type': 'multipart/form-data',
+              Authorization: `Bearer ${getToken()}`,
+            },
+          })
+          .then(res => res)
+          .catch(err => {
+            console.log('err.data :>> ', err);
+            type === 'create' ? alert('작성 실패') : alert('수정 실패');
+          })
+      : axios
+          .patch(`https://mo-hae.site/boards/${no}`, form, {
+            headers: {
+              accept: 'application/json',
+              'Content-Type': 'multipart/form-data',
+              Authorization: `Bearer ${getToken()}`,
+            },
+          })
+          .then(res => res)
+          .catch(err => {
+            console.log('err.data :>> ', err);
+            type === 'create' ? alert('작성 실패') : alert('수정 실패');
+          });
   };
 
   const [view, setView] = useState<{ [key: number]: boolean }>({
@@ -139,15 +186,21 @@ function CreateAndEditPost({ type }: Props) {
   };
 
   return (
-    <Presenter
-      view={view}
-      targetChecked={targetChecked}
-      selectBoxClick={selectBoxClick}
-      selectedList={selectedList}
-      setTargetCheck={setTargetCheck}
-      postingAxios={postingAxios}
-      type={type}
-    />
+    <>
+      {!loadingState ? (
+        <Presenter
+          view={view}
+          targetChecked={targetChecked}
+          selectBoxClick={selectBoxClick}
+          selectedList={selectedList}
+          setTargetCheck={setTargetCheck}
+          postingAxios={postingAxios}
+          type={type}
+        />
+      ) : (
+        <EmptySpinner loading />
+      )}
+    </>
   );
 }
 

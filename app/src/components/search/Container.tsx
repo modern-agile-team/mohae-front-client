@@ -2,9 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useParams, useSearchParams } from 'react-router-dom';
-import { setCategorys } from '../../redux/board/reducer';
 import { RootState } from '../../redux/root';
-import { Props } from '../button';
 import Presenter from './Presenter';
 
 interface DataList {
@@ -16,18 +14,24 @@ interface DataList {
       { no: number; name: string },
       { no: number; name: string },
       { no: number; name: string },
-      { no: number; name: string }
+      { no: number; name: string },
     ];
   };
 }
 
+interface Props {
+  board?: boolean;
+  main?: boolean;
+  resetPageInfo: () => void;
+}
+
 function Search(props: Props) {
-  const { board, main } = props;
+  const { board, main, resetPageInfo } = props;
   const dispatch = useDispatch();
   const [value, setValue] = useState<string>('');
   const boardData = useSelector((state: RootState) => state.board);
   const [localValue, setLocalValue] = useState<string[]>(
-    JSON.parse(localStorage.getItem('currentSearch') || '[]')
+    JSON.parse(localStorage.getItem('currentSearch') || '[]'),
   );
 
   const [searchPrams, setSearchPrams] = useSearchParams();
@@ -80,7 +84,7 @@ function Search(props: Props) {
   const hotKeyClick = (e: React.MouseEvent) =>
     console.log(
       'e.target',
-      e.currentTarget.textContent?.slice(1, e.currentTarget.textContent.length)
+      e.currentTarget.textContent?.slice(1, e.currentTarget.textContent.length),
     );
 
   const deleteAll = () => {
@@ -108,6 +112,7 @@ function Search(props: Props) {
       localValue={localValue}
       hotKeyClick={hotKeyClick}
       setLocalValue={setLocalValue}
+      resetPageInfo={resetPageInfo}
     />
   );
 }

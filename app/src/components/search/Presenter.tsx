@@ -21,6 +21,7 @@ interface InputProps extends Props {
   deleteList: (i: number) => void;
   hotKeyClick: (e: React.MouseEvent) => void;
   setLocalValue: Dispatch<React.SetStateAction<string[]>>;
+  resetPageInfo: () => void;
 }
 
 function Presenter(props: InputProps) {
@@ -36,6 +37,7 @@ function Presenter(props: InputProps) {
     value,
     setValue,
     setLocalValue,
+    resetPageInfo,
   } = props;
   const list: string[] = localValue;
 
@@ -292,7 +294,11 @@ function Presenter(props: InputProps) {
         </div>
       </div>
       {showFilter && (
-        <Filter showFilter={showFilter} setShowFilter={setShowFilter} />
+        <Filter
+          showFilter={showFilter}
+          setShowFilter={setShowFilter}
+          resetPageInfo={resetPageInfo}
+        />
       )}
     </div>
   );

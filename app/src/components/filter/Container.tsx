@@ -13,9 +13,10 @@ interface type {
 interface Props {
   setShowFilter: Dispatch<React.SetStateAction<boolean>>;
   showFilter: boolean;
+  resetPageInfo: () => void;
 }
 
-function Filter({ setShowFilter, showFilter }: Props) {
+function Filter({ setShowFilter, showFilter, resetPageInfo }: Props) {
   const filterData: any = useSelector((state: RootState) => state.filter.data);
   const { no } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -175,6 +176,7 @@ function Filter({ setShowFilter, showFilter }: Props) {
       onSubmit={onSubmit}
       setShowFilter={setShowFilter}
       showFilter={showFilter}
+      resetPageInfo={resetPageInfo}
     />
   );
 }

@@ -197,7 +197,7 @@ function Input(props: InputProps) {
     return value ? value : null;
   };
 
-  const onSubmit = (e: any) => {
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     const query = `?categoryNo=${no}&title=${
       value ? value : null
     }${sortQuery()}&target=${drawObjKey(

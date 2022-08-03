@@ -32,9 +32,11 @@ function Input(props: InputProps) {
     resetPageInfo,
   } = props;
   const localValue = JSON.parse(localStorage.getItem('currentSearch') || '[]');
+  //===============================필터링===========================================
   const { no } = useParams();
   const filterData = useSelector((state: RootState) => state.filter.data);
   const [searchParams, setSearchParams] = useSearchParams();
+  //===============================필터링===========================================
   const commonStyle = css`
     ${shadow.normal}
     border-radius: ${showFilter ? '6px 6px 0px 0px' : '6px'};

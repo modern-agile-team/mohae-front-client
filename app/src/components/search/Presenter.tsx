@@ -263,6 +263,7 @@ function Presenter(props: InputProps) {
         showFilter={showFilter}
         setShowFilter={setShowFilter}
         setLocalValue={setLocalValue}
+        resetPageInfo={resetPageInfo}
       />
     ) : (
       <Input
@@ -272,6 +273,7 @@ function Presenter(props: InputProps) {
         showFilter={showFilter}
         setShowFilter={setShowFilter}
         setLocalValue={setLocalValue}
+        resetPageInfo={resetPageInfo}
       />
     );
 

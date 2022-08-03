@@ -19,10 +19,18 @@ interface InputProps extends Props {
   value: string;
   setValue: Dispatch<SetStateAction<string>>;
   setLocalValue: Dispatch<React.SetStateAction<string[]>>;
+  resetPageInfo: () => void;
 }
 
 function Input(props: InputProps) {
-  const { showFilter, setShowFilter, value, setValue, setLocalValue } = props;
+  const {
+    showFilter,
+    setShowFilter,
+    value,
+    setValue,
+    setLocalValue,
+    resetPageInfo,
+  } = props;
   const localValue = JSON.parse(localStorage.getItem('currentSearch') || '[]');
   const { no } = useParams();
   const filterData = useSelector((state: RootState) => state.filter.data);
@@ -218,6 +226,7 @@ function Input(props: InputProps) {
     } else alert('두 글자 이상');
 
     setValue('');
+    resetPageInfo();
   };
   //===============================필터링===========================================
   return (

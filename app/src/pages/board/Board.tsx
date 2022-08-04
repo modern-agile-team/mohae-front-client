@@ -139,8 +139,7 @@ function Presenter() {
       category: { page: 1, totalPage: 1 },
       filtering: { page: 1, totalPage: 1 },
     });
-    if (pageInfo.category.page === 1 && pageInfo.filtering.page === 1)
-      getData();
+    if (!loading) getData();
   };
 
   useEffect(() => {
@@ -149,7 +148,7 @@ function Presenter() {
 
   useEffect(() => {
     getData();
-  }, [location.search, no, pageInfo.category.page, pageInfo.filtering.page]);
+  }, [pageInfo.category.page, pageInfo.filtering.page]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(handleIntersect, {
@@ -170,7 +169,9 @@ function Presenter() {
       margin-right: ${i % 4 && '16px'};
     `;
     const showContents = () => {
-      if (!reduxData.length && searchParams.get('title')) {
+      if (loading) {
+        return <EmptySpinner loading small />;
+      } else if (!reduxData.length && searchParams.get('title')) {
         return <EmptySpinner searchNone text={searchParams.get('title')} />;
       } else if (!reduxData.length) {
         return (

@@ -1,17 +1,8 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import { css, cx } from '@emotion/css';
-import { useState } from 'react';
 import Img from '../img/Img';
 import { Props } from '../button';
 import { color, font, radius, shadow } from '../../styles';
-import {
-  useParams,
-  useNavigate,
-  useLocation,
-  useSearchParams,
-} from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../redux/root';
 
 interface InputProps extends Props {
   setShowFilter?: Dispatch<SetStateAction<boolean>>;
@@ -19,24 +10,12 @@ interface InputProps extends Props {
   value: string;
   setValue: Dispatch<SetStateAction<string>>;
   setLocalValue: Dispatch<React.SetStateAction<string[]>>;
-  resetPageInfo: () => void;
+  onSubmit: (e: any, str: string) => void;
 }
 
 function Input(props: InputProps) {
-  const {
-    showFilter,
-    setShowFilter,
-    value,
-    setValue,
-    setLocalValue,
-    resetPageInfo,
-  } = props;
-  const localValue = JSON.parse(localStorage.getItem('currentSearch') || '[]');
-  //===============================필터링===========================================
-  const { no } = useParams();
-  const filterData = useSelector((state: RootState) => state.filter.data);
-  const [searchParams, setSearchParams] = useSearchParams();
-  //===============================필터링===========================================
+  const { showFilter, setShowFilter, value, setValue, onSubmit } = props;
+
   const commonStyle = css`
     ${shadow.normal}
     border-radius: ${showFilter ? '6px 6px 0px 0px' : '6px'};
@@ -131,112 +110,13 @@ function Input(props: InputProps) {
       </>
     );
   };
-  //===============================필터링===========================================
-  const objDataProcessing = (): any => {
-    const changeNull = (filteringValue: boolean | number | string) => {
-      if (
-        filteringValue === false ||
-        filteringValue === 0 ||
-        filteringValue === 1000000
-      ) {
-        return null;
-      } else return filteringValue;
-    };
 
-    return {
-      check: {
-        sort: {
-          1: changeNull(filterData.check.sort[0]),
-          DESC: changeNull(filterData.check.sort[1]),
-          ASC: changeNull(filterData.check.sort[2]),
-        },
-        target: {
-          0: changeNull(filterData.check.target[0]),
-          1: changeNull(filterData.check.target[1]),
-        },
-        date: {
-          7: changeNull(filterData.check.date[0]),
-          30: changeNull(filterData.check.date[1]),
-          60: changeNull(filterData.check.date[2]),
-          0: changeNull(filterData.check.date[3]),
-        },
-        free: { 1: changeNull(filterData.check.free[0]) },
-      },
-      area: {
-        areaNo: changeNull(filterData.area.areaNo),
-      },
-      price: {
-        min: changeNull(filterData.price.min),
-        max: changeNull(filterData.price.max),
-      },
-    };
-  };
-
-  const sortQuery = () => {
-    if (objDataProcessing().check.sort[1] !== null) {
-      return '&popular=1';
-    } else
-      return (
-        '&sort=' +
-        Object.keys(objDataProcessing().check.sort)
-          .map((el, i) => {
-            if (objDataProcessing().check.sort[el] !== null) {
-              return Object.keys(objDataProcessing().check.sort)[i];
-            }
-          })
-          .filter(el => el)[0]
-      );
-  };
-
-  const drawObjKey = (obj: any) => {
-    const value = Object.keys(obj)
-      .map((el, i) => {
-        if (obj[el] !== null) {
-          return Object.keys(obj)[i];
-        }
-      })
-      .filter(el => el)[0];
-    return value ? value : null;
-  };
-
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    const query = `?categoryNo=${no}&title=${
-      value ? value : null
-    }${sortQuery()}&target=${drawObjKey(
-      objDataProcessing().check.target,
-    )}&date=${drawObjKey(objDataProcessing().check.date)}&free=${drawObjKey(
-      objDataProcessing().check.free,
-    )}&min=${
-      objDataProcessing().check.free[1] === null
-        ? objDataProcessing().price.min
-        : null
-    }&max=${
-      objDataProcessing().check.free[1] === null
-        ? objDataProcessing().price.max
-        : null
-    }&areaNo=${objDataProcessing().area.areaNo}`;
-    e.preventDefault();
-
-    if (value.length > 1) {
-      setSearchParams(query);
-
-      localStorage.setItem(
-        'currentSearch',
-        JSON.stringify([value, ...localValue]),
-      );
-      setLocalValue(JSON.parse(localStorage.getItem('currentSearch') || '[]'));
-    } else alert('두 글자 이상');
-
-    setValue('');
-    resetPageInfo();
-  };
-  //===============================필터링===========================================
   return (
     <>
       <form
         id="inputWrap"
         className={cx(commonStyle)}
-        onSubmit={e => onSubmit(e)}
+        onSubmit={e => onSubmit(e, 'search')}
       >
         <input
           type="text"

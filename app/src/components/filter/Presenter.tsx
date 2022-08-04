@@ -6,9 +6,8 @@ import Slider from './Silder';
 import SelectBox from '../selectbox/SelectBox';
 import Img from '../img/Img';
 import type { type } from './Container';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/root';
-import { setResArrEmpty } from '../../redux/board/reducer';
 
 interface Props {
   texts: type;
@@ -18,10 +17,9 @@ interface Props {
   setView: Dispatch<React.SetStateAction<{ [key: number]: boolean }>>;
   setItemCheck: (list: string, i: string) => void;
   resetSetting: () => void;
-  onSubmit: (e: any) => void;
+  onSubmit: (e: any, str: string) => void;
   setShowFilter: Dispatch<React.SetStateAction<boolean>>;
   showFilter: boolean;
-  resetPageInfo: () => void;
 }
 
 function Presenter(props: Props) {
@@ -36,9 +34,7 @@ function Presenter(props: Props) {
     onSubmit,
     setShowFilter,
     showFilter,
-    resetPageInfo,
   } = props;
-  const dispatch = useDispatch();
   const minVal = useSelector((state: RootState) => state.filter.data.price.min);
   const maxVal = useSelector((state: RootState) => state.filter.data.price.max);
   const checked: { [key: string]: { [key: number]: boolean } } = useSelector(
@@ -212,10 +208,8 @@ function Presenter(props: Props) {
             <Btn
               main
               onClick={e => {
-                onSubmit(e);
+                onSubmit(e, 'filter');
                 setShowFilter(!showFilter);
-                // dispatch(setResArrEmpty());
-                resetPageInfo();
               }}
             >
               설정 완료

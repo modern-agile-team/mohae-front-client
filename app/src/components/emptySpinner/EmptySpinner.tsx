@@ -8,7 +8,7 @@ interface Props {
 }
 
 function EmptySpinner(props: Props) {
-  const { loading, searchNone, boardNone, text } = props;
+  const { loading, searchNone, boardNone, text, small } = props;
   const style = css`
     display: flex;
     flex-direction: column;
@@ -19,11 +19,12 @@ function EmptySpinner(props: Props) {
   const attrStyle = {
     loading: css`
       position: fixed;
-      top: 0px;
+      top: ${small ? '475px' : '0px'};
       left: 0px;
-      background-color: white;
-      width: 100vw;
-      height: 100vh;
+      background-color: ${color.light1};
+      width: ${small ? '100%' : '100vw'};
+      height: ${small ? '100%' : '100vh'};
+      ${small && `z-index: 8;`}
       .img-wrap {
         width: 500px;
         height: 500px;
@@ -67,7 +68,7 @@ function EmptySpinner(props: Props) {
     boardNone: `'${text}'`,
   };
   const imgs: { [key: string]: string } = {
-    loading: '/img/loading.gif',
+    loading: !small ? '/img/loading.gif' : '',
     searchNone: '/img/search-none.png',
     boardNone: '/img/board-none.png',
   };

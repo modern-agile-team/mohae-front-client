@@ -6,7 +6,12 @@ import {
 } from '@reduxjs/toolkit';
 import { PostData, Data } from '../../pages/board/Board';
 
-const initialState: Data = {
+interface InitialState extends Data {
+  loading: boolean;
+}
+
+const initialState: InitialState = {
+  loading: true,
   response: [],
 };
 
@@ -16,12 +21,15 @@ export const board = createSlice({
   reducers: {
     setResCategorys: (state, action: PayloadAction<PostData[]>) => {
       state.response = [...state.response, ...action.payload];
+      state.loading = false;
     },
     setResFiltering: (state, action: PayloadAction<PostData[]>) => {
       state.response = [...state.response, ...action.payload];
+      state.loading = false;
     },
     setResArrEmpty: state => {
       state.response = [];
+      state.loading = true;
     },
   },
 });

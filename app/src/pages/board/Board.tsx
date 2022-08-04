@@ -50,6 +50,7 @@ interface PageInfo {
 
 function Presenter() {
   const reduxData = useSelector((state: RootState) => state.board.response);
+  const loading = useSelector((state: RootState) => state.board.loading);
   const dispatch = useDispatch();
   const { no } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -142,7 +143,10 @@ function Presenter() {
       category: { page: 1, totalPage: 1 },
       filtering: { page: 1, totalPage: 1 },
     });
+    if (loading) getData();
   };
+
+  console.log('loading :>> ', loading);
 
   useEffect(() => {
     dispatch(setInitialState());
@@ -171,33 +175,33 @@ function Presenter() {
       margin-right: ${i % 4 && '16px'};
     `;
     const showContents = () => {
-      // if (loading) {
-      //   return <EmptySpinner loading small />;
-      // } else if (!loading) {
-      if (!reduxData.length && searchParams.get('title')) {
-        return <EmptySpinner searchNone text={searchParams.get('title')} />;
-      } else if (!reduxData.length) {
-        return (
-          <EmptySpinner
-            boardNone
-            text={categories[Number(no) - 1].name + ' 게시판'}
-          />
-        );
-      } else {
-        return reduxData.map((el: any, i: any) => {
+      if (loading) {
+        return <EmptySpinner loading small />;
+      } else if (!loading) {
+        if (!reduxData.length && searchParams.get('title')) {
+          return <EmptySpinner searchNone text={searchParams.get('title')} />;
+        } else if (!reduxData.length) {
           return (
-            <Link
-              key={i}
-              className={cx(gap(i + 1))}
-              to={`/post/${el.no}`}
-              ref={reduxData.length - 1 === i ? setTarget : null}
-            >
-              <Poster data={reduxData[i]} />
-            </Link>
+            <EmptySpinner
+              boardNone
+              text={categories[Number(no) - 1].name + ' 게시판'}
+            />
           );
-        });
+        } else {
+          return reduxData.map((el: any, i: any) => {
+            return (
+              <Link
+                key={i}
+                className={cx(gap(i + 1))}
+                to={`/post/${el.no}`}
+                ref={reduxData.length - 1 === i ? setTarget : null}
+              >
+                <Poster data={reduxData[i]} />
+              </Link>
+            );
+          });
+        }
       }
-      // }
     };
     return showContents();
   };

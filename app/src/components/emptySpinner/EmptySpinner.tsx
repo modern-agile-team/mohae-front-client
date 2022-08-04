@@ -24,7 +24,7 @@ function EmptySpinner(props: Props) {
       background-color: ${color.light1};
       width: ${small ? '100%' : '100vw'};
       height: ${small ? '100%' : '100vh'};
-      ${small && `z-index: 8;`}
+      ${small && `z-index: 2;`}
       .img-wrap {
         width: 500px;
         height: 500px;

@@ -13,7 +13,11 @@ import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/root';
 import EmptySpinner from '../../components/emptySpinner/EmptySpinner';
-import { setResCategorys, setResArrEmpty } from '../../redux/board/reducer';
+import {
+  setResCategorys,
+  setResArrEmpty,
+  setResFiltering,
+} from '../../redux/board/reducer';
 import { setInitialState } from '../../redux/post/reducer';
 
 export interface PostData {
@@ -46,7 +50,6 @@ interface PageInfo {
 
 function Presenter() {
   const reduxData = useSelector((state: RootState) => state.board.response);
-  const loading = useSelector((state: RootState) => state.board.loading);
   const dispatch = useDispatch();
   const { no } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -120,7 +123,7 @@ function Presenter() {
             filtering: { page: 1, totalPage: 1 },
           }));
         } else {
-          dispatch(setResCategorys(res.data.response));
+          dispatch(setResFiltering(res.data.response));
           setPageInfo((prev: PageInfo) => ({
             category: { page: 1, totalPage: 1 },
             filtering: {
@@ -139,7 +142,6 @@ function Presenter() {
       category: { page: 1, totalPage: 1 },
       filtering: { page: 1, totalPage: 1 },
     });
-    if (!loading) getData();
   };
 
   useEffect(() => {
@@ -148,7 +150,7 @@ function Presenter() {
 
   useEffect(() => {
     getData();
-  }, [pageInfo.category.page, pageInfo.filtering.page]);
+  }, [pageInfo.category.page, pageInfo.filtering.page, location.search, no]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(handleIntersect, {
@@ -169,9 +171,10 @@ function Presenter() {
       margin-right: ${i % 4 && '16px'};
     `;
     const showContents = () => {
-      if (loading) {
-        return <EmptySpinner loading small />;
-      } else if (!reduxData.length && searchParams.get('title')) {
+      // if (loading) {
+      //   return <EmptySpinner loading small />;
+      // } else if (!loading) {
+      if (!reduxData.length && searchParams.get('title')) {
         return <EmptySpinner searchNone text={searchParams.get('title')} />;
       } else if (!reduxData.length) {
         return (
@@ -194,6 +197,7 @@ function Presenter() {
           );
         });
       }
+      // }
     };
     return showContents();
   };

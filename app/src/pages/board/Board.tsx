@@ -13,7 +13,7 @@ import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/root';
 import EmptySpinner from '../../components/emptySpinner/EmptySpinner';
-import { setResArrEmpty, setResCategorys } from '../../redux/board/reducer';
+import { setResCategorys, setResArrEmpty } from '../../redux/board/reducer';
 import { setInitialState } from '../../redux/post/reducer';
 
 export interface PostData {
@@ -46,6 +46,7 @@ interface PageInfo {
 
 function Presenter() {
   const reduxData = useSelector((state: RootState) => state.board.response);
+  const loading = useSelector((state: RootState) => state.board.loading);
   const dispatch = useDispatch();
   const { no } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -134,17 +135,20 @@ function Presenter() {
 
   const resetPageInfo = () => {
     dispatch(setResArrEmpty());
-    setPageInfo(() => {
-      return {
-        category: { page: 1, totalPage: 1 },
-        filtering: { page: 1, totalPage: 1 },
-      };
+    setPageInfo({
+      category: { page: 1, totalPage: 1 },
+      filtering: { page: 1, totalPage: 1 },
     });
+    if (pageInfo.category.page === 1 && pageInfo.filtering.page === 1)
+      getData();
   };
 
   useEffect(() => {
-    getData();
     dispatch(setInitialState());
+  }, []);
+
+  useEffect(() => {
+    getData();
   }, [location.search, no, pageInfo.category.page, pageInfo.filtering.page]);
 
   useEffect(() => {

@@ -6,6 +6,7 @@ import Img from '../img/Img';
 import Input from './Input';
 import Filter from '../filter/Container';
 import type { DataList } from './Container';
+import { useSearchParams } from 'react-router-dom';
 
 interface InputProps extends Props {
   value: string;
@@ -21,7 +22,7 @@ interface InputProps extends Props {
   deleteList: (i: number) => void;
   hotKeyClick: (e: React.MouseEvent) => void;
   setLocalValue: Dispatch<React.SetStateAction<string[]>>;
-  onSubmit: (e: any, str: string) => void;
+  onSubmit: (e: any, str: string, searchValue?: string) => void;
 }
 
 function Presenter(props: InputProps) {
@@ -187,7 +188,9 @@ function Presenter(props: InputProps) {
             <div
               className={cx(searchStyle, hover)}
               key={i}
-              onClick={() => setValue(el)}
+              onClick={e => {
+                onSubmit(e, 'fliter', el);
+              }}
             >
               <div id="list">{el}</div>
               <div

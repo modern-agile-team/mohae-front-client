@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { css, cx } from '@emotion/css';
 import { Btn, Img, Poster, Search } from '../../components';
 import { color, font } from '../../styles';
@@ -106,14 +106,15 @@ function Presenter() {
       : queryBase + `&sort=${getPrams('sort')}`;
   };
 
-  const getData = () => {
-    const filteringBaseURL = `https://mo-hae.site/boards/filter?take=12&page=${pageInfo.filtering.page}`;
-    const categoryBaseURL = `https://mo-hae.site/boards/category/${no}?take=12&page=${pageInfo.category.page}`;
+  const getData = (str?: string) => {
+    const filteringBaseURL = `https://mo-hae.site/boards/filter?take=8&page=${pageInfo.filtering.page}`;
+    const categoryBaseURL = `https://mo-hae.site/boards/category/${no}?take=8&page=${pageInfo.category.page}`;
     axios
       .get(
         location.search ? filteringBaseURL + filteringQuery() : categoryBaseURL,
       )
       .then(res => {
+        console.log(str, res.data.response);
         if (!location.search) {
           dispatch(setResCategorys(res.data.response));
           setPageInfo((prev: PageInfo) => ({
@@ -138,7 +139,6 @@ function Presenter() {
   };
 
   const resetPageInfo = () => {
-    dispatch(setResArrEmpty());
     setPageInfo({
       category: { page: 1, totalPage: 1 },
       filtering: { page: 1, totalPage: 1 },
@@ -146,15 +146,20 @@ function Presenter() {
     if (loading) getData();
   };
 
-  console.log('loading :>> ', loading);
-
   useEffect(() => {
     dispatch(setInitialState());
   }, []);
 
+  console.log('pageInfo :>> ', pageInfo);
+
   useEffect(() => {
-    getData();
-  }, [pageInfo.category.page, pageInfo.filtering.page, location.search, no]);
+    if (!loading) getData('1번');
+  }, [pageInfo.category.page, pageInfo.filtering.page]);
+
+  useEffect(() => {
+    dispatch(setResArrEmpty());
+    getData('2번');
+  }, [location.search, no]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(handleIntersect, {

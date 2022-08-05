@@ -130,9 +130,13 @@ function Search(props: Props) {
     return value ? value : null;
   };
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>, str: string) => {
+  const onSubmit = (
+    e: React.FormEvent<HTMLFormElement>,
+    str: string,
+    historyValue?: string,
+  ) => {
     const query = `?categoryNo=${no}&title=${
-      value ? value : null
+      historyValue ? historyValue : value ? value : null
     }${sortQuery()}&target=${drawObjKey(
       objDataProcessing().check.target,
     )}&date=${drawObjKey(objDataProcessing().check.date)}&free=${drawObjKey(
@@ -159,9 +163,9 @@ function Search(props: Props) {
         setLocalValue(
           JSON.parse(localStorage.getItem('currentSearch') || '[]'),
         );
+        setValue('');
+        resetPageInfo();
       } else alert('두 글자 이상');
-
-      setValue('');
     } else {
       setSearchParams(query);
       resetPageInfo();
@@ -199,7 +203,6 @@ function Search(props: Props) {
       localValue={localValue}
       hotKeyClick={hotKeyClick}
       setLocalValue={setLocalValue}
-      resetPageInfo={resetPageInfo}
       onSubmit={onSubmit}
     />
   );

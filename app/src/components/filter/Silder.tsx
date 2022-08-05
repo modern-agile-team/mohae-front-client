@@ -1,11 +1,4 @@
-import React, {
-  useCallback,
-  useEffect,
-  useState,
-  useRef,
-  LegacyRef,
-  Dispatch,
-} from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { css, cx } from '@emotion/css';
 import { color, radius } from '../../styles';
 import { useDispatch, useSelector } from 'react-redux';
@@ -15,20 +8,16 @@ import { RootState } from '../../redux/root';
 interface Props {
   min: number;
   max: number;
-  setMinValue: Dispatch<React.SetStateAction<number>>;
-  setMaxValue: Dispatch<React.SetStateAction<number>>;
-  minValue: number;
-  maxValue: number;
 }
 
 const Slider = (props: Props) => {
-  const { min, max, minValue, maxValue, setMinValue, setMaxValue } = props;
+  const { min, max } = props;
   const minValRef = useRef(min);
   const maxValRef = useRef(max);
   const range = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
-  const minval = useSelector((state: RootState) => state.filter.data.price.min);
-  const maxval = useSelector((state: RootState) => state.filter.data.price.max);
+  const minVal = useSelector((state: RootState) => state.filter.data.price.min);
+  const maxVal = useSelector((state: RootState) => state.filter.data.price.max);
   const wrapSlider = css`
     position: relative;
     width: 748px;
@@ -112,54 +101,52 @@ const Slider = (props: Props) => {
 
   const getPercent = useCallback(
     value => Math.round(((value - min) / (max - min)) * 100),
-    [min, max]
+    [min, max],
   );
 
   useEffect(() => {
-    const minPercent = getPercent(minValue);
+    const minPercent = getPercent(minVal);
     const maxRefPercent = getPercent(maxValRef.current);
     if (range.current) {
       range.current.style.left = `${minPercent}%`;
       range.current.style.width = `${maxRefPercent - minPercent}%`;
     }
-  }, [minValue, getPercent]);
+  }, [minVal, getPercent, maxVal]);
 
   useEffect(() => {
     const minRefPercent = getPercent(minValRef.current);
-    const maxPercent = getPercent(maxValue);
+    const maxPercent = getPercent(maxVal);
 
     if (range.current) {
       range.current.style.width = `${maxPercent - minRefPercent}%`;
     }
-  }, [maxValue, getPercent]);
+  }, [maxVal, getPercent, minVal]);
 
   return (
     <div className={cx(sliderStyle)}>
       <input
-        type='range'
+        type="range"
         min={min}
         max={max}
-        value={minValue}
+        value={minVal}
         onChange={e => {
-          const value = Math.min(Number(e.target.value), maxValue - 1000);
-          setMinValue(Math.floor(value / 1000) * 1000);
+          const value = Math.min(Number(e.target.value), maxVal - 1000);
           minValRef.current = value;
           dispatch(setMin(Math.floor(value / 1000) * 1000));
         }}
-        className='thumb--min'
+        className="thumb--min"
       />
       <input
-        type='range'
+        type="range"
         min={min}
         max={max}
-        value={maxValue}
+        value={maxVal}
         onChange={e => {
-          const value = Math.max(Number(e.target.value), minValue + 1000);
-          setMaxValue(Math.floor(value / 1000) * 1000);
+          const value = Math.max(Number(e.target.value), minVal + 1000);
           maxValRef.current = value;
           dispatch(setMax(Math.floor(value / 1000) * 1000));
         }}
-        className='thumb--max'
+        className="thumb--max"
       />
 
       <div className={cx(wrapSlider)}>

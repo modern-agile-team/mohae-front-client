@@ -14,13 +14,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/root';
 import EmptySpinner from '../../components/emptySpinner/EmptySpinner';
 import { setCategorys } from '../../redux/board/reducer';
+import { setInitialState } from '../../redux/post/reducer';
 
 interface PostData {
   decimalDay: number | null;
   no: number;
   title: string;
   isDeadline: number;
-  boardPhoto: string | null;
+  photoUrl: string | null;
   price: number | null;
   target: number;
   areaNo: number;
@@ -38,43 +39,39 @@ function Presenter() {
   const { no } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
   const location = useLocation();
-  const categories = [
-    { no: '1', name: '전체' },
-    { no: '2', name: '디자인' },
-    { no: '3', name: 'IT/개발' },
-    { no: '4', name: '사진/영상' },
-    { no: '5', name: '기획/마케팅' },
-    { no: '6', name: '번역/통역' },
-    { no: '7', name: '문서작업' },
-    { no: '8', name: '컨설팅' },
-    { no: '9', name: '법률' },
-    { no: '10', name: '과외/레슨' },
-    { no: '11', name: '상담/운세' },
-    { no: '12', name: '이벤트' },
-    { no: '13', name: '핸드메이드' },
-    { no: '14', name: '취미' },
-    { no: '15', name: '생활서비스' },
-    { no: '16', name: '기타' },
-  ];
+
+  const getPrams = (query: string): any => {
+    return searchParams.get(query);
+  };
+
+  const filteringQuery = () => {
+    const queryBase = `&categoryNo=${no}&title=${decodeURIComponent(
+      getPrams('title'),
+    )}&target=${getPrams('target')}&date=${getPrams('date')}&free=${getPrams(
+      'free',
+    )}&min=${getPrams('min')}&max=${getPrams('max')}&areaNo=${
+      getPrams('areaNo') !== '0' ? getPrams('areaNo') : null
+    }`;
+    return getPrams('popular') !== null
+      ? queryBase + `&popular=${getPrams('popular')}`
+      : queryBase + `&sort=${getPrams('sort')}`;
+  };
 
   const getData = () => {
+    const filteringBaseURL = `https://mo-hae.site/boards/filter?take=12&page=1`;
+    const categoryBaseURL = `https://mo-hae.site/boards/category/${no}?take=12&page=1`;
+
     axios
       .get(
-        location.search
-          ? `https://mo-hae.site/boards/filter?categoryNo=${no}&take=12&page=1&title=${searchParams.get(
-              'title',
-            )}`
-          : `https://mo-hae.site/boards/category/${no}?take=12&page=1`,
+        location.search ? filteringBaseURL + filteringQuery() : categoryBaseURL,
       )
-      .then(res => {
-        console.log('res.data.response :>> ', res.data);
-        dispatch(setCategorys(res.data.response));
-      })
+      .then(res => dispatch(setCategorys(res.data.response)))
       .catch(err => console.log('err', err));
   };
 
   useEffect(() => {
     getData();
+    dispatch(setInitialState());
   }, [location.search, no]);
 
   const createPost = () => {
@@ -112,7 +109,7 @@ function Presenter() {
       <div className={cx(style.wrap(0))}>
         <Search board />
         <div className={cx(style.btn)}>
-          <Link to={'/write'}>
+          <Link to={'/createpost'}>
             <Btn main>
               <p>글쓰기</p>
               <div className="imgWrap">
@@ -191,3 +188,22 @@ const style = {
     }
   `,
 };
+
+const categories = [
+  { no: '1', name: '전체' },
+  { no: '2', name: '디자인' },
+  { no: '3', name: 'IT/개발' },
+  { no: '4', name: '사진/영상' },
+  { no: '5', name: '기획/마케팅' },
+  { no: '6', name: '번역/통역' },
+  { no: '7', name: '문서작업' },
+  { no: '8', name: '컨설팅' },
+  { no: '9', name: '법률' },
+  { no: '10', name: '과외/레슨' },
+  { no: '11', name: '상담/운세' },
+  { no: '12', name: '이벤트' },
+  { no: '13', name: '핸드메이드' },
+  { no: '14', name: '취미' },
+  { no: '15', name: '생활서비스' },
+  { no: '16', name: '기타' },
+];

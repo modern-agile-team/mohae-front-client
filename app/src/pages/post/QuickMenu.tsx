@@ -1,29 +1,35 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 import { css, cx } from '@emotion/css';
-import { color, font, radius } from '../../styles';
-import { Props } from './Container';
+import { color, font } from '../../styles';
 import PostWriter from './PostWriter';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/root';
 
-// target, 카테고리, 제목, d-day, 지역, 작성자여부, 좋아요, 조회수, 가격
-interface PostInfoProps extends Props {
+interface PostInfoProps {
   quickMenu?: boolean;
   close: () => void;
-  likeCount: number;
-  setLikeCount: Dispatch<SetStateAction<number>>;
 }
 
-function PostInfo(props: PostInfoProps) {
-  const { data, close, likeCount, setLikeCount } = props;
-  const datas = data.response.board;
+function QuickMenu(props: PostInfoProps) {
+  const { close } = props;
+  const reduxData = useSelector(
+    (state: RootState) => state.post.data.response.board,
+  );
 
   const showDDAYContent = () => {
-    if (!datas.isDeadline) {
-      if (datas.decimalDay !== null) {
-        return css`
-          background-color: ${color.subtle};
-          color: ${color.main};
-          content: 'D ${datas.decimalDay}';
-        `;
+    if (!reduxData.isDeadline) {
+      if (reduxData.decimalDay !== null) {
+        return reduxData.decimalDay
+          ? css`
+              background-color: ${color.subtle};
+              color: ${color.main};
+              content: 'D ${reduxData.decimalDay}';
+            `
+          : css`
+              background-color: ${color.main};
+              color: white;
+              content: 'D-DAY';
+            `;
       }
       return css`
         background-color: ${color.main};
@@ -74,7 +80,7 @@ function PostInfo(props: PostInfoProps) {
       ${font.weight[400]}
       height: 24px;
       :after {
-        content: '${datas.price ? '원' : ''}';
+        content: '${reduxData.price ? '원' : ''}';
         margin: 0px 0px 0px 4px;
       }
     }
@@ -86,19 +92,14 @@ function PostInfo(props: PostInfoProps) {
   return (
     <div className={cx(common)}>
       <div>
-        <p className='title'>{datas.title}</p>
-        <p className='price'>
-          {datas.price ? datas.price.toLocaleString() : '무료'}
+        <p className="title">{reduxData.title}</p>
+        <p className="price">
+          {reduxData.price ? reduxData.price.toLocaleString() : '무료'}
         </p>
       </div>
-      <PostWriter
-        close={close}
-        data={data}
-        likeCount={likeCount}
-        setLikeCount={setLikeCount}
-      />
+      <PostWriter close={close} />
     </div>
   );
 }
 
-export default PostInfo;
+export default QuickMenu;

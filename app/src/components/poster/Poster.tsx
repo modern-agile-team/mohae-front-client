@@ -10,7 +10,7 @@ interface Props {
     no: number;
     title: string;
     isDeadline: number;
-    boardPhoto: string | null;
+    photoUrl: string | null;
     price: number | null;
     target: number;
     areaNo: number;
@@ -129,23 +129,19 @@ function Poster({ data }: Props) {
 
   return (
     <Box size={[264, 208]}>
-      <ImgBox
-        img={data.boardPhoto}
-        shape={data.target}
-        state={data.isDeadline}
-      />
+      <ImgBox img={data.photoUrl} shape={data.target} state={data.isDeadline} />
       <div className={cx(style)}>
-        <div className='default'>
+        <div className="default">
           <div>
-            <p className='title'>{data.title}</p>
-            <p className='writer'>{data.userNickname}</p>
+            <p className="title">{data.title}</p>
+            <p className="writer">{data.userNickname}</p>
           </div>
-          <p className='price'>
+          <p className="price">
             {data.price !== null ? data.price.toLocaleString() : '나눔'}
           </p>
         </div>
-        <div className='hovered'>
-          <p className='areaName'>{data.areaName}</p>
+        <div className="hovered">
+          <p className="areaName">{data.areaName}</p>
           {textContents()}
         </div>
       </div>

@@ -1,11 +1,14 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Presenter from './Presenter';
 import { decodeToken } from 'react-jwt';
 import { useDispatch, useSelector } from 'react-redux';
+import { setIsDeadline, setPostData } from '../../redux/post/reducer';
+import getToken from '../../utils/getToken';
 import { RootState } from '../../redux/root';
-import { setPostData } from '../../redux/post/reducer';
+import EmptySpinner from '../../components/emptySpinner/EmptySpinner';
+import { ENDPOINT } from '../../utils/ENDPOINT';
 
 export interface Props {
   data: {
@@ -43,7 +46,7 @@ interface Board {
   description?: string;
   hit: number;
   isDeadline: number;
-  isLike?: boolean;
+  isLike?: boolean | null | number;
   likeCount: number;
   majorName: string;
   nickname: string;
@@ -57,30 +60,41 @@ interface Board {
 }
 
 function Post() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const { no } = useParams();
   const dispatch = useDispatch();
-  const reduxData = useSelector((state: RootState) => state.post.data);
-
-  const token =
-    // /*subro*/ 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTm8iOjEsImVtYWlsIjoic3Vicm9AbmF2ZXIuY29tIiwibmlja25hbWUiOiJobmVlZGRqamRlIiwicGhvdG9VcmwiOiJodHRwczovL21vaGFlcHJvai5zMy5hbWF6b25hd3MuY29tL3Byb2ZpbGUvMTY1NTk2MzczODQ5MF9kb2VrY3JpbWcuUE5HIiwiaXNzdWVyIjoibW9kZXJuLWFnaWxlIiwiZXhwaXJhdGlvbiI6IjM2MDAwIiwiaWF0IjoxNjU2OTg1Nzg0LCJleHAiOjE2NTcwMjE3ODR9.thVCKfXz4xPz7BxzmUog6BjwimKQ_uH1soPBtZ6lLKY';
-    // /*wer06099*/ 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTm8iOjIsImVtYWlsIjoid2VyMDYwOTlAbmF2ZXIuY29tIiwibmlja25hbWUiOiIxMDBfc2IiLCJwaG90b1VybCI6InByb2ZpbGUvMTY1NTE4NDIzNDE2NV9cdTAwMDTvv70477-9UO-_vS5qcGciLCJpc3N1ZXIiOiJtb2Rlcm4tYWdpbGUiLCJleHBpcmF0aW9uIjoiMzYwMDAiLCJpYXQiOjE2NTY5ODU4MzQsImV4cCI6MTY1NzAyMTgzNH0.J5uQImwBROoCk8smbwkAMhf-ZPS7ESzZuCSaS9hYiVM';
-    /*비회원*/ null;
+  const token = getToken() || null;
   const decoded = () => {
     return token !== null ? decodeToken(token) : token;
+  };
+  const [view, setView] = useState<{ [key: string]: boolean }>({
+    report: false,
+    isDeadline: false,
+  });
+  const textRef = useRef<HTMLTextAreaElement>(null);
+  const handleResizeHeight = useCallback(() => {
+    if (textRef.current) {
+      textRef.current.style.height = 'auto';
+      textRef.current.style.height = textRef.current.scrollHeight + 'px';
+    }
+  }, []);
+  const loading = useSelector((state: RootState) => state.post.loading);
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   };
 
   useEffect(() => {
     axios
-      .get(`https://mo-hae.site/boards/${no}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      .get(`${ENDPOINT}boards/${no}`, config)
       .then(res => {
         const visitor = res.data.msg
           .replace(/[^회원|^비회원]/g, '')
           .substring(1, 4);
-        console.log('res.data :>> ', res.data);
         dispatch(
           setPostData({
             ...res.data,
@@ -93,11 +107,38 @@ function Post() {
       .catch(err => console.log('err', err));
   }, []);
 
-  return (
-    <>
-      <Presenter data={reduxData} />
-    </>
-  );
+  const requestHandleDeadline = (data: Board) => {
+    const URL = !data.isDeadline
+      ? `${ENDPOINT}boards/close/${no}`
+      : `${ENDPOINT}boards/cancel/${no}`;
+
+    axios
+      .patch(URL, null, config)
+      .then(res => {
+        setView({ ...view, isDeadline: true });
+        dispatch(setIsDeadline());
+      })
+      .catch(err => console.log('err', err));
+  };
+
+  const returnComp = () => {
+    return !loading ? (
+      <Presenter
+        view={view}
+        setView={(str: string) => {
+          setView({ ...view, [str]: !view[str] });
+        }}
+        textRef={textRef}
+        handleResizeHeight={handleResizeHeight}
+        requestHandleDeadline={requestHandleDeadline}
+      />
+    ) : (
+      <EmptySpinner loading />
+    );
+  };
+
+  return <>{returnComp()}</>;
 }
 
 export default Post;
+export type { Board };

@@ -15,8 +15,9 @@ import { Resign, LoginModal } from '../';
 import { RootState, AppDispatch } from '../../redux/root';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import { Profile } from '../../pages/';
+import ModifyProfile from '../modifyProfile';
 
 export default function HG() {
-  return <Profile />;
+  // return <ModifyProfile />;
+  return <div>ㅁㅇㄹ</div>;
 }

@@ -18,12 +18,14 @@ interface Props {
   size: string;
   placeholder: string;
   style: string;
+  selectedList?: (e: React.MouseEvent) => void;
 }
 
 function SelectBox(props: Props) {
-  const { view, onClick, size, placeholder, style, filter } = props;
+  const { view, onClick, size, placeholder, style, filter, selectedList } =
+    props;
   const filterSelected = useSelector(
-    (state: RootState) => state.filter.data.area.areaName
+    (state: RootState) => state.filter.data.area.areaName,
   );
   const [selected, setSelected] = useState<string>(placeholder);
   const sizeList: { [size: string]: string[] } = {
@@ -90,7 +92,7 @@ function SelectBox(props: Props) {
       height: 36px;
     }
     .placeholderWrap {
-      width: ${size === 'big' ? '344px' : '114px'};
+      width: ${!filter ? '344px' : '114px'};
       display: flex;
       align-items: center;
     }
@@ -101,12 +103,12 @@ function SelectBox(props: Props) {
 
   const contentsStyle = () => {
     return style === 'text' ? (
-      <div className='placeholderWrap'>
-        <div className='placeholder'>{filter ? filterSelected : selected}</div>
+      <div className="placeholderWrap">
+        <div className="placeholder">{filter ? filterSelected : selected}</div>
       </div>
     ) : (
-      <div className='placeholderWrap'>
-        <div className='category'>
+      <div className="placeholderWrap">
+        <div className="category">
           <Btn white category>
             {selected}
           </Btn>
@@ -119,8 +121,8 @@ function SelectBox(props: Props) {
     <>
       <div className={cx(wrap)} onClick={onClick}>
         {contentsStyle()}
-        <div className='opener'>
-          <Img src='/img/arrow-down-dark3.png' />
+        <div className="opener">
+          <Img src="/img/arrow-down-dark3.png" />
         </div>
       </div>
       {view && (
@@ -129,6 +131,10 @@ function SelectBox(props: Props) {
           contents={list[placeholder]}
           style={style}
           setSelected={setSelected}
+          handleView={onClick}
+          selectedList={selectedList}
+          filter={filter}
+          placeholder={placeholder}
         />
       )}
     </>

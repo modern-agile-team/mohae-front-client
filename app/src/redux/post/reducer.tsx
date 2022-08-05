@@ -1,13 +1,12 @@
-import {
-  createSlice,
-  PayloadAction,
-  createAsyncThunk,
-  AsyncThunkAction,
-} from '@reduxjs/toolkit';
-import axios from 'axios';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Props } from '../../pages/post/Container';
 
-const initialState: Props = {
+interface InitialState extends Props {
+  loading: boolean;
+}
+
+const initialState: InitialState = {
+  loading: true,
   data: {
     date: '',
     msg: '',
@@ -33,6 +32,7 @@ const initialState: Props = {
         decimalDay: 0,
         hit: 0,
         isDeadline: 0,
+        isLike: false,
         likeCount: 0,
         majorName: '',
         nickname: '',
@@ -48,17 +48,46 @@ const initialState: Props = {
   },
 };
 
-// initialState에 받을 key가 있어야 함.
-
 export const post = createSlice({
   name: 'post',
   initialState,
   reducers: {
     setPostData: (state, action: PayloadAction<any>) => {
       state.data = action.payload;
+      state.data.response.board.isLike =
+        action.payload.response.board.isLike === true ||
+        action.payload.response.board.isLike === 1
+          ? true
+          : false;
+      state.loading = false;
+    },
+    setIsLike: (state, action: PayloadAction<any>) => {
+      state.data.response.board.isLike = action.payload;
+    },
+    plusLikeCount: (state, action: PayloadAction<any>) => {
+      state.data.response.board.likeCount = action.payload;
+    },
+    minusLikeCount: (state, action: PayloadAction<any>) => {
+      state.data.response.board.likeCount = action.payload;
+    },
+    setIsDeadline: state => {
+      state.data.response.board.isDeadline = Number(
+        !state.data.response.board.isDeadline,
+      );
+    },
+    setInitialState: state => {
+      state.loading = true;
+      state.data = initialState.data;
     },
   },
 });
 
-export const { setPostData } = post.actions;
+export const {
+  setPostData,
+  setIsLike,
+  plusLikeCount,
+  minusLikeCount,
+  setInitialState,
+  setIsDeadline,
+} = post.actions;
 export default post.reducer;

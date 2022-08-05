@@ -57,17 +57,17 @@ export default function MyPage() {
   useGetRequest(
     `${SPEC}user=${paramNo}&take=${take[checkSelf]}&page=1`,
     TOKEN,
-    get_user_specs
+    get_user_specs,
   );
   useGetRequest(
     `${BOARDS}user=${paramNo}&take=${take[checkSelf]}&page=1${target[1]}`,
     TOKEN,
-    get_user_tohelp
+    get_user_tohelp,
   );
   useGetRequest(
     `${BOARDS}user=${paramNo}&take=${take[checkSelf]}&page=1${target[0]}`,
     TOKEN,
-    get_user_helpme
+    get_user_helpme,
   );
   useGetRequest(`profile/${paramNo}`, TOKEN, get_user_info);
   return (

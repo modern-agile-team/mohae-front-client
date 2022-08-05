@@ -22,80 +22,40 @@ interface InputProps extends Props {
 }
 
 function Input(props: InputProps) {
-  const {
-    board,
-    main,
-    showFilter,
-    setShowFilter,
-    value,
-    setValue,
-    setLocalValue,
-  } = props;
+  const { showFilter, setShowFilter, value, setValue, setLocalValue } = props;
   const localValue = JSON.parse(localStorage.getItem('currentSearch') || '[]');
   const { no } = useParams();
   const filterData = useSelector((state: RootState) => state.filter.data);
   const [searchParams, setSearchParams] = useSearchParams();
-  const navigate = useNavigate();
-
-  const attrProps = () =>
-    board
-      ? css`
-          width: 812px;
-          height: 43px;
-          input {
-            margin: 12px 0px 0px 32px;
-            ${font.weight.ragular}
-            ${font.size[14]}
-            color: ${color.dark1};
-            width: 663px;
-            height: 19px;
-          }
-          input::placeholder {
-            ${font.weight.normal}
-            color: ${color.dark2};
-            ${font.size[14]}
-          }
-          hr {
-            visibility: ${value ? 'visible' : 'hidden'};
-            margin-top: 7px;
-            width: 0;
-            height: 28px;
-            border-left: 2px solid ${color.light3};
-            margin-bottom: 15px;
-          }
-        `
-      : css`
-          width: 648px;
-          height: 68px;
-          div {
-            margin: 16px 24px;
-            width: 36px;
-            height: 36px;
-            display: flex;
-            padding-top: 3px;
-          }
-          input {
-            margin: 16px 0px 0px 24px;
-            ${font.weight.ragular}
-            ${font.size[28]}
-            color: ${color.dark1};
-            width: 540px;
-            height: 36px;
-          }
-          input::placeholder {
-            ${font.weight.normal}
-            color: ${color.dark2};
-            ${font.size[28]}
-          }
-        `;
-
   const commonStyle = css`
     ${shadow.normal}
     border-radius: ${showFilter ? '6px 6px 0px 0px' : '6px'};
     display: flex;
     background-color: white;
     cursor: pointer;
-    ${attrProps()}
+    width: 812px;
+    height: 43px;
+    input {
+      margin: 12px 0px 0px 32px;
+      ${font.weight.ragular}
+      ${font.size[14]}
+      color: ${color.dark1};
+      width: 663px;
+      height: 19px;
+    }
+    input::placeholder {
+      ${font.weight.normal}
+      color: ${color.dark2};
+      ${font.size[14]}
+    }
+    hr {
+      visibility: ${value ? 'visible' : 'hidden'};
+      margin-top: 7px;
+      width: 0;
+      height: 28px;
+      border-left: 2px solid ${color.light3};
+      margin-bottom: 15px;
+    }
     input::-ms-clear,
     input::-ms-reveal {
       display: none;
@@ -141,78 +101,136 @@ function Input(props: InputProps) {
           `;
     };
 
-    return board ? (
+    return (
       <>
         <div className={cx(cancle)} onClick={() => setValue('')}>
-          <Img src='/img/close-dark2.png' />
+          <Img src="/img/close-dark2.png" />
         </div>
         <hr />
-        <button className={cx(iconStyle())} type='submit'>
-          <Img src='/img/search.png' />
+        <button className={cx(iconStyle())} type="submit">
+          <Img src="/img/search.png" />
         </button>
         <div
           className={cx(iconStyle('filter'))}
           onClick={() => setShowFilter && setShowFilter(!showFilter)}
         >
-          <div id='filter'>
-            <Img src='/img/filter.png' />
+          <div id="filter">
+            <Img src="/img/filter.png" />
           </div>
         </div>
       </>
-    ) : (
-      <button type='submit'>
-        <Img className={cx(iconStyle())} src='/img/search.png' />
-      </button>
     );
   };
+  //===============================필터링===========================================
+  const objDataProcessing = (): any => {
+    const changeNull = (filteringValue: boolean | number | string) => {
+      if (
+        filteringValue === false ||
+        filteringValue === 0 ||
+        filteringValue === 1000000
+      ) {
+        return null;
+      } else return filteringValue;
+    };
 
-  const searchParamsURL = () => {
-    Object.keys(filterData).map(el => {
-      Object.keys(filterData[el]).map(key => {
-        typeof filterData[el][key] === 'object'
-          ? Object.keys(filterData[el][key]).map((numKey, i) => {
-              console.log('numKey', filterData[el][key][numKey] ? key : null);
-            })
-          : console.log(filterData[el][key]);
-      });
-    });
+    return {
+      check: {
+        sort: {
+          1: changeNull(filterData.check.sort[0]),
+          DESC: changeNull(filterData.check.sort[1]),
+          ASC: changeNull(filterData.check.sort[2]),
+        },
+        target: {
+          0: changeNull(filterData.check.target[0]),
+          1: changeNull(filterData.check.target[1]),
+        },
+        date: {
+          7: changeNull(filterData.check.date[0]),
+          30: changeNull(filterData.check.date[1]),
+          60: changeNull(filterData.check.date[2]),
+          0: changeNull(filterData.check.date[3]),
+        },
+        free: { 1: changeNull(filterData.check.free[0]) },
+      },
+      area: {
+        areaNo: changeNull(filterData.area.areaNo),
+      },
+      price: {
+        min: changeNull(filterData.price.min),
+        max: changeNull(filterData.price.max),
+      },
+    };
   };
 
-  // Object.keys(filterData).map(el => {
-  //   Object.keys(filterData[el]).map(key => {
-  //     typeof filterData[el][key] === 'object'
-  //       ? Object.keys(filterData[el][key]).map(numKey => {
-  //           console.log('numKey', filterData[el][key][numKey] ? key : null);
-  //         })
-  //       : console.log(filterData[el][key]);
-  //   });
-  // });
+  const sortQuery = () => {
+    if (objDataProcessing().check.sort[1] !== null) {
+      return '&popular=1';
+    } else
+      return (
+        '&sort=' +
+        Object.keys(objDataProcessing().check.sort)
+          .map((el, i) => {
+            if (objDataProcessing().check.sort[el] !== null) {
+              return Object.keys(objDataProcessing().check.sort)[i];
+            }
+          })
+          .filter(el => el)[0]
+      );
+  };
+
+  const drawObjKey = (obj: any) => {
+    const value = Object.keys(obj)
+      .map((el, i) => {
+        if (obj[el] !== null) {
+          return Object.keys(obj)[i];
+        }
+      })
+      .filter(el => el)[0];
+    return value ? value : null;
+  };
 
   const onSubmit = (e: any) => {
+    const query = `?categoryNo=${no}&title=${
+      value ? value : null
+    }${sortQuery()}&target=${drawObjKey(
+      objDataProcessing().check.target,
+    )}&date=${drawObjKey(objDataProcessing().check.date)}&free=${drawObjKey(
+      objDataProcessing().check.free,
+    )}&min=${
+      objDataProcessing().check.free[1] === null
+        ? objDataProcessing().price.min
+        : null
+    }&max=${
+      objDataProcessing().check.free[1] === null
+        ? objDataProcessing().price.max
+        : null
+    }&areaNo=${objDataProcessing().area.areaNo}`;
     e.preventDefault();
+
     if (value.length > 1) {
-      setSearchParams(`?categoryNo=${no}&title=${value}`);
+      setSearchParams(query);
+
       localStorage.setItem(
         'currentSearch',
-        JSON.stringify([value, ...localValue])
+        JSON.stringify([value, ...localValue]),
       );
       setLocalValue(JSON.parse(localStorage.getItem('currentSearch') || '[]'));
     } else alert('두 글자 이상');
 
     setValue('');
   };
-
+  //===============================필터링===========================================
   return (
     <>
       <form
-        id='inputWrap'
+        id="inputWrap"
         className={cx(commonStyle)}
         onSubmit={e => onSubmit(e)}
       >
         <input
-          type='text'
-          src='/img/search.png'
-          placeholder='검색어를 입력해 주세요.'
+          type="text"
+          src="/img/search.png"
+          placeholder="검색어를 입력해 주세요."
           onChange={e => setValue(e.target.value)}
           value={value}
         />

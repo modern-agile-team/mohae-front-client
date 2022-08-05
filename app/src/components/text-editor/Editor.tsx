@@ -1,12 +1,16 @@
 /** @format */
 
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import { EditorState, convertToRaw } from 'draft-js';
+import { EditorState, convertToRaw, ContentState } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
-import { color } from '../../styles';
+import htmlToDraft from 'html-to-draftjs';
+import { color, font } from '../../styles';
 import { css, cx } from '@emotion/css';
+import { useDispatch, useSelector } from 'react-redux';
+import { setDescription } from '../../redux/createpost/reducer';
+import { RootState } from '../../redux/root';
 
 interface Props {
   [key: string]: any;
@@ -102,27 +106,57 @@ export default function TextEditor({ size }: Props) {
       line-height: 23.8px;
     }
 
+    .public-DraftEditorPlaceholder-root {
+      ${font.size[14]}
+      margin-top: 9px;
+      margin-left: 16px;
+    }
+    .public-DraftStyleDefault-block {
+      margin-top: 4px;
+      margin-left: 8px;
+    }
+
     img {
       width: 18px;
       height: 18px;
     }
   `;
 
-  const [editorState, setEditorState] = useState(() =>
-      EditorState.createEmpty()
-    ),
-    [text, setText] = useState('');
+  const dispatch = useDispatch();
+  const description = useSelector(
+    (state: RootState) => state.createPost.data.description,
+  );
+  const [editorState, setEditorState] = useState(EditorState.createEmpty());
+  const rendered = useRef(false);
+
+  const onChangeField = useCallback(
+    payload => dispatch(setDescription(payload)),
+    [dispatch],
+  );
 
   const editorToHtml = (editorState: any) => {
     return draftToHtml(convertToRaw(editorState.getCurrentContent()));
   };
 
-  const onEditorStateChange = (e: any) => {
-    setEditorState(e);
-    setText(editorToHtml(editorState));
+  const onEditorStateChange = (editorState: any) => {
+    setEditorState(editorState);
+    onChangeField(editorToHtml(editorState));
   };
 
-  console.log('text :>> ', text);
+  useEffect(() => {
+    if (rendered.current) return;
+    rendered.current = true;
+    const blocksFromHtml = htmlToDraft(description);
+    if (blocksFromHtml) {
+      const { contentBlocks, entityMap } = blocksFromHtml;
+      const contentState = ContentState.createFromBlockArray(
+        contentBlocks,
+        entityMap,
+      );
+      const editorState = EditorState.createWithContent(contentState);
+      setEditorState(editorState);
+    }
+  }, [description]);
 
   return (
     <>
@@ -131,18 +165,12 @@ export default function TextEditor({ size }: Props) {
           editorState={editorState}
           onEditorStateChange={onEditorStateChange}
           editorClassName="editor"
+          localization={{
+            locale: 'ko',
+          }}
+          placeholder="본문 내용을 작성해주세요."
           toolbar={{
-            options: [
-              'blockType',
-              'fontSize',
-              'inline',
-              // 'fontFamily',
-              // 'list',
-              'textAlign',
-              // 'colorPicker',
-              // 'link',
-              'emoji',
-            ],
+            options: ['blockType', 'fontSize', 'inline', 'textAlign', 'emoji'],
             inline: {
               options: ['bold', 'italic', 'underline', 'strikethrough'],
               inDropdown: false,
@@ -181,7 +209,6 @@ export default function TextEditor({ size }: Props) {
           }}
         />
       </div>
-      {/* <div dangerouslySetInnerHTML={{ __html: text }}></div> */}
     </>
   );
 }

@@ -114,7 +114,6 @@ function Presenter() {
         location.search ? filteringBaseURL + filteringQuery() : categoryBaseURL,
       )
       .then(res => {
-        console.log(str, res.data.response);
         if (!location.search) {
           dispatch(setResCategorys(res.data.response));
           setPageInfo((prev: PageInfo) => ({
@@ -149,8 +148,6 @@ function Presenter() {
   useEffect(() => {
     dispatch(setInitialState());
   }, []);
-
-  console.log('pageInfo :>> ', pageInfo);
 
   useEffect(() => {
     if (!loading) getData('1번');

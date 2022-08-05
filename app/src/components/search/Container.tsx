@@ -1,22 +1,10 @@
-import React, { useState } from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { RootState } from '../../redux/root';
+import { ENDPOINT } from '../../utils/ENDPOINT';
 import Presenter from './Presenter';
-
-interface DataList {
-  hotKey: {
-    statusCode: number;
-    msg: string;
-    response: [
-      { no: number; name: string },
-      { no: number; name: string },
-      { no: number; name: string },
-      { no: number; name: string },
-      { no: number; name: string },
-    ];
-  };
-}
 
 interface Props {
   board?: boolean;
@@ -34,34 +22,22 @@ function Search(props: Props) {
   const filterData = useSelector((state: RootState) => state.filter.data);
   const [searchParams, setSearchParams] = useSearchParams();
   const [showFilter, setShowFilter] = useState(false);
-  const [dataList, setDataList] = useState<DataList>({
-    hotKey: {
-      statusCode: 200,
-      msg: '',
-      response: [
-        {
-          no: 1,
-          name: '개발',
-        },
-        {
-          no: 2,
-          name: '디자인',
-        },
-        {
-          no: 3,
-          name: '일상',
-        },
-        {
-          no: 4,
-          name: '응애',
-        },
-        {
-          no: 5,
-          name: '프론트',
-        },
-      ],
-    },
-  });
+  const [hotKeys, setHotKeys] = useState<
+    { no: number; name: string; ranking: number }[]
+  >([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    axios
+      .get(`${ENDPOINT}categories/popular`)
+      .then(res => {
+        const addRanking = Object.keys(res.data.response).map(el => {
+          return { ...res.data.response[el], ranking: Number(el) + 1 };
+        });
+        setHotKeys([...addRanking]);
+      })
+      .catch(err => console.log('err', err));
+  }, []);
 
   const objDataProcessing = (): any => {
     const changeNull = (filteringValue: boolean | number | string) => {
@@ -172,11 +148,10 @@ function Search(props: Props) {
     }
   };
 
-  const hotKeyClick = (e: React.MouseEvent) =>
-    console.log(
-      'e.target',
-      e.currentTarget.textContent?.slice(1, e.currentTarget.textContent.length),
-    );
+  const hotKeyClick = (e: React.MouseEvent, no: number) => {
+    e.preventDefault();
+    navigate(`/boards/${no}`);
+  };
 
   const deleteAll = () => {
     localStorage.removeItem('currentSearch');
@@ -198,8 +173,7 @@ function Search(props: Props) {
       deleteList={deleteList}
       showFilter={showFilter}
       setShowFilter={setShowFilter}
-      dataList={dataList}
-      setDataList={setDataList}
+      hotKeys={hotKeys}
       localValue={localValue}
       hotKeyClick={hotKeyClick}
       setLocalValue={setLocalValue}
@@ -209,4 +183,3 @@ function Search(props: Props) {
 }
 
 export { Search };
-export type { DataList };

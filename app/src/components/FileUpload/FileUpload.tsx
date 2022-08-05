@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
+import { color, font } from '../../styles';
 
 interface Props {
   fileData: {
@@ -65,5 +66,9 @@ const UpLoadButton = styled.label`
     color: #ffffff;
     font-size: 12px;
     font-weight: 700;
+  }
+
+  &:active {
+    background-color: ${color.lighter};
   }
 `;

@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { useInput } from '../../customhook/useInput';
 import { FileUpload } from '../../components/FileUpload/FileUpload';
 import { Img } from '../../components';
 import { getByteSize } from '../../utils/getByteSize';
 import { postQuestion } from '../../apis/postQuestion';
+import { useNavigate } from 'react-router-dom';
+import QuestionModal from '../../components/modal/QuestionModal';
+import getToken from '../../utils/getToken';
+import { color } from '../../styles';
 
 const Inquire = () => {
   const title = useInput(45);
@@ -18,71 +22,114 @@ const Inquire = () => {
     fileName: '',
     size: 0,
   });
+  const [modal, setModal] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const navigate = useNavigate();
+  const token = getToken();
 
   const onSubmit = () => {
+    if (!token) {
+      setModal(true);
+      return;
+    }
     if (title.value.length && contents.value.length === 0) return;
     fileData.formData.set(`title`, JSON.stringify(title.value));
     fileData.formData.set('description', JSON.stringify(contents.value));
 
-    postQuestion(fileData.formData);
+    try {
+      setLoading(true);
+      postQuestion(fileData.formData).then(res => {
+        if (res.data.success) {
+          setLoading(false);
+          navigate('/success');
+        }
+      });
+    } catch (err: any) {
+      console.log(err);
+    }
   };
 
+  useEffect(() => {
+    if (!token) {
+      setModal(true);
+    }
+  }, []);
+
   return (
-    <Wrapper>
-      <h3>문의하기</h3>
-      <span>Modern@gmail.com</span>
-      <TitleInput placeholder="문의제목을 입력해주세요. (3~45자)" {...title} />
-      <Contents>
-        <TextWrapper>
-          <Text
-            placeholder="문의내용을 입력해주세요. (최대 500자)"
-            {...contents}
-          />
-        </TextWrapper>
-        <TextLength>
-          <span>{`${contents.value.length}/500`}</span>
-        </TextLength>
-      </Contents>
-
-      {fileData.fileName !== '' ? (
-        <FileStorage>
-          <span>{fileData.fileName}</span>
-          <p>{getByteSize(fileData.size)}</p>
-          <CloseImg
-            onClick={() =>
-              setFileData({
-                formData: new FormData(),
-                fileName: '',
-                size: 0,
-              })
-            }
-          >
-            <Img src="/img/close.png" />
-          </CloseImg>
-        </FileStorage>
+    <>
+      {loading ? (
+        <LoadingWrapper>
+          <LoadingImg>
+            <Img src="/img/loading.gif" />
+          </LoadingImg>
+        </LoadingWrapper>
       ) : (
-        <FileWrapper>
-          <AddFile>
-            <span>첨부파일을 추가해주세요.</span>
-          </AddFile>
-          <FileUpload fileData={fileData} setFileData={setFileData} />
-        </FileWrapper>
-      )}
+        <Wrapper>
+          <h3>문의하기</h3>
+          {token ? (
+            <span>Modern@gmail.com</span>
+          ) : (
+            <span>로그인 후 이용할 수 있는 서비스입니다</span>
+          )}
+          <TitleInput
+            placeholder="문의제목을 입력해주세요. (3~45자)"
+            {...title}
+          />
+          <Contents>
+            <TextWrapper>
+              <Text
+                placeholder="문의내용을 입력해주세요. (최대 500자)"
+                {...contents}
+              />
+            </TextWrapper>
+            <TextLength>
+              <span>{`${contents.value.length}/500`}</span>
+            </TextLength>
+          </Contents>
 
-      <ExplainWrapper>
-        <span>첨부한 파일의 전체 크기는 5Mbyte 미만이어야 합니다.</span>
-        <span>
-          파일첨부는 JPG, GIF, PSD, MS Office 파일, 한글, PDF만 가능합니다.
-        </span>
-      </ExplainWrapper>
-      <SubmitButton
-        titleValue={title.value}
-        contentsValue={contents.value}
-        onClick={() => onSubmit()}
-      >
-        제출
-      </SubmitButton>
-    </Wrapper>
+          {fileData.fileName !== '' ? (
+            <FileStorage>
+              <span>{fileData.fileName}</span>
+              <p>{getByteSize(fileData.size)}</p>
+              <CloseImg
+                onClick={() =>
+                  setFileData({
+                    formData: new FormData(),
+                    fileName: '',
+                    size: 0,
+                  })
+                }
+              >
+                <Img src="/img/close.png" />
+              </CloseImg>
+            </FileStorage>
+          ) : (
+            <FileWrapper>
+              <AddFile>
+                <span>첨부파일을 추가해주세요.</span>
+              </AddFile>
+              <FileUpload fileData={fileData} setFileData={setFileData} />
+            </FileWrapper>
+          )}
+
+          <ExplainWrapper>
+            <span>첨부한 파일의 전체 크기는 5Mbyte 미만이어야 합니다.</span>
+            <span>
+              파일첨부는 JPG, GIF, PSD, MS Office 파일, 한글, PDF만 가능합니다.
+            </span>
+          </ExplainWrapper>
+          <SubmitButton
+            titleValue={title.value}
+            contentsValue={contents.value}
+            onClick={() => onSubmit()}
+          >
+            제출
+          </SubmitButton>
+          <button onClick={() => setModal(true)}>s</button>
+          <QuestionModal visible={modal} close={() => setModal(false)} />
+        </Wrapper>
+      )}
+    </>
   );
 };
 
@@ -218,6 +265,9 @@ const SubmitButton = styled.button<{
   font-weight: 400;
   margin-top: 70px;
   margin-bottom: 90px;
+  &:active {
+    background-color: ${color.lighter};
+  }
 `;
 
 const FileStorage = styled.div`
@@ -251,4 +301,17 @@ const CloseImg = styled.div`
   color: #4f4e5c;
   cursor: pointer;
   margin-right: 12px;
+`;
+
+const LoadingWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+`;
+
+const LoadingImg = styled.div`
+  width: 350px;
+  height: 450px;
 `;

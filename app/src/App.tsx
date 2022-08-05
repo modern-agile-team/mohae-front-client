@@ -23,6 +23,7 @@ import {
 import Edit from './pages/spec/Edit';
 import Visit from './pages/spec/Visit';
 import Inquire from './pages/inquire/inquire';
+import InquireSuccess from './pages/inquire/inquireSuccess';
 
 injectGlobal`
   * {
@@ -96,6 +97,10 @@ const App: React.SFC = () => {
           element={<Layout component={<CreatePost />} />}
         />
         <Route path={'/inquire'} element={<Layout component={<Inquire />} />} />
+        <Route
+          path={'/success'}
+          element={<Layout component={<InquireSuccess />} />}
+        />
       </Routes>
       <Visit />
       <Edit />

@@ -84,7 +84,7 @@ export default function Header(props: Props): ReactElement {
           </div>
         </button>
         <button className={'menu'}>
-          <Link to={'/faq'}>{text.inquire}</Link>
+          <Link to={'/inquire'}>{text.inquire}</Link>
         </button>
 
         {getToken() !== '' ? userInfoBtn : loginButtons}

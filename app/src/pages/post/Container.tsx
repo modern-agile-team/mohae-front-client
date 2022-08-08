@@ -1,12 +1,14 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Presenter from './Presenter';
 import { decodeToken } from 'react-jwt';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../redux/root';
-import { setPostData } from '../../redux/post/reducer';
+import { setIsDeadline, setPostData } from '../../redux/post/reducer';
 import getToken from '../../utils/getToken';
+import { RootState } from '../../redux/root';
+import EmptySpinner from '../../components/emptySpinner/EmptySpinner';
+import { ENDPOINT } from '../../utils/ENDPOINT';
 
 export interface Props {
   data: {
@@ -63,21 +65,32 @@ function Post() {
   }, []);
   const { no } = useParams();
   const dispatch = useDispatch();
-  const reduxData = useSelector((state: RootState) => state.post.data);
-
   const token = getToken() || null;
-
   const decoded = () => {
     return token !== null ? decodeToken(token) : token;
+  };
+  const [view, setView] = useState<{ [key: string]: boolean }>({
+    report: false,
+    isDeadline: false,
+  });
+  const textRef = useRef<HTMLTextAreaElement>(null);
+  const handleResizeHeight = useCallback(() => {
+    if (textRef.current) {
+      textRef.current.style.height = 'auto';
+      textRef.current.style.height = textRef.current.scrollHeight + 'px';
+    }
+  }, []);
+  const loading = useSelector((state: RootState) => state.post.loading);
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   };
 
   useEffect(() => {
     axios
-      .get(`https://mo-hae.site/boards/${no}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      .get(`${ENDPOINT}boards/${no}`, config)
       .then(res => {
         const visitor = res.data.msg
           .replace(/[^회원|^비회원]/g, '')
@@ -94,11 +107,38 @@ function Post() {
       .catch(err => console.log('err', err));
   }, []);
 
-  return (
-    <>
-      <Presenter data={reduxData} />
-    </>
-  );
+  const requestHandleDeadline = (data: Board) => {
+    const URL = !data.isDeadline
+      ? `${ENDPOINT}boards/close/${no}`
+      : `${ENDPOINT}boards/cancel/${no}`;
+
+    axios
+      .patch(URL, null, config)
+      .then(res => {
+        setView({ ...view, isDeadline: true });
+        dispatch(setIsDeadline());
+      })
+      .catch(err => console.log('err', err));
+  };
+
+  const returnComp = () => {
+    return !loading ? (
+      <Presenter
+        view={view}
+        setView={(str: string) => {
+          setView({ ...view, [str]: !view[str] });
+        }}
+        textRef={textRef}
+        handleResizeHeight={handleResizeHeight}
+        requestHandleDeadline={requestHandleDeadline}
+      />
+    ) : (
+      <EmptySpinner loading />
+    );
+  };
+
+  return <>{returnComp()}</>;
 }
 
 export default Post;
+export type { Board };

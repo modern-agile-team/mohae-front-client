@@ -11,36 +11,38 @@ import {
   setIsLike,
 } from '../../redux/post/reducer';
 import { RootState } from '../../redux/root';
+import getToken from '../../utils/getToken';
 
-interface BtnsProps extends Props {
+interface BtnsProps {
   close: () => void;
 }
 
 function Btns(props: BtnsProps) {
-  const { close, data } = props;
+  const { close } = props;
   const { no } = useParams();
   const dispatch = useDispatch();
-  const reduxIsLike = useSelector(
-    (state: RootState) => state.post.data.response.board.isLike,
+  const { isLike, likeCount } = useSelector(
+    (state: RootState) => state.post.data.response.board,
   );
-  const likeCount = useSelector(
-    (state: RootState) => state.post.data.response.board.likeCount,
+  const { decoded, response } = useSelector(
+    (state: RootState) => state.post.data,
   );
+  const token = getToken() || null;
 
-  const isLike = JSON.stringify({
-    judge: reduxIsLike,
+  const stringifyIsLike = JSON.stringify({
+    judge: isLike,
   });
 
   const header = {
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${data?.token}`,
+      Authorization: `Bearer ${token}`,
     },
   };
 
   const onClick = {
     like: () => {
-      dispatch(setIsLike(!reduxIsLike));
+      dispatch(setIsLike(!isLike));
     },
     report: () => {
       close();
@@ -48,18 +50,16 @@ function Btns(props: BtnsProps) {
   };
 
   const handleLikeCount = () => {
-    reduxIsLike
+    isLike
       ? dispatch(plusLikeCount(likeCount + 1))
       : dispatch(minusLikeCount(likeCount - 1));
   };
 
-  console.log(data.token);
-
   useEffect(() => {
-    if (data.token !== null) {
+    if (token !== null) {
       const debounceAxios = setTimeout(() => {
         axios
-          .post(`https://mo-hae.site/like/board/${no}`, isLike, header)
+          .post(`https://mo-hae.site/like/board/${no}`, stringifyIsLike, header)
           .then(res => {
             console.log('res.data :>> ', res.data);
             handleLikeCount();
@@ -68,19 +68,17 @@ function Btns(props: BtnsProps) {
       }, 300);
       return () => clearTimeout(debounceAxios);
     }
-  }, [reduxIsLike]);
+  }, [isLike]);
 
   const btnImg = {
     like: () => {
-      if (data.token !== null) {
+      if (token !== null) {
         return (
           <Btn white onClick={() => onClick.like()}>
             <div className="imgWrap">
               <Img
                 src={
-                  !reduxIsLike
-                    ? '/img/heart-main.png'
-                    : '/img/heart-filled-main.png'
+                  !isLike ? '/img/heart-main.png' : '/img/heart-filled-main.png'
                 }
               />
             </div>
@@ -97,10 +95,8 @@ function Btns(props: BtnsProps) {
     },
 
     report: () => {
-      const decoded = data.decoded;
-      const getDataValue = data.response.board;
-      return data.token === null ||
-        (data.decoded && decoded.userNo === getDataValue.userNo) ? (
+      return token === null ||
+        (decoded && decoded.userNo === response.board.userNo) ? (
         <Btn white disable>
           <div className="imgWrap">
             <Img src="/img/report-light1.png" />

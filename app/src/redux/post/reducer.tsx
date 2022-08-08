@@ -1,13 +1,12 @@
-import {
-  createSlice,
-  PayloadAction,
-  createAsyncThunk,
-  AsyncThunkAction,
-} from '@reduxjs/toolkit';
-import axios from 'axios';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Props } from '../../pages/post/Container';
 
-const initialState: Props = {
+interface InitialState extends Props {
+  loading: boolean;
+}
+
+const initialState: InitialState = {
+  loading: true,
   data: {
     date: '',
     msg: '',
@@ -60,6 +59,7 @@ export const post = createSlice({
         action.payload.response.board.isLike === 1
           ? true
           : false;
+      state.loading = false;
     },
     setIsLike: (state, action: PayloadAction<any>) => {
       state.data.response.board.isLike = action.payload;
@@ -70,9 +70,24 @@ export const post = createSlice({
     minusLikeCount: (state, action: PayloadAction<any>) => {
       state.data.response.board.likeCount = action.payload;
     },
+    setIsDeadline: state => {
+      state.data.response.board.isDeadline = Number(
+        !state.data.response.board.isDeadline,
+      );
+    },
+    setInitialState: state => {
+      state.loading = true;
+      state.data = initialState.data;
+    },
   },
 });
 
-export const { setPostData, setIsLike, plusLikeCount, minusLikeCount } =
-  post.actions;
+export const {
+  setPostData,
+  setIsLike,
+  plusLikeCount,
+  minusLikeCount,
+  setInitialState,
+  setIsDeadline,
+} = post.actions;
 export default post.reducer;

@@ -7,20 +7,18 @@ import Resign from './resign';
 import ModifyProfile from './modifyProfile';
 import Spec from './spec';
 import LoginModal from './login';
-import CreatePost from './createpost/CreatePost';
+import CreateAndEditPost from './createpost/Container';
 import Board from './board/Board';
 import Post from './post/Container';
-// import Default from './default/Default';
 export {
   HG,
   Home,
   MyPage,
   Resign,
   ModifyProfile,
-  CreatePost,
+  CreateAndEditPost,
   Board,
   Post,
   Spec,
   LoginModal,
-  // Default,
 };

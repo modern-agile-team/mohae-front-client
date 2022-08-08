@@ -4,6 +4,11 @@ import { Btn } from '../button';
 import { color, shadow } from '../../styles';
 import { useDispatch } from 'react-redux';
 import { setAreaName, setAreaNo } from '../../redux/filter/reducer';
+import {
+  setAreaNum,
+  setCategoryNum,
+  setDeadline,
+} from '../../redux/createpost/reducer';
 
 interface Contents {
   no: string;
@@ -15,10 +20,22 @@ interface Props {
   style: string;
   setSelected: Dispatch<SetStateAction<string>>;
   handleView: () => void;
+  selectedList?: (e: React.MouseEvent) => void;
+  filter: undefined | boolean;
+  placeholder: string;
 }
 
 function SelectList(props: Props) {
-  const { size, contents, style, setSelected, handleView } = props;
+  const {
+    size,
+    contents,
+    style,
+    placeholder,
+    setSelected,
+    handleView,
+    selectedList,
+    filter,
+  } = props;
   const dispatch = useDispatch();
 
   const wrap = css`
@@ -54,61 +71,62 @@ function SelectList(props: Props) {
       }
     }
   `;
+
   const onClick = {
     area: (e: React.MouseEvent, selected: string) => {
       dispatch(setAreaNo(e.currentTarget.id));
-      dispatch(
-        setAreaName(
-          e.currentTarget.textContent === null
-            ? ''
-            : e.currentTarget.textContent,
-        ),
-      );
+      if (filter) {
+        dispatch(
+          setAreaName(
+            e.currentTarget.textContent === null
+              ? ''
+              : e.currentTarget.textContent,
+          ),
+        );
+      } else {
+        dispatch(setAreaNum(e.currentTarget.id));
+      }
       setSelected(selected);
       handleView();
     },
     date: (e: React.MouseEvent, selected: string) => {
-      dispatch(setAreaNo(e.currentTarget.id));
-      dispatch(
-        setAreaName(
-          e.currentTarget.textContent === null
-            ? ''
-            : e.currentTarget.textContent,
-        ),
-      );
+      dispatch(setDeadline(e.currentTarget.id));
       setSelected(selected);
       handleView();
     },
     category: (e: React.MouseEvent, selected: string) => {
-      dispatch(setAreaNo(e.currentTarget.id));
-      dispatch(
-        setAreaName(
-          e.currentTarget.textContent === null
-            ? ''
-            : e.currentTarget.textContent,
-        ),
-      );
+      dispatch(setCategoryNum(Number(e.currentTarget.id) + 1));
       setSelected(selected);
       handleView();
     },
   };
 
-  const lists = () =>
-    contents.map((el, i: any) =>
-      style === 'text' ? (
-        <ul key={i} id={el.no} onClick={e => onClick.area(e, el.name)}>
-          {el.name}
-        </ul>
-      ) : (
-        <ul key={i} id={i} onClick={e => onClick.category(e, el.name)}>
-          <div className="category">
-            <Btn white category>
-              {el.name}
-            </Btn>
-          </div>
-        </ul>
-      ),
-    );
+  const lists = () => {
+    switch (placeholder) {
+      case '카테고리':
+        return contents.map((el, i: any) => (
+          <ul key={i} id={i} onClick={e => onClick.category(e, el.name)}>
+            <div className="category">
+              <Btn white category>
+                {el.name}
+              </Btn>
+            </div>
+          </ul>
+        ));
+      case '전체 지역':
+        return contents.map((el, i: any) => (
+          <ul key={i} id={el.no} onClick={e => onClick.area(e, el.name)}>
+            {el.name}
+          </ul>
+        ));
+      case '기간':
+        return contents.map((el, i: any) => (
+          <ul key={i} id={el.no} onClick={e => onClick.date(e, el.name)}>
+            {el.name}
+          </ul>
+        ));
+    }
+  };
 
   return (
     <div className={cx(wrap)}>

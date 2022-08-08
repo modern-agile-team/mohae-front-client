@@ -18,6 +18,9 @@ function PostImgs(props: PostImgsProps) {
   const reduxDatas = useSelector(
     (state: RootState) => state.post.data.response.board,
   );
+  const editImgArr = useSelector(
+    (state: RootState) => state.createPost.data.imgArr,
+  );
   const loading = useSelector((state: RootState) => state.post.loading);
   const boardPhotoURL = () => {
     if (reduxDatas.boardPhotoUrls !== null && !loading) {
@@ -26,11 +29,6 @@ function PostImgs(props: PostImgsProps) {
       });
     } else if (reduxDatas.boardPhotoUrls === null) {
       return ['/img/logo.png'];
-    }
-  };
-  const files = () => {
-    if (reduxDatas.boardPhotoUrls !== null && !loading) {
-      reduxDatas.boardPhotoUrls.split(', ').map(el => el.substring(20));
     }
   };
 
@@ -67,7 +65,7 @@ function PostImgs(props: PostImgsProps) {
         <Carousel postEdit />
       </Box>
       <Box size={[360, 72]}>
-        <OrderedImg inline edit imgs={boardPhotoURL()} postEdit />
+        <OrderedImg inline edit imgs={editImgArr} postEdit />
       </Box>
     </>
   );

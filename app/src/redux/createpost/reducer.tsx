@@ -27,7 +27,7 @@ const initialState: InitialState = {
     categoryNo: null,
     areaNo: null,
     deadline: null,
-    imgArr: ['logo.jpg'],
+    imgArr: [],
   },
   form: new FormData(),
 };

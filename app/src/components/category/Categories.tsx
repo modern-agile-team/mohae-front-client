@@ -8,10 +8,11 @@ import { color, radius, font, shadow } from '../../styles';
 import Category from './Category';
 
 interface Props {
-  [key: string]: any;
+  num: number;
+  resetPageInfo?: () => void;
 }
 
-export default function Categories({ num }: Props) {
+export default function Categories({ num, resetPageInfo }: Props) {
   const categoryList = [
       '전체',
       '디자인',
@@ -149,6 +150,7 @@ export default function Categories({ num }: Props) {
           name={list[arr[arr.length - 1]].name}
           id={list[arr[arr.length - 1]].no}
           img={list[arr[arr.length - 1]].img}
+          resetPageInfo={resetPageInfo}
         />
       </div>
       {Array(showNumber)
@@ -161,6 +163,7 @@ export default function Categories({ num }: Props) {
               id={list[arr[index]].no}
               name={list[arr[index]].name}
               img={list[arr[index]].img}
+              resetPageInfo={resetPageInfo}
             />
           </div>
         ))}
@@ -171,6 +174,7 @@ export default function Categories({ num }: Props) {
           id={list[arr[showNumber]].no}
           name={list[arr[showNumber]].name}
           img={list[arr[showNumber]].img}
+          resetPageInfo={resetPageInfo}
         />
       </div>
     </div>

@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 
 interface Props {
   [key: string]: any;
+  resetPageInfo?: () => void;
 }
 
 export default function Category({
@@ -17,6 +18,7 @@ export default function Category({
   id,
   className,
   onClick,
+  resetPageInfo,
 }: Props): ReactElement {
   const style: { [key: string]: any } = {
     circle: css`
@@ -108,7 +110,11 @@ export default function Category({
   };
 
   return !(shape === 'row') ? (
-    <Link to={`/boards/${id}`} className={cx(style[shape])}>
+    <Link
+      to={`/boards/${id}`}
+      className={cx(style[shape])}
+      onClick={resetPageInfo}
+    >
       {!(shape === 'row') && (
         <>
           <div className={'icon'}>

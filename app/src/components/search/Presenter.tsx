@@ -5,7 +5,7 @@ import { color, font, radius } from '../../styles';
 import Img from '../img/Img';
 import Input from './Input';
 import Filter from '../filter/Container';
-import type { DataList } from './Container';
+import { Link } from 'react-router-dom';
 
 interface InputProps extends Props {
   value: string;
@@ -14,13 +14,13 @@ interface InputProps extends Props {
   onChange?: () => any;
   showFilter: boolean;
   setShowFilter: Dispatch<React.SetStateAction<boolean>>;
-  dataList: DataList;
-  setDataList: Dispatch<React.SetStateAction<DataList>>;
+  hotKeys: { no: number; name: string; ranking: number }[];
   localValue: string[];
   deleteAll: () => void;
   deleteList: (i: number) => void;
-  hotKeyClick: (e: React.MouseEvent) => void;
+  hotKeyClick: (e: React.MouseEvent, no: number) => void;
   setLocalValue: Dispatch<React.SetStateAction<string[]>>;
+  onSubmit: (e: any, str: string, searchValue?: string) => void;
 }
 
 function Presenter(props: InputProps) {
@@ -28,7 +28,7 @@ function Presenter(props: InputProps) {
     style,
     showFilter,
     setShowFilter,
-    dataList,
+    hotKeys,
     localValue,
     deleteAll,
     deleteList,
@@ -36,6 +36,7 @@ function Presenter(props: InputProps) {
     value,
     setValue,
     setLocalValue,
+    onSubmit,
   } = props;
   const list: string[] = localValue;
 
@@ -185,7 +186,9 @@ function Presenter(props: InputProps) {
             <div
               className={cx(searchStyle, hover)}
               key={i}
-              onClick={() => setValue(el)}
+              onClick={e => {
+                onSubmit(e, 'fliter', el);
+              }}
             >
               <div id="list">{el}</div>
               <div
@@ -214,8 +217,6 @@ function Presenter(props: InputProps) {
   `;
 
   const HotKeyList = () => {
-    const list = dataList.hotKey.response;
-
     const hotKeyStyle = css`
       display: flex;
       align-items: center;
@@ -240,13 +241,13 @@ function Presenter(props: InputProps) {
       }
     `;
 
-    return list.map(el => (
+    return hotKeys.map((el, i) => (
       <div
         key={el.no}
         className={cx(hotKeyStyle)}
-        onClick={e => hotKeyClick(e)}
+        onClick={e => hotKeyClick(e, el.no)}
       >
-        <div id="no">{el.no}</div>
+        <div id="no">{el.ranking}</div>
         <div id="categoryName">{el.name}</div>
       </div>
     ));
@@ -261,6 +262,7 @@ function Presenter(props: InputProps) {
         showFilter={showFilter}
         setShowFilter={setShowFilter}
         setLocalValue={setLocalValue}
+        onSubmit={onSubmit}
       />
     ) : (
       <Input
@@ -270,6 +272,7 @@ function Presenter(props: InputProps) {
         showFilter={showFilter}
         setShowFilter={setShowFilter}
         setLocalValue={setLocalValue}
+        onSubmit={onSubmit}
       />
     );
 
@@ -292,7 +295,11 @@ function Presenter(props: InputProps) {
         </div>
       </div>
       {showFilter && (
-        <Filter showFilter={showFilter} setShowFilter={setShowFilter} />
+        <Filter
+          showFilter={showFilter}
+          setShowFilter={setShowFilter}
+          onSubmit={onSubmit}
+        />
       )}
     </div>
   );

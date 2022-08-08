@@ -4,9 +4,14 @@ import {
   createAsyncThunk,
   AsyncThunkAction,
 } from '@reduxjs/toolkit';
-import { Data } from '../../pages/board/Board';
+import { PostData, Data } from '../../pages/board/Board';
 
-const initialState: Data = {
+interface InitialState extends Data {
+  loading: boolean;
+}
+
+const initialState: InitialState = {
+  loading: true,
   response: [],
 };
 
@@ -14,11 +19,21 @@ export const board = createSlice({
   name: 'board',
   initialState,
   reducers: {
-    setCategorys: (state, action: PayloadAction<[]>) => {
-      state.response = [...action.payload];
+    setResCategorys: (state, action: PayloadAction<PostData[]>) => {
+      state.response = [...state.response, ...action.payload];
+      state.loading = false;
+    },
+    setResFiltering: (state, action: PayloadAction<PostData[]>) => {
+      state.response = [...state.response, ...action.payload];
+      state.loading = false;
+    },
+    setResArrEmpty: state => {
+      state.response = [];
+      state.loading = true;
     },
   },
 });
 
-export const { setCategorys } = board.actions;
+export const { setResCategorys, setResFiltering, setResArrEmpty } =
+  board.actions;
 export default board.reducer;

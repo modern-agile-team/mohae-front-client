@@ -1,21 +1,107 @@
-import ReactDOM from 'react-dom';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { css, cx } from '@emotion/css';
-import CheckBox from '../check-label/CheckLabel';
 import { Box } from '../../components';
 import { animation } from './modalAnimation';
 import { Btn } from '../button';
 import Report from '../check-label/CheckLabel';
 import Img from '../img/Img';
 import { color, font } from '../../styles';
+import { useParams } from 'react-router-dom';
+import { ENDPOINT } from '../../utils/ENDPOINT';
+import getToken from '../../utils/getToken';
+import decodingToken from '../../utils/decodingToken';
+import axios from 'axios';
+import { board } from '../../redux/board/reducer';
 
 interface Props {
   visible: boolean;
   close: () => void;
 }
 
+interface CheckList {
+  list: { checked: boolean; title: string }[];
+  text: string;
+  board?: boolean;
+  user?: boolean;
+}
+
 function ReportModal({ visible, close }: Props) {
   const [modalState, setModalState] = useState(false);
+  const [checkList, setCheckList] = useState<CheckList>({
+    list: [
+      { checked: false, title: '욕설 / 비방' },
+      { checked: false, title: '개인정보 요구' },
+      { checked: false, title: '사기' },
+      { checked: false, title: '사적인 연락' },
+      { checked: false, title: '도배' },
+      { checked: false, title: '선정적인 게시물' },
+      { checked: false, title: '위협' },
+    ],
+    text: '',
+  });
+  const { no } = useParams();
+
+  const report = (): { checks: any; description: string } => {
+    const init: Array<number> = [];
+
+    const requestData = {
+      checks: checkList.list.reduce((acc: any, cur: any, index: number) => {
+        if (cur.checked) {
+          acc.push(index + 1);
+        }
+        return acc;
+      }, init),
+      description: checkList.text,
+    };
+
+    return requestData;
+  };
+
+  const cleanUp = () => {
+    setCheckList({
+      list: [
+        { checked: false, title: '욕설 / 비방' },
+        { checked: false, title: '개인정보 요구' },
+        { checked: false, title: '사기' },
+        { checked: false, title: '사적인 연락' },
+        { checked: false, title: '도배' },
+        { checked: false, title: '선정적인 게시물' },
+        { checked: false, title: '위협' },
+      ],
+      text: '',
+    });
+  };
+
+  const ReportOnSubmit = (
+    report: {
+      checks: number[];
+      description: string;
+    },
+    cleanUp: () => void,
+  ) => {
+    const data = {
+      head: board ? 'board' : 'user',
+      headNo: board ? Number(no) : decodingToken()?.userNo,
+      checks: report.checks,
+      description: report.description,
+    };
+    if (
+      report.checks.length &&
+      report.description.replace('\\n', '').length < 100
+    ) {
+      axios
+        .post(`${ENDPOINT}reports`, data, {
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          },
+        })
+        .then(res => {
+          close();
+          cleanUp();
+        })
+        .catch(err => console.log('err', err));
+    } else alert('항목을 세 개 이하 체크 후 사유를 작성해주세요.');
+  };
 
   useEffect(() => {
     let timer: any;
@@ -95,35 +181,38 @@ function ReportModal({ visible, close }: Props) {
   return (
     <>
       <Box light size={[384, 480]} className={box}>
-        <div className={'close-btn'} onClick={close}>
-          <Img src='/img/close.png' />
+        <div
+          className={'close-btn'}
+          onClick={() => {
+            close();
+            cleanUp();
+          }}
+        >
+          <Img src="/img/close.png" />
         </div>
-        <div className='wrap'>
-          <p className='title'>신고 사유 선택</p>
-          <p className='warring'>최대 3개 항목까지 선택 가능합니다.</p>
+        <div className="wrap">
+          <p className="title">신고 사유 선택</p>
+          <p className="warring">최대 3개 항목까지 선택 가능합니다.</p>
         </div>
-        <Report
-          list={[
-            '욕설 / 비방',
-            '개인정보 요구',
-            '사기',
-            '사적인 연락',
-            '도배',
-            '선정적인 게시물',
-            '위협',
-          ]}
-        />
-        <div className='wrap'>
+        <Report checkList={checkList} setCheckList={setCheckList} />
+        <div className="wrap">
           <div className={'send-btn'}>
-            <Btn main able>
+            <Btn main able onClick={() => ReportOnSubmit(report(), cleanUp)}>
               {'전송'}
             </Btn>
           </div>
         </div>
       </Box>
-      <div onClick={close} className={cx(overlay)}></div>
+      <div
+        onClick={() => {
+          close();
+          cleanUp();
+        }}
+        className={cx(overlay)}
+      ></div>
     </>
   );
 }
 
 export default ReportModal;
+export type { CheckList };

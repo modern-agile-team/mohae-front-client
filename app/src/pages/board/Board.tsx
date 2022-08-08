@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { css, cx } from '@emotion/css';
 import { Btn, Img, Poster, Search } from '../../components';
 import { color, font } from '../../styles';
@@ -13,10 +13,14 @@ import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/root';
 import EmptySpinner from '../../components/emptySpinner/EmptySpinner';
-import { setCategorys } from '../../redux/board/reducer';
+import {
+  setResCategorys,
+  setResArrEmpty,
+  setResFiltering,
+} from '../../redux/board/reducer';
 import { setInitialState } from '../../redux/post/reducer';
 
-interface PostData {
+export interface PostData {
   decimalDay: number | null;
   no: number;
   title: string;
@@ -33,8 +37,20 @@ export interface Data {
   response: PostData[];
 }
 
+interface PageInfo {
+  category: {
+    page: number;
+    totalPage: number;
+  };
+  filtering: {
+    page: number;
+    totalPage: number;
+  };
+}
+
 function Presenter() {
   const reduxData = useSelector((state: RootState) => state.board.response);
+  const loading = useSelector((state: RootState) => state.board.loading);
   const dispatch = useDispatch();
   const { no } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -43,6 +59,39 @@ function Presenter() {
   const getPrams = (query: string): any => {
     return searchParams.get(query);
   };
+  const [pageInfo, setPageInfo] = useState<PageInfo>({
+    category: {
+      page: 1,
+      totalPage: 1,
+    },
+    filtering: {
+      page: 1,
+      totalPage: 1,
+    },
+  });
+  const [target, setTarget] = useState<Element | null>(null);
+  const handleIntersect = useCallback(
+    ([entry]: IntersectionObserverEntry[]) => {
+      if (entry.isIntersecting) {
+        setPageInfo(prev => {
+          if (prev.category.totalPage > prev.category.page) {
+            return {
+              category: { ...prev.category, page: prev.category.page + 1 },
+              filtering: { ...prev.filtering },
+            };
+          }
+          if (prev.filtering.totalPage > prev.filtering.page) {
+            return {
+              category: { ...prev.category },
+              filtering: { ...prev.filtering, page: prev.filtering.page + 1 },
+            };
+          }
+          return prev;
+        });
+      }
+    },
+    [],
+  );
 
   const filteringQuery = () => {
     const queryBase = `&categoryNo=${no}&title=${decodeURIComponent(
@@ -57,22 +106,70 @@ function Presenter() {
       : queryBase + `&sort=${getPrams('sort')}`;
   };
 
-  const getData = () => {
-    const filteringBaseURL = `https://mo-hae.site/boards/filter?take=12&page=1`;
-    const categoryBaseURL = `https://mo-hae.site/boards/category/${no}?take=12&page=1`;
-
+  const getData = (str?: string) => {
+    const filteringBaseURL = `https://mo-hae.site/boards/filter?take=8&page=${pageInfo.filtering.page}`;
+    const categoryBaseURL = `https://mo-hae.site/boards/category/${no}?take=8&page=${pageInfo.category.page}`;
     axios
       .get(
         location.search ? filteringBaseURL + filteringQuery() : categoryBaseURL,
       )
-      .then(res => dispatch(setCategorys(res.data.response)))
+      .then(res => {
+        if (!location.search) {
+          dispatch(setResCategorys(res.data.response));
+          setPageInfo((prev: PageInfo) => ({
+            category: {
+              ...prev.category,
+              totalPage: pageInfo.category.totalPage + 1,
+            },
+            filtering: { page: 1, totalPage: 1 },
+          }));
+        } else {
+          dispatch(setResFiltering(res.data.response));
+          setPageInfo((prev: PageInfo) => ({
+            category: { page: 1, totalPage: 1 },
+            filtering: {
+              ...prev.filtering,
+              totalPage: pageInfo.filtering.totalPage + 1,
+            },
+          }));
+        }
+      })
       .catch(err => console.log('err', err));
   };
 
+  const resetPageInfo = () => {
+    setPageInfo({
+      category: { page: 1, totalPage: 1 },
+      filtering: { page: 1, totalPage: 1 },
+    });
+    if (loading) getData();
+  };
+
   useEffect(() => {
-    getData();
     dispatch(setInitialState());
+  }, []);
+
+  useEffect(() => {
+    if (!loading) getData('1번');
+  }, [pageInfo.category.page, pageInfo.filtering.page]);
+
+  useEffect(() => {
+    dispatch(setResArrEmpty());
+    getData('2번');
   }, [location.search, no]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(handleIntersect, {
+      threshold: 0,
+      root: null,
+    });
+
+    target && observer.observe(target);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [handleIntersect, target]);
 
   const createPost = () => {
     const gap = (i: number) => css`
@@ -80,21 +177,32 @@ function Presenter() {
       margin-right: ${i % 4 && '16px'};
     `;
     const showContents = () => {
-      if (!reduxData.length && searchParams.get('title')) {
-        return <EmptySpinner searchNone text={searchParams.get('title')} />;
-      } else if (!reduxData.length) {
-        return (
-          <EmptySpinner
-            boardNone
-            text={categories[Number(no) - 1].name + ' 게시판'}
-          />
-        );
-      } else {
-        return reduxData.map((el: any, i: any) => (
-          <Link key={i} className={cx(gap(i + 1))} to={`/post/${el.no}`}>
-            <Poster data={reduxData[i]} />
-          </Link>
-        ));
+      if (loading) {
+        return <EmptySpinner loading small />;
+      } else if (!loading) {
+        if (!reduxData.length && searchParams.get('title')) {
+          return <EmptySpinner searchNone text={searchParams.get('title')} />;
+        } else if (!reduxData.length) {
+          return (
+            <EmptySpinner
+              boardNone
+              text={categories[Number(no) - 1].name + ' 게시판'}
+            />
+          );
+        } else {
+          return reduxData.map((el: any, i: any) => {
+            return (
+              <Link
+                key={i}
+                className={cx(gap(i + 1))}
+                to={`/post/${el.no}`}
+                ref={reduxData.length - 1 === i ? setTarget : null}
+              >
+                <Poster data={reduxData[i]} />
+              </Link>
+            );
+          });
+        }
       }
     };
     return showContents();
@@ -105,9 +213,9 @@ function Presenter() {
       <div className={cx(title)}>
         {categories[Number(no) - 1].name}&nbsp;게시판
       </div>
-      <Categories num={7} />
+      <Categories num={7} resetPageInfo={resetPageInfo} />
       <div className={cx(style.wrap(0))}>
-        <Search board />
+        <Search board resetPageInfo={resetPageInfo} />
         <div className={cx(style.btn)}>
           <Link to={'/createpost'}>
             <Btn main>

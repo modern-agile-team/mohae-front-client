@@ -17,7 +17,7 @@ interface Props {
   setView: Dispatch<React.SetStateAction<{ [key: number]: boolean }>>;
   setItemCheck: (list: string, i: string) => void;
   resetSetting: () => void;
-  onSubmit: (e: any) => void;
+  onSubmit: (e: any, str: string) => void;
   setShowFilter: Dispatch<React.SetStateAction<boolean>>;
   showFilter: boolean;
 }
@@ -208,7 +208,7 @@ function Presenter(props: Props) {
             <Btn
               main
               onClick={e => {
-                onSubmit(e);
+                onSubmit(e, 'filter');
                 setShowFilter(!showFilter);
               }}
             >

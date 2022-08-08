@@ -62,7 +62,6 @@ function Presenter({
       </div>
     );
   };
-  console.log('view. :>> ', view.isDeadline);
 
   return (
     <>

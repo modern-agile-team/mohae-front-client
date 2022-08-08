@@ -32,15 +32,11 @@ export default function Header(props: Props): ReactElement {
     nickname: TOKEN !== '' && tokenInfo.nickname,
     userNo: TOKEN !== '' && tokenInfo.userNo,
   };
-  // console.log('userInfo :>> ', userInfo)
 
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
   const toggleLoginModal = (e: React.MouseEvent) => {
-    navigate({
-      search: `?login`,
-    });
     dispatch(open_login(true));
   };
 
@@ -79,12 +75,12 @@ export default function Header(props: Props): ReactElement {
         <button className={'menu FAQ'}>
           {text.service}
           <div className={'dropbox'}>
-            <Link to={'/notice'}>{text.notice}</Link>
-            <Link to={'/FAQ'}>{text.FAQ}</Link>
+            <Link to={'/support/notices'}>{text.notice}</Link>
+            <Link to={'/support/faqs'}>{text.FAQ}</Link>
           </div>
         </button>
         <button className={'menu'}>
-          <Link to={'/faq'}>{text.inquire}</Link>
+          <Link to={'/inquire'}>{text.inquire}</Link>
         </button>
 
         {getToken() !== '' ? userInfoBtn : loginButtons}

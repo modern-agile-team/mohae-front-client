@@ -1,14 +1,16 @@
 /** @format */
 
 import { css, cx } from '@emotion/css';
-import { color, radius, font, shadow } from '../../styles';
-import { useState, useRef } from 'react';
+import { color } from '../../styles';
+import { Dispatch, SetStateAction } from 'react';
+import type { CheckList } from '../../components/modal/ReportModal';
 
 interface Props {
-  [key: string]: any;
+  checkList: CheckList;
+  setCheckList: Dispatch<SetStateAction<CheckList>>;
 }
 
-export default function Report({ list }: Props) {
+export default function Report({ checkList, setCheckList }: Props) {
   const style = css`
     label {
       display: flex;
@@ -100,25 +102,10 @@ export default function Report({ list }: Props) {
     }
   `;
 
-  const [reportValue, setReportValue] = useState({
-    list: list.map((i: string) => ({ title: i, checked: false })) || [
-      { title: '욕설 / 비방', checked: false },
-      { title: '개인정보 요구', checked: false },
-      { title: '사기', checked: false },
-      { title: '사적인 연락', checked: false },
-      { title: '도배', checked: false },
-      { title: '선정적인 게시물', checked: false },
-      { title: '위협', checked: false },
-    ],
-    text: '',
-  });
-
   const selectList = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.stopPropagation();
-
-    const newReportValue = [...reportValue.list];
+    const newReportValue = [...checkList.list];
     const targetValue = newReportValue[Number(e.currentTarget.id)];
-    const selectedList = reportValue.list.reduce((acc: number, cur: any) => {
+    const selectedList = checkList.list.reduce((acc: number, cur: any) => {
       if (cur.checked) {
         return acc + 1;
       } else return acc;
@@ -126,14 +113,14 @@ export default function Report({ list }: Props) {
 
     if (selectedList < 3) {
       targetValue.checked = !targetValue.checked;
-      setReportValue({
-        ...reportValue,
+      setCheckList({
+        ...checkList,
         list: newReportValue,
       });
     } else if (!e.currentTarget.checked) {
       targetValue.checked = !targetValue.checked;
-      setReportValue({
-        ...reportValue,
+      setCheckList({
+        ...checkList,
         list: newReportValue,
       });
     } else if (selectedList) {
@@ -143,39 +130,16 @@ export default function Report({ list }: Props) {
     }
   };
 
-  const report = (e: React.MouseEvent<Element, MouseEvent>) => {
-    // use this function at request API
-    e.stopPropagation();
-
-    let init: Array<number> = [];
-
-    const requestData = {
-      checkedIndex: reportValue.list.reduce(
-        (acc: any, cur: any, index: number) => {
-          if (cur.checked) {
-            acc.push(index + 1);
-          }
-          return acc;
-        },
-        init
-      ),
-      text: reportValue.text,
-    };
-
-    // call axios to reportValue
-    console.log('requestData :>> ', requestData);
-  };
-
   const inputValue = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setReportValue({
-      ...reportValue,
+    setCheckList({
+      ...checkList,
       text: e.currentTarget.value,
     });
   };
 
   const showReportList = (
     <div>
-      {reportValue.list.map((report: any, index: number) => (
+      {checkList.list.map((report: any, index: number) => (
         <label key={index}>
           <input type="checkbox" onChange={selectList} id={`${index}`} />
           {report.title}

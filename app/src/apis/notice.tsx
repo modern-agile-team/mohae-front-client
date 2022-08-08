@@ -1,3 +1,4 @@
+import { EditorState } from 'draft-js';
 import instance from './instance';
 
 export interface NoticePostType {

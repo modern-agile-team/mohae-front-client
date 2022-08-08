@@ -1,4 +1,5 @@
 import { css, cx } from '@emotion/css';
+import styled from '@emotion/styled';
 import SideBar from '../notice/NoticeWriteSidebar';
 import ArticleTitle from '../notice/NoticeWriteAriticleTitle';
 import HeaderSearch from '../notice/NoticeWriteSearchHeader';
@@ -15,6 +16,11 @@ import { AppDispatch } from '../../../redux/root';
 import { RootState } from '../../../redux/root';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { deleteNoticePost } from '../../../apis/notice';
+import { Editor } from 'react-draft-wysiwyg';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import { EditorState, convertToRaw, ContentState } from 'draft-js';
+import draftToHtml from 'draftjs-to-html';
+import htmlToDraft from 'html-to-draftjs';
 
 const Notice = () => {
   const [isWrite, setIsWrite] = useState<boolean>(false);
@@ -29,11 +35,11 @@ const Notice = () => {
     postNo: 0,
     editForm: false,
   });
+  const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const { name } = useParams();
   const [searchParams] = useSearchParams();
   const dispatch = useDispatch<AppDispatch>();
   const notices: any = useSelector((state: RootState) => state.notice.post);
-  const user = useSelector((state: RootState) => state.user);
   const navigate = useNavigate();
   const searchItem = searchParams.get('title');
 
@@ -58,6 +64,14 @@ const Notice = () => {
       editForm: true,
       postNo: no,
     });
+    const blocksFromHtml = htmlToDraft(description);
+    const { contentBlocks, entityMap } = blocksFromHtml;
+    const contentState = ContentState.createFromBlockArray(
+      contentBlocks,
+      entityMap,
+    );
+    const newState = EditorState.createWithContent(contentState);
+    setEditorState(newState);
     setIsWrite(true);
   };
 
@@ -74,6 +88,17 @@ const Notice = () => {
       search: `?title=${searchBy}`,
     });
   };
+  const editorToHtml = (editorState: any) => {
+    return draftToHtml(convertToRaw(editorState.getCurrentContent()));
+  };
+  const onEditorChange = (editorState: EditorState) => {
+    const value = editorToHtml(editorState);
+    setEditorState(editorState);
+    setForm({
+      ...form,
+      description: value,
+    });
+  };
 
   useEffect(() => {
     if (searchItem) {
@@ -87,7 +112,7 @@ const Notice = () => {
       dispatch(getNotices(name!));
     }
   }, [dispatch, isWrite, name, searchItem]);
-  console.log(user);
+
   return (
     <div className={cx(wholeStyle)}>
       <HeaderSearch
@@ -97,6 +122,7 @@ const Notice = () => {
         setForm={setForm}
         param={name}
         onSearch={onSearch}
+        setEditorState={setEditorState}
       />
       <section className={cx(sectionStyle)}>
         <SideBar name={name!} />
@@ -104,7 +130,17 @@ const Notice = () => {
           {isWrite && (
             <>
               <ArticleTitle form={form} setForm={setForm} onSubmit={onSubmit} />
-              <TextArea form={form} setForm={setForm} />
+              <DraftEditor>
+                <Editor
+                  editorState={editorState}
+                  onEditorStateChange={onEditorChange}
+                  editorClassName="editor"
+                  localization={{
+                    locale: 'ko',
+                  }}
+                  placeholder="본문 내용을 작성해주세요."
+                />
+              </DraftEditor>
             </>
           )}
           <CommetContainer
@@ -158,4 +194,20 @@ const container = css`
 const sectionStyle = css`
   display: flex;
   margin-top: 24px;
+`;
+
+const DraftEditor = styled.div`
+  padding: 20px;
+  box-shadow: inset 0px 0px 8px rgba(132, 131, 141, 0.2);
+  .rdw-editor-wrapper {
+    overflow-y: auto;
+    height: 100px;
+  }
+  .rdw-editor-toolbar {
+    display: none;
+  }
+  .rdw-editor-main {
+    font-weight: 400;
+    font-size: 14px;
+  }
 `;

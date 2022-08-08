@@ -2,6 +2,7 @@ import React from 'react';
 import { css, cx } from '@emotion/css';
 import Search from './NoticeWriteSearch';
 import Header from './NoticeWriteheader';
+import { EditorState } from 'draft-js';
 
 export interface SearchProps {
   setIsWrite: React.Dispatch<React.SetStateAction<boolean>>;
@@ -22,6 +23,7 @@ export interface SearchProps {
   >;
   param?: string;
   onSearch: (searchBy: string) => void;
+  setEditorState: React.Dispatch<React.SetStateAction<EditorState>>;
 }
 
 const serchHeader = ({
@@ -31,6 +33,7 @@ const serchHeader = ({
   setForm,
   param,
   onSearch,
+  setEditorState,
 }: SearchProps) => {
   return (
     <div className={cx(wholeStyle)}>
@@ -42,6 +45,7 @@ const serchHeader = ({
           form={form}
           setForm={setForm}
           onSearch={onSearch}
+          setEditorState={setEditorState}
         />
       </div>
     </div>

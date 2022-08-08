@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { css, cx } from '@emotion/css';
 import { Img } from '../../../components';
 import { SearchProps } from './NoticeWriteSearchHeader';
+import { EditorState } from 'draft-js';
 
 const search = ({
   setIsWrite,
@@ -9,6 +10,7 @@ const search = ({
   form,
   setForm,
   onSearch,
+  setEditorState,
 }: SearchProps) => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [searchItem, setSearchItem] = useState<string>('');
@@ -20,15 +22,16 @@ const search = ({
     <div className={cx(container)}>
       <div className={cx(write)} onClick={() => setIsWrite(!isWrite)}>
         <span
-          onClick={() =>
+          onClick={() => {
             setForm({
               ...form,
               title: '',
               description: '',
               editForm: false,
               postNo: 0,
-            })
-          }
+            });
+            setEditorState(EditorState.createEmpty());
+          }}
         >
           {isWrite ? '작성취소' : '작성하기'}
         </span>

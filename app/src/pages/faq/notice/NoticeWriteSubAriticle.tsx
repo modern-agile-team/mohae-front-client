@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { css, cx } from '@emotion/css';
 import { Img } from '../../../components';
+import { EditorState } from 'draft-js';
 
 interface Props {
   notice: {
@@ -92,9 +93,8 @@ function subArticle({ notice, onEdit, onDelete }: Props) {
                   display: none;
                 `
           }
-        >
-          <span>{notice.description}</span>
-        </div>
+          dangerouslySetInnerHTML={{ __html: notice.description }}
+        ></div>
       </div>
     </div>
   );

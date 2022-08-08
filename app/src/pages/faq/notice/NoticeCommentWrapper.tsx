@@ -1,3 +1,4 @@
+import { EditorState } from 'draft-js';
 import SubArticle from './NoticeWriteSubAriticle';
 
 interface Props {

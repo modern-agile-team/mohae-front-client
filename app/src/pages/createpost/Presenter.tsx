@@ -41,7 +41,6 @@ function Presenter(props: Props) {
     setPopupView(true);
     postingAxios(e, type);
   };
-  console.log('type :>> ', type);
 
   const handleWriteBtn = () => {
     if (
@@ -56,7 +55,7 @@ function Presenter(props: Props) {
       return (
         <div className="write-btn" onClick={e => creationCompleteAction(e)}>
           <Btn main>
-            <p>작성</p>
+            <p>{type === 'create' ? '작성' : '수정'}</p>
             <div className="imgWrap">
               <Img src="/img/write.png" />
             </div>
@@ -67,7 +66,7 @@ function Presenter(props: Props) {
       return (
         <div className="write-btn">
           <Btn main disable>
-            <p>작성</p>
+            <p>{type === 'create' ? '작성' : '수정'}</p>
             <div className="imgWrap">
               <Img src="/img/write.png" />
             </div>
@@ -142,7 +141,9 @@ function Presenter(props: Props) {
       {popupView && (
         <Popup
           visible={popupView}
-          text1={'게시글이 성공적으로 작성 되었습니다.'}
+          text1={`게시글이 성공적으로 ${
+            type === 'create' ? '작성' : '수정'
+          }되었습니다.`}
         >
           <div className={cx(popupCloseBtn)}>
             <Link to={'/boards/1'}>

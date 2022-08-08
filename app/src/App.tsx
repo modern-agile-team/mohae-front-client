@@ -22,6 +22,7 @@ import {
 } from './pages';
 import Edit from './pages/spec/Edit';
 import Visit from './pages/spec/Visit';
+import Notice from './pages/faq/notice/Notice';
 
 injectGlobal`
   * {
@@ -93,6 +94,10 @@ const App: React.SFC = () => {
         <Route
           path={'/edit/:no'}
           element={<Layout component={<CreateAndEditPost />} />}
+        />
+        <Route
+          path={`/support/:name`}
+          element={<Layout component={<Notice />} />}
         />
       </Routes>
       <Visit />

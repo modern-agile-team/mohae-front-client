@@ -14,7 +14,6 @@ import { Link } from 'react-router-dom';
 
 interface Props {
   selectBoxClick: (i: number) => void;
-  selectedList: (e?: React.MouseEvent) => void;
   setTargetCheck: (i: number) => void;
   view: { [key: number]: boolean };
   targetChecked: { [key: number]: boolean };
@@ -25,7 +24,6 @@ interface Props {
 function Presenter(props: Props) {
   const {
     selectBoxClick,
-    selectedList,
     setTargetCheck,
     view,
     targetChecked,
@@ -97,19 +95,49 @@ function Presenter(props: Props) {
   };
 
   const createSelectBox = () => {
-    const placeholders = ['카테고리', '전체 지역', '기간'];
+    const placeholders: { placeholder: string; no: string | number | null }[] =
+      [
+        { placeholder: '카테고리', no: categoryNo },
+        { placeholder: '전체 지역', no: areaNo },
+        { placeholder: '기간', no: deadline },
+      ];
 
-    return placeholders.map((el, i) => (
-      <SelectBox
-        size="big"
-        placeholder={el}
-        view={view[i]}
-        key={i}
-        onClick={() => selectBoxClick(i)}
-        style={!i ? 'category' : 'text'}
-        selectedList={selectedList}
-      />
-    ));
+    const editFor = () => {
+      const arr = placeholders.map((placeholder, i) => {
+        return lists[placeholder.placeholder]
+          .map(list => {
+            if (Number(list.no) === placeholder.no) {
+              return list.name;
+            } else {
+              return '';
+            }
+          })
+          .filter(el => el)[0];
+      });
+      return arr;
+    };
+
+    return type === 'edit'
+      ? editFor().map((el, i) => (
+          <SelectBox
+            placeholder={el}
+            view={view[i]}
+            key={i}
+            handleView={() => selectBoxClick(i)}
+            style={placeholders[i].placeholder}
+            used={'createEdit'}
+          />
+        ))
+      : placeholders.map((el, i) => (
+          <SelectBox
+            placeholder={el.placeholder}
+            view={view[i]}
+            key={i}
+            handleView={() => selectBoxClick(i)}
+            style={placeholders[i].placeholder}
+            used={'createEdit'}
+          />
+        ));
   };
 
   return (
@@ -248,3 +276,48 @@ const contents = [
     구할래요
   </>,
 ];
+
+interface Contents {
+  no: string;
+  name: string;
+}
+
+const lists: { [placeholder: string]: Contents[] } = {
+  카테고리: [
+    { no: '1', name: 'All' },
+    { no: '2', name: '디자인' },
+    { no: '3', name: 'IT/개발' },
+    { no: '4', name: '사진/영상' },
+    { no: '5', name: '기획/마케팅' },
+    { no: '6', name: '번역/통역' },
+    { no: '7', name: '문서작업' },
+    { no: '8', name: '컨설팅' },
+    { no: '9', name: '법률' },
+    { no: '10', name: '과외/레슨' },
+    { no: '11', name: '상담/운세' },
+    { no: '12', name: '이벤트' },
+    { no: '13', name: '핸드메이드' },
+    { no: '14', name: '취미' },
+    { no: '15', name: '생활서비스' },
+    { no: '16', name: '기타' },
+  ],
+  '전체 지역': [
+    { no: '1', name: '서울' },
+    { no: '2', name: '경기도' },
+    { no: '3', name: '강원도' },
+    { no: '4', name: '대전' },
+    { no: '5', name: '세종시' },
+    { no: '6', name: '전라도' },
+    { no: '7', name: '광주' },
+    { no: '8', name: '경상도' },
+    { no: '9', name: '부산' },
+    { no: '10', name: '울산' },
+    { no: '11', name: '제주도' },
+  ],
+  기간: [
+    { no: '7', name: '일주일' },
+    { no: '30', name: '1개월' },
+    { no: '60', name: '3개월' },
+    { no: '0', name: '상시' },
+  ],
+};

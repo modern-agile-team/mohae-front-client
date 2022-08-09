@@ -55,7 +55,7 @@ function CreateAndEditPost({ type }: Props) {
             target: data.target,
             categoryNo: data.categoryNo,
             areaNo: data.areaNo,
-            deadline: null,
+            deadline: data.deadline,
             imgArr:
               data.boardPhotoUrls !== null && data.boardPhotoUrls !== ''
                 ? data.boardPhotoUrls.split(', ').map((el: any) => {
@@ -64,6 +64,7 @@ function CreateAndEditPost({ type }: Props) {
                 : [],
           };
           setStateForEdit(beforeEdit);
+          console.log('res.data :>> ', res.data);
           dispatch(setForEdit(beforeEdit));
           setTargetChecked(
             Number(beforeEdit.target) === 1
@@ -121,15 +122,21 @@ function CreateAndEditPost({ type }: Props) {
       });
       form.append('image', file);
     }
+
+    // console.log('price :>> ', form.getAll('price'));
+    // console.log('title :>> ', form.getAll('title'));
+    // console.log('description :>> ', form.getAll('description'));
+    // console.log('target :>> ', form.getAll('target'));
+    // console.log('categoryNo :>> ', form.getAll('categoryNo'));
+    // console.log('deadline :>> ', form.getAll('deadline'));
+    // console.log('areaNo :>> ', form.getAll('areaNo'));
+    // console.log('image :>> ', form.getAll('image'));
+
     requestAxios(type);
   };
 
   const selectBoxClick = (i: number) => {
     setView({ 0: false, 1: false, 2: false, [i]: !view[i] });
-  };
-
-  const selectedList = (e?: React.MouseEvent) => {
-    setView({ 0: false, 1: false, 2: false });
   };
 
   const setTargetCheck = (i: number) => {
@@ -143,7 +150,6 @@ function CreateAndEditPost({ type }: Props) {
           view={view}
           targetChecked={targetChecked}
           selectBoxClick={selectBoxClick}
-          selectedList={selectedList}
           setTargetCheck={setTargetCheck}
           postingAxios={postingAxios}
           type={type}
@@ -156,12 +162,3 @@ function CreateAndEditPost({ type }: Props) {
 }
 
 export default CreateAndEditPost;
-
-// console.log('price :>> ', form.getAll('price'));
-// console.log('title :>> ', form.getAll('title'));
-// console.log('description :>> ', form.getAll('description'));
-// console.log('target :>> ', form.getAll('target'));
-// console.log('categoryNo :>> ', form.getAll('categoryNo'));
-// console.log('deadline :>> ', form.getAll('deadline'));
-// console.log('areaNo :>> ', form.getAll('areaNo'));
-// console.log('image :>> ', form.getAll('image'));

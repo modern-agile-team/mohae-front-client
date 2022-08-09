@@ -78,9 +78,10 @@ const createPost = createSlice({
         categoryNo: null,
         areaNo: null,
         deadline: null,
-        imgArr: ['logo.jpg'],
+        imgArr: [],
       };
       state.form = new FormData();
+      state.loading = true;
     },
     setForEdit: (state, action: PayloadAction<any>) => {
       state.data = action.payload;

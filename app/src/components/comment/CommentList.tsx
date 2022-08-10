@@ -1,23 +1,38 @@
 import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { getCommentList } from '../../apis/comment';
 import CommentItem from './CommentItem';
 
-export type CommentType = {
+interface Replies {
+  replyNo: number;
+  replyContent: string;
+  replyWriterNo: number;
+  replyWriterPhotoUrl: string;
+  replyCreatedAt: string;
+}
+
+export interface CommentList {
   commentContent: string;
   commentCreatedAt: string;
   commentNo: number;
   commenterNickname: string;
   commenterNo: number;
-  commenterPhotoUrl?: string;
+  commenterPhotoUrl: string;
   isCommenter: number;
-  replies: any[];
-};
+  replies: Replies[];
+}
 
-const CommentList = () => {
-  const [commentList, setCommentList] = useState<CommentType[]>([]);
+interface Props {
+  handleModalView: () => void;
+}
+
+const CommentList = (props: Props) => {
+  const { handleModalView } = props;
+  const [commentList, setCommentList] = useState<CommentList[]>([]);
+  const { no } = useParams();
 
   const getComments = async () => {
-    const response = await getCommentList(4);
+    const response = await getCommentList(Number(no));
     setCommentList(response.data.response);
   };
 
@@ -28,7 +43,7 @@ const CommentList = () => {
   return (
     <ul>
       {commentList.map(comment => {
-        return <CommentItem {...comment} />;
+        return <CommentItem {...comment} handleModalView={handleModalView} />;
       })}
     </ul>
   );

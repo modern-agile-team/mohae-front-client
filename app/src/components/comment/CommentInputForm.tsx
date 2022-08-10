@@ -3,11 +3,15 @@ import React, { useRef, useState } from 'react';
 import useResizeTextArea from '../../customhook/useResizeTextArea';
 import Img from '../img/Img';
 import { createComment } from '../../apis/comment';
+import { Btn } from '../button';
+import { color, font } from '../../styles';
+import { useParams } from 'react-router-dom';
 
 const CommentInputForm = () => {
   const [comment, setComment] = useState<string>('');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const resizeTextArea = useResizeTextArea(textareaRef);
+  const { no } = useParams();
 
   const handleChangeComment = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setComment(e.target.value);
@@ -15,7 +19,9 @@ const CommentInputForm = () => {
 
   const handleSubmit = async () => {
     try {
-      await createComment({ no: 4, body: { content: comment } });
+      await createComment({ no: Number(no), body: { content: comment } }).then(
+        res => console.log('res', res),
+      );
       setComment('');
     } catch (err) {
       console.log(err);
@@ -36,12 +42,14 @@ const CommentInputForm = () => {
           placeholder="댓글을 입력해 주세요. (최대 500자)"
           value={comment}
         />
-        <button type="button" onClick={handleSubmit}>
-          작성
-          <ImageContainer>
-            <Img src="/img/write.png" />
-          </ImageContainer>
-        </button>
+        <div className="write-btn">
+          <Btn main onClick={handleSubmit}>
+            <p>작성</p>
+            <div className="write-img">
+              <Img src="/img/write.png" />
+            </div>
+          </Btn>
+        </div>
       </FormContainer>
     </Wrapper>
   );
@@ -72,17 +80,11 @@ const FormContainer = styled.div`
   button {
     display: flex;
     align-items: center;
-    background: #e7e7e8;
+    background: ${color.main};
     box-shadow: 0px 0px 8px rgba(132, 131, 141, 0.5);
     border-radius: 6px;
     padding: 12px 25px;
     color: #fff;
     font-weight: bold;
   }
-`;
-
-const ImageContainer = styled.div`
-  margin-left: 8px;
-  height: 15px;
-  width: 15px;
 `;

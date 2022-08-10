@@ -1,25 +1,39 @@
 import styled from '@emotion/styled';
 import Img from '../img/Img';
 import Commenter from './Commenter';
-import { CommentType } from './CommentList';
+import { CommentList } from './CommentList';
 
-const CommentItem = (props: CommentType) => {
+interface Props extends CommentList {
+  handleModalView: () => void;
+}
+
+const CommentItem = (props: Props) => {
   const {
     commenterPhotoUrl,
     commenterNickname,
     commentCreatedAt,
     commentContent,
+    commenterNo,
+    commentNo,
     replies,
+    handleModalView,
   } = props;
 
   return (
     <Wrapper>
       <ProfileImageWrapper>
-        <Img src={commenterPhotoUrl || '/img/profile.png'} size={45} />
+        <Img
+          src={'https://d2ffbnf2hpheay.cloudfront.net/' + commenterPhotoUrl}
+        />
       </ProfileImageWrapper>
       <CommentSection>
         <CommentHeader>
-          <Commenter commenterNickname={commenterNickname} />
+          <Commenter
+            commenterNickname={commenterNickname}
+            commenterNo={commenterNo}
+            commentNo={commentNo}
+            handleModalView={handleModalView}
+          />
           <span id="comment-created-date">{commentCreatedAt}</span>
         </CommentHeader>
         <CommentDescription>
@@ -46,6 +60,7 @@ const ProfileImageWrapper = styled.div`
   box-shadow: 0px 0px 4px rgba(132, 131, 141, 0.25);
   border-radius: 50px;
   margin-right: 12px;
+  cursor: pointer;
 `;
 
 const CommentSection = styled.section`
@@ -78,5 +93,6 @@ const CommentDescription = styled.div`
     font-weight: 400;
     font-size: 14px;
     color: #ff445e;
+    cursor: pointer;
   }
 `;

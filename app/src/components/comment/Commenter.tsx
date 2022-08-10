@@ -1,21 +1,66 @@
 import styled from '@emotion/styled';
 import Img from '../img/Img';
+import decodingToken from '../../utils/decodingToken';
+import { font, radius, shadow } from '../../styles';
+import { useState } from 'react';
+import { deleteComment } from '../../apis/comment';
+import { useParams } from 'react-router-dom';
 
-const Commenter = ({ commenterNickname }: { commenterNickname: string }) => {
+interface Props {
+  commenterNickname: string;
+  commenterNo: number;
+  commentNo: number;
+  handleModalView: () => void;
+}
+
+const Commenter = (props: Props) => {
+  const { commenterNickname, commenterNo, commentNo, handleModalView } = props;
+  const [detailsView, setDetailsView] = useState(false);
+  const userInfo = decodingToken();
+  const { no } = useParams();
+
+  const createReportBtn = () => {
+    return commenterNo === userInfo?.userNo ? (
+      <IconWrapper>
+        <Img src="/img/report-light1.png" />
+      </IconWrapper>
+    ) : (
+      <IconWrapper onClick={handleModalView}>
+        <Img src="/img/report-main.png" />
+      </IconWrapper>
+    );
+  };
+
+  const deleteRequest = () => {
+    deleteComment({ no: Number(no), commentNo: commentNo }).then(res =>
+      console.log('res.data', res.data),
+    );
+  };
+
   return (
-    <Wrapper>
-      <div className="left">
-        <h3>{commenterNickname}</h3>
-        <IconWrapper>
-          <Img src="/img/report-main.png" />
-        </IconWrapper>
-      </div>
-      <div className="right">
-        <IconWrapper>
-          <Img src="/img/group.svg" />
-        </IconWrapper>
-      </div>
-    </Wrapper>
+    <>
+      <Wrapper>
+        <div className="left">
+          <h3>{commenterNickname}</h3>
+          {createReportBtn()}
+        </div>
+        {commenterNo === userInfo?.userNo && (
+          <div className="right">
+            <IconWrapper onClick={() => setDetailsView(!detailsView)}>
+              <Img src="/img/group.svg" />
+            </IconWrapper>
+          </div>
+        )}
+      </Wrapper>
+      {detailsView && (
+        <RelativeWrapper>
+          <MoreDetails>
+            <span>수정하기</span>
+            <span onClick={deleteRequest}>삭제하기</span>
+          </MoreDetails>
+        </RelativeWrapper>
+      )}
+    </>
   );
 };
 
@@ -42,4 +87,38 @@ const IconWrapper = styled.div`
   width: 16px;
   height: 16px;
   margin-left: 11px;
+  cursor: pointer;
+`;
+
+const RelativeWrapper = styled.div`
+  position: relative;
+  top: 0px;
+  right: 0px;
+`;
+
+const MoreDetails = styled.div`
+  width: 100px;
+  height: 90px;
+  border-radius: 6px;
+  padding: 12px 6px;
+  box-shadow: 0px 0px 8px rgba(132, 131, 141, 0.5);
+
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  span:last-child {
+    border-top: 1px solid #e7e7e8;
+    padding-top: 8px;
+  }
+  span {
+    color: #4f4e5c;
+    font-size: 14px;
+    font-family: 'Medium';
+    width: 100%;
+    height: 50%;
+    text-align: center;
+    cursor: pointer;
+  }
 `;

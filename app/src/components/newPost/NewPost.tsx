@@ -234,7 +234,7 @@ export default function NewPost({ page, board }: Props) {
   );
 
   const isOpenSpecVisit = useSelector(
-    (state: RootState) => state.modal.openSpecVisit
+    (state: RootState) => state.modal.openSpecVisit,
   );
   const dispatch = useDispatch();
 
@@ -250,12 +250,12 @@ export default function NewPost({ page, board }: Props) {
             Authorization: `Bearer ${TOKEN}`,
           },
         })
-        .then((res) => {
+        .then(res => {
           if (res.data.statusCode >= 200 && res.data.statusCode <= 204) {
             dispatch(get_spec_info(res.data.response));
           }
         })
-        .catch((err) => {
+        .catch(err => {
           console.log('err :>> ', err);
         });
     }

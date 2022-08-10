@@ -74,7 +74,8 @@ export default function MySelf({
           <button
             className={'logout'}
             onClick={() => {
-              sessionStorage.removeItem('userAccessToken');
+              sessionStorage.removeItem('access_token');
+              sessionStorage.removeItem('refresh_token');
               navigate('/');
             }}
           >

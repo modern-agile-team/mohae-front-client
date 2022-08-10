@@ -4,7 +4,6 @@ import SideBar from '../notice/NoticeWriteSidebar';
 import ArticleTitle from '../notice/NoticeWriteAriticleTitle';
 import HeaderSearch from '../notice/NoticeWriteSearchHeader';
 import CommetContainer from '../notice/NoticeCommentWrapper';
-import TextArea from '../notice/NoticeWriteTextArea';
 import { useCallback, useEffect, useState } from 'react';
 import {
   createNoticePost,
@@ -109,7 +108,7 @@ const Notice = () => {
         }),
       );
     } else {
-      dispatch(getNotices(name!));
+      dispatch(getNotices(name!)).then(res => console.log(res));
     }
   }, [dispatch, isWrite, name, searchItem]);
 

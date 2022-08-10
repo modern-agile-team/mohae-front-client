@@ -53,7 +53,11 @@ export default function Register({ text }: Props) {
       )
       .then(res => {
         if (res.data.statusCode >= 200 && res.data.statusCode <= 204) {
-          sessionStorage.setItem('userAccessToken', res.data.response);
+          sessionStorage.setItem('access_token', res.data.response.accessToken);
+          sessionStorage.setItem(
+            'refresh_token',
+            res.data.response.refreshToken,
+          );
           navigate('/');
 
           dispatch(open_login(!isOpenLogin));

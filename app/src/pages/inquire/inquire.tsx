@@ -53,7 +53,7 @@ const Inquire = () => {
     if (!token) {
       setModal(true);
     }
-  }, []);
+  }, [token]);
 
   return (
     <>
@@ -125,7 +125,6 @@ const Inquire = () => {
           >
             제출
           </SubmitButton>
-          <button onClick={() => setModal(true)}>s</button>
           <QuestionModal visible={modal} close={() => setModal(false)} />
         </Wrapper>
       )}

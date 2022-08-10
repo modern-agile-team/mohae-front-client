@@ -1,14 +1,6 @@
 import React, { RefObject } from 'react';
 import { css, cx } from '@emotion/css';
-import {
-  PostIt,
-  Btn,
-  ReportModal,
-  Box,
-  Img,
-  Mosaic,
-  Popup,
-} from '../../components';
+import { PostIt, Btn, ReportModal, Box, Mosaic, Popup } from '../../components';
 import PostBody from '../../components/pagecomp/PostBody';
 import PostImgs from '../../components/pagecomp/PostImgs';
 import PostInfo from './PostInfo';
@@ -18,22 +10,15 @@ import { color, font, radius, shadow } from '../../styles';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/root';
 import type { Board } from './Container';
+import Comment from '../../components/comment/Comment';
 
 interface Props {
   requestHandleDeadline: (data: Board) => void;
-  textRef: RefObject<HTMLTextAreaElement>;
-  handleResizeHeight: () => void;
   view: { [key: string]: boolean };
   setView: (str: string) => void;
 }
 
-function Presenter({
-  requestHandleDeadline,
-  textRef,
-  handleResizeHeight,
-  view,
-  setView,
-}: Props) {
+function Presenter({ requestHandleDeadline, view, setView }: Props) {
   const reduxData = useSelector((state: RootState) => state.post.data);
 
   const closeBtn = () => {
@@ -65,7 +50,11 @@ function Presenter({
 
   return (
     <>
-      <ReportModal visible={view.report} close={() => setView('report')} />
+      <ReportModal
+        visible={view.report}
+        close={() => setView('report')}
+        board
+      />
       <div className={cx(wrap)}>
         <div className="topflexWrap">
           <PostImgs view />
@@ -77,27 +66,7 @@ function Presenter({
           </div>
         </div>
         <PostBody view />
-        <Box size={[1128]} className="comments-box">
-          <p className="all-comments">
-            댓글 <span>({dummy.response.length})</span>
-          </p>
-          <div>
-            <textarea
-              className="text-box"
-              ref={textRef}
-              placeholder="댓글을 입력해 주세요. (최대 500자)"
-              onInput={handleResizeHeight}
-            />
-            <div className="write-btn">
-              <Btn main>
-                <p>작성</p>
-                <div className="write-img">
-                  <Img src="/img/write.png" />
-                </div>
-              </Btn>
-            </div>
-          </div>
-        </Box>
+        <Comment />
         {closeBtn()}
         {useScroll().scrollY > 490 && (
           <div className="quickMenu">
@@ -199,97 +168,3 @@ const isDeadlineBtn = css`
   width: 100px;
   height: 43px;
 `;
-
-const dummy = {
-  success: true,
-  statusCode: 200,
-  msg: '댓글 전체 조회 완료',
-  response: [
-    {
-      commentNo: 8,
-      commentContent: '댓글을 수정했습니다.',
-      commentCreatedAt: '2022년 06월 17일',
-      commenterNo: 2,
-      commenterNickname: 'hneeddjsjde',
-      commenterPhotoUrl: 'profile/165518423416.jpg',
-      isCommenter: 0,
-      replies: [
-        {
-          replyNo: 1,
-          replyContent: '가ㄷㅏㅁㅏㅏㅏㅏ',
-          replyWriterNo: 1,
-          replyWriterPhotoUrl: 'example.com',
-          replyCreatedAt: '2022년 06월 17일',
-        },
-      ],
-    },
-    {
-      commentNo: 8,
-      commentContent: '댓글을 수정했습니다.',
-      commentCreatedAt: '2022년 06월 17일',
-      commenterNo: 2,
-      commenterNickname: 'hneeddjsjde',
-      commenterPhotoUrl: 'profile/165518423416.jpg',
-      isCommenter: 0,
-      replies: [
-        {
-          replyNo: 1,
-          replyContent: '가ㄷㅏㅁㅏㅏㅏㅏ',
-          replyWriterNo: 1,
-          replyWriterPhotoUrl: 'example.com',
-          replyCreatedAt: '2022년 06월 17일',
-        },
-        {
-          replyNo: 1,
-          replyContent: '가ㄷㅏㅁㅏㅏㅏㅏ',
-          replyWriterNo: 1,
-          replyWriterPhotoUrl: 'example.com',
-          replyCreatedAt: '2022년 06월 17일',
-        },
-        {
-          replyNo: 1,
-          replyContent: '가ㄷㅏㅁㅏㅏㅏㅏ',
-          replyWriterNo: 1,
-          replyWriterPhotoUrl: 'example.com',
-          replyCreatedAt: '2022년 06월 17일',
-        },
-      ],
-    },
-    {
-      commentNo: 8,
-      commentContent: '댓글을 수정했습니다.',
-      commentCreatedAt: '2022년 06월 17일',
-      commenterNo: 2,
-      commenterNickname: 'hneeddjsjde',
-      commenterPhotoUrl: 'profile/165518423416.jpg',
-      isCommenter: 0,
-      replies: [
-        {
-          replyNo: 1,
-          replyContent: '가ㄷㅏㅁㅏㅏㅏㅏ',
-          replyWriterNo: 1,
-          replyWriterPhotoUrl: 'example.com',
-          replyCreatedAt: '2022년 06월 17일',
-        },
-      ],
-    },
-    {
-      commentNo: 8,
-      commentContent: '댓글을 수정했습니다.',
-      commentCreatedAt: '2022년 06월 17일',
-      commenterNo: 2,
-      commenterNickname: 'hneeddjsjde',
-      commenterPhotoUrl: 'profile/165518423416.jpg',
-      isCommenter: 0,
-      replies: [
-        {
-          replyNo: 1,
-          replyContent: '가ㄷㅏㅁㅏㅏㅏㅏ',
-          replyWriterNo: 1,
-          replyWriterPhotoUrl: 'example.com',
-          replyCreatedAt: '2022년 06월 17일',
-        },
-      ],
-    },
-  ],
-};

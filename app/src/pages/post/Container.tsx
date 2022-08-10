@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Presenter from './Presenter';
 import { decodeToken } from 'react-jwt';
 import { useDispatch, useSelector } from 'react-redux';
@@ -36,7 +36,7 @@ interface Response {
   board: Board;
 }
 
-interface Board {
+export interface Board {
   areaName: string;
   areaNo: number;
   boardPhotoUrls: string | null;
@@ -104,7 +104,7 @@ function Post() {
           }),
         );
       })
-      .catch(err => console.log('err', err));
+      .catch(err => err);
   }, []);
 
   const requestHandleDeadline = (data: Board) => {
@@ -128,8 +128,6 @@ function Post() {
         setView={(str: string) => {
           setView({ ...view, [str]: !view[str] });
         }}
-        textRef={textRef}
-        handleResizeHeight={handleResizeHeight}
         requestHandleDeadline={requestHandleDeadline}
       />
     ) : (
@@ -141,4 +139,3 @@ function Post() {
 }
 
 export default Post;
-export type { Board };

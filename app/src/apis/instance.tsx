@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosInstance } from 'axios';
 import { ENDPOINT } from '../utils/ENDPOINT';
 import getToken from '../utils/getToken';
 
@@ -12,6 +12,14 @@ const createInstance = () => {
     },
   });
 };
+
+export const customAxios = axios.create({
+  baseURL: `${ENDPOINT}`,
+  headers: {
+    accept: 'application/json',
+  },
+  timeout: 10000,
+});
 
 const instance = createInstance();
 

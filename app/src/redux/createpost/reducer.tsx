@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface InitialState {
+  loading: boolean;
   data: {
     price: number | string;
     title: string;
@@ -16,6 +17,7 @@ interface InitialState {
 }
 
 const initialState: InitialState = {
+  loading: true,
   data: {
     price: '0',
     title: '',
@@ -25,7 +27,7 @@ const initialState: InitialState = {
     categoryNo: null,
     areaNo: null,
     deadline: null,
-    imgArr: ['logo.jpg'],
+    imgArr: [],
   },
   form: new FormData(),
 };
@@ -76,9 +78,17 @@ const createPost = createSlice({
         categoryNo: null,
         areaNo: null,
         deadline: null,
-        imgArr: ['logo.jpg'],
+        imgArr: [],
       };
       state.form = new FormData();
+      state.loading = true;
+    },
+    setForEdit: (state, action: PayloadAction<any>) => {
+      state.data = action.payload;
+      state.loading = false;
+    },
+    setLoading: (state, action: PayloadAction<any>) => {
+      state.loading = action.payload;
     },
   },
 });
@@ -95,5 +105,7 @@ export const {
   setTarget,
   setImgArr,
   setInitialState,
+  setForEdit,
+  setLoading,
 } = createPost.actions;
 export default createPost.reducer;

@@ -185,11 +185,9 @@ function Presenter(props: Props) {
               <div className="selectBox">
                 <SelectBox
                   view={view[0]}
-                  onClick={() => setView({ 0: !view[0] })}
-                  size="small"
-                  placeholder="전체 지역"
-                  style="text"
-                  filter
+                  handleView={() => setView({ 0: !view[0] })}
+                  style="전체 지역"
+                  used={'filter'}
                 />
               </div>
             </div>

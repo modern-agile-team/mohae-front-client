@@ -20,22 +20,11 @@ interface Props {
   style: string;
   setSelected: Dispatch<SetStateAction<string>>;
   handleView: () => void;
-  selectedList?: (e: React.MouseEvent) => void;
-  filter: undefined | boolean;
-  placeholder: string;
+  used: string;
 }
 
 function SelectList(props: Props) {
-  const {
-    size,
-    contents,
-    style,
-    placeholder,
-    setSelected,
-    handleView,
-    selectedList,
-    filter,
-  } = props;
+  const { size, contents, style, setSelected, handleView, used } = props;
   const dispatch = useDispatch();
 
   const wrap = css`
@@ -75,7 +64,7 @@ function SelectList(props: Props) {
   const onClick = {
     area: (e: React.MouseEvent, selected: string) => {
       dispatch(setAreaNo(e.currentTarget.id));
-      if (filter) {
+      if (used === 'filter') {
         dispatch(
           setAreaName(
             e.currentTarget.textContent === null
@@ -102,7 +91,7 @@ function SelectList(props: Props) {
   };
 
   const lists = () => {
-    switch (placeholder) {
+    switch (style) {
       case '카테고리':
         return contents.map((el, i: any) => (
           <ul key={i} id={i} onClick={e => onClick.category(e, el.name)}>

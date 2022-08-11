@@ -6,16 +6,16 @@ import { color, radius, font } from '../../styles';
 import { Box, FocusBar, BasicModal, Carousel, PostIt } from '../../components';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../redux/root';
-import getToken from '../../utils/getToken';
 import { get_spec_info } from '../../redux/spec/reducer';
 import axios from 'axios';
 import { Btn } from '../../components';
 import { spec_visit } from '../../redux/modal/reducer';
 import { ENDPOINT } from '../../utils/ENDPOINT';
+import setInterceptors from '../../apis/common/setInterceptors';
+import { customAxios } from '../../apis/instance';
 
 export default function Visit() {
   const isOpen = useSelector((state: RootState) => state.modal.openSpecVisit);
-  const TOKEN = getToken();
 
   const text: { [key: string]: any } = {
     sir: '님',
@@ -75,22 +75,21 @@ export default function Visit() {
         ...specInfo,
         title: value.title,
         description: value.description,
-      })
+      }),
     );
     setIsEdit(!isEdit);
 
-    axios
+    setInterceptors(customAxios)
       .patch(`${ENDPOINT}specs/${specInfo.no && specInfo.no}`, formData, {
         headers: {
           accept: 'application/json',
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${TOKEN}`,
         },
       })
-      .then((res) => {
+      .then(res => {
         console.log(`res.data`, res.data);
       })
-      .catch((err) => {
+      .catch(err => {
         console.log('err :>> ', err);
       });
   };

@@ -9,9 +9,9 @@ import { RootState } from '../../redux/root';
 import { Link } from 'react-router-dom';
 import { spec_visit } from '../../redux/modal/reducer';
 import { get_spec_info } from '../../redux/spec/reducer';
-import axios from 'axios';
-import getToken from '../../utils/getToken';
 import { ENDPOINT } from '../../utils/ENDPOINT';
+import setInterceptors from '../../apis/common/setInterceptors';
+import { customAxios } from '../../apis/instance';
 
 interface Props {
   [key: string]: any;
@@ -21,7 +21,6 @@ export default function NewPost({ page, board }: Props) {
   const text: { [key: string]: any } = {
     isOver: 'DAY',
   };
-  const TOKEN = getToken();
   const check: { [key: string]: any } = {
     inMain: {
       size: '208',
@@ -243,13 +242,8 @@ export default function NewPost({ page, board }: Props) {
     e.stopPropagation();
     dispatch(spec_visit(!isOpenSpecVisit));
     if (page === 'inSpec') {
-      axios
-        .get(`${ENDPOINT}/specs/spec/${board.no}`, {
-          headers: {
-            accept: 'application/json',
-            Authorization: `Bearer ${TOKEN}`,
-          },
-        })
+      setInterceptors(customAxios)
+        .get(`${ENDPOINT}/specs/spec/${board.no}`)
         .then(res => {
           if (res.data.statusCode >= 200 && res.data.statusCode <= 204) {
             dispatch(get_spec_info(res.data.response));

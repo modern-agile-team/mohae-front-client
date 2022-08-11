@@ -45,6 +45,7 @@ interface Board {
   decimalDay: number | null;
   description?: string;
   hit: number;
+  deadline: number;
   isDeadline: number;
   isLike?: boolean | null | number;
   likeCount: number;

@@ -1,13 +1,15 @@
 /** @format */
 
 import { css, cx } from '@emotion/css';
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { color } from '../../styles';
 import Img from '../img/Img';
 import Style from './style';
 import { useDispatch, useSelector } from 'react-redux';
 import { setImgArr, setImgs } from '../../redux/createpost/reducer';
 import { RootState } from '../../redux/root';
+import axios from 'axios';
+import useRefactorPostingData from '../../customhook/useRefactorPostingData';
 
 interface Props {
   [key: string]: any;
@@ -20,7 +22,7 @@ interface IMAGE {
   size: number;
 }
 
-export default function OrderedImg({ imgs, edit, inline }: Props) {
+export default function OrderedImg({ imgs, edit, inline, postEdit }: Props) {
   const [clone, setClone] = useState(
     imgs &&
       imgs.map((img: any) => ({
@@ -31,50 +33,8 @@ export default function OrderedImg({ imgs, edit, inline }: Props) {
   const [alarm, setAlarm] = useState(true);
   const [myImage, setMyImage] = useState<IMAGE[]>(clone || []);
   const formData = useSelector((state: RootState) => state.createPost.form);
-  const reduxData: { [key: string]: any } = useSelector(
-    (state: RootState) => state.createPost.data,
-  );
   const dispatch = useDispatch();
-
-  const refactorPriceData = useMemo((): number => {
-    const newData = Number(reduxData.price.replace(/,/g, ''));
-    return newData;
-  }, [reduxData.price]);
-  const refactorCategoryNo = useMemo((): number => {
-    const newData = Number(reduxData.categoryNo);
-    return newData;
-  }, [reduxData.categoryNo]);
-  const refactorAreaNo = useMemo((): number => {
-    const newData = Number(reduxData.areaNo);
-    return newData;
-  }, [reduxData.areaNo]);
-  const refactorDeadline = useMemo((): number => {
-    const newData = Number(reduxData.deadline);
-    return newData;
-  }, [reduxData.deadline]);
-  const refactorSummary = useMemo((): string | null => {
-    const newData = reduxData.summary === '' ? null : reduxData.summary;
-    return newData;
-  }, [reduxData.summary]);
-  const refactorDescription = useMemo((): string => {
-    const newData = reduxData.description;
-    return newData;
-  }, [reduxData.description]);
-  const refactorTitle = useMemo((): string => {
-    const newData = reduxData.title;
-    return newData;
-  }, [reduxData.title]);
-
-  const refactorReduxData: { [key: string]: string | number | null } = {
-    price: refactorPriceData,
-    title: refactorTitle,
-    description: refactorDescription,
-    summary: refactorSummary,
-    target: reduxData.target,
-    categoryNo: refactorCategoryNo,
-    areaNo: refactorAreaNo,
-    deadline: refactorDeadline,
-  };
+  const refactorReduxData = useRefactorPostingData();
 
   const addImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.currentTarget.files || [];
@@ -100,12 +60,43 @@ export default function OrderedImg({ imgs, edit, inline }: Props) {
     }
   };
 
+  const getImgFromS3 = async () => {
+    const newFileArr: File[] = [];
+
+    for (const el of clone) {
+      const fileName = el.img.replace(
+        'https://d2ffbnf2hpheay.cloudfront.net/',
+        '',
+      );
+      await axios
+        .get<Blob>(
+          'https://mohae-image.s3.ap-northeast-2.amazonaws.com/' +
+            `${fileName}`,
+          { responseType: 'blob' },
+        )
+        .then(res => {
+          const file = new File([res.data], fileName.substring(20), {
+            type: res.data.type,
+          });
+          return newFileArr.push(file);
+        });
+    }
+
+    const newMyimage = clone.map((el: any, i: any) => {
+      return { img: el.img, checked: false, File: newFileArr[i] };
+    });
+    setMyImage(newMyimage);
+    newMyimage.map((el: any, i: any) => formData.append('image', el.File));
+  };
+
   useEffect(() => {
     setTimeout(() => {
       setAlarm(false);
-    }, 5000);
+    }, 3000);
+    if (postEdit && clone) {
+      getImgFromS3();
+    }
   }, []);
-
   const style = Style({ inline: inline });
 
   const sequence = css`
@@ -282,7 +273,7 @@ export default function OrderedImg({ imgs, edit, inline }: Props) {
         <div className={cx(style)}>
           {alarm && (
             <div className="alarm">
-              {'사진을 클릭하여 순서설정 및 삭제를 할 수 있습니다'}
+              <div>{'순서설정 및 삭제를 할 수 있습니다'}</div>
             </div>
           )}
           {!inline && (

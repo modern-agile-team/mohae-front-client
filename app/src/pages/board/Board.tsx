@@ -18,7 +18,8 @@ import {
   setResArrEmpty,
   setResFiltering,
 } from '../../redux/board/reducer';
-import { setInitialState } from '../../redux/post/reducer';
+import { setInitialState as setInitialPostState } from '../../redux/post/reducer';
+import { setInitialState as setInitialCreateState } from '../../redux/createpost/reducer';
 
 export interface PostData {
   decimalDay: number | null;
@@ -106,7 +107,7 @@ function Presenter() {
       : queryBase + `&sort=${getPrams('sort')}`;
   };
 
-  const getData = (str?: string) => {
+  const getData = () => {
     const filteringBaseURL = `https://mo-hae.site/boards/filter?take=8&page=${pageInfo.filtering.page}`;
     const categoryBaseURL = `https://mo-hae.site/boards/category/${no}?take=8&page=${pageInfo.category.page}`;
     axios
@@ -146,16 +147,17 @@ function Presenter() {
   };
 
   useEffect(() => {
-    dispatch(setInitialState());
+    dispatch(setInitialPostState());
+    dispatch(setInitialCreateState());
   }, []);
 
   useEffect(() => {
-    if (!loading) getData('1번');
+    if (!loading) getData();
   }, [pageInfo.category.page, pageInfo.filtering.page]);
 
   useEffect(() => {
     dispatch(setResArrEmpty());
-    getData('2번');
+    getData();
   }, [location.search, no]);
 
   useEffect(() => {

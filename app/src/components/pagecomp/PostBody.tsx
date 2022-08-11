@@ -11,9 +11,10 @@ interface PostBodyProps {
   data?: Props;
   view?: boolean;
   getValue?: boolean;
+  type?: string;
 }
 function PostBody(props: PostBodyProps) {
-  const { view, getValue } = props;
+  const { view, getValue, type } = props;
   const reduxData = useSelector((state: RootState) => state.post.data.response);
 
   const style = css`

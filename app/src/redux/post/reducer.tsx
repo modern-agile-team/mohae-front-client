@@ -31,6 +31,7 @@ const initialState: InitialState = {
         categoryNo: 0,
         decimalDay: 0,
         hit: 0,
+        deadline: 0,
         isDeadline: 0,
         isLike: false,
         likeCount: 0,

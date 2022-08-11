@@ -1,6 +1,5 @@
-import axios from 'axios';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import Presenter from './Presenter';
 import { decodeToken } from 'react-jwt';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,7 +7,8 @@ import { setIsDeadline, setPostData } from '../../redux/post/reducer';
 import getToken from '../../utils/getToken';
 import { RootState } from '../../redux/root';
 import EmptySpinner from '../../components/emptySpinner/EmptySpinner';
-import { ENDPOINT } from '../../utils/ENDPOINT';
+import setInterceptors from '../../apis/common/setInterceptors';
+import { customAxios } from '../../apis/instance';
 
 export interface Props {
   data: {
@@ -73,13 +73,6 @@ function Post() {
     report: false,
     isDeadline: false,
   });
-  const textRef = useRef<HTMLTextAreaElement>(null);
-  const handleResizeHeight = useCallback(() => {
-    if (textRef.current) {
-      textRef.current.style.height = 'auto';
-      textRef.current.style.height = textRef.current.scrollHeight + 'px';
-    }
-  }, []);
   const loading = useSelector((state: RootState) => state.post.loading);
 
   const config = {
@@ -89,8 +82,8 @@ function Post() {
   };
 
   useEffect(() => {
-    axios
-      .get(`${ENDPOINT}boards/${no}`, config)
+    setInterceptors(customAxios)
+      .get(`boards/${no}`, config)
       .then(res => {
         const visitor = res.data.msg
           .replace(/[^회원|^비회원]/g, '')
@@ -108,11 +101,9 @@ function Post() {
   }, []);
 
   const requestHandleDeadline = (data: Board) => {
-    const URL = !data.isDeadline
-      ? `${ENDPOINT}boards/close/${no}`
-      : `${ENDPOINT}boards/cancel/${no}`;
+    const URL = !data.isDeadline ? `boards/close/${no}` : `boards/cancel/${no}`;
 
-    axios
+    setInterceptors(customAxios)
       .patch(URL, null, config)
       .then(res => {
         setView({ ...view, isDeadline: true });

@@ -1,23 +1,21 @@
 import styled from '@emotion/styled';
 import Img from '../img/Img';
 import Commenter from './Commenter';
-import { CommentList } from './CommentList';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/root';
+import Replies from '../replies/Replies';
 
-interface Props extends CommentList {
+interface DefaultProps {
   handleModalView: () => void;
+  handlePopupView: () => void;
+  commentIndex: number;
 }
 
-const CommentItem = (props: Props) => {
-  const {
-    commenterPhotoUrl,
-    commenterNickname,
-    commentCreatedAt,
-    commentContent,
-    commenterNo,
-    commentNo,
-    replies,
-    handleModalView,
-  } = props;
+const CommentItem = (props: DefaultProps) => {
+  const { commentIndex, handleModalView, handlePopupView } = props;
+  const { commentContent, commenterPhotoUrl, commentCreatedAt } = useSelector(
+    (state: RootState) => state.comment.data[commentIndex],
+  );
 
   return (
     <Wrapper>
@@ -29,18 +27,17 @@ const CommentItem = (props: Props) => {
       <CommentSection>
         <CommentHeader>
           <Commenter
-            commenterNickname={commenterNickname}
-            commenterNo={commenterNo}
-            commentNo={commentNo}
+            commentIndex={commentIndex}
             handleModalView={handleModalView}
           />
           <span id="comment-created-date">{commentCreatedAt}</span>
-        </CommentHeader>
-        <CommentDescription>
           <p>{commentContent}</p>
-          <span id="replies">답글</span>
-          <span id="replies">({replies.length})</span>
-        </CommentDescription>
+        </CommentHeader>
+        <Replies
+          commentIndex={commentIndex}
+          handleModalView={handleModalView}
+          handlePopupView={handlePopupView}
+        />
       </CommentSection>
     </Wrapper>
   );
@@ -76,23 +73,5 @@ const CommentHeader = styled.div`
     font-weight: 400;
     font-size: 12px;
     color: #a7a7ad;
-  }
-`;
-
-const CommentDescription = styled.div`
-  p {
-    font-family: 'Noto Sans KR';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    color: #4f4e5c;
-  }
-  #replies {
-    font-family: 'Noto Sans KR';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    color: #ff445e;
-    cursor: pointer;
   }
 `;

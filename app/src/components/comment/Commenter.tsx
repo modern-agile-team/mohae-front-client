@@ -1,23 +1,28 @@
 import styled from '@emotion/styled';
 import Img from '../img/Img';
 import decodingToken from '../../utils/decodingToken';
-import { font, radius, shadow } from '../../styles';
 import { useState } from 'react';
 import { deleteComment } from '../../apis/comment';
 import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../redux/root';
+import { setCommentArr } from '../../redux/comment/reducer';
 
 interface Props {
-  commenterNickname: string;
-  commenterNo: number;
-  commentNo: number;
+  commentIndex: number;
   handleModalView: () => void;
 }
 
 const Commenter = (props: Props) => {
-  const { commenterNickname, commenterNo, commentNo, handleModalView } = props;
-  const [detailsView, setDetailsView] = useState(false);
+  const { handleModalView, commentIndex } = props;
   const userInfo = decodingToken();
+  const [detailsView, setDetailsView] = useState(false);
   const { no } = useParams();
+  const dispatch = useDispatch();
+  const commentList = useSelector((state: RootState) => state.comment.data);
+  const { commentNo, commenterNickname, commenterNo } = useSelector(
+    (state: RootState) => state.comment.data[commentIndex],
+  );
 
   const createReportBtn = () => {
     return commenterNo === userInfo?.userNo ? (
@@ -31,10 +36,17 @@ const Commenter = (props: Props) => {
     );
   };
 
-  const deleteRequest = () => {
-    deleteComment({ no: Number(no), commentNo: commentNo }).then(res =>
-      console.log('res.data', res.data),
-    );
+  const handleDeailsView = () => {
+    setDetailsView(!detailsView);
+  };
+
+  const deleteCommentRequest = () => {
+    deleteComment({ no: Number(no), commentNo: commentNo }).then(res => {
+      dispatch(
+        setCommentArr(commentList.filter(el => el.commentNo !== commentNo)),
+      );
+    });
+    handleDeailsView();
   };
 
   return (
@@ -46,19 +58,22 @@ const Commenter = (props: Props) => {
         </div>
         {commenterNo === userInfo?.userNo && (
           <div className="right">
-            <IconWrapper onClick={() => setDetailsView(!detailsView)}>
+            <IconWrapper onClick={handleDeailsView}>
               <Img src="/img/group.svg" />
             </IconWrapper>
           </div>
         )}
       </Wrapper>
       {detailsView && (
-        <RelativeWrapper>
-          <MoreDetails>
-            <span>수정하기</span>
-            <span onClick={deleteRequest}>삭제하기</span>
-          </MoreDetails>
-        </RelativeWrapper>
+        <>
+          <RelativeWrapper>
+            <MoreDetails>
+              <span>수정하기</span>
+              <span onClick={deleteCommentRequest}>삭제하기</span>
+            </MoreDetails>
+          </RelativeWrapper>
+          <Overlay onClick={handleDeailsView} />
+        </>
       )}
     </>
   );
@@ -102,7 +117,7 @@ const MoreDetails = styled.div`
   border-radius: 6px;
   padding: 12px 6px;
   box-shadow: 0px 0px 8px rgba(132, 131, 141, 0.5);
-
+  z-index: 1;
   display: flex;
   flex-direction: column;
   position: absolute;
@@ -121,4 +136,13 @@ const MoreDetails = styled.div`
     text-align: center;
     cursor: pointer;
   }
+`;
+
+const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: inherit;
 `;

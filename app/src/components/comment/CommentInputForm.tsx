@@ -4,23 +4,56 @@ import useResizeTextArea from '../../customhook/useResizeTextArea';
 import Img from '../img/Img';
 import { createComment } from '../../apis/comment';
 import { Btn } from '../button';
-import { color, font } from '../../styles';
+import { color } from '../../styles';
 import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { setAddCommentArr } from '../../redux/comment/reducer';
+import decodingToken from '../../utils/decodingToken';
+import { RootState } from '../../redux/root';
 
-const CommentInputForm = () => {
+interface Props {
+  handleModalView: () => void;
+}
+
+const CommentInputForm = (props: Props) => {
+  const { handleModalView } = props;
   const [comment, setComment] = useState<string>('');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const resizeTextArea = useResizeTextArea(textareaRef);
   const { no } = useParams();
+  const dispatch = useDispatch();
+  const userInfo = decodingToken();
+  const commentList = useSelector((state: RootState) => state.comment.data);
 
   const handleChangeComment = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setComment(e.target.value);
+  };
+  const day = new Date();
+  const today = {
+    year: day.getFullYear(),
+    month: day.getMonth() + 1,
+    date: day.getDate(),
   };
 
   const handleSubmit = async () => {
     try {
       await createComment({ no: Number(no), body: { content: comment } }).then(
-        res => console.log('res', res),
+        res => {
+          const newComment = {
+            commentContent: comment,
+            commentCreatedAt: `${today.year}년 ${
+              today.month >= 10 ? today.month : '0' + today.month
+            }월 ${today.date >= 10 ? today.date : '0' + today.date}일`,
+            commentNo: 1,
+            commenterNickname: userInfo?.nickname,
+            commenterNo: userInfo?.userNo,
+            commenterPhotoUrl: userInfo?.photoUrl,
+            isCommenter: 1,
+            replies: [],
+          };
+          dispatch(setAddCommentArr(newComment));
+          handleModalView();
+        },
       );
       setComment('');
     } catch (err) {
@@ -32,7 +65,7 @@ const CommentInputForm = () => {
     <Wrapper>
       <CommentCounter>
         <span>댓글</span>
-        <span>({`${5}`})</span>
+        <span>({commentList.length})</span>
       </CommentCounter>
       <FormContainer>
         <textarea
@@ -85,6 +118,5 @@ const FormContainer = styled.div`
     border-radius: 6px;
     padding: 12px 25px;
     color: #fff;
-    font-weight: bold;
   }
 `;

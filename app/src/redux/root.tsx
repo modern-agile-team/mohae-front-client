@@ -11,6 +11,7 @@ import boardReducer from './board/reducer';
 import createPostReducer from './createpost/reducer';
 import postReducer from './post/reducer';
 import noticeReducer from './notice/reducer';
+import commentReducer from './comment/reducer';
 
 export const store = configureStore({
   reducer: {
@@ -24,6 +25,7 @@ export const store = configureStore({
     createPost: createPostReducer,
     post: postReducer,
     notice: noticeReducer,
+    comment: commentReducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({

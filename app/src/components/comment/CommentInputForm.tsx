@@ -3,19 +3,58 @@ import React, { useRef, useState } from 'react';
 import useResizeTextArea from '../../customhook/useResizeTextArea';
 import Img from '../img/Img';
 import { createComment } from '../../apis/comment';
+import { Btn } from '../button';
+import { color } from '../../styles';
+import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { setAddCommentArr } from '../../redux/comment/reducer';
+import decodingToken from '../../utils/decodingToken';
+import { RootState } from '../../redux/root';
 
-const CommentInputForm = () => {
+interface Props {
+  handleModalView: () => void;
+}
+
+const CommentInputForm = (props: Props) => {
+  const { handleModalView } = props;
   const [comment, setComment] = useState<string>('');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const resizeTextArea = useResizeTextArea(textareaRef);
+  const { no } = useParams();
+  const dispatch = useDispatch();
+  const userInfo = decodingToken();
+  const commentList = useSelector((state: RootState) => state.comment.data);
 
   const handleChangeComment = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setComment(e.target.value);
   };
+  const day = new Date();
+  const today = {
+    year: day.getFullYear(),
+    month: day.getMonth() + 1,
+    date: day.getDate(),
+  };
 
   const handleSubmit = async () => {
     try {
-      await createComment({ no: 4, body: { content: comment } });
+      await createComment({ no: Number(no), body: { content: comment } }).then(
+        res => {
+          const newComment = {
+            commentContent: comment,
+            commentCreatedAt: `${today.year}년 ${
+              today.month >= 10 ? today.month : '0' + today.month
+            }월 ${today.date >= 10 ? today.date : '0' + today.date}일`,
+            commentNo: 1,
+            commenterNickname: userInfo?.nickname,
+            commenterNo: userInfo?.userNo,
+            commenterPhotoUrl: userInfo?.photoUrl,
+            isCommenter: 1,
+            replies: [],
+          };
+          dispatch(setAddCommentArr(newComment));
+          handleModalView();
+        },
+      );
       setComment('');
     } catch (err) {
       console.log(err);
@@ -26,7 +65,7 @@ const CommentInputForm = () => {
     <Wrapper>
       <CommentCounter>
         <span>댓글</span>
-        <span>({`${5}`})</span>
+        <span>({commentList.length})</span>
       </CommentCounter>
       <FormContainer>
         <textarea
@@ -36,12 +75,14 @@ const CommentInputForm = () => {
           placeholder="댓글을 입력해 주세요. (최대 500자)"
           value={comment}
         />
-        <button type="button" onClick={handleSubmit}>
-          작성
-          <ImageContainer>
-            <Img src="/img/write.png" />
-          </ImageContainer>
-        </button>
+        <div className="write-btn">
+          <Btn main onClick={handleSubmit}>
+            <p>작성</p>
+            <div className="write-img">
+              <Img src="/img/write.png" />
+            </div>
+          </Btn>
+        </div>
       </FormContainer>
     </Wrapper>
   );
@@ -72,17 +113,10 @@ const FormContainer = styled.div`
   button {
     display: flex;
     align-items: center;
-    background: #e7e7e8;
+    background: ${color.main};
     box-shadow: 0px 0px 8px rgba(132, 131, 141, 0.5);
     border-radius: 6px;
     padding: 12px 25px;
     color: #fff;
-    font-weight: bold;
   }
-`;
-
-const ImageContainer = styled.div`
-  margin-left: 8px;
-  height: 15px;
-  width: 15px;
 `;

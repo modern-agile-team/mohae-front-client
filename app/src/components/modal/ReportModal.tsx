@@ -17,13 +17,13 @@ import { customAxios } from '../../apis/instance';
 interface Props {
   visible: boolean;
   close: () => void;
+  board?: boolean;
+  user?: boolean;
 }
 
 interface CheckList {
   list: { checked: boolean; title: string }[];
   text: string;
-  board?: boolean;
-  user?: boolean;
 }
 
 function ReportModal({ visible, close }: Props) {

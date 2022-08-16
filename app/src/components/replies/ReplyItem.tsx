@@ -1,49 +1,44 @@
 import styled from '@emotion/styled';
 import Img from '../img/Img';
-import Commenter from './Commenter';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/root';
-import Replies from '../replies/Replies';
+import Replier from './Replier';
 
 interface DefaultProps {
   handleModalView: () => void;
-  handlePopupView: () => void;
   commentIndex: number;
+  replyIndex: number;
 }
 
-const CommentItem = (props: DefaultProps) => {
-  const { commentIndex, handleModalView, handlePopupView } = props;
-  const { commentContent, commenterPhotoUrl, commentCreatedAt } = useSelector(
-    (state: RootState) => state.comment.data[commentIndex],
+const ReplyItem = (props: DefaultProps) => {
+  const { commentIndex, handleModalView, replyIndex } = props;
+  const { replyContent, replyCreatedAt, replyWriterPhotoUrl } = useSelector(
+    (state: RootState) => state.comment.data[commentIndex].replies[replyIndex],
   );
 
   return (
     <Wrapper>
       <ProfileImageWrapper>
         <Img
-          src={'https://d2ffbnf2hpheay.cloudfront.net/' + commenterPhotoUrl}
+          src={'https://d2ffbnf2hpheay.cloudfront.net/' + replyWriterPhotoUrl}
         />
       </ProfileImageWrapper>
       <CommentSection>
-        <CommentHeader>
-          <Commenter
-            commentIndex={commentIndex}
-            handleModalView={handleModalView}
-          />
-          <span id="comment-created-date">{commentCreatedAt}</span>
-          <p>{commentContent}</p>
-        </CommentHeader>
-        <Replies
+        <Replier
           commentIndex={commentIndex}
+          replyIndex={replyIndex}
           handleModalView={handleModalView}
-          handlePopupView={handlePopupView}
         />
+        <CommentHeader>
+          <span id="comment-created-date">{replyCreatedAt}</span>
+          <p>{replyContent}</p>
+        </CommentHeader>
       </CommentSection>
     </Wrapper>
   );
 };
 
-export default CommentItem;
+export default ReplyItem;
 
 const Wrapper = styled.li`
   display: flex;

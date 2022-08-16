@@ -1,34 +1,27 @@
-import { useEffect, useState } from 'react';
-import { getCommentList } from '../../apis/comment';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/root';
 import CommentItem from './CommentItem';
 
-export type CommentType = {
-  commentContent: string;
-  commentCreatedAt: string;
-  commentNo: number;
-  commenterNickname: string;
-  commenterNo: number;
-  commenterPhotoUrl?: string;
-  isCommenter: number;
-  replies: any[];
-};
+interface Props {
+  handleModalView: () => void;
+  handlePopupView: () => void;
+}
 
-const CommentList = () => {
-  const [commentList, setCommentList] = useState<CommentType[]>([]);
-
-  const getComments = async () => {
-    const response = await getCommentList(4);
-    setCommentList(response.data.response);
-  };
-
-  useEffect(() => {
-    getComments();
-  }, []);
+const CommentList = (props: Props) => {
+  const { handleModalView, handlePopupView } = props;
+  const commentList = useSelector((state: RootState) => state.comment.data);
 
   return (
     <ul>
-      {commentList.map(comment => {
-        return <CommentItem {...comment} />;
+      {commentList.map((comment, i) => {
+        return (
+          <CommentItem
+            key={i}
+            commentIndex={i}
+            handleModalView={handleModalView}
+            handlePopupView={handlePopupView}
+          />
+        );
       })}
     </ul>
   );

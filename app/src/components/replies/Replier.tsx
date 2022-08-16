@@ -2,30 +2,32 @@ import styled from '@emotion/styled';
 import Img from '../img/Img';
 import decodingToken from '../../utils/decodingToken';
 import { useState } from 'react';
-import { deleteComment } from '../../apis/comment';
-import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/root';
 import { setCommentArr } from '../../redux/comment/reducer';
+import { deleteReply } from '../../apis/replies';
 
 interface Props {
   commentIndex: number;
   handleModalView: () => void;
+  replyIndex: number;
 }
 
-const Commenter = (props: Props) => {
-  const { handleModalView, commentIndex } = props;
+const Replier = (props: Props) => {
+  const { handleModalView, commentIndex, replyIndex } = props;
   const userInfo = decodingToken();
   const [detailsView, setDetailsView] = useState(false);
-  const { no } = useParams();
   const dispatch = useDispatch();
   const commentList = useSelector((state: RootState) => state.comment.data);
-  const { commentNo, commenterNickname, commenterNo } = useSelector(
+  const { replyNo, replyWriterNo } = useSelector(
+    (state: RootState) => state.comment.data[commentIndex].replies[replyIndex],
+  );
+  const { commentNo, commenterNickname } = useSelector(
     (state: RootState) => state.comment.data[commentIndex],
   );
 
   const createReportBtn = () => {
-    return commenterNo === userInfo?.userNo ? (
+    return replyWriterNo === userInfo?.userNo ? (
       <IconWrapper>
         <Img src="/img/report-light1.png" />
       </IconWrapper>
@@ -40,13 +42,20 @@ const Commenter = (props: Props) => {
     setDetailsView(!detailsView);
   };
 
-  const deleteCommentRequest = () => {
-    deleteComment({ no: Number(no), commentNo: commentNo }).then(res => {
-      dispatch(
-        setCommentArr(commentList.filter(el => el.commentNo !== commentNo)),
-      );
+  const deleteReplyRequest = () => {
+    deleteReply({ no: commentNo, replyNo: replyNo }).then(res => {
+      const newCommentArr = commentList.filter((el, i) => {
+        return i !== commentIndex;
+      });
+
+      newCommentArr.splice(commentIndex, 0, {
+        ...commentList[commentIndex],
+        replies: [...commentList[commentIndex].replies].filter(
+          el => el.replyNo !== replyIndex,
+        ),
+      });
+      dispatch(setCommentArr(newCommentArr));
     });
-    handleDeailsView();
   };
 
   return (
@@ -56,7 +65,7 @@ const Commenter = (props: Props) => {
           <h3>{commenterNickname}</h3>
           {createReportBtn()}
         </div>
-        {commenterNo === userInfo?.userNo && (
+        {replyWriterNo === userInfo?.userNo && (
           <div className="right">
             <IconWrapper onClick={handleDeailsView}>
               <Img src="/img/group.svg" />
@@ -69,7 +78,7 @@ const Commenter = (props: Props) => {
           <RelativeWrapper>
             <MoreDetails>
               <span>수정하기</span>
-              <span onClick={deleteCommentRequest}>삭제하기</span>
+              <span onClick={deleteReplyRequest}>삭제하기</span>
             </MoreDetails>
           </RelativeWrapper>
           <Overlay onClick={handleDeailsView} />
@@ -79,7 +88,7 @@ const Commenter = (props: Props) => {
   );
 };
 
-export default Commenter;
+export default Replier;
 
 const Wrapper = styled.div`
   display: flex;

@@ -13,7 +13,7 @@ interface EditDeleteReply extends postReplyType {
 }
 
 export const createReply = ({ no, body }: postReplyType) => {
-  return setInterceptors(customAxios).post(`/board/${no}/replies`, body);
+  return setInterceptors(customAxios).post(`comments/${no}/replies`, body);
 };
 
 export const editReply = (
@@ -22,11 +22,13 @@ export const editReply = (
   body: EditDeleteReply,
 ) => {
   return setInterceptors(customAxios).put(
-    `/board/${no}/replies/${replyNo}`,
+    `comments/${no}/replies/${replyNo}`,
     body,
   );
 };
 
 export const deleteReply = ({ no, replyNo }: EditDeleteReply) => {
-  return setInterceptors(customAxios).delete(`/board/${no}/replies/${replyNo}`);
+  return setInterceptors(customAxios).delete(
+    `comments/${no}/replies/${replyNo}`,
+  );
 };

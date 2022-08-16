@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 import Img from '../img/Img';
-import Commenter from '../comment/Commenter';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/root';
+import Replier from './Replier';
 
 interface DefaultProps {
   handleModalView: () => void;
@@ -24,8 +24,9 @@ const ReplyItem = (props: DefaultProps) => {
         />
       </ProfileImageWrapper>
       <CommentSection>
-        <Commenter
+        <Replier
           commentIndex={commentIndex}
+          replyIndex={replyIndex}
           handleModalView={handleModalView}
         />
         <CommentHeader>

@@ -2,14 +2,14 @@ import styled from '@emotion/styled';
 import React, { useRef, useState } from 'react';
 import useResizeTextArea from '../../customhook/useResizeTextArea';
 import Img from '../img/Img';
-import { createComment } from '../../apis/comment';
 import { Btn } from '../button';
 import { color } from '../../styles';
-import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { setAddCommentArr } from '../../redux/comment/reducer';
+import { setCommentArr } from '../../redux/comment/reducer';
 import decodingToken from '../../utils/decodingToken';
 import { RootState } from '../../redux/root';
+import { Replies } from '../comment/Comment';
+import { createReply } from '../../apis/replies';
 
 interface Props {
   commentIndex: number;
@@ -21,7 +21,6 @@ const RepliesInputForm = (props: Props) => {
   const [reply, setReply] = useState<string>('');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const resizeTextArea = useResizeTextArea(textareaRef);
-  const { no } = useParams();
   const dispatch = useDispatch();
   const userInfo = decodingToken();
   const day = new Date();
@@ -31,23 +30,14 @@ const RepliesInputForm = (props: Props) => {
     date: day.getDate(),
   };
   const comments = useSelector((state: RootState) => state.comment.data);
-
   const handleChangeComment = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setReply(e.target.value);
   };
 
-  const newReply = {
-    replyNo: 1,
-    replyContent: reply,
-    replyWriterNo: userInfo?.userNo || 1,
-    replyWriterPhotoUrl: userInfo?.photoUrl || 'null',
-    replyCreatedAt: `${today.year}년 ${
-      today.month >= 10 ? today.month : '0' + today.month
-    }월 ${today.date >= 10 ? today.date : '0' + today.date}일`,
-  };
-
-  const removeCommentIndex = () => {
-    const newCommentArr = comments.filter((el, i) => i !== commentIndex);
+  const addNewRelpy = (newReply: Replies) => {
+    const newCommentArr = comments.filter((el, i) => {
+      return i !== commentIndex;
+    });
 
     newCommentArr.splice(commentIndex, 0, {
       ...comments[commentIndex],
@@ -59,26 +49,23 @@ const RepliesInputForm = (props: Props) => {
 
   const handleSubmit = async () => {
     try {
-      await createComment({ no: Number(no), body: { content: reply } }).then(
-        res => {
-          const newReply = {
-            replyNo: 1,
-            replyContent: reply,
-            replyWriterNo: userInfo?.userNo || 1,
-            replyWriterPhotoUrl: userInfo?.photoUrl || 'null',
-            replyCreatedAt: `${today.year}년 ${
-              today.month >= 10 ? today.month : '0' + today.month
-            }월 ${today.date >= 10 ? today.date : '0' + today.date}일`,
-          };
-          dispatch(
-            setAddCommentArr({
-              newReply: newReply,
-              comment: comments[commentIndex],
-            }),
-          );
-          handlePopupView();
-        },
-      );
+      await createReply({
+        no: comments[commentIndex].commentNo,
+        body: { content: reply },
+      }).then(res => {
+        const newReply = {
+          replyNo: 1,
+          replyContent: reply,
+          replyWriterNo: userInfo?.userNo || 1,
+          replyWriterPhotoUrl: userInfo?.photoUrl || 'null',
+          replyCreatedAt: `${today.year}년 ${
+            today.month >= 10 ? today.month : '0' + today.month
+          }월 ${today.date >= 10 ? today.date : '0' + today.date}일`,
+        };
+        dispatch(setCommentArr(addNewRelpy(newReply)));
+        handlePopupView();
+        console.log('res.data :>> ', res.data);
+      });
       setReply('');
     } catch (err) {
       console.log(err);

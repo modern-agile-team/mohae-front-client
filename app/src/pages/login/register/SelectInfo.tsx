@@ -2,10 +2,12 @@
 
 import { useState } from 'react';
 import { css, cx } from '@emotion/css';
-
+import { useSelector } from 'react-redux';
+import styled from '@emotion/styled';
 import { color, radius, font, shadow } from '../../../styles';
-import { Btn } from '../../../components';
+import { Btn, Img } from '../../../components';
 import SelectBox from '../../modifyProfile/SelectBox';
+import { RootState } from '../../../redux/root';
 
 interface Object {
   [key: string]: any;
@@ -18,6 +20,18 @@ export default function SelectInfo({ part, next }: Object) {
     three: false,
     four: false,
   });
+  const [info, setInfo] = useState<{
+    phoneNumber: string;
+    school: string;
+    major: string;
+    intersted: string;
+  }>({
+    phoneNumber: '',
+    school: '',
+    major: '',
+    intersted: '',
+  });
+  const [phoneBehindNumber, setPhoneBehindNumber] = useState<string>('');
 
   const toggleSelectBox = (e: React.MouseEvent<HTMLDivElement>) => {
     const target = e.currentTarget.id;
@@ -89,10 +103,23 @@ export default function SelectInfo({ part, next }: Object) {
     ],
   };
 
+  const onSelect = (
+    index: number,
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    setInfo({
+      ...info,
+      [e.currentTarget.name]: e.currentTarget.value,
+    });
+  };
+
+  const onSelectInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPhoneBehindNumber(e.target.value);
+  };
+
   const style = css`
     width: 100%;
     height: 100%;
-
     #one,
     #two,
     #three,
@@ -159,7 +186,6 @@ export default function SelectInfo({ part, next }: Object) {
       ${radius[24]};
       font-size: 14px;
       margin-bottom: 16px;
-
       display: flex;
       flex-direction: column;
       height: fit-content;
@@ -234,9 +260,32 @@ export default function SelectInfo({ part, next }: Object) {
           <div className={'input'}>
             <div className={'btn white'}>
               <div id="one" onClick={toggleSelectBox}>
-                <SelectBox open={open.one} noneScroll list={text.phoneNumbers}>
-                  {'선택'}
-                </SelectBox>
+                <DemoSelectBox>
+                  <SelectButton>
+                    <PlaceHolder>
+                      <span>선택</span>
+                    </PlaceHolder>
+                    <Arrow>
+                      <Img src="/img/arrow-down-dark3.png" />
+                    </Arrow>
+                  </SelectButton>
+                  <Option>
+                    <List>
+                      {text.phoneNumbers.map(
+                        (phoneNumber: string, index: number) => (
+                          <ListButton
+                            key={index}
+                            onClick={e => onSelect(index, e)}
+                            value={phoneNumber}
+                            name="phoneNumber"
+                          >
+                            {phoneNumber}
+                          </ListButton>
+                        ),
+                      )}
+                    </List>
+                  </Option>
+                </DemoSelectBox>
               </div>
             </div>
             <div className={'inset text'}>
@@ -244,6 +293,8 @@ export default function SelectInfo({ part, next }: Object) {
                 spellCheck={false}
                 placeholder={text.placeholder.phone}
                 className={''}
+                onChange={e => onSelectInputChange(e)}
+                value={phoneBehindNumber}
               />
             </div>
           </div>
@@ -288,3 +339,80 @@ export default function SelectInfo({ part, next }: Object) {
     </div>
   );
 }
+const DemoSelectBox = styled.div`
+  ${radius[6]};
+  ${shadow.normal};
+  width: 100%;
+  height: 240px;
+  overflow: hidden;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+`;
+
+const SelectButton = styled.button`
+  color: ${color.dark2};
+  width: 100%;
+  height: 52px;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  button {
+    color: ${color.main};
+  }
+
+  ${shadow.normal};
+`;
+
+const PlaceHolder = styled.div`
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  > :not(:last-child) {
+    margin-right: 8px;
+  }
+`;
+
+const Arrow = styled.div`
+  width: 20px;
+  height: 20px;
+`;
+
+const Option = styled.div`
+  width: 100%;
+  position: absolute;
+  z-index: 1;
+  top: 52px;
+  left: 0;
+  padding: 8px 0 0 0;
+  height: 180px;
+  display: flex;
+  flex-direction: column;
+`;
+
+const List = styled.div`
+  width: 100%;
+  padding: 8px 8px;
+  height: 100%;
+  background-color: white;
+  overflow: scroll;
+  > :nth-child(2n-1) {
+    background-color: ${color.light1};
+  }
+`;
+
+const ListButton = styled.button`
+  width: 100%;
+  display: flex;
+  line-height: 20px;
+  padding: 8px 0;
+  justify-content: center;
+  align-items: center;
+`;

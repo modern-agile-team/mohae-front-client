@@ -56,7 +56,6 @@ export const userSlice = createSlice({
     },
     [UPDATE_REGIST_INFO]: (state, action: PayloadAction<any>) => {
       state.registInfo = action.payload;
-      console.log('여기있다');
     },
   },
   extraReducers: builder => {

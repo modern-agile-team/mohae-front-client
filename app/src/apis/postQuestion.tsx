@@ -1,4 +1,3 @@
-import instance from './instance';
 import { customAxios } from './instance';
 import setInterceptors from './common/setInterceptors';
 

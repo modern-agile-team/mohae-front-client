@@ -1,9 +1,10 @@
 /** @format */
 
-import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { ENDPOINT } from '../utils/ENDPOINT';
+import setInterceptors from '../apis/common/setInterceptors';
+import { customAxios } from '../apis/instance';
 
 interface HEADERS {
   [key: string]: any;
@@ -19,12 +20,14 @@ export function useGetRequest(param: string, token: string, action: any) {
       },
     };
   useEffect(() => {
-    axios.get(URL, CONFIG).then((res) => {
-      if (res.status >= 200 && res.status <= 204) {
-        dispatch(action(res.data.response));
-        // console.log(`res.data.response`, res.data.response);
-      }
-      return res.data;
-    });
+    setInterceptors(customAxios)
+      .get(URL, CONFIG)
+      .then(res => {
+        if (res.status >= 200 && res.status <= 204) {
+          dispatch(action(res.data.response));
+          // console.log(`res.data.response`, res.data.response);
+        }
+        return res.data;
+      });
   }, []);
 }

@@ -1,10 +1,7 @@
-import React, { Dispatch, SetStateAction } from 'react';
 import { css, cx } from '@emotion/css';
 import Profile from '../../components/profile/Profile';
-import { Btn, Img, PostIt } from '../../components';
 import { color, font } from '../../styles';
 import Btns from './Btns';
-import { Props } from './Container';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/root';
 
@@ -19,9 +16,8 @@ function PostWriter({ close }: PostWriterProps) {
 
   const userImg =
     reduxData.userPhotoUrl !== null
-      ? `https://d2ffbnf2hpheay.cloudfront.net/${reduxData.userPhotoUrl}`
-      : // + '?w=60'
-        null;
+      ? `https://d2ffbnf2hpheay.cloudfront.net/${reduxData.userPhotoUrl}?w=60&h=60`
+      : null;
 
   const style = css`
     margin-top: 16px;
@@ -65,7 +61,12 @@ function PostWriter({ close }: PostWriterProps) {
     <>
       <div className={cx(style)}>
         <div className="userData">
-          <Profile img={userImg} size={60} smallShadow />
+          <Profile
+            img={userImg}
+            size={60}
+            smallShadow
+            userNumber={reduxData.userNo}
+          />
           <div>
             <p>{reduxData.nickname}</p>
             <p>{reduxData.majorName}</p>

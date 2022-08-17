@@ -14,7 +14,35 @@ const asyncThunk = (name: string, param: string | number) =>
 
 export const getHotAll = asyncThunk('getUserInfo', 5);
 
-const initialState = {
+interface Categories {
+  no: string;
+  name: string;
+}
+interface InitialState {
+  isLoading: boolean;
+  user: {
+    profile: {
+      boardNum: string;
+      categories: Categories[];
+      createdAt: string;
+      email: string;
+      isLike: boolean;
+      likedUserNum: string;
+      majorName: string;
+      majorNo: number;
+      name: string;
+      nickname: string;
+      phone: string;
+      photo_url: string;
+      schoolName: string | null;
+      schoolNo: number | null;
+      userNo: number;
+    } | null;
+    boards: any;
+  };
+}
+
+const initialState: InitialState = {
   isLoading: true,
   user: {
     profile: null,
@@ -30,7 +58,7 @@ export const mypage = createSlice({
       state.user.profile = action.payload;
     },
   },
-  extraReducers: (builder) => {
+  extraReducers: builder => {
     // builder
     //   .addCase(getHotAll.pending, (state, { payload }) => {
     //     state.isLoading = true;

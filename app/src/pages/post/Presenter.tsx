@@ -1,4 +1,4 @@
-import React, { RefObject, useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect } from 'react';
 import { css, cx } from '@emotion/css';
 import { PostIt, Btn, ReportModal, Box, Mosaic, Popup } from '../../components';
 import PostBody from '../../components/pagecomp/PostBody';
@@ -17,12 +17,19 @@ interface Props {
   requestHandleDeadline: (data: Board) => void;
   view: { [key: string]: boolean };
   setView: (str: string) => void;
+  redirectLogin: boolean;
+  setRedirectLogin: Dispatch<SetStateAction<boolean>>;
 }
 
-function Presenter({ requestHandleDeadline, view, setView }: Props) {
+function Presenter({
+  requestHandleDeadline,
+  view,
+  setView,
+  redirectLogin,
+  setRedirectLogin,
+}: Props) {
   const reduxData = useSelector((state: RootState) => state.post.data);
   const dispatch = useDispatch();
-  const [redirectLogin, setRedirectLogin] = useState(false);
 
   useEffect(() => {
     if (!reduxData.response.authorization) {

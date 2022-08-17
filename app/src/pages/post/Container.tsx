@@ -3,12 +3,20 @@ import { useParams } from 'react-router-dom';
 import Presenter from './Presenter';
 import { decodeToken } from 'react-jwt';
 import { useDispatch, useSelector } from 'react-redux';
-import { setIsDeadline, setPostData } from '../../redux/post/reducer';
+import {
+  setInitialState as setInitialPostState,
+  setIsDeadline,
+  setPostData,
+} from '../../redux/post/reducer';
 import getToken from '../../utils/getToken';
 import { RootState } from '../../redux/root';
 import EmptySpinner from '../../components/emptySpinner/EmptySpinner';
 import setInterceptors from '../../apis/common/setInterceptors';
 import { customAxios } from '../../apis/instance';
+import { open_login } from '../../redux/modal/reducer';
+import { setInitialState as setInitialCommentState } from '../../redux/comment/reducer';
+import { Btn, Popup } from '../../components';
+import { css, cx } from '@emotion/css';
 
 export interface Props {
   data: {
@@ -75,6 +83,13 @@ function Post() {
     isDeadline: false,
   });
   const loading = useSelector((state: RootState) => state.post.loading);
+  const [redirectLogin, setRedirectLogin] = useState(false);
+  const [runOutRefreshToken, setRunOutRefreshToken] = useState(false);
+
+  const btnClick = {
+    redirectBoard: () => window.location.replace('/boards/1'),
+    opneLoginModal: () => dispatch(open_login(true)),
+  };
 
   const config = {
     headers: {
@@ -82,23 +97,35 @@ function Post() {
     },
   };
 
+  const getPostingData = async () => {
+    try {
+      await setInterceptors(customAxios)
+        .get(`boards/${no}`, config)
+        .then(res => {
+          const visitor = res.data.msg
+            .replace(/[^회원|^비회원]/g, '')
+            .substring(1, 4);
+          dispatch(
+            setPostData({
+              ...res.data,
+              msg: visitor,
+              decoded: decoded(),
+              token: token,
+            }),
+          );
+        });
+    } catch (err) {
+      alert('다시 로그인을 해주세요.');
+      setRunOutRefreshToken(true);
+    }
+  };
+
   useEffect(() => {
-    setInterceptors(customAxios)
-      .get(`boards/${no}`, config)
-      .then(res => {
-        const visitor = res.data.msg
-          .replace(/[^회원|^비회원]/g, '')
-          .substring(1, 4);
-        dispatch(
-          setPostData({
-            ...res.data,
-            msg: visitor,
-            decoded: decoded(),
-            token: token,
-          }),
-        );
-      })
-      .catch(err => err);
+    getPostingData();
+    return () => {
+      dispatch(setInitialPostState());
+      dispatch(setInitialCommentState());
+    };
   }, []);
 
   const requestHandleDeadline = (data: Board) => {
@@ -116,6 +143,8 @@ function Post() {
   const returnComp = () => {
     return !loading ? (
       <Presenter
+        redirectLogin={redirectLogin}
+        setRedirectLogin={setRedirectLogin}
         view={view}
         setView={(str: string) => {
           setView({ ...view, [str]: !view[str] });
@@ -123,7 +152,21 @@ function Post() {
         requestHandleDeadline={requestHandleDeadline}
       />
     ) : (
-      <EmptySpinner loading />
+      <>
+        <EmptySpinner loading />
+        <Popup visible={redirectLogin} text1={'로그인 후 이용 부탁드립니다.'}>
+          <div className={cx(popupBtn)}>
+            <Btn white onClick={btnClick.redirectBoard}>
+              닫기
+            </Btn>
+          </div>
+          <div className={cx(popupBtn)}>
+            <Btn main onClick={btnClick.opneLoginModal}>
+              로그인
+            </Btn>
+          </div>
+        </Popup>
+      </>
     );
   };
 
@@ -131,3 +174,8 @@ function Post() {
 }
 
 export default Post;
+
+const popupBtn = css`
+  width: 100px;
+  height: 43px;
+`;

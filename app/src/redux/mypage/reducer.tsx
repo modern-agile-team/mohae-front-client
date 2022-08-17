@@ -57,6 +57,9 @@ export const mypage = createSlice({
     [GET_USER_INFO]: (state, action: PayloadAction<any>) => {
       state.user.profile = action.payload;
     },
+    setInitialState: state => {
+      state.user.profile = null;
+    },
   },
   extraReducers: builder => {
     // builder
@@ -71,7 +74,7 @@ export const mypage = createSlice({
   },
 });
 // 생성 추가 삭제
-export const { get_user_info } = mypage.actions;
+export const { get_user_info, setInitialState } = mypage.actions;
 export default mypage.reducer;
 // action, reducer, store
 

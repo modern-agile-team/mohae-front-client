@@ -3,6 +3,7 @@ import Img from '../img/Img';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/root';
 import Replier from './Replier';
+import Profile from '../profile/Profile';
 
 interface DefaultProps {
   handleModalView: () => void;
@@ -12,15 +13,22 @@ interface DefaultProps {
 
 const ReplyItem = (props: DefaultProps) => {
   const { commentIndex, handleModalView, replyIndex } = props;
-  const { replyContent, replyCreatedAt, replyWriterPhotoUrl } = useSelector(
-    (state: RootState) => state.comment.data[commentIndex].replies[replyIndex],
-  );
+  const { replyContent, replyCreatedAt, replyWriterPhotoUrl, replyWriterNo } =
+    useSelector(
+      (state: RootState) =>
+        state.comment.data[commentIndex].replies[replyIndex],
+    );
+  const profileImg =
+    'https://d2ffbnf2hpheay.cloudfront.net/' + replyWriterPhotoUrl;
 
   return (
     <Wrapper>
       <ProfileImageWrapper>
-        <Img
-          src={'https://d2ffbnf2hpheay.cloudfront.net/' + replyWriterPhotoUrl}
+        <Profile
+          img={profileImg}
+          size={45}
+          userNumber={replyWriterNo}
+          smallShadow
         />
       </ProfileImageWrapper>
       <CommentSection>
@@ -46,13 +54,7 @@ const Wrapper = styled.li`
 `;
 
 const ProfileImageWrapper = styled.div`
-  width: 45px;
-  height: 45px;
-  background: #ffffff;
-  box-shadow: 0px 0px 4px rgba(132, 131, 141, 0.25);
-  border-radius: 50px;
   margin-right: 12px;
-  cursor: pointer;
 `;
 
 const CommentSection = styled.section`

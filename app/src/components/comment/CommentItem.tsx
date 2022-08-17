@@ -4,6 +4,8 @@ import Commenter from './Commenter';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/root';
 import Replies from '../replies/Replies';
+import Profile from '../profile/Profile';
+import { css, cx } from '@emotion/css';
 
 interface DefaultProps {
   handleModalView: () => void;
@@ -13,15 +15,19 @@ interface DefaultProps {
 
 const CommentItem = (props: DefaultProps) => {
   const { commentIndex, handleModalView, handlePopupView } = props;
-  const { commentContent, commenterPhotoUrl, commentCreatedAt } = useSelector(
-    (state: RootState) => state.comment.data[commentIndex],
-  );
+  const { commentContent, commenterPhotoUrl, commentCreatedAt, commenterNo } =
+    useSelector((state: RootState) => state.comment.data[commentIndex]);
+  const profileImg =
+    'https://d2ffbnf2hpheay.cloudfront.net/' + commenterPhotoUrl;
 
   return (
     <Wrapper>
       <ProfileImageWrapper>
-        <Img
-          src={'https://d2ffbnf2hpheay.cloudfront.net/' + commenterPhotoUrl}
+        <Profile
+          img={profileImg}
+          size={45}
+          userNumber={commenterNo}
+          smallShadow
         />
       </ProfileImageWrapper>
       <CommentSection>
@@ -51,11 +57,6 @@ const Wrapper = styled.li`
 `;
 
 const ProfileImageWrapper = styled.div`
-  width: 45px;
-  height: 45px;
-  background: #ffffff;
-  box-shadow: 0px 0px 4px rgba(132, 131, 141, 0.25);
-  border-radius: 50px;
   margin-right: 12px;
   cursor: pointer;
 `;

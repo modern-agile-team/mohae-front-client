@@ -72,7 +72,11 @@ function Profile(props: Props) {
         </div>
       )}
       {userProfileView && (
-        <ModalProfile userNo={userNumber} view={userProfileView} />
+        <ModalProfile
+          reset={openUserProfile}
+          userNo={userNumber}
+          view={userProfileView}
+        />
       )}
     </>
   );

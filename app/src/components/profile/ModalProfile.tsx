@@ -24,10 +24,11 @@ import { get_user_info, setInitialState } from '../../redux/mypage/reducer';
 interface Props {
   userNo: number;
   view: boolean;
+  reset: () => void;
 }
 
 export default function ModalProfile(props: Props) {
-  const { userNo, view } = props;
+  const { userNo, view, reset } = props;
   const userInfo = useSelector((state: RootState) => state.mypage.user.profile);
   const posts = useSelector((state: RootState) => state.spec);
   const dispatch = useDispatch();
@@ -137,7 +138,7 @@ export default function ModalProfile(props: Props) {
   }, []);
 
   return (
-    <BasicModal big visible={view}>
+    <BasicModal big visible={view} reset={reset}>
       <div className={cx(style)}>
         <div className="header">
           <Profile

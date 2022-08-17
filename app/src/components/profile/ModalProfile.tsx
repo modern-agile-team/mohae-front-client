@@ -11,7 +11,7 @@ import { RootState } from '../../redux/root';
 import { useGetRequest } from '../../redux/axios';
 import decodingToken from '../../utils/decodingToken';
 import getToken from '../../utils/getToken';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import setInterceptors from '../../apis/common/setInterceptors';
 import { customAxios } from '../../apis/instance';
 import {
@@ -19,7 +19,7 @@ import {
   get_user_specs,
   get_user_tohelp,
 } from '../../redux/spec/reducer';
-import { get_user_info } from '../../redux/mypage/reducer';
+import { get_user_info, setInitialState } from '../../redux/mypage/reducer';
 
 interface Props {
   userNo: number;
@@ -103,7 +103,7 @@ export default function ModalProfile(props: Props) {
       }, 300);
       return () => clearTimeout(debounceAxios);
     }
-  }, [userInfo]);
+  }, [userInfo?.isLike]);
 
   useEffect(() => {
     setInterceptors(customAxios)
@@ -130,9 +130,11 @@ export default function ModalProfile(props: Props) {
     setInterceptors(customAxios)
       .get(`profile/${userNo}`, config)
       .then(res => dispatch(get_user_info(res.data.response)));
-  }, []);
 
-  console.log('userInfo :>> ', userInfo);
+    return () => {
+      dispatch(setInitialState());
+    };
+  }, []);
 
   return (
     <BasicModal big visible={view}>
@@ -141,6 +143,7 @@ export default function ModalProfile(props: Props) {
           <Profile
             img={'https://d2ffbnf2hpheay.cloudfront.net/' + userInfo?.photo_url}
             size={150}
+            noneClick
           />
           <div>
             <div className="row title">

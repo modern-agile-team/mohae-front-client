@@ -18,8 +18,6 @@ import {
   setResArrEmpty,
   setResFiltering,
 } from '../../redux/board/reducer';
-import { setInitialState as setInitialPostState } from '../../redux/post/reducer';
-import { setInitialState as setInitialCreateState } from '../../redux/createpost/reducer';
 
 export interface PostData {
   decimalDay: number | null;
@@ -145,11 +143,6 @@ function Presenter() {
     });
     if (loading) getData();
   };
-
-  useEffect(() => {
-    dispatch(setInitialPostState());
-    dispatch(setInitialCreateState());
-  }, []);
 
   useEffect(() => {
     if (!loading) getData();

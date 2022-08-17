@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import EmptySpinner from '../../components/emptySpinner/EmptySpinner';
 import useRefactorPostingData from '../../customhook/useRefactorPostingData';
 import { setForEdit, setLoading } from '../../redux/createpost/reducer';
-import { setInitialState } from '../../redux/post/reducer';
+import { setInitialState } from '../../redux/createpost/reducer';
 import { RootState } from '../../redux/root';
 import { ENDPOINT } from '../../utils/ENDPOINT';
 import getToken from '../../utils/getToken';
@@ -74,6 +74,10 @@ function CreateAndEditPost({ type }: Props) {
         })
         .catch(err => console.log('err', err));
     } else dispatch(setLoading(false));
+
+    return () => {
+      dispatch(setInitialState());
+    };
   }, []);
 
   const requestAxios = (type: string) => {

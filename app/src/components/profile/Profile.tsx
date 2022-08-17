@@ -2,7 +2,6 @@
 
 import { css, cx } from '@emotion/css';
 import { useState } from 'react';
-import { MyPage } from '../../pages';
 import { shadow, radius } from '../../styles';
 import ModalProfile from './ModalProfile';
 

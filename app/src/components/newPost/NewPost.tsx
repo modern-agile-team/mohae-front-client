@@ -269,7 +269,9 @@ export default function NewPost({ page, board }: Props) {
     >
       <div className={'img'}>
         {board ? (
-          <Img src={`${board.photoUrl}`} />
+          <Img
+            src={'https://d2ffbnf2hpheay.cloudfront.net/' + `${board.photoUrl}`}
+          />
         ) : (
           <div className={'logo'}>
             <Img src={'/img/logo.png'} />

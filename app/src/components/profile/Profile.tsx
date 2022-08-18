@@ -1,14 +1,17 @@
 /** @format */
 
 import { css, cx } from '@emotion/css';
+import { useState } from 'react';
 import { shadow, radius } from '../../styles';
+import ModalProfile from './ModalProfile';
 
 interface Props {
   [key: string]: boolean | number | any;
 }
 
 function Profile(props: Props) {
-  const { img, size, smallShadow, noneClick } = props;
+  const { img, size, smallShadow, noneClick, userNumber } = props;
+  const [userProfileView, setUserProfileView] = useState(false);
 
   const profileImg = img !== null ? img : '/img/profile.png';
 
@@ -46,10 +49,14 @@ function Profile(props: Props) {
     height: 20px;
   `;
 
+  const openUserProfile = () => {
+    setUserProfileView(prev => !prev);
+  };
+
   return (
     <>
       <div
-        // onClick={!noneClick ? () => alert('프로필 클릭') : undefined}
+        onClick={!noneClick ? openUserProfile : undefined}
         className={cx(image)}
       ></div>
       {editBtn && (
@@ -64,8 +71,25 @@ function Profile(props: Props) {
           />
         </div>
       )}
+      {userProfileView && (
+        <ModalProfile
+          reset={openUserProfile}
+          userNo={userNumber}
+          view={userProfileView}
+        />
+      )}
     </>
   );
 }
 
 export default Profile;
+
+const overLay = css`
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100vw;
+  height: 100vh;
+  z-index: 3;
+  background-color: inherit;
+`;

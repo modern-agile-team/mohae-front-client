@@ -1,4 +1,4 @@
-import React, { RefObject } from 'react';
+import React, { Dispatch, SetStateAction, useEffect } from 'react';
 import { css, cx } from '@emotion/css';
 import { PostIt, Btn, ReportModal, Box, Mosaic, Popup } from '../../components';
 import PostBody from '../../components/pagecomp/PostBody';
@@ -7,19 +7,44 @@ import PostInfo from './PostInfo';
 import QuickMenu from './QuickMenu';
 import useScroll from '../../customhook/useScroll';
 import { color, font, radius, shadow } from '../../styles';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/root';
 import type { Board } from './Container';
 import Comment from '../../components/comment/Comment';
+import { open_login } from '../../redux/modal/reducer';
 
 interface Props {
   requestHandleDeadline: (data: Board) => void;
   view: { [key: string]: boolean };
   setView: (str: string) => void;
+  redirectLogin: boolean;
+  setRedirectLogin: Dispatch<SetStateAction<boolean>>;
 }
 
-function Presenter({ requestHandleDeadline, view, setView }: Props) {
+function Presenter({
+  requestHandleDeadline,
+  view,
+  setView,
+  redirectLogin,
+  setRedirectLogin,
+}: Props) {
   const reduxData = useSelector((state: RootState) => state.post.data);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (!reduxData.response.authorization) {
+      setRedirectLogin(true);
+    }
+  }, []);
+
+  const btnClick = {
+    isdeadLine: () => setView('isDeadline'),
+    redirectClose: () => window.location.replace('/boards/1'),
+    login: () => {
+      setRedirectLogin(false);
+      dispatch(open_login(true));
+    },
+  };
 
   const closeBtn = () => {
     const style = css`
@@ -80,6 +105,22 @@ function Presenter({ requestHandleDeadline, view, setView }: Props) {
           <Mosaic img />
         </>
       )}
+      {redirectLogin && (
+        <>
+          <Popup visible={redirectLogin} text1={'로그인 후 이용 부탁드립니다.'}>
+            <div className={cx(popupBtn)}>
+              <Btn white onClick={btnClick.redirectClose}>
+                닫기
+              </Btn>
+            </div>
+            <div className={cx(popupBtn)}>
+              <Btn main onClick={btnClick.login}>
+                로그인
+              </Btn>
+            </div>
+          </Popup>
+        </>
+      )}
       {view.isDeadline && (
         <Popup
           visible={view.isDeadline}
@@ -89,8 +130,8 @@ function Presenter({ requestHandleDeadline, view, setView }: Props) {
               : '마감 취소 되었습니다.'
           }
         >
-          <div className={cx(isDeadlineBtn)}>
-            <Btn white onClick={() => setView('isDeadline')}>
+          <div className={cx(popupBtn)}>
+            <Btn white onClick={btnClick.isdeadLine}>
               닫기
             </Btn>
           </div>
@@ -164,7 +205,7 @@ const wrap = css`
   }
 `;
 
-const isDeadlineBtn = css`
+const popupBtn = css`
   width: 100px;
   height: 43px;
 `;

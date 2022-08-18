@@ -12,6 +12,8 @@ import {
 } from '../../redux/post/reducer';
 import { RootState } from '../../redux/root';
 import getToken from '../../utils/getToken';
+import setInterceptors from '../../apis/common/setInterceptors';
+import { customAxios } from '../../apis/instance';
 
 interface BtnsProps {
   close: () => void;
@@ -29,7 +31,7 @@ function Btns(props: BtnsProps) {
   );
   const token = getToken() || null;
 
-  const stringifyIsLike = JSON.stringify({
+  const body = JSON.stringify({
     judge: isLike,
   });
 
@@ -58,10 +60,9 @@ function Btns(props: BtnsProps) {
   useEffect(() => {
     if (token !== null) {
       const debounceAxios = setTimeout(() => {
-        axios
-          .post(`https://mo-hae.site/like/board/${no}`, stringifyIsLike, header)
+        setInterceptors(customAxios)
+          .post(`https://mo-hae.site/like/board/${no}`, body, header)
           .then(res => {
-            console.log('res.data :>> ', res.data);
             handleLikeCount();
           })
           .catch(err => err);

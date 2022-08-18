@@ -22,7 +22,25 @@ function Mosaic(props: Props) {
 
   const bodyMosaic = css`
     width: calc(99.5vw + ${scrollX}px);
-    height: calc(${scrollY}px + 90px);
+    height: calc(${scrollY}px + 100vh);
+    background: linear-gradient(
+      180.11deg,
+      rgba(250, 251, 252, 0) 4.81%,
+      rgba(152, 152, 152, 0.016) 30.04%,
+      rgba(78, 78, 78, 0.8) 99.9%
+    );
+    position: fixed;
+    top: calc(542px - ${scrollY}px);
+    left: 0px;
+    backdrop-filter: blur(8px);
+  `;
+
+  const imgsMosaic = css`
+    width: 360px;
+    height: 449px;
+    z-index: 1;
+    ${radius[6]}
+    backdrop-filter: blur(8px);
     background: linear-gradient(
       180.11deg,
       rgba(250, 251, 252, 0) 4.81%,
@@ -30,36 +48,10 @@ function Mosaic(props: Props) {
       rgba(78, 78, 78, 0.8) 99.9%
     );
     position: absolute;
-    top: 631px;
-    left: 0px;
-    backdrop-filter: blur(8px);
-  `;
-
-  const imgsMosaic = css`
-    width: 360px;
-    height: 360px;
-    z-index: 1;
-    ${radius[6]}
-    backdrop-filter: blur(8px);
-    background-color: rgba(79, 78, 92, 0.5);
-    position: absolute;
     top: 99px;
     display: flex;
     align-items: center;
     justify-content: center;
-    #centerWrap {
-      display: flex;
-      align-items: center;
-      flex-direction: column;
-    }
-    #centerWrap > div {
-      width: 35px;
-      height: 40px;
-    }
-    .img-wrap {
-      width: 25px;
-      height: 25px;
-    }
     p {
       width: 154px;
       height: 48px;
@@ -71,40 +63,15 @@ function Mosaic(props: Props) {
     }
   `;
 
-  const oderedMosaic = css`
-    position: relative;
-    .real-box {
-      ${radius[6]}
-      width: 360px;
-      height: 72px;
-      position: absolute;
-      top: 416px;
-      left: 0px;
-      z-index: 1;
-      backdrop-filter: blur(8px);
-      background-color: rgba(79, 78, 92, 0.5);
-    }
-  `;
-
   return body ? (
     <div className={cx(bodyMosaic)} />
   ) : (
-    <>
-      <div className={cx(imgsMosaic)}>
-        <div id='centerWrap'>
-          <div className='img-wrap'>
-            <Img src='/img/lock-white.png' />
-          </div>
-          <p>
-            로그인 후<br />
-            서비스를 이용해 주세요.
-          </p>
-        </div>
-      </div>
-      <div className={cx(oderedMosaic)}>
-        <div className='real-box'></div>
-      </div>
-    </>
+    <div className={cx(imgsMosaic)}>
+      <p>
+        로그인 후<br />
+        서비스를 이용해 주세요.
+      </p>
+    </div>
   );
 }
 

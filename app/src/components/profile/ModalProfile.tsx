@@ -106,30 +106,30 @@ export default function ModalProfile(props: Props) {
     }
   }, [userInfo?.isLike]);
 
+  const requestURL = {
+    spec: `specs/profile?user=${userNo}&take=${take[checkSelf]}&page=1`,
+    boards: {
+      false: `boards/profile?user=${userNo}&take=${take[checkSelf]}&page=1&target=false`,
+      true: `boards/profile?user=${userNo}&take=${take[checkSelf]}&page=1&target=true`,
+    },
+    profile: `profile/${userNo}`,
+  };
+
   useEffect(() => {
     setInterceptors(customAxios)
-      .get(
-        `specs/profile?user=${userNo}&take=${take[checkSelf]}&page=1`,
-        config,
-      )
+      .get(requestURL.spec, config)
       .then(res => dispatch(get_user_specs(res.data.response)));
 
     setInterceptors(customAxios)
-      .get(
-        `boards/profile?user=${userNo}&take=${take[checkSelf]}&page=1&target=false`,
-        config,
-      )
+      .get(requestURL.boards.false, config)
       .then(res => dispatch(get_user_tohelp(res.data.response)));
 
     setInterceptors(customAxios)
-      .get(
-        `boards/profile?user=${userNo}&take=${take[checkSelf]}&page=1&target=true`,
-        config,
-      )
+      .get(requestURL.boards.true, config)
       .then(res => dispatch(get_user_helpme(res.data.response)));
 
     setInterceptors(customAxios)
-      .get(`profile/${userNo}`, config)
+      .get(requestURL.profile, config)
       .then(res => dispatch(get_user_info(res.data.response)));
 
     return () => {

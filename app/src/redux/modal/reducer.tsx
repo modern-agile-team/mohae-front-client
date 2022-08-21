@@ -16,6 +16,7 @@ const initialState = {
   openSpecEdit: false,
   // Edit
   openSpecCreate: false,
+  openRegister: false,
   // Spec
 };
 // store (state)
@@ -29,8 +30,13 @@ export const modal = createSlice({
     [OPEN_LOGIN]: (state, action: PayloadAction<any>) => {
       state.openLogin = action.payload;
     },
+    open_register_modal: (state, action: PayloadAction<any>) => {
+      state.openLogin = action.payload;
+      state.openRegister = true;
+    },
     [CLOSE_ALL]: (state, action: PayloadAction<any>) => {
       state.openLogin = action.payload;
+      state.openRegister = false;
     },
     [SPEC_VISIT]: (state, action: PayloadAction<any>) => {
       state.openSpecVisit = action.payload;
@@ -50,6 +56,7 @@ export const {
   spec_visit,
   spec_edit,
   spec_create,
+  open_register_modal,
 } = modal.actions;
 // create actions & type
 export default modal.reducer;

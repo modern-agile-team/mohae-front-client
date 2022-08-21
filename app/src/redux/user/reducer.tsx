@@ -22,10 +22,10 @@ const initialState = {
     password: '',
     name: '',
     nickname: '',
-    phone: '01064888321',
+    phone: '',
     manager: false,
-    school: 1,
-    major: 1,
+    school: null,
+    major: null,
     categories: [
       // 0,
       // 0
@@ -56,7 +56,13 @@ export const userSlice = createSlice({
     },
     [UPDATE_REGIST_INFO]: (state, action: PayloadAction<any>) => {
       state.registInfo = action.payload;
-      console.log('여기있다');
+    },
+    update_regist_extraInfo: (state, action: PayloadAction<any>) => {
+      console.log(action.payload.phoneNumber);
+      state.registInfo.phone = action.payload.phoneNumber;
+      state.registInfo.categories = action.payload.categories;
+      state.registInfo.major = action.payload.major;
+      state.registInfo.school = action.payload.school;
     },
   },
   extraReducers: builder => {
@@ -67,8 +73,13 @@ export const userSlice = createSlice({
   },
 });
 // 생성 추가 삭제
-export const { user_login, addAge, updateToken, update_regist_info } =
-  userSlice.actions;
+export const {
+  user_login,
+  addAge,
+  updateToken,
+  update_regist_info,
+  update_regist_extraInfo,
+} = userSlice.actions;
 // create actions & type
 export default userSlice.reducer;
 // action, reducer, store

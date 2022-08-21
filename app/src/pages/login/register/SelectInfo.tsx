@@ -2,10 +2,14 @@
 
 import { useState } from 'react';
 import { css, cx } from '@emotion/css';
-
+import { useDispatch, useSelector } from 'react-redux';
+import styled from '@emotion/styled';
 import { color, radius, font, shadow } from '../../../styles';
-import { Btn } from '../../../components';
-import SelectBox from '../../modifyProfile/SelectBox';
+import { Btn, Img } from '../../../components';
+import { AppDispatch, RootState } from '../../../redux/root';
+import { update_regist_extraInfo } from '../../../redux/user/reducer';
+import { ENDPOINT } from '../../../utils/ENDPOINT';
+import axios from 'axios';
 
 interface Object {
   [key: string]: any;
@@ -18,6 +22,21 @@ export default function SelectInfo({ part, next }: Object) {
     three: false,
     four: false,
   });
+  const [info, setInfo] = useState<{
+    phoneNumber: string | null;
+    school: number | null;
+    major: number | null;
+    intersted: number[];
+  }>({
+    phoneNumber: '',
+    school: null,
+    major: null,
+    intersted: [],
+  });
+  const [intersted, setIntersted] = useState<string[]>([]);
+  const [phoneBehindNumber, setPhoneBehindNumber] = useState<string>('');
+  const registInfo = useSelector((state: RootState) => state.user.registInfo);
+  const dispatch = useDispatch<AppDispatch>();
 
   const toggleSelectBox = (e: React.MouseEvent<HTMLDivElement>) => {
     const target = e.currentTarget.id;
@@ -70,7 +89,6 @@ export default function SelectInfo({ part, next }: Object) {
       '인문',
     ],
     categories: [
-      'all',
       '디자인',
       'IT / 개발',
       '사진 / 영상',
@@ -89,10 +107,74 @@ export default function SelectInfo({ part, next }: Object) {
     ],
   };
 
+  const onSelect = (
+    index: number,
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    if (e.currentTarget.name === 'phoneNumber') {
+      setInfo({
+        ...info,
+        phoneNumber: e.currentTarget.value,
+      });
+    } else
+      setInfo({
+        ...info,
+        [e.currentTarget.name]: index + 1,
+      });
+  };
+
+  const onCategrySelect = (
+    index: number,
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    if (info.intersted.length === 3) {
+      return;
+    } else if (info.intersted.includes(index + 2)) {
+      return;
+    }
+    setInfo({
+      ...info,
+      intersted: [...info.intersted, index + 2],
+    });
+    setIntersted([...intersted, e.currentTarget.value]);
+  };
+
+  const onSelectInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPhoneBehindNumber(e.target.value);
+  };
+
+  const onSubmit = () => {
+    dispatch(
+      update_regist_extraInfo({
+        phoneNumber: info.phoneNumber + phoneBehindNumber,
+        school: info.school,
+        major: info.major,
+        categories: info.intersted,
+      }),
+    );
+    axios
+      .post(`${ENDPOINT}auth/signup`, registInfo, {
+        headers: {
+          accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(res => {
+        if (res.data.statusCode >= 200 && res.data.statusCode <= 204) {
+          next();
+          // sessionStorage.setItem('userEmail', res.data.response.email)
+        } else {
+          alert('다시 가입 해주세요');
+        }
+      })
+      .catch(err => {
+        console.log('err :>> ', err);
+      });
+  };
+
   const style = css`
     width: 100%;
     height: 100%;
-
     #one,
     #two,
     #three,
@@ -159,7 +241,6 @@ export default function SelectInfo({ part, next }: Object) {
       ${radius[24]};
       font-size: 14px;
       margin-bottom: 16px;
-
       display: flex;
       flex-direction: column;
       height: fit-content;
@@ -224,6 +305,9 @@ export default function SelectInfo({ part, next }: Object) {
       margin-bottom: 8px;
     }
   `;
+  const mainColor = css`
+    color: ${color.main} !important;
+  `;
 
   return (
     <div className={cx(style)}>
@@ -234,9 +318,36 @@ export default function SelectInfo({ part, next }: Object) {
           <div className={'input'}>
             <div className={'btn white'}>
               <div id="one" onClick={toggleSelectBox}>
-                <SelectBox open={open.one} noneScroll list={text.phoneNumbers}>
-                  {'선택'}
-                </SelectBox>
+                <DemoSelectBox>
+                  <SelectButton>
+                    <PlaceHolder>
+                      {info.phoneNumber ? (
+                        <span>{info.phoneNumber}</span>
+                      ) : (
+                        <span>선택</span>
+                      )}
+                    </PlaceHolder>
+                    <Arrow>
+                      <Img src="/img/arrow-down-dark3.png" />
+                    </Arrow>
+                  </SelectButton>
+                  <Option>
+                    <List>
+                      {text.phoneNumbers.map(
+                        (phoneNumber: string, index: number) => (
+                          <ListButton
+                            key={index}
+                            onClick={e => onSelect(index, e)}
+                            value={phoneNumber}
+                            name="phoneNumber"
+                          >
+                            {phoneNumber}
+                          </ListButton>
+                        ),
+                      )}
+                    </List>
+                  </Option>
+                </DemoSelectBox>
               </div>
             </div>
             <div className={'inset text'}>
@@ -244,6 +355,8 @@ export default function SelectInfo({ part, next }: Object) {
                 spellCheck={false}
                 placeholder={text.placeholder.phone}
                 className={''}
+                onChange={e => onSelectInputChange(e)}
+                value={phoneBehindNumber}
               />
             </div>
           </div>
@@ -252,9 +365,34 @@ export default function SelectInfo({ part, next }: Object) {
           <div className={'label'}>{text.label.school}</div>
           <div className={'input white'}>
             <div id="two" onClick={toggleSelectBox}>
-              <SelectBox open={open.two} list={text.schools}>
-                {text.placeholder.school}
-              </SelectBox>
+              <DemoSelectBox>
+                <SelectButton>
+                  <PlaceHolder>
+                    <span>
+                      {info.school
+                        ? text.schools[info.school - 1]
+                        : text.placeholder.school}
+                    </span>
+                  </PlaceHolder>
+                  <Arrow>
+                    <Img src="/img/arrow-down-dark3.png" />
+                  </Arrow>
+                  <Option>
+                    <List>
+                      {text.schools.map((school: string, index: number) => (
+                        <ListButton
+                          key={index}
+                          onClick={e => onSelect(index, e)}
+                          value={school}
+                          name="school"
+                        >
+                          {school}
+                        </ListButton>
+                      ))}
+                    </List>
+                  </Option>
+                </SelectButton>
+              </DemoSelectBox>
             </div>
           </div>
         </div>
@@ -262,9 +400,34 @@ export default function SelectInfo({ part, next }: Object) {
           <div className={'label'}>{text.label.major}</div>
           <div className={'input white'}>
             <div id="three" onClick={toggleSelectBox}>
-              <SelectBox open={open.three} list={text.majors}>
-                {text.placeholder.major}
-              </SelectBox>
+              <DemoSelectBox>
+                <SelectButton>
+                  <PlaceHolder>
+                    <span>
+                      {info.major
+                        ? text.majors[info.major - 1]
+                        : text.placeholder.major}
+                    </span>
+                  </PlaceHolder>
+                  <Arrow>
+                    <Img src="/img/arrow-down-dark3.png" />
+                  </Arrow>
+                  <Option>
+                    <List>
+                      {text.majors.map((major: string, index: number) => (
+                        <ListButton
+                          key={index}
+                          onClick={e => onSelect(index, e)}
+                          value={major}
+                          name="major"
+                        >
+                          {major}
+                        </ListButton>
+                      ))}
+                    </List>
+                  </Option>
+                </SelectButton>
+              </DemoSelectBox>
             </div>
           </div>
         </div>
@@ -272,9 +435,55 @@ export default function SelectInfo({ part, next }: Object) {
           <div className={'label'}>{text.label.interested}</div>
           <div className={'input white'}>
             <div id="four" onClick={toggleSelectBox}>
-              <SelectBox open={open.four} blocks list={text.categories}>
-                {text.placeholder.interested}
-              </SelectBox>
+              <DemoSelectBox>
+                <SelectButton>
+                  <PlaceHolder>
+                    {info.intersted.length
+                      ? intersted.map((el: string, index: number) => (
+                          <CategoryWrapper>
+                            <Category
+                              key={index}
+                              select={index + 2}
+                              intersted={info.intersted}
+                            >
+                              {el}
+                            </Category>
+                          </CategoryWrapper>
+                        ))
+                      : text.placeholder.major}
+                  </PlaceHolder>
+                  <Arrow>
+                    <Img src="/img/arrow-down-dark3.png" />
+                  </Arrow>
+                  <CategoryOption>
+                    <div className={'sub'}>
+                      <span>{'관심사를 선택해주세요. (최대3개)'}</span>
+                      <div>
+                        <span className={cx(mainColor)}>
+                          {intersted.length}
+                        </span>
+                        <span>{'/3'}</span>
+                      </div>
+                    </div>
+                    <div className={'list'}>
+                      {text.categories.map(
+                        (category: string, index: number) => (
+                          <Category
+                            key={index}
+                            value={category}
+                            name={category}
+                            onClick={e => onCategrySelect(index, e)}
+                            select={index + 2}
+                            intersted={info.intersted}
+                          >
+                            <span>{category}</span>
+                          </Category>
+                        ),
+                      )}
+                    </div>
+                  </CategoryOption>
+                </SelectButton>
+              </DemoSelectBox>
             </div>
           </div>
         </div>
@@ -283,8 +492,149 @@ export default function SelectInfo({ part, next }: Object) {
         <Btn white>{text.ignore}</Btn>
       </div>
       <div className={'btn'}>
-        <Btn white>{text.finish}</Btn>
+        <Btn white onClick={() => onSubmit()}>
+          {text.finish}
+        </Btn>
       </div>
     </div>
   );
 }
+const DemoSelectBox = styled.div`
+  ${radius[6]};
+  ${shadow.normal};
+  width: 100%;
+  height: 240px;
+  overflow: hidden;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+`;
+
+const SelectButton = styled.button`
+  color: ${color.dark2};
+  width: 100%;
+  height: 52px;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  button {
+    color: ${color.main};
+  }
+
+  ${shadow.normal};
+`;
+
+const PlaceHolder = styled.div`
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  > :not(:last-child) {
+    margin-right: 8px;
+  }
+`;
+
+const Arrow = styled.div`
+  width: 20px;
+  height: 20px;
+`;
+
+const Option = styled.div`
+  width: 100%;
+  position: absolute;
+  z-index: 1;
+  top: 52px;
+  left: 0;
+  padding: 8px 0 0 0;
+  height: 180px;
+  display: flex;
+  flex-direction: column;
+`;
+
+const List = styled.div`
+  width: 100%;
+  padding: 8px 8px;
+  height: 100%;
+  background-color: white;
+  overflow: scroll;
+  > :nth-child(2n-1) {
+    background-color: ${color.light1};
+  }
+`;
+
+const ListButton = styled.button`
+  width: 100%;
+  display: flex;
+  line-height: 20px;
+  padding: 8px 0;
+  justify-content: center;
+  align-items: center;
+`;
+
+const CategoryOption = styled.div`
+  width: calc(100% - 2px);
+  height: fit-content;
+  height: 100%;
+  position: absolute;
+  z-index: 5;
+  top: 52px;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .sub {
+    width: 100%;
+    padding: 2px 8px 0;
+    display: flex;
+    height: fit-content;
+    justify-content: space-between;
+  }
+  .list {
+    width: 100%;
+    padding: 8px 8px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: flex-start;
+    height: 168px;
+    background-color: white;
+    overflow: scroll;
+    > :not(:nth-child(3n)) {
+      margin: 0 14px 8px 0;
+    }
+  }
+`;
+
+const Category = styled.button<{ select: number; intersted: number[] }>`
+  font-size: 14px;
+  width: 100px;
+  height: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 6px;
+  box-shadow: 0px 0px 8px 0px #84838d;
+
+  span {
+    color: ${props =>
+      props.intersted.includes(props.select) ? color.main : '#a7a7ad'};
+  }
+  :hover {
+    background-color: ${color.subtle};
+  }
+  :active {
+    background-color: ${color.lighter};
+    color: white !important;
+  }
+`;
+
+const CategoryWrapper = styled.div`
+  display: flex;
+  width: 100%;
+`;

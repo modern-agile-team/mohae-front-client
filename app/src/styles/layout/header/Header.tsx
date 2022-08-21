@@ -4,7 +4,7 @@ import { css, cx } from '@emotion/css';
 import { color, shadow } from '../../style/palette';
 import { ReactElement } from 'react';
 import { Img, Btn } from '../../../components';
-import { open_login } from '../../../redux/modal/reducer';
+import { open_login, open_register_modal } from '../../../redux/modal/reducer';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../../redux/root';
 import { Link, useNavigate } from 'react-router-dom';
@@ -40,9 +40,15 @@ export default function Header(props: Props): ReactElement {
     dispatch(open_login(true));
   };
 
+  const toggleRegisterModal = () => {
+    dispatch(open_register_modal(true));
+  };
+
   const loginButtons = (
     <div className={'square-buttons'}>
-      <Btn white>{text.regist}</Btn>
+      <Btn white onClick={toggleRegisterModal}>
+        {text.regist}
+      </Btn>
       <Btn main onClick={toggleLoginModal}>
         {text.login}
       </Btn>

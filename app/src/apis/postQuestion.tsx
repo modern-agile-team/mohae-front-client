@@ -1,9 +1,8 @@
-import instance from './instance';
 import { customAxios } from './instance';
 import setInterceptors from './common/setInterceptors';
 
 export const postQuestion = (body: FormData) => {
-  return instance.post(`/email/question`, body);
+  return setInterceptors(customAxios).post(`/email/question`, body);
 };
 
 export const profile = () => {

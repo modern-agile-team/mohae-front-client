@@ -1,9 +1,10 @@
 /** @format */
 
-import { Img, FocusBar, BasicModal } from '../../components';
+import { Img, FocusBar } from '../../components';
+import AuthModal from '../../components/modal/AuthModal';
 import { radius, font, color, shadow } from '../../styles';
 import { css, cx } from '@emotion/css';
-import { ReactElement } from 'react';
+import { ReactElement, useEffect } from 'react';
 import Login from './login/Login';
 import Agreement from './register/Agreement';
 import Main from './register/Main';
@@ -12,6 +13,7 @@ import SelectInfo from './register/SelectInfo';
 
 interface Props {
   [key: string]: any;
+  setPart: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export default function Presenter({
@@ -19,6 +21,7 @@ export default function Presenter({
   isOpenModal,
   children,
   part,
+  setPart,
   onClick,
 }: Props): ReactElement {
   const mainContents = [
@@ -156,7 +159,7 @@ export default function Presenter({
     }
   `;
   return (
-    <BasicModal small visible={isOpenModal}>
+    <AuthModal big={false} visible={isOpenModal} setPart={setPart}>
       {/* edit visible={isOpenModal} after test */}
       <div className={cx(style)}>
         <div className={'logo'}>
@@ -177,6 +180,6 @@ export default function Presenter({
           <div className={'main'}>{mainContents}</div>
         </div>
       </div>
-    </BasicModal>
+    </AuthModal>
   );
 }

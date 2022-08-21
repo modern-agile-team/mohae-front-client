@@ -7,15 +7,14 @@ import { Box, FocusBar, BasicModal, Btn } from '../../components';
 import InputImg from './InputImg';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../redux/root';
-import axios from 'axios';
-import getToken from '../../utils/getToken';
 import { spec_create } from '../../redux/modal/reducer';
 import { ENDPOINT } from '../../utils/ENDPOINT';
+import setInterceptors from '../../apis/common/setInterceptors';
+import { customAxios } from '../../apis/instance';
 
 export default function Edit() {
   const dispatch = useDispatch();
   const isOpen = useSelector((state: RootState) => state.modal.openSpecCreate);
-  const TOKEN = getToken();
   const text: { [key: string]: any } = {
     edit: '스펙 수정하기',
     register: '스펙 등록하기',
@@ -60,15 +59,14 @@ export default function Edit() {
     // console.log('data ', iterator.next());
     // console.log('data ', iterator.next());
 
-    axios
+    setInterceptors(customAxios)
       .post(`${ENDPOINT}specs/regist`, addImages, {
         headers: {
           accept: 'application/json',
           'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${TOKEN}`,
         },
       })
-      .then((res) => {
+      .then(res => {
         if (res.data.statusCode >= 200 && res.data.statusCode <= 204) {
           alert('스펙이 등록되었습니다.');
           setTimeout(() => {
@@ -77,7 +75,7 @@ export default function Edit() {
         }
         console.log(`res`, res.data);
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(`err`, err);
       });
   };

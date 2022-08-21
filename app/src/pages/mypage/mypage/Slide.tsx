@@ -7,10 +7,11 @@ import { shadow } from '../../../styles';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import getToken from '../../../utils/getToken';
 import { RootState } from '../../../redux/root';
 import { spec_create } from '../../../redux/modal/reducer';
 import { ENDPOINT } from '../../../utils/ENDPOINT';
+import setInterceptors from '../../../apis/common/setInterceptors';
+import { customAxios } from '../../../apis/instance';
 
 interface Props {
   [key: string]: any;
@@ -30,7 +31,6 @@ export default function Slide({
 }: Props) {
   const [sector, setSector] = useState(0),
     dispatch = useDispatch(),
-    TOKEN = getToken(),
     userId = useParams().no,
     params: PARAMS = {
       'spec/get_user_specs': 'specs/profile?user=',
@@ -190,23 +190,16 @@ export default function Slide({
     if (e.currentTarget.name === '+') {
       if (Math.floor(animationLength[checkSelf] / viewNumber) > sector) {
         !cycle &&
-          axios
+          setInterceptors(customAxios)
             .get(
               `${ENDPOINT}${params[action.type]}${userId}&take=${
                 take[checkSelf]
               }&page=${sector + viewNumber}${targets[action]}`,
-              {
-                headers: {
-                  accept: 'application/json',
-                  'Content-Type': 'application/json',
-                  Authorization: `Bearer ${TOKEN}`,
-                },
-              }
             )
-            .then((res) => {
+            .then(res => {
               dispatch(action(res.data.response));
             })
-            .catch((err) => {
+            .catch(err => {
               console.log(`err`, err);
             });
         setSector(sector + 1);
@@ -234,7 +227,7 @@ export default function Slide({
   };
 
   const openSpecCreate = useSelector(
-    (state: RootState) => state.modal.openSpecCreate
+    (state: RootState) => state.modal.openSpecCreate,
   );
 
   const openAddPostModal = (e: React.MouseEvent<HTMLButtonElement>) => {

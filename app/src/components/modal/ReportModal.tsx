@@ -8,10 +8,11 @@ import Img from '../img/Img';
 import { color, font } from '../../styles';
 import { useParams } from 'react-router-dom';
 import { ENDPOINT } from '../../utils/ENDPOINT';
-import getToken from '../../utils/getToken';
 import decodingToken from '../../utils/decodingToken';
 import axios from 'axios';
 import { board } from '../../redux/board/reducer';
+import setInterceptors from '../../apis/common/setInterceptors';
+import { customAxios } from '../../apis/instance';
 
 interface Props {
   visible: boolean;
@@ -89,12 +90,8 @@ function ReportModal({ visible, close }: Props) {
       report.checks.length &&
       report.description.replace('\\n', '').length < 100
     ) {
-      axios
-        .post(`${ENDPOINT}reports`, data, {
-          headers: {
-            Authorization: `Bearer ${getToken()}`,
-          },
-        })
+      setInterceptors(customAxios)
+        .post(`${ENDPOINT}reports`, data)
         .then(res => {
           close();
           cleanUp();

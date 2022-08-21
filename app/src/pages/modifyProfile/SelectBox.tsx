@@ -267,6 +267,9 @@ export default function SelectBox({
       <div className={'wrapper'}>
         <button className={'target'}>
           <div className={'placeholder'}>{placeholder}</div>
+          <div className={'arrow'}>
+            <Img src={'/img/arrow-down-dark3.png'} />
+          </div>
         </button>
         {blocks && (
           <>
@@ -284,3 +287,4 @@ export default function SelectBox({
     </div>
   );
 }
+

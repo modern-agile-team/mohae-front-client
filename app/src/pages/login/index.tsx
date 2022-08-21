@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import Presenter from './Presenter';
 
 import { RootState } from '../../redux/root';
-import { useState, ReactElement } from 'react';
+import { useState, ReactElement, useEffect } from 'react';
 import { jsx } from '@emotion/react';
 
 export default function LoginModal(): ReactElement {
@@ -50,8 +50,7 @@ export default function LoginModal(): ReactElement {
       setPart(4);
     },
     finishedAll: (e: React.MouseEvent) => {
-      e.stopPropagation();
-      setPart(5);
+      setPart(0);
     },
   };
 
@@ -61,6 +60,7 @@ export default function LoginModal(): ReactElement {
       isOpenModal={isOpenModal}
       part={part}
       onClick={clickHandler}
+      setPart={setPart}
     />
   );
 }

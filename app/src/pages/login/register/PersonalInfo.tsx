@@ -188,16 +188,26 @@ export default function PersonalInfo({ part, next }: Object) {
   const clickCheck = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    // 수형이 닉네임 체크 API 끝나면 바로
-    // axios.post(`${ENDPOINT}profile/check-nickname`, {
-    //   "no": 1,
-    //   "nickname": "subro"
-    // }, {
-    //   headers:{
-    //     'accept': 'application/json' ,
-    //     'Content-Type':'application/json' ,
-    //     'Authorization': `Bearer ${getToken()}` ,
-    // }});
+
+    axios
+      .post(
+        `${ENDPOINT}profile/check-nickname`,
+        {
+          no: null,
+          nickname: inputValue.nickname,
+        },
+        {
+          headers: {
+            accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getToken()}`,
+          },
+        },
+      )
+      .then(res => {
+        if (res.data.success) setIsValid(true);
+      })
+      .catch(err => alert(err.response.data.error.message));
   };
 
   const clickNext = (e: React.MouseEvent) => {
@@ -222,6 +232,10 @@ export default function PersonalInfo({ part, next }: Object) {
       alert('비밀번호가 일치하지 않습니다.');
       return;
     }
+    if (!isValid) {
+      alert('닉네임 중복체크를 해주세요');
+      return;
+    }
 
     const finalRegistInfo: Object = {
       ...registInfo,
@@ -233,28 +247,6 @@ export default function PersonalInfo({ part, next }: Object) {
 
     dispatch(update_regist_info(finalRegistInfo));
     next();
-    // response 받은 이메일을 로그인 화면에 이메일 입력란에 값으로 바로 들어갈 수 있게 해달라고 함
-    /*
-    axios
-      .post(`${ENDPOINT}auth/signup`, finalRegistInfo, {
-        headers: {
-          accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-      })
-      .then(res => {
-        if (res.data.statusCode >= 200 && res.data.statusCode <= 204) {
-          console.log(`요청 성공`);
-          // sessionStorage.setItem('userEmail', res.data.response.email);
-          next();
-        } else {
-          alert('다시 가입 해주세요');
-        }
-      })
-      .catch(err => {
-        console.log('err :>> ', err);
-      });
-      */
   };
 
   const selectCompany = text.companies.map((company: string, index: number) => (

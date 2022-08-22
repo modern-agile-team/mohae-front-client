@@ -10,6 +10,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../redux/root';
 import { useNavigate } from 'react-router-dom';
 import { ENDPOINT } from '../../../utils/ENDPOINT';
+import { loginCheck } from '../../../utils/loginCheck';
 
 interface Props {
   [key: string]: any;
@@ -58,6 +59,7 @@ export default function Register({ text }: Props) {
             'refresh_token',
             res.data.response.refreshToken,
           );
+          loginCheck();
           navigate('/');
 
           dispatch(open_login(!isOpenLogin));

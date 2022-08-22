@@ -1,6 +1,6 @@
 import store from '../redux/root';
 import decodingToken from './decodingToken';
-import { getUserData } from '../redux/user/reducer';
+import { getUserData, remove_user } from '../redux/user/reducer';
 
 export const loginCheck = () => {
   const data = decodingToken();
@@ -11,6 +11,7 @@ export const loginCheck = () => {
     if (err.response.status === 410) {
       alert('세션이 만료되었습니다');
       sessionStorage.clear();
+      store.dispatch(remove_user());
     }
   }
 };

@@ -4,10 +4,10 @@ import { css, cx } from '@emotion/css';
 import { color, shadow } from '../../style/palette';
 import { ReactElement } from 'react';
 import { Img, Btn } from '../../../components';
-import { open_login, open_register_modal } from '../../../redux/modal/reducer';
+import { open_login } from '../../../redux/modal/reducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../redux/root';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import getToken from '../../../utils/getToken';
 import { decodeToken } from 'react-jwt';
 
@@ -32,24 +32,22 @@ export default function Header(props: Props): ReactElement {
     nickname: TOKEN !== '' && tokenInfo.nickname,
     userNo: TOKEN !== '' && tokenInfo.userNo,
   };
-
   const user: any = useSelector((state: RootState) => state.user.user);
+  // console.log('userInfo :>> ', userInfo)
 
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
 
   const toggleLoginModal = (e: React.MouseEvent) => {
+    navigate({
+      search: `?login`,
+    });
     dispatch(open_login(true));
-  };
-
-  const toggleRegisterModal = () => {
-    dispatch(open_register_modal(true));
   };
 
   const loginButtons = (
     <div className={'square-buttons'}>
-      <Btn white onClick={toggleRegisterModal}>
-        {text.regist}
-      </Btn>
+      <Btn white>{text.regist}</Btn>
       <Btn main onClick={toggleLoginModal}>
         {text.login}
       </Btn>
@@ -62,9 +60,7 @@ export default function Header(props: Props): ReactElement {
         <span>{user.nickname}</span>
         <span>{text.sir}</span>
         <div className={'photo'}>
-          <Img
-            src={(tokenInfo && tokenInfo.photoUrl) || '/img/leephoter.png'}
-          />
+          <Img src={(user && user.photoUrl) || '/img/leephoter.png'} />
         </div>
       </div>
     </Link>
@@ -114,16 +110,13 @@ const wrapper = css`
     padding: 0 calc((100vw - 1128px) / 2);
   }
   display: flex;
-
   justify-content: space-between;
   height: 59px;
   /* overflow: hidden; */
-
   .logo {
     width: 57px;
     height: 100%;
   }
-
   > .button-wrapper {
     height: 100%;
     display: flex;

@@ -4,12 +4,13 @@ import { Img, FocusBar } from '../../components';
 import AuthModal from '../../components/modal/AuthModal';
 import { radius, font, color, shadow } from '../../styles';
 import { css, cx } from '@emotion/css';
-import { ReactElement, useEffect } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import Login from './login/Login';
 import Agreement from './register/Agreement';
 import Main from './register/Main';
 import PersonalInfo from './register/PersonalInfo';
 import SelectInfo from './register/SelectInfo';
+import FindPassword from './findPassword/FindPassword';
 
 interface Props {
   [key: string]: any;
@@ -24,8 +25,9 @@ export default function Presenter({
   setPart,
   onClick,
 }: Props): ReactElement {
+  const [findPasswordView, setFindPasswordView] = useState(false);
   const mainContents = [
-    <Login text={text} />,
+    <Login text={text} setFindPasswordView={setFindPasswordView} />,
     <Main text={text} next={onClick.enterRegister} />,
     <Agreement text={text} next={onClick.agreement} />,
     <PersonalInfo text={text} part={part} next={onClick.finishedInputInfo} />,
@@ -157,8 +159,22 @@ export default function Presenter({
         transform: ${`translate(${part ? '100%' : '0'})`};
       }
     }
+    #find-password {
+      z-index: 8;
+    }
+    #submit-btn {
+      width: 100%;
+      height: 100%;
+      ${radius[6]}
+      background-color: ${color.main};
+      color: white;
+      ${font.size[14]}
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   `;
-  return (
+  return !findPasswordView ? (
     <AuthModal big={false} visible={isOpenModal} setPart={setPart}>
       {/* edit visible={isOpenModal} after test */}
       <div className={cx(style)}>
@@ -181,5 +197,7 @@ export default function Presenter({
         </div>
       </div>
     </AuthModal>
+  ) : (
+    <FindPassword visible={findPasswordView} setVisible={setFindPasswordView} />
   );
 }

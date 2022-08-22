@@ -61,6 +61,9 @@ export const userSlice = createSlice({
       state.registInfo.major = action.payload.major;
       state.registInfo.school = action.payload.school;
     },
+    remove_user: state => {
+      state.user = {};
+    },
   },
   extraReducers: builder => {
     builder
@@ -77,6 +80,7 @@ export const {
   updateToken,
   update_regist_info,
   update_regist_extraInfo,
+  remove_user,
 } = userSlice.actions;
 // create actions & type
 export default userSlice.reducer;

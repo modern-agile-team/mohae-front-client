@@ -1,21 +1,22 @@
 /** @format */
 
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { profile } from '../../apis/user';
 
 const USER_LOGIN = 'user_login';
 const UPDATE_REGIST_INFO = 'update_regist_info';
 
-const getData = createAsyncThunk('user_login', async () => {
-  const response = await axios('http://localhost:8000/response').then(
-    res => res.data.response,
-  );
-  return response;
-});
+export const getUserData = createAsyncThunk(
+  'user_login',
+  async (no: number | undefined) => {
+    const response = await profile(no!);
+    return response.data;
+  },
+);
 
 const initialState = {
   var: { isLoading: false },
-  user: { name: 'lee', age: 0, id: 0 },
+  user: {},
   token: 0,
   registInfo: {
     email: '',
@@ -48,9 +49,6 @@ export const userSlice = createSlice({
     [USER_LOGIN]: (state, action: PayloadAction<any>) => {
       state.user = action.payload;
     },
-    addAge: (state, action: PayloadAction<any>) => {
-      state.user.age = action.payload;
-    },
     updateToken: (state, action: PayloadAction<any>) => {
       state.token = action.payload;
     },
@@ -58,7 +56,6 @@ export const userSlice = createSlice({
       state.registInfo = action.payload;
     },
     update_regist_extraInfo: (state, action: PayloadAction<any>) => {
-      console.log(action.payload.phoneNumber);
       state.registInfo.phone = action.payload.phoneNumber;
       state.registInfo.categories = action.payload.categories;
       state.registInfo.major = action.payload.major;
@@ -67,15 +64,16 @@ export const userSlice = createSlice({
   },
   extraReducers: builder => {
     builder
-      .addCase(getData.pending, state => {})
-      .addCase(getData.fulfilled, (state, { payload }) => {})
-      .addCase(getData.rejected, (state, { payload }) => {});
+      .addCase(getUserData.pending, state => {})
+      .addCase(getUserData.fulfilled, (state, { payload }) => {
+        state.user = payload.response;
+      })
+      .addCase(getUserData.rejected, (state, { payload }) => {});
   },
 });
 // 생성 추가 삭제
 export const {
   user_login,
-  addAge,
   updateToken,
   update_regist_info,
   update_regist_extraInfo,

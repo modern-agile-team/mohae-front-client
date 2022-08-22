@@ -7,14 +7,17 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import store from './redux/root';
 import { Provider } from 'react-redux';
+import { loginCheck } from './utils/loginCheck';
 
 import * as ReactDOMClient from 'react-dom/client';
+
+loginCheck();
 
 const root = ReactDOMClient.createRoot(document.getElementById('root')); // createRoot(container!) if you use TypeScript
 root.render(
   <Provider store={store}>
     <App />
-  </Provider>
+  </Provider>,
 );
 reportWebVitals();
 

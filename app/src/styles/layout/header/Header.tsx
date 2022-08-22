@@ -5,9 +5,9 @@ import { color, shadow } from '../../style/palette';
 import { ReactElement } from 'react';
 import { Img, Btn } from '../../../components';
 import { open_login, open_register_modal } from '../../../redux/modal/reducer';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../../../redux/root';
-import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../../redux/root';
+import { Link } from 'react-router-dom';
 import getToken from '../../../utils/getToken';
 import { decodeToken } from 'react-jwt';
 
@@ -33,8 +33,9 @@ export default function Header(props: Props): ReactElement {
     userNo: TOKEN !== '' && tokenInfo.userNo,
   };
 
+  const user: any = useSelector((state: RootState) => state.user.user);
+
   const dispatch = useDispatch<AppDispatch>();
-  const navigate = useNavigate();
 
   const toggleLoginModal = (e: React.MouseEvent) => {
     dispatch(open_login(true));
@@ -58,7 +59,7 @@ export default function Header(props: Props): ReactElement {
   const userInfoBtn = (
     <Link to={`/mypage/${userInfo.userNo}`}>
       <div className={'user-info'}>
-        <span>{userInfo.nickname}</span>
+        <span>{user.nickname}</span>
         <span>{text.sir}</span>
         <div className={'photo'}>
           <Img

@@ -3,17 +3,15 @@ import { css, cx } from '@emotion/css';
 import { Box } from '../../components';
 import Img from '../img/Img';
 import { animation } from './modalAnimation';
-import { color, shadow, font } from '../../styles';
 import { close_all } from '../../redux/modal/reducer';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from '../../redux/root';
-import { useNavigate, Navigate } from 'react-router-dom';
 
 interface Props {
   visible: any;
   children: any;
   big: any;
-  setPart: React.Dispatch<React.SetStateAction<number>>;
+  setPart?: React.Dispatch<React.SetStateAction<number>>;
 }
 
 function AuthModal({ visible, big, children, setPart }: Props) {
@@ -24,7 +22,7 @@ function AuthModal({ visible, big, children, setPart }: Props) {
   );
   useEffect(() => {
     let timer: any;
-    if (isRegister) setPart(1);
+    if (isRegister) setPart && setPart(1);
     if (visible) {
       setModalState(true);
     } else {
@@ -32,7 +30,7 @@ function AuthModal({ visible, big, children, setPart }: Props) {
     }
     return () => {
       clearTimeout(timer);
-      setPart(0);
+      setPart && setPart(0);
     };
   }, [visible]);
 

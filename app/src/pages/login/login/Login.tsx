@@ -1,7 +1,12 @@
 /** @format */
 
 import { Img, Box, Btn } from '../../../components';
-import { useState } from 'react';
+import React, {
+  ButtonHTMLAttributes,
+  Dispatch,
+  SetStateAction,
+  useState,
+} from 'react';
 
 import axios from 'axios';
 
@@ -13,10 +18,24 @@ import { ENDPOINT } from '../../../utils/ENDPOINT';
 import { loginCheck } from '../../../utils/loginCheck';
 
 interface Props {
-  [key: string]: any;
+  text: {
+    login: string;
+    register: string;
+    placeholder: {
+      id: string;
+      pw: string;
+    };
+    stayLogin: string;
+    forgotPw: string;
+    description: string;
+    mohae: string;
+    subDesc: string;
+    signUp: string;
+  };
+  setFindPasswordView: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function Register({ text }: Props) {
+export default function Register({ text, setFindPasswordView }: Props) {
   const [inputValue, setInputValue] = useState({
     id: '',
     password: '',
@@ -41,6 +60,7 @@ export default function Register({ text }: Props) {
 
   const requestLogin = (e: any) => {
     e.preventDefault();
+
     axios
       .post(
         `${ENDPOINT}auth/signin`,
@@ -72,6 +92,11 @@ export default function Register({ text }: Props) {
       });
   };
 
+  const findPassword = (e: React.FormEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setFindPasswordView(true);
+  };
+
   return (
     <form onSubmit={requestLogin}>
       <div className={'input'}>
@@ -100,12 +125,14 @@ export default function Register({ text }: Props) {
           <input id="keep-login" type="checkbox" />
           <label htmlFor="keep-login">{text.stayLogin}</label>
         </div>
-        <button>{text.forgotPw}</button>
+        <button id="find-password" type="button" onClick={e => findPassword(e)}>
+          {text.forgotPw}
+        </button>
       </div>
       <Box size={[480, 52]}>
-        <Btn main onClick={requestLogin}>
+        <button id="submit-btn" type="submit" onClick={requestLogin}>
           {text.login}
-        </Btn>
+        </button>
       </Box>
     </form>
   );

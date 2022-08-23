@@ -65,6 +65,7 @@ export default function MySelf({
             <Profile
               size={146}
               img={(tokenInfo && tokenInfo.photoUrl) || '/img/leephoter.png'}
+              noneClick
             />
           </div>
           <div className={'register'}>

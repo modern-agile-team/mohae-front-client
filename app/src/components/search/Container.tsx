@@ -9,7 +9,7 @@ import Presenter from './Presenter';
 interface Props {
   board?: boolean;
   main?: boolean;
-  resetPageInfo: () => void;
+  resetPageInfo?: () => void;
 }
 
 function Search(props: Props) {
@@ -140,11 +140,14 @@ function Search(props: Props) {
           JSON.parse(localStorage.getItem('currentSearch') || '[]'),
         );
         setValue('');
-        resetPageInfo();
+        resetPageInfo && resetPageInfo();
       } else alert('두 글자 이상');
     } else {
       setSearchParams(query);
-      resetPageInfo();
+      resetPageInfo && resetPageInfo();
+    }
+    if (main) {
+      navigate('boards/1' + query);
     }
   };
 

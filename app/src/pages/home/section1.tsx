@@ -1,12 +1,8 @@
 /** @format */
 
-import { useState, useEffect } from 'react';
 import { css, cx } from '@emotion/css';
-import { color, radius, font, shadow } from '../../styles';
-import { Categories, Img } from '../../components';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../../redux/root';
-import MainSearch from './Search';
+import { color } from '../../styles';
+import { Categories, Img, Search } from '../../components';
 
 export default function Part1() {
   const text: { [key: string]: any } = {
@@ -35,7 +31,7 @@ export default function Part1() {
         <div className={'description'}>{text.mainDesc}</div>
         <div className={'input-wrapper'}>
           <div className={'main-img'} />
-          <MainSearch />
+          <Search main />
         </div>
       </div>
       <div className={'category'}>

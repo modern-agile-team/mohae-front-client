@@ -63,7 +63,7 @@ export default function Header(props: Props): ReactElement {
         <span>{user.nickname}</span>
         <span>{text.sir}</span>
         <div className={'photo'}>
-          <Img src={(user && user.photoUrl) || '/img/leephoter.png'} />
+          <Img src={(user && user.photoUrl) || '/img/profile.png'} />
         </div>
       </div>
     </Link>

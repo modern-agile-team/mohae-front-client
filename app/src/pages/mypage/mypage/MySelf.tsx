@@ -64,7 +64,7 @@ export default function MySelf({
           <div className={'profile'}>
             <Profile
               size={146}
-              img={(tokenInfo && tokenInfo.photoUrl) || '/img/leephoter.png'}
+              img={(tokenInfo && tokenInfo.photoUrl) || '/img/profile.png'}
               noneClick
             />
           </div>

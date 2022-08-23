@@ -3,6 +3,7 @@ import { css, cx } from '@emotion/css';
 import Img from '../img/Img';
 import { Props } from '../button';
 import { color, font, radius, shadow } from '../../styles';
+import { useSearchParams } from 'react-router-dom';
 
 interface InputProps extends Props {
   setShowFilter?: Dispatch<SetStateAction<boolean>>;
@@ -14,7 +15,10 @@ interface InputProps extends Props {
 }
 
 function Input(props: InputProps) {
-  const { showFilter, setShowFilter, value, setValue, onSubmit } = props;
+  const { showFilter, setShowFilter, value, setValue, onSubmit, board, main } =
+    props;
+
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const commonStyle = css`
     ${shadow.normal}
@@ -22,26 +26,26 @@ function Input(props: InputProps) {
     display: flex;
     background-color: white;
     cursor: pointer;
-    width: 812px;
-    height: 43px;
+    width: ${board ? '812px' : '648px'};
+    height: ${board ? '43px' : '63px'};
     input {
-      margin: 12px 0px 0px 32px;
+      margin: ${board ? '12px 0px 0px 32px' : '16px 0px 0px 24px'};
       ${font.weight.ragular}
-      ${font.size[14]}
+      ${board ? font.size[14] : font.size[24]}
       color: ${color.dark1};
-      width: 663px;
-      height: 19px;
+      width: ${board ? '663px' : '545px'};
+      height: ${board ? '19px' : '31px'};
     }
     input::placeholder {
       ${font.weight.normal}
       color: ${color.dark2};
-      ${font.size[14]}
+      ${board ? font.size[14] : font.size[24]}
     }
     hr {
       visibility: ${value ? 'visible' : 'hidden'};
       margin-top: 7px;
       width: 0;
-      height: 28px;
+      height: ${board ? '28px' : '48px'};
       border-left: 2px solid ${color.light3};
       margin-bottom: 15px;
     }
@@ -60,21 +64,28 @@ function Input(props: InputProps) {
   const contents = () => {
     const cancle = css`
       visibility: ${value ? 'visible' : 'hidden'};
-      margin: 14px 16px 0px 0px;
-      width: 15px;
-      height: 15px;
+      margin: ${board ? '14px 16px 0px 0px' : '18px 16px 0px 0px'};
+      ${board
+        ? `width: 15px;
+      height: 15px;`
+        : `width: 28px;
+      height: 28px;`}
     `;
 
     const iconStyle = (filter?: string) => {
       const common = css`
         width: 47px;
         height: 43px;
+        margin: ${main ? '12px 12px 0px 4px' : '0'};
         display: flex;
         align-items: center;
         justify-content: center;
         div {
-          width: 18px;
-          height: 18px;
+          ${board
+            ? `width: 18px;
+          height: 18px;`
+            : `width: 31px;
+          height: 31px;`}
         }
       `;
       return filter
@@ -99,14 +110,16 @@ function Input(props: InputProps) {
         <button className={cx(iconStyle())} type="submit">
           <Img src="/img/search.png" />
         </button>
-        <div
-          className={cx(iconStyle('filter'))}
-          onClick={() => setShowFilter && setShowFilter(!showFilter)}
-        >
-          <div id="filter">
-            <Img src="/img/filter.png" />
+        {board && (
+          <div
+            className={cx(iconStyle('filter'))}
+            onClick={() => setShowFilter && setShowFilter(!showFilter)}
+          >
+            <div id="filter">
+              <Img src="/img/filter.png" />
+            </div>
           </div>
-        </div>
+        )}
       </>
     );
   };

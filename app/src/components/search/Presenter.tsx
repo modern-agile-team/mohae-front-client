@@ -5,7 +5,6 @@ import { color, font, radius } from '../../styles';
 import Img from '../img/Img';
 import Input from './Input';
 import Filter from '../filter/Container';
-import { Link } from 'react-router-dom';
 
 interface InputProps extends Props {
   value: string;
@@ -80,7 +79,7 @@ function Presenter(props: InputProps) {
           #dataListWrap {
             width: 648px;
             height: 239px;
-            top: 63px;
+            top: 59px;
           }
         `;
   };

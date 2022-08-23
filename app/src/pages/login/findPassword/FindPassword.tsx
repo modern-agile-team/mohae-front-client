@@ -37,17 +37,18 @@ function FindPassword(props: Props) {
     e: React.FormEvent<HTMLFormElement> | React.FormEvent<HTMLButtonElement>,
   ) => {
     e.preventDefault();
-    await axios
-      .post(`${ENDPOINT}email/forget/password`, userInputValue)
-      .then(res => {
-        setPopupInfo({ ...popupInfo, view: true, message: res.data.msg });
-      })
-      .catch(err =>
-        setPopupInfo({
-          view: true,
-          message: '이름이나 이메일을 확인해주세요.',
-        }),
-      );
+    try {
+      await axios
+        .post(`${ENDPOINT}email/forget/password`, userInputValue)
+        .then(res => {
+          setPopupInfo({ ...popupInfo, view: true, message: res.data.msg });
+        });
+    } catch (err: any) {
+      setPopupInfo({
+        view: true,
+        message: err.response.data.error.message,
+      });
+    }
   };
 
   const closePopup = () => {
@@ -66,6 +67,7 @@ function FindPassword(props: Props) {
           <section>
             <label>이름</label>
             <Input
+              placeholder="이름을 입력해 주세요."
               value={userInputValue.name}
               onChange={e => handleOnChange('name', e)}
             />
@@ -73,6 +75,7 @@ function FindPassword(props: Props) {
           <section>
             <label>이메일</label>
             <Input
+              placeholder="이메일을 입력해 주세요."
               type={'email'}
               value={userInputValue.email}
               onChange={e => handleOnChange('email', e)}
@@ -152,6 +155,7 @@ const SubmitButton = styled.button<{ able: boolean }>`
   color: white;
   font-size: 14px;
   border-radius: 6px;
+  box-shadow: 0px 0px 8px rgba(132, 131, 141, 0.5);
 `;
 
 const PopupCloseButton = styled.button`
@@ -160,4 +164,5 @@ const PopupCloseButton = styled.button`
   background-color: #ff445e;
   color: white;
   border-radius: 6px;
+  box-shadow: 0px 0px 8px rgba(132, 131, 141, 0.5);
 `;

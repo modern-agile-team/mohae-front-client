@@ -25,6 +25,7 @@ import Visit from './pages/spec/Visit';
 import Inquire from './pages/inquire/inquire';
 import InquireSuccess from './pages/inquire/inquireSuccess';
 import Notice from './pages/faq/notice/Notice';
+import ChangePassword from './pages/login/findPassword/Container';
 
 injectGlobal`
   * {
@@ -105,6 +106,10 @@ const App: React.SFC = () => {
         <Route
           path={'/success'}
           element={<Layout component={<InquireSuccess />} />}
+        />
+        <Route
+          path={'/users/password/forget'}
+          element={<Layout component={<ChangePassword />} />}
         />
       </Routes>
       <Visit />

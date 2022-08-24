@@ -62,7 +62,7 @@ const Replier = (props: Props) => {
     <>
       <Wrapper>
         <div className="left">
-          <h3>{commenterNickname}</h3>
+          <h3>{userInfo?.nickname}</h3>
           {createReportBtn()}
         </div>
         {replyWriterNo === userInfo?.userNo && (

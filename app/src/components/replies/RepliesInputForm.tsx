@@ -64,7 +64,6 @@ const RepliesInputForm = (props: Props) => {
         };
         dispatch(setCommentArr(addNewRelpy(newReply)));
         handlePopupView();
-        console.log('res.data :>> ', res.data);
       });
       setReply('');
     } catch (err) {

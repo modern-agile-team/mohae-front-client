@@ -154,7 +154,11 @@ function Post() {
     ) : (
       <>
         <EmptySpinner loading />
-        <Popup visible={redirectLogin} text1={'로그인 후 이용 부탁드립니다.'}>
+        <Popup
+          visible={redirectLogin}
+          text1={'로그인 후 이용 부탁드립니다.'}
+          overlay={() => btnClick.redirectBoard()}
+        >
           <div className={cx(popupBtn)}>
             <Btn white onClick={btnClick.redirectBoard}>
               닫기

@@ -39,7 +39,7 @@ function Presenter({
 
   const btnClick = {
     isdeadLine: () => setView('isDeadline'),
-    redirectClose: () => window.location.replace('/boards/1'),
+    closePopup: () => setRedirectLogin(false),
     login: () => {
       setRedirectLogin(false);
       dispatch(open_login(true));
@@ -109,7 +109,7 @@ function Presenter({
         <>
           <Popup visible={redirectLogin} text1={'로그인 후 이용 부탁드립니다.'}>
             <div className={cx(popupBtn)}>
-              <Btn white onClick={btnClick.redirectClose}>
+              <Btn white onClick={btnClick.closePopup}>
                 닫기
               </Btn>
             </div>

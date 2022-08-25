@@ -8,7 +8,6 @@ import { color } from '../../styles';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAddCommentArr } from '../../redux/comment/reducer';
-import decodingToken from '../../utils/decodingToken';
 import { RootState } from '../../redux/root';
 
 interface Props {
@@ -22,7 +21,7 @@ const CommentInputForm = (props: Props) => {
   const resizeTextArea = useResizeTextArea(textareaRef);
   const { no } = useParams();
   const dispatch = useDispatch();
-  const userInfo = decodingToken();
+  const userInfo = useSelector((state: RootState) => state.user.user);
   const commentList = useSelector((state: RootState) => state.comment.data);
 
   const handleChangeComment = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -36,9 +35,12 @@ const CommentInputForm = (props: Props) => {
   };
 
   const handleSubmit = async () => {
-    try {
-      await createComment({ no: Number(no), body: { content: comment } }).then(
-        res => {
+    if (comment.length) {
+      try {
+        await createComment({
+          no: Number(no),
+          body: { content: comment },
+        }).then(res => {
           const newComment = {
             commentContent: comment,
             commentCreatedAt: `${today.year}년 ${
@@ -47,17 +49,17 @@ const CommentInputForm = (props: Props) => {
             commentNo: 1,
             commenterNickname: userInfo?.nickname,
             commenterNo: userInfo?.userNo,
-            commenterPhotoUrl: userInfo?.photoUrl,
+            commenterPhotoUrl: userInfo?.photo_url || null,
             isCommenter: 1,
             replies: [],
           };
           dispatch(setAddCommentArr(newComment));
           handleModalView();
-        },
-      );
-      setComment('');
-    } catch (err) {
-      console.log(err);
+        });
+        setComment('');
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
 

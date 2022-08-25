@@ -15,7 +15,7 @@ interface Props {
 
 const Commenter = (props: Props) => {
   const { handleModalView, commentIndex } = props;
-  const userInfo = decodingToken();
+  const userInfo = useSelector((state: RootState) => state.user.user);
   const [detailsView, setDetailsView] = useState(false);
   const { no } = useParams();
   const dispatch = useDispatch();

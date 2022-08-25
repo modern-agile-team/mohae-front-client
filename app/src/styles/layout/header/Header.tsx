@@ -7,7 +7,7 @@ import { Img, Btn } from '../../../components';
 import { open_login, open_register_modal } from '../../../redux/modal/reducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../redux/root';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import getToken from '../../../utils/getToken';
 import { decodeToken } from 'react-jwt';
 
@@ -33,10 +33,8 @@ export default function Header(props: Props): ReactElement {
     userNo: TOKEN !== '' && tokenInfo.userNo,
   };
   const user: any = useSelector((state: RootState) => state.user.user);
-  // console.log('userInfo :>> ', userInfo)
 
   const dispatch = useDispatch<AppDispatch>();
-  const navigate = useNavigate();
 
   const toggleLoginModal = (e: React.MouseEvent) => {
     dispatch(open_login(true));
@@ -63,7 +61,13 @@ export default function Header(props: Props): ReactElement {
         <span>{user.nickname}</span>
         <span>{text.sir}</span>
         <div className={'photo'}>
-          <Img src={(user && user.photoUrl) || '/img/profile.png'} />
+          <Img
+            src={
+              (user.photo_url !== null &&
+                'https://d2ffbnf2hpheay.cloudfront.net/' + user.photo_url) ||
+              '/img/profile.png'
+            }
+          />
         </div>
       </div>
     </Link>

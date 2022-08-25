@@ -1,17 +1,13 @@
 /** @format */
 
 import { css, cx } from '@emotion/css';
-import { color, font } from '../../styles';
-
 import { Img, Box, Profile, Category, BasicModal, Btn } from '../index';
-
 import Slide from '../../pages/mypage/mypage/Slide';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/root';
-import { useGetRequest } from '../../redux/axios';
 import decodingToken from '../../utils/decodingToken';
 import getToken from '../../utils/getToken';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import setInterceptors from '../../apis/common/setInterceptors';
 import { customAxios } from '../../apis/instance';
 import {
@@ -20,6 +16,7 @@ import {
   get_user_tohelp,
 } from '../../redux/spec/reducer';
 import { get_user_info, setInitialState } from '../../redux/mypage/reducer';
+import ReportModal from '../../components/modal/ReportModal';
 
 interface Props {
   userNo: number;
@@ -31,6 +28,7 @@ export default function ModalProfile(props: Props) {
   const { userNo, view, reset } = props;
   const userInfo = useSelector((state: RootState) => state.mypage.user.profile);
   const posts = useSelector((state: RootState) => state.spec);
+  const [reportModalView, setReportModalView] = useState(false);
   const dispatch = useDispatch();
   const userInfoInToken = decodingToken();
   const token = getToken() || null;
@@ -115,6 +113,10 @@ export default function ModalProfile(props: Props) {
     profile: `profile/${userNo}`,
   };
 
+  const handleReportModalView = () => {
+    setReportModalView(prev => !prev);
+  };
+
   useEffect(() => {
     setInterceptors(customAxios)
       .get(requestURL.spec, config)
@@ -138,110 +140,119 @@ export default function ModalProfile(props: Props) {
   }, []);
 
   return (
-    <BasicModal big visible={view} reset={reset}>
-      <div className={cx(style)}>
-        <div className="header">
-          <Profile
-            img={'https://d2ffbnf2hpheay.cloudfront.net/' + userInfo?.photo_url}
-            size={150}
-            noneClick
-          />
-          <div>
-            <div className="row title">
-              <div className={'row sub-title'}>
-                <div className={'name'}>{userInfo && userInfo.nickname}</div>
-                <div className={'sir'}>{text.sir}</div>
-                <div className={'row sub-title'}>{interestedCategories}</div>
-              </div>
-              <div className={'row btns'}>
-                <div>
-                  <Btn white>
-                    <Img src={'/img/report-main.png'} />
-                  </Btn>
+    <>
+      <BasicModal big visible={view} reset={reset}>
+        <div className={cx(style)}>
+          <div className="header">
+            <Profile
+              img={
+                'https://d2ffbnf2hpheay.cloudfront.net/' + userInfo?.photo_url
+              }
+              size={150}
+              noneClick
+            />
+            <div>
+              <div className="row title">
+                <div className={'row sub-title'}>
+                  <div className={'name'}>{userInfo && userInfo.nickname}</div>
+                  <div className={'sir'}>{text.sir}</div>
+                  <div className={'row sub-title'}>{interestedCategories}</div>
+                </div>
+                <div className={'row btns'}>
+                  <div>
+                    <Btn white onClick={handleReportModalView}>
+                      <Img src={'/img/report-main.png'} />
+                    </Btn>
+                  </div>
                 </div>
               </div>
+              <Box size={[768, 90]}>
+                <div className={'row info-box '}>
+                  <div className={'column item'}>
+                    <div className={'icon'}>
+                      <Img src={'/img/university.png'} />
+                    </div>
+                    <span>{(userInfo && userInfo.schoolName) || '-'}</span>
+                  </div>
+                  <div className={'column item'}>
+                    <div className={'icon'}>
+                      <Img src={'/img/study.png'} />
+                    </div>
+                    <span>{(userInfo && userInfo.majorName) || '-'}</span>
+                  </div>
+                  <div className={'column item'}>
+                    <div className={'icon'}>
+                      <Img src={'/img/post.png'} />
+                    </div>
+                    <div className={'text'}>
+                      <span>{`${text.boards} ${
+                        userInfo && userInfo.boardNum
+                      }`}</span>
+                    </div>
+                  </div>
+                  <div className={'column item'}>
+                    <div className={'icon'} onClick={handleIsLike}>
+                      <Img
+                        src={
+                          userInfo?.isLike
+                            ? '/img/heart-filled-main.png'
+                            : '/img/heart-main.png'
+                        }
+                      />
+                    </div>
+                    <div className={'text'}>
+                      <span>{`${text.like} ${
+                        userInfo && userInfo.likedUserNum
+                      }`}</span>
+                    </div>
+                  </div>
+                </div>
+              </Box>
             </div>
-            <Box size={[768, 90]}>
-              <div className={'row info-box '}>
-                <div className={'column item'}>
-                  <div className={'icon'}>
-                    <Img src={'/img/university.png'} />
-                  </div>
-                  <span>{(userInfo && userInfo.schoolName) || '-'}</span>
-                </div>
-                <div className={'column item'}>
-                  <div className={'icon'}>
-                    <Img src={'/img/study.png'} />
-                  </div>
-                  <span>{(userInfo && userInfo.majorName) || '-'}</span>
-                </div>
-                <div className={'column item'}>
-                  <div className={'icon'}>
-                    <Img src={'/img/post.png'} />
-                  </div>
-                  <div className={'text'}>
-                    <span>{`${text.boards} ${
-                      userInfo && userInfo.boardNum
-                    }`}</span>
-                  </div>
-                </div>
-                <div className={'column item'}>
-                  <div className={'icon'} onClick={handleIsLike}>
-                    <Img
-                      src={
-                        userInfo?.isLike
-                          ? '/img/heart-filled-main.png'
-                          : '/img/heart-main.png'
-                      }
-                    />
-                  </div>
-                  <div className={'text'}>
-                    <span>{`${text.like} ${
-                      userInfo && userInfo.likedUserNum
-                    }`}</span>
-                  </div>
-                </div>
-              </div>
-            </Box>
+          </div>
+          <div className={'boards'}>
+            <div className={'section'}>
+              <div className={'title'}>{'내 스펙 관리'}</div>
+              <Slide
+                outsideBtn
+                viewNumber={4}
+                items={posts.profileSpecs}
+                action={actions.specs}
+                marginRight={16}
+                checkSelf={checkSelf}
+              />
+            </div>
+            <div className={'section'}>
+              <div className={'title'}>{'해줄래요 이력'}</div>
+              <Slide
+                outsideBtn
+                viewNumber={4}
+                items={posts.profileToHelp}
+                action={actions.toHelp}
+                marginRight={16}
+                checkSelf={checkSelf}
+              />
+            </div>
+            <div className={'section'}>
+              <div className={'title'}>{'받을래요 이력'}</div>
+              <Slide
+                outsideBtn
+                viewNumber={4}
+                items={posts.profileHelpMe}
+                action={actions.helpMe}
+                marginRight={16}
+                checkSelf={checkSelf}
+              />
+            </div>
           </div>
         </div>
-        <div className={'boards'}>
-          <div className={'section'}>
-            <div className={'title'}>{'내 스펙 관리'}</div>
-            <Slide
-              outsideBtn
-              viewNumber={4}
-              items={posts.profileSpecs}
-              action={actions.specs}
-              marginRight={16}
-              checkSelf={checkSelf}
-            />
-          </div>
-          <div className={'section'}>
-            <div className={'title'}>{'해줄래요 이력'}</div>
-            <Slide
-              outsideBtn
-              viewNumber={4}
-              items={posts.profileToHelp}
-              action={actions.toHelp}
-              marginRight={16}
-              checkSelf={checkSelf}
-            />
-          </div>
-          <div className={'section'}>
-            <div className={'title'}>{'받을래요 이력'}</div>
-            <Slide
-              outsideBtn
-              viewNumber={4}
-              items={posts.profileHelpMe}
-              action={actions.helpMe}
-              marginRight={16}
-              checkSelf={checkSelf}
-            />
-          </div>
-        </div>
-      </div>
-    </BasicModal>
+      </BasicModal>
+      <ReportModal
+        user
+        visible={reportModalView}
+        close={handleReportModalView}
+      />
+    </>
   );
 }
 

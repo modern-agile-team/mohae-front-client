@@ -80,7 +80,7 @@ function ReportModal({ visible, close, board, user }: Props) {
   };
 
   const successPopupClose = () => {
-    setSuccess(false);
+    setSuccess(prev => !prev);
     close();
   };
 
@@ -103,6 +103,7 @@ function ReportModal({ visible, close, board, user }: Props) {
         .then(res => {
           cleanUp();
           setSuccess(true);
+          console.log('res :>> ', res);
         })
         .catch(err => console.log('err', err));
     } else alert('항목을 세 개 이하 체크 후 사유를 작성해주세요.');
@@ -224,7 +225,7 @@ function ReportModal({ visible, close, board, user }: Props) {
         <Popup
           visible={success}
           text1={'신고가 정상적으로 접수 되었습니다.'}
-          overlay={() => successPopupClose()}
+          overlay={successPopupClose}
         >
           <div className={cx(btnWrap)}>
             <Btn main onClick={() => successPopupClose()}>

@@ -3,6 +3,27 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { profile } from '../../apis/user';
 
+interface InitialState {
+  [key: string]: any | User;
+}
+interface User {
+  boardNum: string;
+  categories: { [noAndName: string]: string }[];
+  createdAt: string;
+  email: string;
+  isLike: boolean;
+  likedUserNum: string;
+  majorName: string;
+  majorNo: number;
+  name: string;
+  nickname: string;
+  phone: string;
+  photo_url: null | string;
+  schoolName: string;
+  schoolNo: number | null;
+  userNo: number;
+}
+
 const USER_LOGIN = 'user_login';
 const UPDATE_REGIST_INFO = 'update_regist_info';
 
@@ -14,7 +35,7 @@ export const getUserData = createAsyncThunk(
   },
 );
 
-const initialState = {
+const initialState: InitialState = {
   var: { isLoading: false },
   user: {},
   token: 0,

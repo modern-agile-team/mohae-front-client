@@ -94,7 +94,11 @@ function Presenter(props: Props) {
         </Container>
       </Wrapper>
       {popupInfo.view && (
-        <Popup visible={popupInfo.view} text1={popupInfo.message}>
+        <Popup
+          visible={popupInfo.view}
+          text1={popupInfo.message}
+          overlay={() => closePopup()}
+        >
           <PopupCloseButton type="submit" onClick={closePopup}>
             닫기
           </PopupCloseButton>

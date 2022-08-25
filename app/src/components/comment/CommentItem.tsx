@@ -1,11 +1,9 @@
 import styled from '@emotion/styled';
-import Img from '../img/Img';
 import Commenter from './Commenter';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/root';
 import Replies from '../replies/Replies';
 import Profile from '../profile/Profile';
-import { css, cx } from '@emotion/css';
 
 interface DefaultProps {
   handleModalView: () => void;
@@ -21,7 +19,6 @@ const CommentItem = (props: DefaultProps) => {
     commenterPhotoUrl !== null
       ? 'https://d2ffbnf2hpheay.cloudfront.net/' + commenterPhotoUrl
       : commenterPhotoUrl;
-  console.log('commenterPhotoUrl :>> ', commenterPhotoUrl);
 
   return (
     <Wrapper>

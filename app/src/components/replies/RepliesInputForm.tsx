@@ -46,8 +46,6 @@ const RepliesInputForm = (props: Props) => {
     return newCommentArr;
   };
 
-  console.log('userInfo', userInfo);
-
   const handleSubmit = async () => {
     try {
       await createReply({

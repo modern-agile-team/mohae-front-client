@@ -29,7 +29,7 @@ export interface PostData {
   target: number;
   areaNo: number;
   areaName: string;
-  userNickname: string;
+  nickname: string;
 }
 
 export interface Data {
@@ -95,8 +95,6 @@ function Presenter() {
     },
     [],
   );
-
-  console.log('reduxData', reduxData);
 
   const filteringQuery = () => {
     const queryBase = `&categoryNo=${no}&title=${decodeURIComponent(

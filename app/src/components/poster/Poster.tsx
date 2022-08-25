@@ -15,7 +15,7 @@ interface Props {
     target: number;
     areaNo: number;
     areaName: string;
-    userNickname: string;
+    nickname: string;
   };
 }
 
@@ -134,7 +134,7 @@ function Poster({ data }: Props) {
         <div className="default">
           <div>
             <p className="title">{data.title}</p>
-            <p className="writer">{data.userNickname}</p>
+            <p className="writer">{data.nickname}</p>
           </div>
           <p className="price">
             {data.price !== null ? data.price.toLocaleString() : '나눔'}

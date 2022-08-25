@@ -6,7 +6,6 @@ import { Btn } from '../button';
 import { color } from '../../styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCommentArr } from '../../redux/comment/reducer';
-import decodingToken from '../../utils/decodingToken';
 import { RootState } from '../../redux/root';
 import { Replies } from '../comment/Comment';
 import { createReply } from '../../apis/replies';
@@ -22,7 +21,7 @@ const RepliesInputForm = (props: Props) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const resizeTextArea = useResizeTextArea(textareaRef);
   const dispatch = useDispatch();
-  const userInfo = decodingToken();
+  const userInfo = useSelector((state: RootState) => state.user.user);
   const day = new Date();
   const today = {
     year: day.getFullYear(),
@@ -47,6 +46,8 @@ const RepliesInputForm = (props: Props) => {
     return newCommentArr;
   };
 
+  console.log('userInfo', userInfo);
+
   const handleSubmit = async () => {
     try {
       await createReply({
@@ -56,8 +57,8 @@ const RepliesInputForm = (props: Props) => {
         const newReply = {
           replyNo: 1,
           replyContent: reply,
-          replyWriterNo: userInfo?.userNo || 1,
-          replyWriterPhotoUrl: userInfo?.photoUrl || 'null',
+          replyWriterNo: userInfo.userNo || 1,
+          replyWriterPhotoUrl: userInfo.photo_url || null,
           replyCreatedAt: `${today.year}년 ${
             today.month >= 10 ? today.month : '0' + today.month
           }월 ${today.date >= 10 ? today.date : '0' + today.date}일`,
@@ -68,6 +69,12 @@ const RepliesInputForm = (props: Props) => {
       setReply('');
     } catch (err) {
       console.log(err);
+    }
+  };
+
+  const onClickToWrite = () => {
+    if (reply.length) {
+      return handleSubmit();
     }
   };
 
@@ -82,7 +89,7 @@ const RepliesInputForm = (props: Props) => {
           value={reply}
         />
         <div className="write-btn">
-          <Btn main onClick={handleSubmit}>
+          <Btn main onClick={onClickToWrite}>
             <p>작성</p>
             <div className="write-img">
               <Img src="/img/write.png" />

@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  useLayoutEffect,
-  MutableRefObject,
-} from 'react';
+import React, { useState, useEffect } from 'react';
 import { css, cx } from '@emotion/css';
 import { Box } from '../../components';
 import { animation } from './modalAnimation';
@@ -14,10 +8,11 @@ import Img from '../img/Img';
 import { color, font } from '../../styles';
 import { useParams } from 'react-router-dom';
 import { ENDPOINT } from '../../utils/ENDPOINT';
-import decodingToken from '../../utils/decodingToken';
 import setInterceptors from '../../apis/common/setInterceptors';
 import { customAxios } from '../../apis/instance';
 import { Popup } from '../../components';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/root';
 
 interface Props {
   visible: boolean;
@@ -46,6 +41,7 @@ function ReportModal({ visible, close, board, user }: Props) {
     text: '',
   });
   const [success, setSuccess] = useState(false);
+  const userInfo = useSelector((state: RootState) => state.user.user);
   const { no } = useParams();
 
   const report = (): { checks: any; description: string } => {
@@ -90,7 +86,7 @@ function ReportModal({ visible, close, board, user }: Props) {
   }) => {
     const data = {
       head: board ? 'board' : 'user',
-      headNo: board ? Number(no) : decodingToken()?.userNo,
+      headNo: board ? Number(no) : userInfo?.userNo,
       checks: report.checks,
       description: report.description,
     };

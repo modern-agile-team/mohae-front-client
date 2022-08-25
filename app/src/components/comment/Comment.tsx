@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { getCommentList } from '../../apis/comment';
 import { setCommentArr } from '../../redux/comment/reducer';
 import Box from '../box/Box';
@@ -36,6 +36,7 @@ const Comment = () => {
     popup: false,
   });
   const { no } = useParams();
+  const location = useLocation();
   const dispatch = useDispatch();
   const buttonRef = useRef<HTMLButtonElement>(null);
   useLayoutEffect(() => {
@@ -49,8 +50,16 @@ const Comment = () => {
   };
 
   const getComments = async () => {
-    const response = await getCommentList(Number(no));
-    dispatch(setCommentArr(response.data.response));
+    try {
+      const response = await getCommentList(Number(no));
+      dispatch(setCommentArr(response.data.response));
+    } catch (err: any) {
+      if (err.response.status === 410) {
+        sessionStorage.removeItem('access_token');
+        sessionStorage.removeItem('refresh_token');
+        window.location.replace(location.pathname);
+      }
+    }
   };
 
   useEffect(() => {

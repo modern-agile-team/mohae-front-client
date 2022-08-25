@@ -5,7 +5,6 @@ import { Img, Box, Profile, Category, BasicModal, Btn } from '../index';
 import Slide from '../../pages/mypage/mypage/Slide';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/root';
-import decodingToken from '../../utils/decodingToken';
 import getToken from '../../utils/getToken';
 import { useEffect, useState } from 'react';
 import setInterceptors from '../../apis/common/setInterceptors';
@@ -30,7 +29,7 @@ export default function ModalProfile(props: Props) {
   const posts = useSelector((state: RootState) => state.spec);
   const [reportModalView, setReportModalView] = useState(false);
   const dispatch = useDispatch();
-  const userInfoInToken = decodingToken();
+  const userInfoInToken = useSelector((state: RootState) => state.user.user);
   const token = getToken() || null;
   const checkSelf = String(userInfoInToken?.userNo === userNo);
   const take: any = {
@@ -146,7 +145,9 @@ export default function ModalProfile(props: Props) {
           <div className="header">
             <Profile
               img={
-                'https://d2ffbnf2hpheay.cloudfront.net/' + userInfo?.photo_url
+                'https://d2ffbnf2hpheay.cloudfront.net/' +
+                userInfo?.photo_url +
+                '?w=150'
               }
               size={150}
               noneClick

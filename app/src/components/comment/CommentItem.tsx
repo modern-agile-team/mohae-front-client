@@ -18,7 +18,10 @@ const CommentItem = (props: DefaultProps) => {
   const { commentContent, commenterPhotoUrl, commentCreatedAt, commenterNo } =
     useSelector((state: RootState) => state.comment.data[commentIndex]);
   const profileImg =
-    'https://d2ffbnf2hpheay.cloudfront.net/' + commenterPhotoUrl;
+    commenterPhotoUrl !== null
+      ? 'https://d2ffbnf2hpheay.cloudfront.net/' + commenterPhotoUrl
+      : commenterPhotoUrl;
+  console.log('commenterPhotoUrl :>> ', commenterPhotoUrl);
 
   return (
     <Wrapper>

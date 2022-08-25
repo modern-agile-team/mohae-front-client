@@ -223,7 +223,15 @@ export default function ModifyProfile({ userInfo }: Props) {
             <span>{text.sir}</span>
           </div>
           <div>
-            <Profile size={160} />
+            <Profile
+              img={
+                (userInfo &&
+                  'https://d2ffbnf2hpheay.cloudfront.net/' +
+                    userInfo.photo_url) ||
+                '/img/profile.png'
+              }
+              size={160}
+            />
           </div>
           <div className={'light'}>{'비밀번호 변경'}</div>
           <div className={'light'}>{'회원 탈퇴'}</div>

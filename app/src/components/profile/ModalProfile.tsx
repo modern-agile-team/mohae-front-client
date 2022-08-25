@@ -13,8 +13,12 @@ import {
   get_user_helpme,
   get_user_specs,
   get_user_tohelp,
+  setInitialState as setInitialStateSpecData,
 } from '../../redux/spec/reducer';
-import { get_user_info, setInitialState } from '../../redux/mypage/reducer';
+import {
+  get_user_info,
+  setInitialState as setInitialStateMypageProfile,
+} from '../../redux/mypage/reducer';
 import ReportModal from '../../components/modal/ReportModal';
 
 interface Props {
@@ -134,7 +138,8 @@ export default function ModalProfile(props: Props) {
       .then(res => dispatch(get_user_info(res.data.response)));
 
     return () => {
-      dispatch(setInitialState());
+      dispatch(setInitialStateMypageProfile());
+      dispatch(setInitialStateSpecData());
     };
   }, []);
 

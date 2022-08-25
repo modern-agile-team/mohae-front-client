@@ -80,7 +80,7 @@ function Popup({ text1, text2, visible, overlay, alarm, children }: Props) {
   `;
 
   return (
-    <div>
+    <form onSubmit={() => overlay && overlay()}>
       <Box size={size} className={box}>
         <div className={cx(text)}>
           {text1}
@@ -89,11 +89,8 @@ function Popup({ text1, text2, visible, overlay, alarm, children }: Props) {
         </div>
         <div className={cx(btnWrapper)}>{children}</div>
       </Box>
-      <div
-        className={cx(overlayStyle)}
-        onClick={() => overlay && overlay()}
-      ></div>
-    </div>
+      <div className={cx(overlayStyle)}></div>
+    </form>
   );
 }
 

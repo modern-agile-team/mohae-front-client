@@ -4,7 +4,7 @@ import { css, cx } from '@emotion/css';
 import { color, radius, font, shadow } from '../../styles';
 import { ReactElement } from 'react';
 import Img from '../img/Img';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 
 interface Props {
   [key: string]: any;
@@ -20,6 +20,7 @@ export default function Category({
   onClick,
   resetPageInfo,
 }: Props): ReactElement {
+  const { no } = useParams();
   const style: { [key: string]: any } = {
     circle: css`
       ${radius[6]}
@@ -113,7 +114,7 @@ export default function Category({
     <Link
       to={`/boards/${id}`}
       className={cx(style[shape])}
-      onClick={resetPageInfo}
+      onClick={String(id) !== no ? resetPageInfo : undefined}
     >
       {!(shape === 'row') && (
         <>
@@ -129,7 +130,6 @@ export default function Category({
     <Link
       to={`/${name}`}
       id={id}
-      // name={name}
       onClick={onClick}
       className={cx(style[shape])}
     >

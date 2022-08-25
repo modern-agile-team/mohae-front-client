@@ -129,9 +129,10 @@ function Presenter({
               ? '마감 되었습니다.'
               : '마감 취소 되었습니다.'
           }
+          overlay={() => btnClick.isdeadLine}
         >
           <div className={cx(popupBtn)}>
-            <Btn white onClick={btnClick.isdeadLine}>
+            <Btn main onClick={btnClick.isdeadLine}>
               닫기
             </Btn>
           </div>

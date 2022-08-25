@@ -26,6 +26,9 @@ function Search(props: Props) {
     { no: number; name: string; ranking: number }[]
   >([]);
   const navigate = useNavigate();
+  const getParams = (query: string): any => {
+    return searchParams.get(query);
+  };
 
   useEffect(() => {
     axios
@@ -106,14 +109,23 @@ function Search(props: Props) {
     return value ? value : null;
   };
 
+  const titleQuery = (historyValue?: string) => {
+    if (historyValue) {
+      return historyValue;
+    } else if (value) {
+      return value;
+    } else {
+      return decodeURIComponent(getParams('title'));
+    }
+  };
   const onSubmit = (
     e: React.FormEvent<HTMLFormElement>,
     str: string,
     historyValue?: string,
   ) => {
-    const query = `?categoryNo=${no}&title=${
-      historyValue ? historyValue : value ? value : null
-    }${sortQuery()}&target=${drawObjKey(
+    const query = `?categoryNo=${no}&title=${titleQuery(
+      historyValue,
+    )}${sortQuery()}&target=${drawObjKey(
       objDataProcessing().check.target,
     )}&date=${drawObjKey(objDataProcessing().check.date)}&free=${drawObjKey(
       objDataProcessing().check.free,
@@ -147,13 +159,13 @@ function Search(props: Props) {
       resetPageInfo && resetPageInfo();
     }
     if (main) {
-      navigate('boards/1' + query);
+      navigate('boards/1/page/1' + query);
     }
   };
 
   const hotKeyClick = (e: React.MouseEvent, no: number) => {
     e.preventDefault();
-    navigate(`/boards/${no}`);
+    navigate(`/boards/${no}/page/1`);
   };
 
   const deleteAll = () => {

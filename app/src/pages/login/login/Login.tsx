@@ -13,7 +13,7 @@ import axios from 'axios';
 import { open_login } from '../../../redux/modal/reducer';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../redux/root';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { ENDPOINT } from '../../../utils/ENDPOINT';
 import { loginCheck } from '../../../utils/loginCheck';
 
@@ -43,6 +43,7 @@ export default function Register({ text, setFindPasswordView }: Props) {
   const isOpenLogin = useSelector((state: RootState) => state.modal.openLogin);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleId = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue({
@@ -80,7 +81,7 @@ export default function Register({ text, setFindPasswordView }: Props) {
             res.data.response.refreshToken,
           );
           loginCheck();
-          navigate('/');
+          window.location.replace(location.pathname);
 
           dispatch(open_login(!isOpenLogin));
         } else {

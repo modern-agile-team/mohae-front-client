@@ -59,6 +59,7 @@ export const mypage = createSlice({
     },
     setInitialState: state => {
       state.user.profile = null;
+      state.user.boards = {};
     },
   },
   extraReducers: builder => {

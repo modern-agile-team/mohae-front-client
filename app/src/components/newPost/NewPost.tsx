@@ -262,7 +262,7 @@ export default function NewPost({ page, board }: Props) {
       onClick={openModal}
     >
       <div className={'img'}>
-        {board ? (
+        {board.photoUrl !== null ? (
           <Img
             src={'https://d2ffbnf2hpheay.cloudfront.net/' + `${board.photoUrl}`}
           />

@@ -1,9 +1,7 @@
 import React, { useEffect } from 'react';
 import { css, cx } from '@emotion/css';
 import { Btn, Img } from '../../components';
-import axios from 'axios';
-import { Props } from './Container';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   minusLikeCount,
@@ -22,6 +20,7 @@ interface BtnsProps {
 function Btns(props: BtnsProps) {
   const { close } = props;
   const { no } = useParams();
+  const location = useLocation();
   const dispatch = useDispatch();
   const { isLike, likeCount } = useSelector(
     (state: RootState) => state.post.data.response.board,
@@ -56,7 +55,6 @@ function Btns(props: BtnsProps) {
       ? dispatch(plusLikeCount(likeCount + 1))
       : dispatch(minusLikeCount(likeCount - 1));
   };
-
   useEffect(() => {
     if (token !== null) {
       const debounceAxios = setTimeout(() => {
@@ -65,7 +63,13 @@ function Btns(props: BtnsProps) {
           .then(res => {
             handleLikeCount();
           })
-          .catch(err => err);
+          .catch(err => {
+            if (err.response.status === 410) {
+              sessionStorage.removeItem('access_token');
+              sessionStorage.removeItem('refresh_token');
+              window.location.replace(location.pathname);
+            }
+          });
       }, 300);
       return () => clearTimeout(debounceAxios);
     }

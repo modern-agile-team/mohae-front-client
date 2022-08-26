@@ -9,7 +9,6 @@ import { useNavigate } from 'react-router-dom';
 import QuestionModal from '../../components/modal/QuestionModal';
 import getToken from '../../utils/getToken';
 import { color } from '../../styles';
-import { loginCheck } from '../../utils/loginCheck';
 
 const Inquire = () => {
   const title = useInput(45);
@@ -127,7 +126,6 @@ const Inquire = () => {
             제출
           </SubmitButton>
           <QuestionModal visible={modal} close={() => setModal(false)} />
-          <button onClick={() => loginCheck()}>d</button>
         </Wrapper>
       )}
     </>

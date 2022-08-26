@@ -16,14 +16,18 @@ import {
 } from '../../../components';
 import { radius, font, color, shadow } from '../../../styles';
 import { css, cx } from '@emotion/css';
+import styled from '@emotion/styled';
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../redux/root';
 import { update_regist_info } from '../../../redux/user/reducer';
+import CheckWrapper from '../../../components/CheckBox/CheckWrapper';
+
 interface Object {
   [key: string]: any;
 }
 
+/*
 export default function Agreement({ next }: Object) {
   const text: Object = {
     agree: '약관 동의',
@@ -97,16 +101,41 @@ export default function Agreement({ next }: Object) {
         onClick={clickNext}
       >
         <Btn main>{text.next}</Btn>
-        {/* <Btn white>다음</Btn> */}
       </div>
     </div>
   );
 }
 
 const style = css`
-  /* width: 480px; */
 
   > .terms {
     margin-bottom: 149px;
   }
 `;
+
+*/
+
+const Agreement = () => {
+  return (
+    <Wrapper>
+      <h1>약관 동의</h1>
+      <CheckWrapper />
+    </Wrapper>
+  );
+};
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  h1 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #4f4e5c;
+    margin-top: 20px;
+  }
+`;
+
+
+
+export default Agreement;

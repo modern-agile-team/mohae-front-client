@@ -27,7 +27,7 @@ export default function Presenter({
   const mainContents = [
     <Login text={text} />,
     <Main text={text} next={onClick.enterRegister} />,
-    <Agreement text={text} next={onClick.agreement} />,
+    <Agreement />,
     <PersonalInfo text={text} part={part} next={onClick.finishedInputInfo} />,
     <SelectInfo next={onClick.finishedAll} />,
   ];

@@ -187,7 +187,13 @@ function Presenter() {
         return <EmptySpinner loading small />;
       } else if (!loading) {
         if (!reduxData.length && searchParams.get('title')) {
-          return <EmptySpinner searchNone text={searchParams.get('title')} />;
+          return (
+            <EmptySpinner
+              searchNone
+              subText={categories[Number(no) - 1].name + ' 게시판에서'}
+              text={searchParams.get('title')}
+            />
+          );
         } else if (!reduxData.length) {
           return (
             <EmptySpinner

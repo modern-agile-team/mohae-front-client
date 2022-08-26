@@ -1,10 +1,11 @@
-import React, { Dispatch, SetStateAction, useEffect } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { css, cx } from '@emotion/css';
 import { Props } from '../button';
 import { color, font, radius } from '../../styles';
 import Img from '../img/Img';
 import Input from './Input';
 import Filter from '../filter/Container';
+import { useLocation, useSearchParams } from 'react-router-dom';
 
 interface InputProps extends Props {
   value: string;
@@ -20,6 +21,9 @@ interface InputProps extends Props {
   hotKeyClick: (e: React.MouseEvent, no: number) => void;
   setLocalValue: Dispatch<React.SetStateAction<string[]>>;
   onSubmit: (e: any, str: string, searchValue?: string) => void;
+  onBlur: () => void;
+  onFocus: () => void;
+  showDataList: boolean;
 }
 
 function Presenter(props: InputProps) {
@@ -36,8 +40,34 @@ function Presenter(props: InputProps) {
     setValue,
     setLocalValue,
     onSubmit,
+    onBlur,
+    onFocus,
+    showDataList,
   } = props;
   const list: string[] = localValue;
+  const location = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchQuery, setSearchQuery] = useState<string | null>(
+    searchParams.get('title'),
+  );
+
+  const handleSearchHistory = (e: any, searchValue: string) => {
+    setSearchQuery(prev => {
+      if (prev === searchValue) {
+        return prev;
+      } else {
+        onSubmit(e, 'fliter', searchValue);
+        onBlur();
+        return searchValue;
+      }
+    });
+  };
+
+  const handleHotKeyClick = (e: React.MouseEvent, categoryNo: number) => {
+    hotKeyClick(e, categoryNo);
+    onBlur();
+    setSearchQuery(null);
+  };
 
   useEffect(() => {
     localValue.slice(0, 5);
@@ -52,13 +82,10 @@ function Presenter(props: InputProps) {
         border-radius: 0px 0px 6px 6px;
         display: flex;
         padding: 12px 0px 32px 24px;
-        visibility: hidden;
+        visibility: ${showDataList ? 'visible' : 'hidden'};
         :hover {
           visibility: visible;
         }
-      }
-      &:focus-within #dataListWrap {
-        visibility: ${showFilter ? 'hidden' : 'visible'};
       }
       &:focus-within {
         border-radius: 6px 6px 0px;
@@ -185,9 +212,7 @@ function Presenter(props: InputProps) {
             <div
               className={cx(searchStyle, hover)}
               key={i}
-              onClick={e => {
-                onSubmit(e, 'fliter', el);
-              }}
+              onClick={e => handleSearchHistory(e, el)}
             >
               <div id="list">{el}</div>
               <div
@@ -244,7 +269,7 @@ function Presenter(props: InputProps) {
       <div
         key={el.no}
         className={cx(hotKeyStyle)}
-        onClick={e => hotKeyClick(e, el.no)}
+        onClick={e => handleHotKeyClick(e, el.no)}
       >
         <div id="no">{el.ranking}</div>
         <div id="categoryName">{el.name}</div>
@@ -262,6 +287,8 @@ function Presenter(props: InputProps) {
         setShowFilter={setShowFilter}
         setLocalValue={setLocalValue}
         onSubmit={onSubmit}
+        onBlur={onBlur}
+        onFocus={onFocus}
       />
     ) : (
       <Input
@@ -272,6 +299,8 @@ function Presenter(props: InputProps) {
         setShowFilter={setShowFilter}
         setLocalValue={setLocalValue}
         onSubmit={onSubmit}
+        onBlur={onBlur}
+        onFocus={onFocus}
       />
     );
 

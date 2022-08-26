@@ -8,11 +8,11 @@ import Img from '../img/Img';
 import { color, font } from '../../styles';
 import { useParams } from 'react-router-dom';
 import { ENDPOINT } from '../../utils/ENDPOINT';
-import decodingToken from '../../utils/decodingToken';
-import axios from 'axios';
-import { board } from '../../redux/board/reducer';
 import setInterceptors from '../../apis/common/setInterceptors';
 import { customAxios } from '../../apis/instance';
+import { Popup } from '../../components';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/root';
 
 interface Props {
   visible: boolean;
@@ -26,7 +26,7 @@ interface CheckList {
   text: string;
 }
 
-function ReportModal({ visible, close }: Props) {
+function ReportModal({ visible, close, board, user }: Props) {
   const [modalState, setModalState] = useState(false);
   const [checkList, setCheckList] = useState<CheckList>({
     list: [
@@ -40,6 +40,8 @@ function ReportModal({ visible, close }: Props) {
     ],
     text: '',
   });
+  const [success, setSuccess] = useState(false);
+  const userInfo = useSelector((state: RootState) => state.user.user);
   const { no } = useParams();
 
   const report = (): { checks: any; description: string } => {
@@ -73,16 +75,18 @@ function ReportModal({ visible, close }: Props) {
     });
   };
 
-  const ReportOnSubmit = (
-    report: {
-      checks: number[];
-      description: string;
-    },
-    cleanUp: () => void,
-  ) => {
+  const successPopupClose = () => {
+    setSuccess(prev => !prev);
+    close();
+  };
+
+  const ReportOnSubmit = (report: {
+    checks: number[];
+    description: string;
+  }) => {
     const data = {
       head: board ? 'board' : 'user',
-      headNo: board ? Number(no) : decodingToken()?.userNo,
+      headNo: board ? Number(no) : userInfo?.userNo,
       checks: report.checks,
       description: report.description,
     };
@@ -93,8 +97,9 @@ function ReportModal({ visible, close }: Props) {
       setInterceptors(customAxios)
         .post(`${ENDPOINT}reports`, data)
         .then(res => {
-          close();
           cleanUp();
+          setSuccess(true);
+          console.log('res :>> ', res);
         })
         .catch(err => console.log('err', err));
     } else alert('항목을 세 개 이하 체크 후 사유를 작성해주세요.');
@@ -175,6 +180,11 @@ function ReportModal({ visible, close }: Props) {
     ${modalState || animation.dissappearOverlay};
   `;
 
+  const btnWrap = css`
+    width: 74px;
+    height: 43px;
+  `;
+
   return (
     <>
       <Box light size={[384, 480]} className={box}>
@@ -194,7 +204,7 @@ function ReportModal({ visible, close }: Props) {
         <Report checkList={checkList} setCheckList={setCheckList} />
         <div className="wrap">
           <div className={'send-btn'}>
-            <Btn main able onClick={() => ReportOnSubmit(report(), cleanUp)}>
+            <Btn main onClick={() => ReportOnSubmit(report())}>
               {'전송'}
             </Btn>
           </div>
@@ -207,6 +217,19 @@ function ReportModal({ visible, close }: Props) {
         }}
         className={cx(overlay)}
       ></div>
+      {success && (
+        <Popup
+          visible={success}
+          text1={'신고가 정상적으로 접수 되었습니다.'}
+          overlay={successPopupClose}
+        >
+          <div className={cx(btnWrap)}>
+            <Btn main onClick={() => successPopupClose()}>
+              닫기
+            </Btn>
+          </div>
+        </Popup>
+      )}
     </>
   );
 }

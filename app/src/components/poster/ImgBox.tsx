@@ -29,7 +29,7 @@ function ImgBox({ img, state, shape }: Props) {
 
   const posterImg =
     img && img !== null
-      ? `https://d2ffbnf2hpheay.cloudfront.net/${img}`
+      ? `https://d2ffbnf2hpheay.cloudfront.net/${img}?w=264&h152`
       : '/img/logo.png';
 
   const box = css`

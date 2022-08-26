@@ -15,14 +15,14 @@ interface Props {
 
 const Replier = (props: Props) => {
   const { handleModalView, commentIndex, replyIndex } = props;
-  const userInfo = decodingToken();
+  const userInfo = useSelector((state: RootState) => state.user.user);
   const [detailsView, setDetailsView] = useState(false);
   const dispatch = useDispatch();
   const commentList = useSelector((state: RootState) => state.comment.data);
   const { replyNo, replyWriterNo } = useSelector(
     (state: RootState) => state.comment.data[commentIndex].replies[replyIndex],
   );
-  const { commentNo, commenterNickname } = useSelector(
+  const { commentNo } = useSelector(
     (state: RootState) => state.comment.data[commentIndex],
   );
 
@@ -62,7 +62,7 @@ const Replier = (props: Props) => {
     <>
       <Wrapper>
         <div className="left">
-          <h3>{commenterNickname}</h3>
+          <h3>{userInfo?.nickname}</h3>
           {createReportBtn()}
         </div>
         {replyWriterNo === userInfo?.userNo && (

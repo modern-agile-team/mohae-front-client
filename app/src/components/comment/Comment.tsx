@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useLocation, useParams } from 'react-router-dom';
 import { getCommentList } from '../../apis/comment';
 import { setCommentArr } from '../../redux/comment/reducer';
 import Box from '../box/Box';
@@ -36,7 +36,12 @@ const Comment = () => {
     popup: false,
   });
   const { no } = useParams();
+  const location = useLocation();
   const dispatch = useDispatch();
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  useLayoutEffect(() => {
+    if (buttonRef.current !== null) buttonRef.current.focus();
+  });
 
   const handleModalView = (str: string) => {
     setView(prev => {
@@ -45,8 +50,16 @@ const Comment = () => {
   };
 
   const getComments = async () => {
-    const response = await getCommentList(Number(no));
-    dispatch(setCommentArr(response.data.response));
+    try {
+      const response = await getCommentList(Number(no));
+      dispatch(setCommentArr(response.data.response));
+    } catch (err: any) {
+      if (err.response.status === 410) {
+        sessionStorage.removeItem('access_token');
+        sessionStorage.removeItem('refresh_token');
+        window.location.replace(location.pathname);
+      }
+    }
   };
 
   useEffect(() => {
@@ -69,14 +82,21 @@ const Comment = () => {
       />
       {view.popup && (
         <>
-          <Popup visible={view.popup} text1={'댓글이 작성 되었습니다.'}>
+          <Popup
+            visible={view.popup}
+            text1={'댓글이 작성 되었습니다.'}
+            overlay={() => handleModalView('popup')}
+          >
             <BtnImgWrapper>
-              <Btn main onClick={() => handleModalView('popup')}>
+              <Btn
+                ref={buttonRef}
+                main
+                onClick={() => handleModalView('popup')}
+              >
                 닫기
               </Btn>
             </BtnImgWrapper>
           </Popup>
-          <Overlay onClick={() => handleModalView('popup')} />
         </>
       )}
     </>

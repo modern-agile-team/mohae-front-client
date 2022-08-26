@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import Presenter from './Presenter';
 import { decodeToken } from 'react-jwt';
 import { useDispatch, useSelector } from 'react-redux';
@@ -53,6 +53,8 @@ export interface Board {
   decimalDay: number | null;
   description?: string;
   hit: number;
+  createdAt: string;
+  endDate: string | null;
   deadline: number;
   isDeadline: number;
   isLike?: boolean | null | number;
@@ -85,6 +87,7 @@ function Post() {
   const loading = useSelector((state: RootState) => state.post.loading);
   const [redirectLogin, setRedirectLogin] = useState(false);
   const [runOutRefreshToken, setRunOutRefreshToken] = useState(false);
+  const location = useLocation();
 
   const btnClick = {
     redirectBoard: () => window.location.replace('/boards/1'),
@@ -113,10 +116,15 @@ function Post() {
               token: token,
             }),
           );
+          console.log(res.data);
         });
-    } catch (err) {
-      alert('다시 로그인을 해주세요.');
-      setRunOutRefreshToken(true);
+    } catch (err: any) {
+      if (err.response.status === 410 || err.response.status === 401) {
+        sessionStorage.removeItem('access_token');
+        sessionStorage.removeItem('refresh_token');
+        window.location.replace(location.pathname);
+        setRunOutRefreshToken(true);
+      }
     }
   };
 
@@ -131,13 +139,18 @@ function Post() {
   const requestHandleDeadline = (data: Board) => {
     const URL = !data.isDeadline ? `boards/close/${no}` : `boards/cancel/${no}`;
 
-    setInterceptors(customAxios)
-      .patch(URL, null, config)
-      .then(res => {
-        setView({ ...view, isDeadline: true });
-        dispatch(setIsDeadline());
-      })
-      .catch(err => console.log('err', err));
+    const date = new Date().toISOString();
+    if (data.endDate && data.endDate < date) {
+      return;
+    } else {
+      setInterceptors(customAxios)
+        .patch(URL, null, config)
+        .then(res => {
+          setView({ ...view, isDeadline: true });
+          dispatch(setIsDeadline());
+        })
+        .catch(err => console.log('err', err));
+    }
   };
 
   const returnComp = () => {
@@ -154,7 +167,11 @@ function Post() {
     ) : (
       <>
         <EmptySpinner loading />
-        <Popup visible={redirectLogin} text1={'로그인 후 이용 부탁드립니다.'}>
+        <Popup
+          visible={redirectLogin}
+          text1={'로그인 후 이용 부탁드립니다.'}
+          overlay={() => btnClick.redirectBoard()}
+        >
           <div className={cx(popupBtn)}>
             <Btn white onClick={btnClick.redirectBoard}>
               닫기

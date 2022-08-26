@@ -29,7 +29,7 @@ export interface PostData {
   target: number;
   areaNo: number;
   areaName: string;
-  userNickname: string;
+  nickname: string;
 }
 
 export interface Data {
@@ -54,8 +54,12 @@ function Presenter() {
   const { no } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
   const location = useLocation();
+  const [urlInfo, setUrlInfo] = useState({
+    query: location.search,
+    no: no,
+  });
 
-  const getPrams = (query: string): any => {
+  const getParams = (query: string): any => {
     return searchParams.get(query);
   };
   const [pageInfo, setPageInfo] = useState<PageInfo>({
@@ -94,15 +98,15 @@ function Presenter() {
 
   const filteringQuery = () => {
     const queryBase = `&categoryNo=${no}&title=${decodeURIComponent(
-      getPrams('title'),
-    )}&target=${getPrams('target')}&date=${getPrams('date')}&free=${getPrams(
+      getParams('title'),
+    )}&target=${getParams('target')}&date=${getParams('date')}&free=${getParams(
       'free',
-    )}&min=${getPrams('min')}&max=${getPrams('max')}&areaNo=${
-      getPrams('areaNo') !== '0' ? getPrams('areaNo') : null
+    )}&min=${getParams('min')}&max=${getParams('max')}&areaNo=${
+      getParams('areaNo') !== '0' ? getParams('areaNo') : null
     }`;
-    return getPrams('popular') !== null
-      ? queryBase + `&popular=${getPrams('popular')}`
-      : queryBase + `&sort=${getPrams('sort')}`;
+    return getParams('popular') !== null
+      ? queryBase + `&popular=${getParams('popular')}`
+      : queryBase + `&sort=${getParams('sort')}`;
   };
 
   const getData = () => {
@@ -141,17 +145,24 @@ function Presenter() {
       category: { page: 1, totalPage: 1 },
       filtering: { page: 1, totalPage: 1 },
     });
-    if (loading) getData();
   };
 
   useEffect(() => {
-    if (!loading) getData();
-  }, [pageInfo.category.page, pageInfo.filtering.page]);
+    return () => {
+      dispatch(setResArrEmpty());
+    };
+  }, []);
 
   useEffect(() => {
-    dispatch(setResArrEmpty());
-    getData();
-  }, [location.search, no]);
+    if (urlInfo.no === no && urlInfo.query === location.search) {
+      setPageInfo(prev => prev);
+      getData();
+    } else {
+      dispatch(setResArrEmpty());
+      getData();
+      setUrlInfo({ query: location.search, no: no });
+    }
+  }, [location.search, no, pageInfo.category.page, pageInfo.filtering.page]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(handleIntersect, {

@@ -1,22 +1,41 @@
 /** @format */
 
 import { Img, Box, Btn } from '../../../components';
-import { useState } from 'react';
+import React, {
+  ButtonHTMLAttributes,
+  Dispatch,
+  SetStateAction,
+  useState,
+} from 'react';
 
 import axios from 'axios';
 
 import { open_login } from '../../../redux/modal/reducer';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../redux/root';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { ENDPOINT } from '../../../utils/ENDPOINT';
 import { loginCheck } from '../../../utils/loginCheck';
 
 interface Props {
-  [key: string]: any;
+  text: {
+    login: string;
+    register: string;
+    placeholder: {
+      id: string;
+      pw: string;
+    };
+    stayLogin: string;
+    forgotPw: string;
+    description: string;
+    mohae: string;
+    subDesc: string;
+    signUp: string;
+  };
+  setFindPasswordView: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function Register({ text }: Props) {
+export default function Register({ text, setFindPasswordView }: Props) {
   const [inputValue, setInputValue] = useState({
     id: '',
     password: '',
@@ -24,6 +43,7 @@ export default function Register({ text }: Props) {
   const isOpenLogin = useSelector((state: RootState) => state.modal.openLogin);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleId = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue({
@@ -41,6 +61,7 @@ export default function Register({ text }: Props) {
 
   const requestLogin = (e: any) => {
     e.preventDefault();
+
     axios
       .post(
         `${ENDPOINT}auth/signin`,
@@ -60,7 +81,7 @@ export default function Register({ text }: Props) {
             res.data.response.refreshToken,
           );
           loginCheck();
-          navigate('/');
+          window.location.replace(location.pathname);
 
           dispatch(open_login(!isOpenLogin));
         } else {
@@ -70,6 +91,11 @@ export default function Register({ text }: Props) {
       .catch(err => {
         alert(err.response.data.error.message);
       });
+  };
+
+  const findPassword = (e: React.FormEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setFindPasswordView(true);
   };
 
   return (
@@ -100,12 +126,14 @@ export default function Register({ text }: Props) {
           <input id="keep-login" type="checkbox" />
           <label htmlFor="keep-login">{text.stayLogin}</label>
         </div>
-        <button>{text.forgotPw}</button>
+        <button id="find-password" type="button" onClick={e => findPassword(e)}>
+          {text.forgotPw}
+        </button>
       </div>
       <Box size={[480, 52]}>
-        <Btn main onClick={requestLogin}>
+        <button id="submit-btn" type="submit" onClick={requestLogin}>
           {text.login}
-        </Btn>
+        </button>
       </Box>
     </form>
   );

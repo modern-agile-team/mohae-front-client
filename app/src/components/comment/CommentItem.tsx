@@ -1,11 +1,9 @@
 import styled from '@emotion/styled';
-import Img from '../img/Img';
 import Commenter from './Commenter';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/root';
 import Replies from '../replies/Replies';
 import Profile from '../profile/Profile';
-import { css, cx } from '@emotion/css';
 
 interface DefaultProps {
   handleModalView: () => void;
@@ -18,7 +16,9 @@ const CommentItem = (props: DefaultProps) => {
   const { commentContent, commenterPhotoUrl, commentCreatedAt, commenterNo } =
     useSelector((state: RootState) => state.comment.data[commentIndex]);
   const profileImg =
-    'https://d2ffbnf2hpheay.cloudfront.net/' + commenterPhotoUrl;
+    commenterPhotoUrl !== null
+      ? 'https://d2ffbnf2hpheay.cloudfront.net/' + commenterPhotoUrl
+      : commenterPhotoUrl;
 
   return (
     <Wrapper>

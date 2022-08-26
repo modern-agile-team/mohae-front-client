@@ -6,13 +6,13 @@ import { color, font } from '../../../styles';
 import Slide from './Slide';
 import { Img, Box, Profile, FocusBar, Category } from '../../../components';
 import { useNavigate } from 'react-router-dom';
-import { decodeToken } from 'react-jwt';
-import getToken from '../../../utils/getToken';
 import ModifyProfile from '../../modifyProfile';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { remove_user } from '../../../redux/user/reducer';
 import { AppDispatch } from '../../../redux/root';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../redux/root';
 
 interface Props {
   [key: string]: any;
@@ -25,9 +25,8 @@ export default function MySelf({
   actions,
   checkSelf,
 }: Props) {
-  const TOKEN = getToken();
   const navigate = useNavigate();
-  const tokenInfo: any = decodeToken(TOKEN);
+  const tokenInfo = useSelector((state: RootState) => state.user.user);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
 
@@ -71,7 +70,13 @@ export default function MySelf({
           <div className={'profile'}>
             <Profile
               size={146}
-              img={(tokenInfo && tokenInfo.photoUrl) || '/img/profile.png'}
+              img={
+                (tokenInfo.photo_url !== null &&
+                  'https://d2ffbnf2hpheay.cloudfront.net/' +
+                    tokenInfo.photo_url) ||
+                '/img/profile.png'
+              }
+              noneClick
             />
           </div>
           <div className={'register'}>

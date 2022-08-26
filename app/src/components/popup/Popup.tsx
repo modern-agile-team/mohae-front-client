@@ -1,11 +1,16 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import { css, cx } from '@emotion/css';
 import { font } from '../../styles';
 import { Box } from '../../components';
 import { animation } from '../modal/modalAnimation';
 
 interface Props {
-  [key: string]: any;
+  text1?: string;
+  text2?: string;
+  visible: boolean;
+  overlay?: () => void;
+  alarm?: any;
+  children?: React.ReactNode;
 }
 
 function Popup({ text1, text2, visible, overlay, alarm, children }: Props) {
@@ -75,7 +80,7 @@ function Popup({ text1, text2, visible, overlay, alarm, children }: Props) {
   `;
 
   return (
-    <div>
+    <form onSubmit={() => overlay && overlay()}>
       <Box size={size} className={box}>
         <div className={cx(text)}>
           {text1}
@@ -85,7 +90,7 @@ function Popup({ text1, text2, visible, overlay, alarm, children }: Props) {
         <div className={cx(btnWrapper)}>{children}</div>
       </Box>
       <div className={cx(overlayStyle)}></div>
-    </div>
+    </form>
   );
 }
 

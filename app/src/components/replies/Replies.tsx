@@ -33,8 +33,8 @@ function Replies(props: Props) {
             <Img
               src={
                 repliesView
-                  ? '/img/arrow-up-main.png'
-                  : '/img/arrow-down-main.png'
+                  ? '/img/arrow-down-main.png'
+                  : '/img/arrow-up-main.png'
               }
             />
           </div>

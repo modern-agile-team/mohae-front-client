@@ -55,8 +55,16 @@ export const spec = createSlice({
     [ADD_IMAGES]: (state, action: PayloadAction<any>) => {
       state.addImages = action.payload;
     },
+    setInitialState: state => {
+      state.profileSpecs = [];
+      state.profileToHelp = [];
+      state.profileHelpMe = [];
+      state.specInfo = null;
+      state.specNo = null;
+      state.addImages = new FormData();
+    },
   },
-  extraReducers: (builder) => {
+  extraReducers: builder => {
     // builder
     //   .addCase(getHotAll.pending, (state, { payload }) => {
     //     state.isLoading = true;
@@ -76,6 +84,7 @@ export const {
   get_spec_info,
   get_spec_no,
   add_images,
+  setInitialState,
 } = spec.actions;
 export default spec.reducer;
 // action, reducer, store

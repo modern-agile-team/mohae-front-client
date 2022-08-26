@@ -137,11 +137,8 @@ function Post() {
   }, []);
 
   const requestHandleDeadline = (data: Board) => {
-    const URL = !Boolean(data.isDeadline)
-      ? `boards/close/${no}`
-      : `boards/cancel/${no}`;
+    const URL = !data.isDeadline ? `boards/close/${no}` : `boards/cancel/${no}`;
 
-    // console.log(!Boolean(data.isDeadline) ? '마감' : '마감 취소');
     const date = new Date().toISOString();
     if (data.endDate && data.endDate < date) {
       return;

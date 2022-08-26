@@ -82,9 +82,9 @@ function Presenter({
       return '작성 시에 설정하신 기간이 지난 후에는 불가합니다.';
     }
     if (reduxData.response.board.isDeadline) {
-      return '마감 취소 되었습니다.';
-    } else {
       return '마감 되었습니다.';
+    } else {
+      return '마감 취소 되었습니다.';
     }
   };
 

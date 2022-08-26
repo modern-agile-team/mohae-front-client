@@ -1,12 +1,16 @@
 /** @format */
 
 import { css, cx } from '@emotion/css';
+import styled from '@emotion/styled';
 import { color, font } from '../../../styles';
 import Slide from './Slide';
 import { Img, Box, Profile, FocusBar, Category } from '../../../components';
 import { useNavigate } from 'react-router-dom';
 import ModifyProfile from '../../modifyProfile';
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { remove_user } from '../../../redux/user/reducer';
+import { AppDispatch } from '../../../redux/root';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/root';
 
@@ -24,6 +28,7 @@ export default function MySelf({
   const navigate = useNavigate();
   const tokenInfo = useSelector((state: RootState) => state.user.user);
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const dispatch = useDispatch<AppDispatch>();
 
   const interested =
     userInfo && userInfo.categories ? (
@@ -37,7 +42,9 @@ export default function MySelf({
         </Box>
       ))
     ) : (
-      <div>{'NULL'}</div>
+      <Intersted>
+        <span>등록된 관심사가 없습니다</span>
+      </Intersted>
     );
 
   return (
@@ -81,6 +88,7 @@ export default function MySelf({
             onClick={() => {
               sessionStorage.removeItem('access_token');
               sessionStorage.removeItem('refresh_token');
+              dispatch(remove_user());
               navigate('/');
             }}
           >
@@ -290,6 +298,19 @@ const style = css`
         }
       }
     }
+  }
+`;
+
+const Intersted = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  span {
+    font-size: 14px;
+    font-weight: 400;
+    color: #84838d;
+    margin-top: 30px;
   }
 `;
 

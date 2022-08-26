@@ -46,10 +46,10 @@ export default function LoginModal(): ReactElement {
     agreement: () => {
       setPart(3);
     },
-    finishedInputInfo: (e: React.MouseEvent) => {
+    finishedInputInfo: () => {
       setPart(4);
     },
-    finishedAll: (e: React.MouseEvent) => {
+    finishedAll: () => {
       setPart(0);
     },
   };

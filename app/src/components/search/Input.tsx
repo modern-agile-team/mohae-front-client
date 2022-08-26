@@ -3,7 +3,6 @@ import { css, cx } from '@emotion/css';
 import Img from '../img/Img';
 import { Props } from '../button';
 import { color, font, radius, shadow } from '../../styles';
-import { useSearchParams } from 'react-router-dom';
 
 interface InputProps extends Props {
   setShowFilter?: Dispatch<SetStateAction<boolean>>;
@@ -12,13 +11,22 @@ interface InputProps extends Props {
   setValue: Dispatch<SetStateAction<string>>;
   setLocalValue: Dispatch<React.SetStateAction<string[]>>;
   onSubmit: (e: any, str: string) => void;
+  onBlur: () => void;
+  onFocus: () => void;
 }
 
 function Input(props: InputProps) {
-  const { showFilter, setShowFilter, value, setValue, onSubmit, board, main } =
-    props;
-
-  const [searchParams, setSearchParams] = useSearchParams();
+  const {
+    showFilter,
+    setShowFilter,
+    value,
+    setValue,
+    onSubmit,
+    onBlur,
+    onFocus,
+    board,
+    main,
+  } = props;
 
   const commonStyle = css`
     ${shadow.normal}
@@ -130,6 +138,8 @@ function Input(props: InputProps) {
         id="inputWrap"
         className={cx(commonStyle)}
         onSubmit={e => onSubmit(e, 'search')}
+        onBlur={() => onBlur()}
+        onFocus={() => onFocus()}
       >
         <input
           type="text"

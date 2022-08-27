@@ -3,13 +3,14 @@
 import { Img, Btn, Text } from '../../../components';
 import { color, shadow } from '../../../styles';
 import { css, cx } from '@emotion/css';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../redux/root';
 import { update_regist_info } from '../../../redux/user/reducer';
 import axios from 'axios';
 import { ENDPOINT } from '../../../utils/ENDPOINT';
 import getToken from '../../../utils/getToken';
+import styled from '@emotion/styled';
 
 interface Object {
   [key: string]: any;
@@ -205,7 +206,10 @@ export default function PersonalInfo({ part, next }: Object) {
         },
       )
       .then(res => {
-        if (res.data.success) setIsValid(true);
+        if (res.data.success) {
+          setIsValid(true);
+          alert('사용가능한 닉네임입니다');
+        }
       })
       .catch(err => alert(err.response.data.error.message));
   };
@@ -213,29 +217,6 @@ export default function PersonalInfo({ part, next }: Object) {
   const clickNext = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-
-    // 조건 통과 안 하고 다음 누르고 싶으면 아래 if문 세개 주석 ㄱㄱ
-    if (
-      !inputValue.name.length ||
-      !inputValue.email.length ||
-      !inputValue.password.length ||
-      !inputValue.nickname.length
-    ) {
-      alert('모든 필수 항목을 작성해주세요.');
-      return;
-    }
-    if (inputValue.emailCompany === text.selectEmail) {
-      alert('메일 주소를 선택해주세요.');
-      return;
-    }
-    if (inputValue.password !== inputValue.checkPassword) {
-      alert('비밀번호가 일치하지 않습니다.');
-      return;
-    }
-    if (!isValid) {
-      alert('닉네임 중복체크를 해주세요');
-      return;
-    }
 
     const finalRegistInfo: Object = {
       ...registInfo,
@@ -248,6 +229,20 @@ export default function PersonalInfo({ part, next }: Object) {
     dispatch(update_regist_info(finalRegistInfo));
     next();
   };
+
+  const valid = useMemo(() => {
+    if (
+      !inputValue.name.length ||
+      !inputValue.email.length ||
+      !inputValue.password.length ||
+      !inputValue.nickname.length ||
+      inputValue.emailCompany === text.selectEmail ||
+      inputValue.password !== inputValue.checkPassword ||
+      !isValid
+    )
+      return false;
+    else return true;
+  }, [inputValue, isValid]);
 
   const selectCompany = text.companies.map((company: string, index: number) => (
     <button
@@ -338,10 +333,25 @@ export default function PersonalInfo({ part, next }: Object) {
         </li>
       </div>
       {part > 2 && (
-        <div className={'next-btn'} onClick={clickNext}>
-          <Btn white>{text.next}</Btn>
-        </div>
+        <Button onClick={e => clickNext(e)} disabled={!valid}>
+          다음
+        </Button>
       )}
     </div>
   );
 }
+
+const Button = styled.button`
+  width: 480px;
+  height: 52px;
+  border-radius: 6px;
+  background-color: #ff445e;
+  box-shadow: 0px 0px 8px 0px #84838d;
+  font-size: 14px;
+  font-weight: 400;
+  color: #ffffff;
+
+  &:disabled {
+    background-color: #e7e7e8;
+  }
+`;

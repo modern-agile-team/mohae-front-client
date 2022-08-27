@@ -29,7 +29,7 @@ export default function Presenter({
   const mainContents = [
     <Login text={text} setFindPasswordView={setFindPasswordView} />,
     <Main text={text} next={onClick.enterRegister} />,
-    <Agreement />,
+    <Agreement next={onClick.agreement} />,
     <PersonalInfo text={text} part={part} next={onClick.finishedInputInfo} />,
     <SelectInfo next={onClick.finishedAll} />,
   ];

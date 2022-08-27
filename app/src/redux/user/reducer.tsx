@@ -44,14 +44,11 @@ const initialState: InitialState = {
     password: '',
     name: '',
     nickname: '',
-    phone: '',
+    phone: null,
     manager: false,
     school: null,
     major: null,
-    categories: [
-      // 0,
-      // 0
-    ],
+    categories: [null],
     terms: [
       // true,
       // true,

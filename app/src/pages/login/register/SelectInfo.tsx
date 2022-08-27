@@ -7,7 +7,6 @@ import styled from '@emotion/styled';
 import { color, radius, font, shadow } from '../../../styles';
 import { Btn, Img } from '../../../components';
 import { AppDispatch, RootState } from '../../../redux/root';
-import { update_regist_extraInfo } from '../../../redux/user/reducer';
 import { ENDPOINT } from '../../../utils/ENDPOINT';
 import axios from 'axios';
 

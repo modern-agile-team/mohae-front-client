@@ -52,12 +52,6 @@ export default function Edit() {
     addImages.append('title', value.title && value.title);
     addImages.append('description', value.description && value.description);
     const iterator = addImages.entries();
-    console.log('data ', iterator.next());
-    console.log('data ', iterator.next());
-    console.log('data ', iterator.next());
-    // console.log('data ', iterator.next());
-    // console.log('data ', iterator.next());
-    // console.log('data ', iterator.next());
 
     setInterceptors(customAxios)
       .post(`${ENDPOINT}specs/regist`, addImages, {
@@ -117,7 +111,7 @@ export default function Edit() {
 
               <div className={'footer'}>
                 <div className={'number'}>
-                  <span>{'?'}</span>
+                  <span>{value.description.length}</span>
                   <span>{'/'}</span>
                   <span>{text.maxNum}</span>
                 </div>

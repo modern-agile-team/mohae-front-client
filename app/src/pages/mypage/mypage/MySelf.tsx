@@ -31,7 +31,7 @@ export default function MySelf({
   const dispatch = useDispatch<AppDispatch>();
 
   const interested =
-    userInfo && userInfo.categories ? (
+    userInfo && userInfo.categories.length ? (
       userInfo.categories.map((category: any, index: number) => (
         <Box key={index} size={[80, 80]}>
           <Category

@@ -1,6 +1,6 @@
 /** @format */
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { css, cx } from '@emotion/css';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from '@emotion/styled';
@@ -36,7 +36,11 @@ export default function SelectInfo({ part, next }: Object) {
   const [intersted, setIntersted] = useState<string[]>([]);
   const [phoneBehindNumber, setPhoneBehindNumber] = useState<string>('');
   const registInfo = useSelector((state: RootState) => state.user.registInfo);
-  const dispatch = useDispatch<AppDispatch>();
+  const valid = useMemo(() => {
+    if (info.phoneNumber && info.school && info.major && info.intersted.length)
+      return true;
+    else return false;
+  }, [info]);
 
   const toggleSelectBox = (e: React.MouseEvent<HTMLDivElement>) => {
     const target = e.currentTarget.id;
@@ -144,14 +148,35 @@ export default function SelectInfo({ part, next }: Object) {
   };
 
   const onSubmit = () => {
-    dispatch(
-      update_regist_extraInfo({
-        phoneNumber: info.phoneNumber + phoneBehindNumber,
-        school: info.school,
-        major: info.major,
-        categories: info.intersted,
-      }),
-    );
+    const body = {
+      ...registInfo,
+      phone: info.phoneNumber + phoneBehindNumber,
+      school: info.school,
+      major: info.major,
+      categories: info.intersted,
+    };
+
+    axios
+      .post(`${ENDPOINT}auth/signup`, body, {
+        headers: {
+          accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(res => {
+        if (res.data.statusCode >= 200 && res.data.statusCode <= 204) {
+          next();
+          // sessionStorage.setItem('userEmail', res.data.response.email)
+        } else {
+          alert('다시 가입 해주세요');
+        }
+      })
+      .catch(err => {
+        console.log('err :>> ', err);
+      });
+  };
+
+  const onIgnore = () => {
     axios
       .post(`${ENDPOINT}auth/signup`, registInfo, {
         headers: {
@@ -162,7 +187,6 @@ export default function SelectInfo({ part, next }: Object) {
       .then(res => {
         if (res.data.statusCode >= 200 && res.data.statusCode <= 204) {
           next();
-          // sessionStorage.setItem('userEmail', res.data.response.email)
         } else {
           alert('다시 가입 해주세요');
         }
@@ -489,13 +513,13 @@ export default function SelectInfo({ part, next }: Object) {
         </div>
       </div>
       <div className={'btn ignore'}>
-        <Btn white>{text.ignore}</Btn>
-      </div>
-      <div className={'btn'}>
-        <Btn white onClick={() => onSubmit()}>
-          {text.finish}
+        <Btn onClick={() => onIgnore()} white>
+          {text.ignore}
         </Btn>
       </div>
+      <Button disabled={!valid} onClick={() => onSubmit()}>
+        가입하기
+      </Button>
     </div>
   );
 }
@@ -637,4 +661,19 @@ const Category = styled.button<{ select: number; intersted: number[] }>`
 const CategoryWrapper = styled.div`
   display: flex;
   width: 100%;
+`;
+
+const Button = styled.button`
+  width: 480px;
+  height: 52px;
+  border-radius: 6px;
+  background-color: #ff445e;
+  box-shadow: 0px 0px 8px 0px #84838d;
+  font-size: 14px;
+  font-weight: 400;
+  color: #ffffff;
+
+  &:disabled {
+    background-color: #e7e7e8;
+  }
 `;

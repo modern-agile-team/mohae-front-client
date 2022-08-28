@@ -1,6 +1,6 @@
 import React, { useRef, useCallback, useState, useEffect } from 'react';
 import { css, cx } from '@emotion/css';
-import { color, radius } from '../../styles';
+import { color, font, radius, shadow } from '../../styles';
 import { Props } from '../../components/button';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/root';
@@ -34,10 +34,7 @@ function Input(props: Props) {
     },
     price: (e: React.ChangeEvent<HTMLInputElement>) => {
       const toLocaleStringPrice = Number(
-        e.target.value
-          .replace(/[^0-9.]/g, '')
-          .replace(/(\..*)\./g, '$1')
-          .slice(0, 7),
+        e.target.value.replace(/\D/g, '').slice(0, 7),
       ).toLocaleString();
       dispatch(setPrice(toLocaleStringPrice));
     },
@@ -153,9 +150,9 @@ function Input(props: Props) {
         </form>
         <form className="price">
           <input
-            value={price === '0' ? '' : price}
+            value={price === '0' ? '0' : price}
             type="text"
-            placeholder={'0 ~ 1,000,000'}
+            placeholder={'0원 ~ 1,000,000원'}
             onChange={e => onChange.price(e)}
           />
         </form>

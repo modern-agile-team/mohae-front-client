@@ -136,9 +136,7 @@ function Poster({ data }: Props) {
             <p className="title">{data.title}</p>
             <p className="writer">{data.nickname}</p>
           </div>
-          <p className="price">
-            {data.price !== null ? data.price.toLocaleString() : '나눔'}
-          </p>
+          <p className="price">{data.price && data.price.toLocaleString()}</p>
         </div>
         <div className="hovered">
           <p className="areaName">{data.areaName}</p>

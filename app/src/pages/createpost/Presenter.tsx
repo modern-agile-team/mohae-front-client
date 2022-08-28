@@ -17,6 +17,7 @@ interface Props {
   setTargetCheck: (i: number) => void;
   view: { [key: number]: boolean };
   targetChecked: { [key: number]: boolean };
+  popupView: boolean;
   postingAxios: (e: React.MouseEvent, type: string) => void;
   type: string;
 }
@@ -26,17 +27,16 @@ function Presenter(props: Props) {
     selectBoxClick,
     setTargetCheck,
     view,
+    popupView,
     targetChecked,
     postingAxios,
     type,
   } = props;
   const { title, price, categoryNo, areaNo, deadline, description } =
     useSelector((state: RootState) => state.createPost.data);
-  const [popupView, setPopupView] = useState(false);
   const dispatch = useDispatch();
 
   const creationCompleteAction = (e: React.MouseEvent) => {
-    setPopupView(true);
     postingAxios(e, type);
   };
 
@@ -140,6 +140,11 @@ function Presenter(props: Props) {
         ));
   };
 
+  const popupClose = () => {
+    dispatch(setInitialState());
+    window.location.replace('/boards/1');
+  };
+
   return (
     <>
       <div className={cx(container)}>
@@ -174,11 +179,9 @@ function Presenter(props: Props) {
           }되었습니다.`}
         >
           <div className={cx(popupCloseBtn)}>
-            <Link to={'/boards/1'}>
-              <Btn main onClick={dispatch(setInitialState)}>
-                닫기
-              </Btn>
-            </Link>
+            <Btn main onClick={popupClose}>
+              닫기
+            </Btn>
           </div>
         </Popup>
       )}
@@ -284,22 +287,21 @@ interface Contents {
 
 const lists: { [placeholder: string]: Contents[] } = {
   카테고리: [
-    { no: '1', name: 'All' },
-    { no: '2', name: '디자인' },
-    { no: '3', name: 'IT/개발' },
-    { no: '4', name: '사진/영상' },
-    { no: '5', name: '기획/마케팅' },
-    { no: '6', name: '번역/통역' },
-    { no: '7', name: '문서작업' },
-    { no: '8', name: '컨설팅' },
-    { no: '9', name: '법률' },
-    { no: '10', name: '과외/레슨' },
-    { no: '11', name: '상담/운세' },
-    { no: '12', name: '이벤트' },
-    { no: '13', name: '핸드메이드' },
-    { no: '14', name: '취미' },
-    { no: '15', name: '생활서비스' },
-    { no: '16', name: '기타' },
+    { no: '1', name: '디자인' },
+    { no: '2', name: 'IT/개발' },
+    { no: '3', name: '사진/영상' },
+    { no: '4', name: '기획/마케팅' },
+    { no: '5', name: '번역/통역' },
+    { no: '6', name: '문서작업' },
+    { no: '7', name: '컨설팅' },
+    { no: '8', name: '법률' },
+    { no: '9', name: '과외/레슨' },
+    { no: '10', name: '상담/운세' },
+    { no: '11', name: '이벤트' },
+    { no: '12', name: '핸드메이드' },
+    { no: '13', name: '취미' },
+    { no: '14', name: '생활서비스' },
+    { no: '15', name: '기타' },
   ],
   '전체 지역': [
     { no: '1', name: '서울' },

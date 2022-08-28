@@ -18,8 +18,9 @@ const ReplyItem = (props: DefaultProps) => {
       (state: RootState) =>
         state.comment.data[commentIndex].replies[replyIndex],
     );
-  const profileImg =
-    'https://d2ffbnf2hpheay.cloudfront.net/' + replyWriterPhotoUrl;
+  const profileImg = replyWriterPhotoUrl
+    ? 'https://d2ffbnf2hpheay.cloudfront.net/' + replyWriterPhotoUrl
+    : '/img/profile.png';
 
   return (
     <Wrapper>

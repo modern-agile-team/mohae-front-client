@@ -87,6 +87,11 @@ function Presenter({
       return '마감 취소 되었습니다.';
     }
   };
+  const summaryContainer = css`
+    width: 704px;
+    height: 127px;
+    overflow-y: ${reduxData.response.board.summary ? 'scroll' : 'auto'};
+  `;
 
   return (
     <>
@@ -101,7 +106,16 @@ function Presenter({
           <div className="sectionWrap">
             <PostInfo close={() => setView('report')} />
             <div className="postIt">
-              <PostIt small>{reduxData.response.board.summary}</PostIt>
+              <PostIt small>
+                <div
+                  className={cx(summaryContainer)}
+                  dangerouslySetInnerHTML={{
+                    __html: reduxData.response.board.summary
+                      ? reduxData.response.board.summary.replace(/\n/g, '<br/>')
+                      : '',
+                  }}
+                ></div>
+              </PostIt>
             </div>
           </div>
         </div>
@@ -214,6 +228,8 @@ const wrap = css`
   .write-img {
     width: 15px;
     height: 15px;
+  }
+  .summary-container {
   }
 `;
 

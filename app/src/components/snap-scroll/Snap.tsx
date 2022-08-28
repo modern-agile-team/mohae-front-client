@@ -16,10 +16,6 @@ export default function Snap({ contents }: Props) {
     // 반복할 배경 색상
     [part, setPart] = useState(0);
 
-  useEffect(() => {
-    // setPart(3);
-  }, []);
-
   const container = css`
     overflow: auto;
     height: fit-content;
@@ -74,15 +70,15 @@ export default function Snap({ contents }: Props) {
         if (move > 10 && part === index && !(index === section.length - 1)) {
           setTimeout(() => {
             setPart(part + 1);
-          }, 200);
+          }, 700);
         } else if (move < -10 && part === index && !(index === 0)) {
           setTimeout(() => {
             setPart(part - 1);
-          }, 200);
+          }, 700);
         }
       });
     },
-    [section]
+    [section],
   );
 
   const pageCircles = section.map((i, index) => {
@@ -141,7 +137,7 @@ export default function Snap({ contents }: Props) {
             ? css`
                 display: none;
               `
-            : null
+            : null,
         )}
       >
         {pageCircles}

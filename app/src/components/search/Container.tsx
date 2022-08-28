@@ -142,7 +142,7 @@ function Search(props: Props) {
       setValue('');
       return;
     }
-    const query = `?categoryNo=${no}&title=${titleQuery(
+    const query = `?categoryNo=${no || 1}&title=${titleQuery(
       historyValue,
     )}${sortQuery()}&target=${drawObjKey(
       objDataProcessing().check.target,
@@ -178,7 +178,7 @@ function Search(props: Props) {
       resetPageInfo && resetPageInfo();
     }
     if (main) {
-      navigate('boards/1/page/1' + query);
+      navigate('boards/1' + query);
     }
   };
 

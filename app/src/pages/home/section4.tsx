@@ -39,17 +39,17 @@ export default function Part4(props: Props) {
     boardsInMain.allBoard[1] || null,
     boardsInMain.allBoard[0] || null,
     boardsInMain.allBoard[2] || null,
-  ].filter((board) => !!board);
+  ].filter(board => !!board);
   const hotBoardProgressing = [
     boardsInMain.inProgressBoard[1] || null,
     boardsInMain.inProgressBoard[0] || null,
     boardsInMain.inProgressBoard[2] || null,
-  ].filter((board) => !!board);
+  ].filter(board => !!board);
   const hotBoardOver = [
     boardsInMain.overedBoard[1] || null,
     boardsInMain.overedBoard[0] || null,
     boardsInMain.overedBoard[2] || null,
-  ].filter((board) => !!board);
+  ].filter(board => !!board);
 
   useEffect(() => {
     dispatch(getHotAll());
@@ -185,9 +185,8 @@ export default function Part4(props: Props) {
           css`
             width: 360px;
             height: 284px;
-            overflow: hidden;
-            ${shadow.normal}/* ${radius[6]}; */
-          `
+            ${shadow.normal}
+          `,
         )}
       >
         <NewPost page={'inMain'} board={board} />

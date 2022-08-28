@@ -1,7 +1,7 @@
 /** @format */
 
 import { css, cx } from '@emotion/css';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Dispatch, SetStateAction } from 'react';
 import { color } from '../../styles';
 import Img from '../img/Img';
 import Style from './style';
@@ -13,6 +13,7 @@ import useRefactorPostingData from '../../customhook/useRefactorPostingData';
 
 interface Props {
   [key: string]: any;
+  setImgIndex?: Dispatch<SetStateAction<number>>;
 }
 
 interface IMAGE {
@@ -22,7 +23,13 @@ interface IMAGE {
   size: number;
 }
 
-export default function OrderedImg({ imgs, edit, inline, postEdit }: Props) {
+export default function OrderedImg({
+  imgs,
+  edit,
+  inline,
+  postEdit,
+  setImgIndex,
+}: Props) {
   const [clone, setClone] = useState(
     imgs &&
       imgs.map((img: any) => ({
@@ -194,6 +201,12 @@ export default function OrderedImg({ imgs, edit, inline, postEdit }: Props) {
     dispatch(setImgs(newFormData));
   };
 
+  const 상세조회에서이미지클릭 = (index: number) => {
+    if (setImgIndex) {
+      setImgIndex(index);
+    } else return () => {};
+  };
+
   const show = () => {
     return (
       <>
@@ -201,7 +214,10 @@ export default function OrderedImg({ imgs, edit, inline, postEdit }: Props) {
           myImage.map((each: any, index: number) => {
             return (
               <button key={index} className={'item-box show'} name={`${index}`}>
-                <Img src={each.img} />
+                <Img
+                  onClick={() => 상세조회에서이미지클릭(index)}
+                  src={each.img}
+                />
               </button>
             );
           })}

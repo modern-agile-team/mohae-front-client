@@ -1,17 +1,14 @@
 import styled from '@emotion/styled';
 import axios from 'axios';
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Popup } from '../../../components';
 import AuthModal from '../../../components/modal/AuthModal';
+import { open_login } from '../../../redux/modal/reducer';
+import { RootState } from '../../../redux/root';
 import { ENDPOINT } from '../../../utils/ENDPOINT';
 
-interface Props {
-  visible: boolean;
-  setVisible: Dispatch<SetStateAction<boolean>>;
-}
-
-function FindPassword(props: Props) {
-  const { visible, setVisible } = props;
+function FindPassword() {
   const [userInputValue, setUserInputValue] = useState({
     name: '',
     email: '',
@@ -57,35 +54,33 @@ function FindPassword(props: Props) {
 
   return (
     <>
-      <AuthModal big={false} visible={visible}>
-        <Container onSubmit={e => sendEmail(e)}>
-          <section>
-            <p>비밀번호 찾기</p>
-            <p>가입 시 입력하신 이메일을 통해 찾을 수 있습니다.</p>
-            <Line />
-          </section>
-          <section>
-            <label>이름</label>
-            <Input
-              placeholder="이름을 입력해 주세요."
-              value={userInputValue.name}
-              onChange={e => handleOnChange('name', e)}
-            />
-          </section>
-          <section>
-            <label>이메일</label>
-            <Input
-              placeholder="이메일을 입력해 주세요."
-              type={'email'}
-              value={userInputValue.email}
-              onChange={e => handleOnChange('email', e)}
-            />
-          </section>
-          <SubmitButton able={submitAble()} onSubmit={e => sendEmail(e)}>
-            비밀번호 찾기
-          </SubmitButton>
-        </Container>
-      </AuthModal>
+      <Container onSubmit={e => sendEmail(e)}>
+        <section>
+          <p>비밀번호 찾기</p>
+          <p>가입 시 입력하신 이메일을 통해 찾을 수 있습니다.</p>
+          <Line />
+        </section>
+        <section>
+          <label>이름</label>
+          <Input
+            placeholder="이름을 입력해 주세요."
+            value={userInputValue.name}
+            onChange={e => handleOnChange('name', e)}
+          />
+        </section>
+        <section>
+          <label>이메일</label>
+          <Input
+            placeholder="이메일을 입력해 주세요."
+            type={'email'}
+            value={userInputValue.email}
+            onChange={e => handleOnChange('email', e)}
+          />
+        </section>
+        <SubmitButton able={submitAble()} onSubmit={e => sendEmail(e)}>
+          비밀번호 찾기
+        </SubmitButton>
+      </Container>
       {popupInfo.view && (
         <Popup
           visible={popupInfo.view}
@@ -109,6 +104,7 @@ const Container = styled.form`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+  margin-top: 68px;
   p:nth-of-type(1) {
     font-size: 24px;
     font-weight: 700;

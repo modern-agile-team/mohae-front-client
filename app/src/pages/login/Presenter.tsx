@@ -20,18 +20,17 @@ interface Props {
 export default function Presenter({
   text,
   isOpenModal,
-  children,
   part,
   setPart,
   onClick,
 }: Props): ReactElement {
-  const [findPasswordView, setFindPasswordView] = useState(false);
   const mainContents = [
-    <Login text={text} setFindPasswordView={setFindPasswordView} />,
+    <Login text={text} setFindPasswordView={onClick.findPassword} />,
     <Main text={text} next={onClick.enterRegister} />,
     <Agreement next={onClick.agreement} />,
     <PersonalInfo text={text} part={part} next={onClick.finishedInputInfo} />,
     <SelectInfo next={onClick.finishedAll} />,
+    <FindPassword />,
   ];
 
   const style = css`
@@ -129,7 +128,7 @@ export default function Presenter({
       display: flex;
       justify-content: flex-start;
       ::-webkit-scrollbar {
-        display: none; /* Chrome, Safari, Opera*/
+        display: none;
       }
       > .main {
         display: flex;
@@ -174,30 +173,38 @@ export default function Presenter({
       justify-content: center;
     }
   `;
-  return !findPasswordView ? (
+
+  const titleTextAndFocusBarElement = () => {
+    return (
+      Number(part) !== 5 && (
+        <>
+          <ul className={'menu'}>
+            <button className={'login'} onClick={onClick.login}>
+              {text.login}
+            </button>
+            <button className={'register'} onClick={onClick.register}>
+              {text.register}
+            </button>
+          </ul>
+          <div className={'focusbar'}>
+            <div />
+          </div>
+        </>
+      )
+    );
+  };
+
+  return (
     <AuthModal big={false} visible={isOpenModal} setPart={setPart}>
-      {/* edit visible={isOpenModal} after test */}
       <div className={cx(style)}>
         <div className={'logo'}>
           <Img src={'/img/logo.png'} />
         </div>
-        <ul className={'menu'}>
-          <button className={'login'} onClick={onClick.login}>
-            {text.login}
-          </button>
-          <button className={'register'} onClick={onClick.register}>
-            {text.register}
-          </button>
-        </ul>
-        <div className={'focusbar'}>
-          <div />
-        </div>
+        {titleTextAndFocusBarElement()}
         <div className={'container'}>
           <div className={'main'}>{mainContents}</div>
         </div>
       </div>
     </AuthModal>
-  ) : (
-    <FindPassword visible={findPasswordView} setVisible={setFindPasswordView} />
   );
 }

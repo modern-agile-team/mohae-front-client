@@ -25,12 +25,12 @@ function PostWriter({ close }: PostWriterProps) {
     justify-content: space-between;
     p {
       color: ${color.dark1};
-      &:nth-child(1) {
+      &:nth-of-type(1) {
         ${font.size[14]}
         ${font.weight[700]}
         margin-bottom: 4px;
       }
-      &:nth-child(2) {
+      &:nth-of-type(2) {
         ${font.size[14]}
         ${font.weight[400]}
       }
@@ -51,7 +51,7 @@ function PostWriter({ close }: PostWriterProps) {
     .userData {
       display: flex;
       align-items: center;
-      > :nth-child(2) {
+      > :nth-of-type(2) {
         margin-left: 16px;
       }
     }

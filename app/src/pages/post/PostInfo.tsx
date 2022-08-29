@@ -107,7 +107,7 @@ function PostInfo(props: PostInfoProps) {
       flex-direction: column;
       ${font.size[12]}
 
-      div:nth-child(1) {
+      div:nth-of-type(1) {
         display: flex;
         justify-content: end;
         margin-top: 4px;
@@ -115,15 +115,15 @@ function PostInfo(props: PostInfoProps) {
         visibility: ${decoded && decoded.userNo === response.board.userNo
           ? 'visible'
           : 'hidden'};
-        p:nth-child(1) {
+        p:nth-of-type(1) {
           margin-right: 8px;
           padding-right: 8px;
           border-right: 1px solid ${color.light4};
         }
       }
-      div:nth-child(2) {
+      div:nth-of-type(2) {
         display: flex;
-        p:nth-child(1) {
+        p:nth-of-type(1) {
           margin-right: 16px;
         }
       }

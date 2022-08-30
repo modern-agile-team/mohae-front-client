@@ -1,20 +1,7 @@
 /** @format */
 
-import {
-  Img,
-  Poster,
-  NewPost,
-  Box,
-  Profile,
-  FocusBar,
-  Category,
-  BasicModal,
-  MarkBox,
-  Btn,
-  OrderedImg,
-  Report,
-} from '../../../components';
-import { radius, font, color, shadow } from '../../../styles';
+import { Img, Btn } from '../../../components';
+import { font } from '../../../styles';
 import { css, cx } from '@emotion/css';
 
 interface Props {

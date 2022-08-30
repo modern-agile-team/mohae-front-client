@@ -1,21 +1,24 @@
 /** @format */
 
-import { useMemo, useState } from 'react';
+import { Dispatch, SetStateAction, useMemo, useState } from 'react';
 import { css, cx } from '@emotion/css';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import styled from '@emotion/styled';
-import { color, radius, font, shadow } from '../../../styles';
-import { Btn, Img } from '../../../components';
-import { AppDispatch, RootState } from '../../../redux/root';
-import { update_regist_extraInfo } from '../../../redux/user/reducer';
+import { color, radius, shadow } from '../../../styles';
+import { Btn, Img, Popup } from '../../../components';
+import { RootState } from '../../../redux/root';
 import { ENDPOINT } from '../../../utils/ENDPOINT';
 import axios from 'axios';
 
 interface Object {
   [key: string]: any;
 }
+interface Props {
+  [key: string]: any;
+  setPopupView: Dispatch<SetStateAction<boolean>>;
+}
 
-export default function SelectInfo({ part, next }: Object) {
+export default function SelectInfo({ part, next, setPopupView }: Props) {
   const [open, setOpen] = useState<Object>({
     one: false,
     two: false,
@@ -165,7 +168,7 @@ export default function SelectInfo({ part, next }: Object) {
       })
       .then(res => {
         if (res.data.statusCode >= 200 && res.data.statusCode <= 204) {
-          next();
+          setPopupView(true);
           // sessionStorage.setItem('userEmail', res.data.response.email)
         } else {
           alert('다시 가입 해주세요');
@@ -186,7 +189,7 @@ export default function SelectInfo({ part, next }: Object) {
       })
       .then(res => {
         if (res.data.statusCode >= 200 && res.data.statusCode <= 204) {
-          next();
+          setPopupView(true);
         } else {
           alert('다시 가입 해주세요');
         }

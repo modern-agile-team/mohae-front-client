@@ -50,16 +50,8 @@ const Comment = () => {
   };
 
   const getComments = async () => {
-    try {
-      const response = await getCommentList(Number(no));
-      dispatch(setCommentArr(response.data.response));
-    } catch (err: any) {
-      if (err.response.status === 410) {
-        sessionStorage.removeItem('access_token');
-        sessionStorage.removeItem('refresh_token');
-        window.location.replace(location.pathname);
-      }
-    }
+    const response = await getCommentList(Number(no));
+    dispatch(setCommentArr(response.data.response));
   };
 
   useEffect(() => {

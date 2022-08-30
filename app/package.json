@@ -39,7 +39,7 @@
     "build": "cross-env REACT_APP_ENDPOINT=https://mo-hae.site/ react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "serve": "cross-env REACT_APP_ENDPOINT=https://mo-hae.site/ npx serve -l 8080 -x build -n"
+    "serve": "cross-env REACT_APP_ENDPOINT=https://mo-hae.site/ npx serve -l 8080 -s build -n"
   },
   "eslintConfig": {
     "extends": [

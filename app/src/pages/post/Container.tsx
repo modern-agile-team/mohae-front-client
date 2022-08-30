@@ -145,7 +145,7 @@ function Post() {
         .patch(URL, null, config)
         .then(res => {
           setView({ ...view, isDeadline: true });
-          dispatch(setIsDeadline());
+          getPostingData();
         })
         .catch(err => console.log('err', err));
     }

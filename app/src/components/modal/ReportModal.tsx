@@ -99,7 +99,6 @@ function ReportModal({ visible, close, board, user }: Props) {
         .then(res => {
           cleanUp();
           setSuccess(true);
-          console.log('res :>> ', res);
         })
         .catch(err => console.log('err', err));
     } else alert('항목을 세 개 이하 체크 후 사유를 작성해주세요.');

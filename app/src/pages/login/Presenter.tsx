@@ -1,6 +1,6 @@
 /** @format */
 
-import { Img, FocusBar } from '../../components';
+import { Img, FocusBar, Popup, Btn } from '../../components';
 import AuthModal from '../../components/modal/AuthModal';
 import { radius, font, color, shadow } from '../../styles';
 import { css, cx } from '@emotion/css';
@@ -11,6 +11,7 @@ import Main from './register/Main';
 import PersonalInfo from './register/PersonalInfo';
 import SelectInfo from './register/SelectInfo';
 import FindPassword from './findPassword/FindPassword';
+import styled from '@emotion/styled';
 
 interface Props {
   [key: string]: any;
@@ -24,12 +25,13 @@ export default function Presenter({
   setPart,
   onClick,
 }: Props): ReactElement {
+  const [popupView, setPopupView] = useState(false);
   const mainContents = [
     <Login text={text} setFindPasswordView={onClick.findPassword} />,
     <Main text={text} next={onClick.enterRegister} />,
     <Agreement next={onClick.agreement} />,
     <PersonalInfo text={text} part={part} next={onClick.finishedInputInfo} />,
-    <SelectInfo next={onClick.finishedAll} />,
+    <SelectInfo next={onClick.finishedAll} setPopupView={setPopupView} />,
     <FindPassword />,
   ];
 
@@ -195,16 +197,53 @@ export default function Presenter({
   };
 
   return (
-    <AuthModal big={false} visible={isOpenModal} setPart={setPart}>
-      <div className={cx(style)}>
-        <div className={'logo'}>
-          <Img src={'/img/logo.png'} />
+    <>
+      <AuthModal
+        big={false}
+        visible={isOpenModal}
+        setPart={setPart}
+        part={part}
+        onClick={onClick}
+      >
+        <div className={cx(style)}>
+          <div className={'logo'}>
+            <Img src={'/img/logo.png'} />
+          </div>
+          {titleTextAndFocusBarElement()}
+          <div className={'container'}>
+            <div className={'main'}>{mainContents}</div>
+          </div>
         </div>
-        {titleTextAndFocusBarElement()}
-        <div className={'container'}>
-          <div className={'main'}>{mainContents}</div>
-        </div>
-      </div>
-    </AuthModal>
+      </AuthModal>
+      {popupView && (
+        <>
+          <Popup
+            visible={popupView}
+            text1={'회원 가입이 완료 되었습니다.'}
+            overlay={() => {
+              setPopupView(false);
+              setPart(0);
+            }}
+          >
+            <BtnImgWrapper>
+              <Btn
+                main
+                onClick={() => {
+                  setPopupView(false);
+                  setPart(0);
+                }}
+              >
+                닫기
+              </Btn>
+            </BtnImgWrapper>
+          </Popup>
+        </>
+      )}
+    </>
   );
 }
+
+const BtnImgWrapper = styled.div`
+  width: 74px;
+  height: 43px;
+`;

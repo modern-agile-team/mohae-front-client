@@ -1,11 +1,7 @@
 import styled from '@emotion/styled';
 import axios from 'axios';
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState } from 'react';
 import { Popup } from '../../../components';
-import AuthModal from '../../../components/modal/AuthModal';
-import { open_login } from '../../../redux/modal/reducer';
-import { RootState } from '../../../redux/root';
 import { ENDPOINT } from '../../../utils/ENDPOINT';
 
 function FindPassword() {

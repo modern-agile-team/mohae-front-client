@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, Dispatch, SetStateAction } from 'react';
 import { css, cx } from '@emotion/css';
 import { Box } from '../../components';
 import Img from '../img/Img';
@@ -11,10 +11,14 @@ interface Props {
   visible: any;
   children: any;
   big: any;
-  setPart?: React.Dispatch<React.SetStateAction<number>>;
+  part: number;
+  setPart: React.Dispatch<React.SetStateAction<number>>;
+  onClick: {
+    [key: string]: (e: React.MouseEvent) => Dispatch<SetStateAction<number>>;
+  };
 }
 
-function AuthModal({ visible, big, children, setPart }: Props) {
+function AuthModal({ visible, big, children, part, onClick, setPart }: Props) {
   const [modalState, setModalState] = useState(visible);
   const dispatch = useDispatch<AppDispatch>();
   const isRegister = useSelector(
@@ -36,6 +40,11 @@ function AuthModal({ visible, big, children, setPart }: Props) {
 
   if (!modalState) return null;
 
+  const wrap = css`
+    height: fit-content;
+    overflow: hidden;
+  `;
+
   const box = css`
     position: fixed;
     top: 50%;
@@ -55,6 +64,18 @@ function AuthModal({ visible, big, children, setPart }: Props) {
     position: absolute;
     top: 24px;
     right: 24px;
+    border-radius: 50%;
+    :hover {
+      background-color: rgba(231, 231, 232, 0.7);
+    }
+  `;
+
+  const previousBtn = css`
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    top: 24px;
+    left: 24px;
     border-radius: 50%;
     :hover {
       background-color: rgba(231, 231, 232, 0.7);
@@ -84,14 +105,7 @@ function AuthModal({ visible, big, children, setPart }: Props) {
   };
 
   return (
-    <div
-      className={cx(
-        css`
-          height: fit-content;
-          overflow: hidden;
-        `,
-      )}
-    >
+    <div className={cx(wrap)}>
       <Box
         light
         bigRadius
@@ -101,6 +115,14 @@ function AuthModal({ visible, big, children, setPart }: Props) {
         <div className={cx(closeBtn, cursor)}>
           <Img src={'/img/close.png'} onClick={close} />
         </div>
+        {1 < part && (
+          <div className={cx(previousBtn, cursor)}>
+            <Img
+              src={'/img/arrow-left-dark1.png'}
+              onClick={() => setPart(part !== 5 ? part - 1 : 0)}
+            />
+          </div>
+        )}
         {children}
       </Box>
       <div onClick={close} className={cx(overlay)}></div>

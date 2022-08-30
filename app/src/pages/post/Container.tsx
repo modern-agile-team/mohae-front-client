@@ -77,9 +77,7 @@ function Post() {
   const { no } = useParams();
   const dispatch = useDispatch();
   const token = getToken() || null;
-  const decoded = () => {
-    return token !== null ? decodeToken(token) : token;
-  };
+  const decoded = useSelector((state: RootState) => state.user.user);
   const [view, setView] = useState<{ [key: string]: boolean }>({
     report: false,
     isDeadline: false,
@@ -113,7 +111,7 @@ function Post() {
             setPostData({
               ...res.data,
               msg: visitor,
-              decoded: decoded(),
+              decoded: decoded,
               token: token,
             }),
           );

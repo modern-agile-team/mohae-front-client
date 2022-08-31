@@ -331,20 +331,3 @@ export const ThirdArticle = () => {
   );
 };
 
-export const articles = [
-  {
-    id: 1,
-    title: '서비스 이용약관(필수)',
-    contents: <FirstArticle />,
-  },
-  {
-    id: 2,
-    title: '개인정보 수집 및 이용 동의 (필수)',
-    contents: <SecondArticle />,
-  },
-  {
-    id: 3,
-    title: '광고성 정보 수신 동의 (선택)',
-    contents: <ThirdArticle />,
-  },
-];

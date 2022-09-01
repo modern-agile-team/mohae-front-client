@@ -4,7 +4,7 @@ import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { ENDPOINT } from '../../utils/ENDPOINT';
 import { profile } from '../../apis/user';
-import { Spec } from '../../apis/spec';
+import { FindSpec, getFindSpecData, Spec } from '../../apis/spec';
 import { getSpecData } from '../../apis/spec';
 const GET_USER_SPECS = 'get_user_specs';
 const GET_USER_TOHELP = 'get_user_tohelp';
@@ -24,6 +24,15 @@ export const getSpecs = createAsyncThunk(
   async (body: Spec) => {
     const { paramNo, takeParam } = body;
     const response = await getSpecData(paramNo, takeParam);
+    return response.data;
+  },
+);
+
+export const getFindSpecs = createAsyncThunk(
+  'profile/getFindSpec',
+  async (body: FindSpec) => {
+    const { paramNo, takeParam, target } = body;
+    const response = await getFindSpecData(paramNo, takeParam, target);
     return response.data;
   },
 );
@@ -93,7 +102,15 @@ export const spec = createSlice({
         state.profileSpecs = payload.response;
         state.isLoading = false;
       })
-      .addCase(getSpecs.rejected, (state, { payload }) => {});
+      .addCase(getSpecs.rejected, (state, { payload }) => {})
+      .addCase(getFindSpecs.pending, (state, { payload }) => {
+        state.isLoading = true;
+      })
+      .addCase(getFindSpecs.fulfilled, (state, { payload }) => {
+        state.profileToHelp = payload.response;
+        state.isLoading = false;
+      })
+      .addCase(getFindSpecs.rejected, (state, { payload }) => {});
   },
 });
 // 생성 추가 삭제

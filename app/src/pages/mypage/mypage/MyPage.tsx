@@ -14,13 +14,13 @@ import {
   get_user_helpme,
   getSpecs,
   setInitialState as setInitialStateSpecData,
+  getFindSpecs,
 } from '../../../redux/spec/reducer';
 import { BoardGetRequest } from '../../../redux/axios';
 import getToken from '../../../utils/getToken';
 import { useEffect } from 'react';
 import { post } from '../../../redux/post/reducer';
 export default function MyPage() {
-  const SPEC = `specs/profile?`;
   const BOARDS = `boards/profile?`;
   const target = {
     0: '&target=false',
@@ -62,19 +62,14 @@ export default function MyPage() {
 
   useEffect(() => {
     dispatch(getSpecs({ paramNo, takeParam: take[checkSelf] }));
+    dispatch(
+      getFindSpecs({ paramNo, takeParam: take[checkSelf], target: target[1] }),
+    );
     return () => {
       dispatch(setInitialStateSpecData());
       dispatch(setInitialStateMypageProfile());
     };
   }, []);
-
-  const getSpec = () => {
-    BoardGetRequest(
-      `${SPEC}user=${paramNo}&take=${take[checkSelf]}&page=1`,
-      TOKEN,
-      get_user_specs,
-    );
-  };
 
   const getFindBoard = () => {
     BoardGetRequest(

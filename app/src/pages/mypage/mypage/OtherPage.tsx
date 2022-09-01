@@ -13,20 +13,18 @@ import {
 } from '../../../components';
 
 import Slide from './Slide';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../redux/root';
 
 interface Props {
   [key: string]: any;
 }
 
-export default function OtherPage({
-  text,
-  userInfo,
-  posts,
-  actions,
-  checkSelf,
-}: Props) {
+export default function OtherPage({ text, posts, actions, checkSelf }: Props) {
+  const userInfo = useSelector((state: RootState) => state.user.user);
   const interestedCategories =
     userInfo &&
+    userInfo.categories &&
     userInfo.categories.map((category: any, index: number) => (
       <Category key={index} shape={'row'} name={category.name} />
     ));

@@ -7,19 +7,20 @@ import {
 } from '../../../redux/mypage/reducer';
 import Presenter from './Presenter';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../../redux/root';
+import { AppDispatch, RootState } from '../../../redux/root';
 import {
   get_user_specs,
   get_user_tohelp,
   get_user_helpme,
+  getSpecs,
   setInitialState as setInitialStateSpecData,
+  getFindSpecs,
 } from '../../../redux/spec/reducer';
-import { useGetRequest } from '../../../redux/axios';
+import { BoardGetRequest } from '../../../redux/axios';
 import getToken from '../../../utils/getToken';
 import { useEffect } from 'react';
-
+import { post } from '../../../redux/post/reducer';
 export default function MyPage() {
-  const SPEC = `specs/profile?`;
   const BOARDS = `boards/profile?`;
   const target = {
     0: '&target=false',
@@ -33,17 +34,17 @@ export default function MyPage() {
     helpMe: get_user_helpme,
   };
   const TOKEN = getToken();
-  const tokenInfo = useSelector((state: RootState) => state.user.user);
-  const userNo = TOKEN !== '' && String(tokenInfo.userNo);
+  const userInfo = useSelector((state: RootState) => state.user.user);
+  const userNo = TOKEN !== '' && String(userInfo.userNo);
   const paramNo = useParams().no;
   const checkSelf = String(userNo === paramNo);
   const take: any = {
     true: 5,
     false: 8,
   };
-  const userInfo = useSelector((state: RootState) => state.mypage.user.profile);
   const posts = useSelector((state: RootState) => state.spec);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
+
   const text: { [key: string]: any } = {
     sir: '님',
     registerDate: '가입일 :',
@@ -54,38 +55,26 @@ export default function MyPage() {
     resume: {
       spec: '내 스펙 관리',
       give: '해줄래요 이력',
-      got: '받을래요 이력',
+      got: '구할래요 이력',
     },
     rating: '총 평점',
   };
 
   useEffect(() => {
+    dispatch(getSpecs({ paramNo, takeParam: take[checkSelf] }));
+    dispatch(
+      getFindSpecs({ paramNo, takeParam: take[checkSelf], target: target[1] }),
+    );
+
     return () => {
       dispatch(setInitialStateSpecData());
       dispatch(setInitialStateMypageProfile());
     };
   }, []);
 
-  useGetRequest(
-    `${SPEC}user=${paramNo}&take=${take[checkSelf]}&page=1`,
-    TOKEN,
-    get_user_specs,
-  );
-  useGetRequest(
-    `${BOARDS}user=${paramNo}&take=${take[checkSelf]}&page=1${target[1]}`,
-    TOKEN,
-    get_user_tohelp,
-  );
-  useGetRequest(
-    `${BOARDS}user=${paramNo}&take=${take[checkSelf]}&page=1${target[0]}`,
-    TOKEN,
-    get_user_helpme,
-  );
-  useGetRequest(`profile/${paramNo}`, TOKEN, get_user_info);
   return (
     <Presenter
       text={text}
-      userInfo={userInfo && userInfo}
       posts={posts}
       actions={actions}
       checkSelf={checkSelf}

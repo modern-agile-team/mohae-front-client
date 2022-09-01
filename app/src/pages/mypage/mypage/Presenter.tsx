@@ -7,18 +7,11 @@ interface Props {
   [key: string]: any;
 }
 
-export default function MyPage({
-  text,
-  userInfo,
-  posts,
-  actions,
-  checkSelf,
-}: Props) {
+export default function MyPage({ text, posts, actions, checkSelf }: Props) {
   if (checkSelf === 'true') {
     return (
       <MySelf
         text={text}
-        userInfo={userInfo}
         posts={posts}
         actions={actions}
         checkSelf={checkSelf}
@@ -28,7 +21,6 @@ export default function MyPage({
     return (
       <OtherPage
         text={text}
-        userInfo={userInfo}
         posts={posts}
         actions={actions}
         checkSelf={checkSelf}

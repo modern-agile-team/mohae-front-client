@@ -44,7 +44,7 @@ export default function Spec() {
               <div className={'footer'}>
                 <div className={'number'}>
                   <span>{'?'}</span>
-                  <span>{'/300'}</span>
+                  <span>{'/200'}</span>
                 </div>
                 <div className={'complete'}>
                   <Btn main>{'완료'}</Btn>

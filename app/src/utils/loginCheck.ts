@@ -12,6 +12,7 @@ export const loginCheck = () => {
       alert('세션이 만료되었습니다');
       sessionStorage.clear();
       store.dispatch(remove_user());
+      window.location.reload();
     }
   }
 };

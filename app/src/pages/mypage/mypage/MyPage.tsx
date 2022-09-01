@@ -65,19 +65,13 @@ export default function MyPage() {
     dispatch(
       getFindSpecs({ paramNo, takeParam: take[checkSelf], target: target[1] }),
     );
+
     return () => {
       dispatch(setInitialStateSpecData());
       dispatch(setInitialStateMypageProfile());
     };
   }, []);
 
-  const getFindBoard = () => {
-    BoardGetRequest(
-      `${BOARDS}user=${paramNo}&take=${take[checkSelf]}&page=1${target[1]}`,
-      TOKEN,
-      get_user_tohelp,
-    );
-  };
   const getDoitBoard = () => {
     BoardGetRequest(
       `${BOARDS}user=${paramNo}&take=${take[checkSelf]}&page=1${target[0]}`,

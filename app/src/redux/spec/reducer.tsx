@@ -4,7 +4,7 @@ import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { ENDPOINT } from '../../utils/ENDPOINT';
 import { profile } from '../../apis/user';
-import { FindSpec, getFindSpecData, Spec } from '../../apis/spec';
+import { BoardSpec, getFindSpecData, Spec } from '../../apis/spec';
 import { getSpecData } from '../../apis/spec';
 const GET_USER_SPECS = 'get_user_specs';
 const GET_USER_TOHELP = 'get_user_tohelp';
@@ -30,7 +30,7 @@ export const getSpecs = createAsyncThunk(
 
 export const getFindSpecs = createAsyncThunk(
   'profile/getFindSpec',
-  async (body: FindSpec) => {
+  async (body: BoardSpec) => {
     const { paramNo, takeParam, target } = body;
     const response = await getFindSpecData(paramNo, takeParam, target);
     return response.data;

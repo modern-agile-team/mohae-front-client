@@ -6,7 +6,7 @@ export interface Spec {
   takeParam: number;
 }
 
-export interface FindSpec extends Spec {
+export interface BoardSpec extends Spec {
   target: string;
 }
 

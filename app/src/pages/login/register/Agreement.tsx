@@ -71,6 +71,7 @@ const Agreement = ({ next }: Object) => {
         terms: [articles[0].checked, articles[1].checked, articles[2].checked],
       }),
     );
+    next();
   };
 
   useEffect(() => {

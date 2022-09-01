@@ -22,6 +22,16 @@ export const getFindSpecData = (
   target: string,
 ) => {
   return setInterceptors(customAxios).get(
-    `boards/profile?user=${paramNo}&take=${takeParam}&page=1${target}`,
+    `boards/profile?user=${paramNo}&take=${takeParam}&page=1&target=${true}`,
+  );
+};
+
+export const getWantedSpecData = (
+  paramNo: string | undefined,
+  takeParam: number,
+  target: string,
+) => {
+  return setInterceptors(customAxios).get(
+    `boards/profile?user=${paramNo}&take=${takeParam}&page=1&target=${false}`,
   );
 };

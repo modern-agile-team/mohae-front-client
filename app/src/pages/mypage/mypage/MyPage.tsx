@@ -72,14 +72,6 @@ export default function MyPage() {
     };
   }, []);
 
-  const getDoitBoard = () => {
-    BoardGetRequest(
-      `${BOARDS}user=${paramNo}&take=${take[checkSelf]}&page=1${target[0]}`,
-      TOKEN,
-      get_user_helpme,
-    );
-  };
-
   return (
     <Presenter
       text={text}

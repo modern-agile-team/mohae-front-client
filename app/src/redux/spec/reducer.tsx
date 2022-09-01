@@ -4,7 +4,12 @@ import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { ENDPOINT } from '../../utils/ENDPOINT';
 import { profile } from '../../apis/user';
-import { BoardSpec, getFindSpecData, Spec } from '../../apis/spec';
+import {
+  BoardSpec,
+  getFindSpecData,
+  getWantedSpecData,
+  Spec,
+} from '../../apis/spec';
 import { getSpecData } from '../../apis/spec';
 const GET_USER_SPECS = 'get_user_specs';
 const GET_USER_TOHELP = 'get_user_tohelp';
@@ -32,8 +37,9 @@ export const getFindSpecs = createAsyncThunk(
   'profile/getFindSpec',
   async (body: BoardSpec) => {
     const { paramNo, takeParam, target } = body;
-    const response = await getFindSpecData(paramNo, takeParam, target);
-    return response.data;
+    const findSpecs = await getFindSpecData(paramNo, takeParam, target);
+    const wantedSpecs = await getWantedSpecData(paramNo, takeParam, target);
+    return { findSpecs, wantedSpecs };
   },
 );
 
@@ -107,7 +113,8 @@ export const spec = createSlice({
         state.isLoading = true;
       })
       .addCase(getFindSpecs.fulfilled, (state, { payload }) => {
-        state.profileToHelp = payload.response;
+        state.profileToHelp = payload.findSpecs.data.response;
+        state.profileHelpMe = payload.wantedSpecs.data.response;
         state.isLoading = false;
       })
       .addCase(getFindSpecs.rejected, (state, { payload }) => {});

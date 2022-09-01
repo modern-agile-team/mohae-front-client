@@ -18,20 +18,14 @@ interface Props {
   [key: string]: any;
 }
 
-export default function MySelf({
-  text,
-  userInfo,
-  posts,
-  actions,
-  checkSelf,
-}: Props) {
+export default function MySelf({ text, posts, actions, checkSelf }: Props) {
   const navigate = useNavigate();
-  const tokenInfo = useSelector((state: RootState) => state.user.user);
+  const userInfo = useSelector((state: RootState) => state.user.user);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
 
   const interested =
-    userInfo && userInfo.categories ? (
+    userInfo && userInfo.categories.length ? (
       userInfo.categories.map((category: any, index: number) => (
         <Box key={index} size={[80, 80]}>
           <Category
@@ -71,9 +65,9 @@ export default function MySelf({
             <Profile
               size={146}
               img={
-                (tokenInfo.photo_url !== null &&
+                (userInfo.photo_url !== null &&
                   'https://d2ffbnf2hpheay.cloudfront.net/' +
-                    tokenInfo.photo_url) ||
+                    userInfo.photo_url) ||
                 '/img/profile.png'
               }
               noneClick

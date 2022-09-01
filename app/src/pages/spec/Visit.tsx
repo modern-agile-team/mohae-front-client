@@ -7,7 +7,6 @@ import { Box, FocusBar, BasicModal, Carousel, PostIt } from '../../components';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../redux/root';
 import { get_spec_info } from '../../redux/spec/reducer';
-import axios from 'axios';
 import { Btn } from '../../components';
 import { spec_visit } from '../../redux/modal/reducer';
 import { ENDPOINT } from '../../utils/ENDPOINT';

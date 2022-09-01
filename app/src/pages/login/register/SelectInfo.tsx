@@ -1,5 +1,3 @@
-/** @format */
-
 import { Dispatch, SetStateAction, useMemo, useState } from 'react';
 import { css, cx } from '@emotion/css';
 import { useSelector } from 'react-redux';
@@ -532,11 +530,9 @@ const DemoSelectBox = styled.div`
   width: 100%;
   height: 240px;
   overflow: hidden;
-
   &::-webkit-scrollbar {
     display: none;
   }
-
   background-color: white;
   display: flex;
   flex-direction: column;
@@ -554,7 +550,6 @@ const SelectButton = styled.button`
   button {
     color: ${color.main};
   }
-
   ${shadow.normal};
 `;
 
@@ -647,7 +642,6 @@ const Category = styled.button<{ select: number; intersted: number[] }>`
   align-items: center;
   border-radius: 6px;
   box-shadow: 0px 0px 8px 0px #84838d;
-
   span {
     color: ${props =>
       props.intersted.includes(props.select) ? color.main : '#a7a7ad'};
@@ -675,7 +669,6 @@ const Button = styled.button`
   font-size: 14px;
   font-weight: 400;
   color: #ffffff;
-
   &:disabled {
     background-color: #e7e7e8;
   }

@@ -10,7 +10,7 @@ interface HEADERS {
   [key: string]: any;
 }
 
-export function useGetRequest(param: string, token: string, action: any) {
+export function BoardGetRequest(param: string, token: string, action: any) {
   const dispatch = useDispatch();
   const URL = `${ENDPOINT}${param}`,
     CONFIG: HEADERS = {

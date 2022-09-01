@@ -3,7 +3,14 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { ENDPOINT } from '../../utils/ENDPOINT';
-
+import { profile } from '../../apis/user';
+import {
+  BoardSpec,
+  getFindSpecData,
+  getWantedSpecData,
+  Spec,
+} from '../../apis/spec';
+import { getSpecData } from '../../apis/spec';
 const GET_USER_SPECS = 'get_user_specs';
 const GET_USER_TOHELP = 'get_user_tohelp';
 const GET_USER_HELPME = 'get_user_helpme';
@@ -17,7 +24,24 @@ const asyncThunk = (name: string, param: string | number) =>
     return response.data;
   });
 
-export const getHotAll = asyncThunk('getUserInfo', 5);
+export const getSpecs = createAsyncThunk(
+  'profile/getSpec',
+  async (body: Spec) => {
+    const { paramNo, takeParam } = body;
+    const response = await getSpecData(paramNo, takeParam);
+    return response.data;
+  },
+);
+
+export const getFindSpecs = createAsyncThunk(
+  'profile/getFindSpec',
+  async (body: BoardSpec) => {
+    const { paramNo, takeParam, target } = body;
+    const findSpecs = await getFindSpecData(paramNo, takeParam, target);
+    const wantedSpecs = await getWantedSpecData(paramNo, takeParam, target);
+    return { findSpecs, wantedSpecs };
+  },
+);
 
 interface INITSTATE {
   [key: string]: any;
@@ -28,6 +52,7 @@ const initialState: INITSTATE = {
   profileSpecs: [],
   profileToHelp: [],
   profileHelpMe: [],
+  profileInfo: {},
   specInfo: null,
   specNo: null,
   addImages: new FormData(),
@@ -74,6 +99,25 @@ export const spec = createSlice({
     //     state.isLoading = false;
     //   })
     //   .addCase(getHotAll.rejected, (state, { payload }) => {});
+
+    builder
+      .addCase(getSpecs.pending, (state, { payload }) => {
+        state.isLoading = true;
+      })
+      .addCase(getSpecs.fulfilled, (state, { payload }) => {
+        state.profileSpecs = payload.response;
+        state.isLoading = false;
+      })
+      .addCase(getSpecs.rejected, (state, { payload }) => {})
+      .addCase(getFindSpecs.pending, (state, { payload }) => {
+        state.isLoading = true;
+      })
+      .addCase(getFindSpecs.fulfilled, (state, { payload }) => {
+        state.profileToHelp = payload.findSpecs.data.response;
+        state.profileHelpMe = payload.wantedSpecs.data.response;
+        state.isLoading = false;
+      })
+      .addCase(getFindSpecs.rejected, (state, { payload }) => {});
   },
 });
 // 생성 추가 삭제

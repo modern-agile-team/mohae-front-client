@@ -10,12 +10,12 @@ const asyncThunk = (name: string, param: string) =>
     return response.data;
   });
 
-export const getHotAll = asyncThunk('getHotBoardAll', `/boards/hot?select=0`);
+export const getHotAll = asyncThunk('getHotBoardAll', `boards/hot?select=0`);
 export const getHotProgressing = asyncThunk(
   'getHotBoardProgressing',
-  `/boards/hot?select=1`
+  `boards/hot?select=1`,
 );
-export const getHotOver = asyncThunk('getHotBoardOver', `/boards/hot?select=2`);
+export const getHotOver = asyncThunk('getHotBoardOver', `boards/hot?select=2`);
 
 const initialState = {
   isLoading: true,
@@ -23,19 +23,12 @@ const initialState = {
   inProgressBoard: [],
   overedBoard: [],
 };
-// store (state)
 
 export const main = createSlice({
   name: 'main',
   initialState,
-  // reducer function
-  reducers: {
-    // create reducers
-    // [GET_OVER]: (state, action: PayloadAction<any>) => {
-    //   state.overedBoard = action.payload;
-    // },
-  },
-  extraReducers: (builder) => {
+  reducers: {},
+  extraReducers: builder => {
     builder
       .addCase(getHotAll.pending, (state, { payload }) => {
         state.isLoading = true;
@@ -65,12 +58,5 @@ export const main = createSlice({
       .addCase(getHotOver.rejected, (state, { payload }) => {});
   },
 });
-// 생성 추가 삭제
-// export const {
-// get_in_progress, get_over
-// } = main.actions;
-// create actions & type
-export default main.reducer;
-// action, reducer, store
 
-// response >> Array
+export default main.reducer;

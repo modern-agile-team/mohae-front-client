@@ -1,7 +1,7 @@
 /** @format */
 
 import { cx, css } from '@emotion/css';
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import Img from '../img/Img';
 import { color, radius, font, shadow } from '../../styles';
 import { useSelector } from 'react-redux';
@@ -9,20 +9,34 @@ import { RootState } from '../../redux/root';
 
 interface Props {
   [key: string]: any;
+  setImgIndex?: Dispatch<SetStateAction<number>>;
 }
 
-export default function Carousel({ onClick, imgs, outsideBtn }: Props) {
+export default function Carousel({
+  onClick,
+  imgs,
+  outsideBtn,
+  imgIndex,
+  setImgIndex,
+}: Props) {
   const reduxImgs = useSelector(
     (state: RootState) => state.createPost.data.imgArr,
   );
   const IMAGES = imgs || [...reduxImgs];
 
   const [sector, setSector] = useState(0);
+  const imgIndexIsDefine = (): number => {
+    return String(imgIndex) ? imgIndex : sector;
+  };
+  const setImgIndexIsDefine = (index: number) => {
+    setImgIndex ? setImgIndex(index) : setSector(index);
+  };
 
   const container = () => {
     const col = `calc(100% * ${IMAGES.length})`;
     const translate = `translateX(calc(${100 / IMAGES.length}% * ${
-      (-1 * ((sector % IMAGES.length) + IMAGES.length)) % IMAGES.length
+      (-1 * ((imgIndexIsDefine() % IMAGES.length) + IMAGES.length)) %
+      IMAGES.length
     }))`;
     return css`
       width: ${col};
@@ -93,11 +107,13 @@ export default function Carousel({ onClick, imgs, outsideBtn }: Props) {
 
   const circle = (index: number) => {
     const currentSize =
-      ((sector % IMAGES.length) + IMAGES.length) % IMAGES.length === index
+      ((imgIndexIsDefine() % IMAGES.length) + IMAGES.length) % IMAGES.length ===
+      index
         ? 1.75
         : 1;
     const currentColor =
-      ((sector % IMAGES.length) + IMAGES.length) % IMAGES.length === index
+      ((imgIndexIsDefine() % IMAGES.length) + IMAGES.length) % IMAGES.length ===
+      index
         ? `${color.main}`
         : `${color.light1}`;
     return css`
@@ -116,9 +132,9 @@ export default function Carousel({ onClick, imgs, outsideBtn }: Props) {
 
   const clickArrowBtn = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (e.currentTarget.name === '+') {
-      setSector(sector + 1);
+      setImgIndexIsDefine(imgIndexIsDefine() + 1);
     } else {
-      setSector(sector - 1);
+      setImgIndexIsDefine(imgIndexIsDefine() - 1);
     }
   };
 
@@ -128,7 +144,7 @@ export default function Carousel({ onClick, imgs, outsideBtn }: Props) {
     </div>
   ));
   const circleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    setSector(Number(e.currentTarget.id));
+    setImgIndexIsDefine(Number(e.currentTarget.id));
   };
 
   const circles = IMAGES.map((img: string, index: number) => (

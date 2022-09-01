@@ -4,8 +4,7 @@ import { useSelector } from 'react-redux';
 import Presenter from './Presenter';
 
 import { RootState } from '../../redux/root';
-import { useState, ReactElement, useEffect } from 'react';
-import { jsx } from '@emotion/react';
+import { useState, ReactElement } from 'react';
 
 export default function LoginModal(): ReactElement {
   const isOpenModal = useSelector((state: RootState) => state.modal.openLogin);
@@ -43,14 +42,17 @@ export default function LoginModal(): ReactElement {
       e.stopPropagation();
       setPart(2);
     },
-    agreement: () => {
+    agreement: (e: React.MouseEvent) => {
       setPart(3);
     },
-    finishedInputInfo: () => {
+    finishedInputInfo: (e: React.MouseEvent) => {
       setPart(4);
     },
-    finishedAll: () => {
+    finishedAll: (e: React.MouseEvent) => {
       setPart(0);
+    },
+    findPassword: (e: React.MouseEvent) => {
+      setPart(5);
     },
   };
 

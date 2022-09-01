@@ -28,6 +28,7 @@ function CreateAndEditPost({ type }: Props) {
   const form = useSelector((state: RootState) => state.createPost.form);
   const refactorReduxData = useRefactorPostingData();
   const [stateForEdit, setStateForEdit] = useState<StateForEdit>();
+  const [popupView, setPopupView] = useState(false);
   const [view, setView] = useState<{ [key: number]: boolean }>({
     0: false,
     1: false,
@@ -64,7 +65,6 @@ function CreateAndEditPost({ type }: Props) {
                 : [],
           };
           setStateForEdit(beforeEdit);
-          console.log('res.data :>> ', res.data);
           dispatch(setForEdit(beforeEdit));
           setTargetChecked(
             Number(beforeEdit.target) === 1
@@ -96,7 +96,7 @@ function CreateAndEditPost({ type }: Props) {
 
     axiosPostOrPatch(URL, form, config)
       .then(res => {
-        dispatch(setInitialState());
+        setPopupView(true);
       })
       .catch(err => {
         type === 'create' ? alert('작성 실패') : alert('수정 실패');
@@ -153,6 +153,7 @@ function CreateAndEditPost({ type }: Props) {
         <Presenter
           view={view}
           targetChecked={targetChecked}
+          popupView={popupView}
           selectBoxClick={selectBoxClick}
           setTargetCheck={setTargetCheck}
           postingAxios={postingAxios}

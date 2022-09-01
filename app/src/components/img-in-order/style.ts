@@ -25,7 +25,7 @@ export default function Style({ inline }: Props) {
         & > :first-child {
           margin: 0 6px 0 8px;
         }
-        & > :nth-child(5) {
+        & > :nth-of-type(5) {
           margin: 0 8px 0 6px;
         }
         .show {
@@ -121,7 +121,7 @@ export default function Style({ inline }: Props) {
         height: 56px;
         position: relative;
         :hover {
-          & > :nth-child(2) {
+          & > :nth-of-type(2) {
             transition: 0.2s;
             transform: scale(1.2);
           }

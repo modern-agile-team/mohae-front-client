@@ -81,7 +81,6 @@ const style = css`
     .input-wrapper {
       width: 648px;
       position: relative;
-      /* background-color: lightblue; */
       form {
         z-index: 2;
       }

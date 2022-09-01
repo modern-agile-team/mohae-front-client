@@ -59,7 +59,7 @@ export default function Part3(props: Props) {
         transition: 0.5s all ease-in-out;
         transform: scale(1);
       }
-      & > :nth-child(${target + 1}) {
+      & > :nth-of-type(${target + 1}) {
         transition: 0.5s all ease-in-out;
         transform: scale(1.21052);
         z-index: 5;

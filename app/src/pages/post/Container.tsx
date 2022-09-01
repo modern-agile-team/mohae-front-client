@@ -77,9 +77,7 @@ function Post() {
   const { no } = useParams();
   const dispatch = useDispatch();
   const token = getToken() || null;
-  const decoded = () => {
-    return token !== null ? decodeToken(token) : token;
-  };
+  const decoded = useSelector((state: RootState) => state.user.user);
   const [view, setView] = useState<{ [key: string]: boolean }>({
     report: false,
     isDeadline: false,
@@ -87,6 +85,7 @@ function Post() {
   const loading = useSelector((state: RootState) => state.post.loading);
   const [redirectLogin, setRedirectLogin] = useState(false);
   const [runOutRefreshToken, setRunOutRefreshToken] = useState(false);
+  const [imgIndex, setImgIndex] = useState(0);
   const location = useLocation();
 
   const btnClick = {
@@ -112,11 +111,10 @@ function Post() {
             setPostData({
               ...res.data,
               msg: visitor,
-              decoded: decoded(),
+              decoded: decoded,
               token: token,
             }),
           );
-          console.log(res.data);
         });
     } catch (err: any) {
       if (err.response.status === 410 || err.response.status === 401) {
@@ -147,7 +145,7 @@ function Post() {
         .patch(URL, null, config)
         .then(res => {
           setView({ ...view, isDeadline: true });
-          dispatch(setIsDeadline());
+          getPostingData();
         })
         .catch(err => console.log('err', err));
     }

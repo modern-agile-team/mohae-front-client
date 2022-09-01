@@ -19,7 +19,7 @@ interface InitialState {
 const initialState: InitialState = {
   loading: true,
   data: {
-    price: '0',
+    price: '',
     title: '',
     description: '',
     summary: '',
@@ -70,7 +70,7 @@ const createPost = createSlice({
     },
     setInitialState: state => {
       state.data = {
-        price: '0',
+        price: '',
         title: '',
         description: '',
         summary: '',

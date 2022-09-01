@@ -22,12 +22,25 @@ function Search(props: Props) {
   const filterData = useSelector((state: RootState) => state.filter.data);
   const [searchParams, setSearchParams] = useSearchParams();
   const [showFilter, setShowFilter] = useState(false);
+  const [showDataList, setShowDataList] = useState(false);
   const [hotKeys, setHotKeys] = useState<
     { no: number; name: string; ranking: number }[]
   >([]);
   const navigate = useNavigate();
   const getParams = (query: string): any => {
     return searchParams.get(query);
+  };
+
+  const onBlur = () => {
+    setShowDataList(false);
+  };
+
+  const onFocus = () => {
+    if (showFilter) {
+      return;
+    } else {
+      setShowDataList(true);
+    }
   };
 
   useEffect(() => {
@@ -123,7 +136,13 @@ function Search(props: Props) {
     str: string,
     historyValue?: string,
   ) => {
-    const query = `?categoryNo=${no}&title=${titleQuery(
+    onBlur();
+    if (searchParams.get('title') === value) {
+      e.preventDefault();
+      setValue('');
+      return;
+    }
+    const query = `?categoryNo=${no || 1}&title=${titleQuery(
       historyValue,
     )}${sortQuery()}&target=${drawObjKey(
       objDataProcessing().check.target,
@@ -159,13 +178,13 @@ function Search(props: Props) {
       resetPageInfo && resetPageInfo();
     }
     if (main) {
-      navigate('boards/1/page/1' + query);
+      navigate('boards/1' + query);
     }
   };
 
   const hotKeyClick = (e: React.MouseEvent, no: number) => {
     e.preventDefault();
-    navigate(`/boards/${no}/page/1`);
+    navigate(`/boards/${no}`);
   };
 
   const deleteAll = () => {
@@ -193,6 +212,9 @@ function Search(props: Props) {
       hotKeyClick={hotKeyClick}
       setLocalValue={setLocalValue}
       onSubmit={onSubmit}
+      onBlur={onBlur}
+      onFocus={onFocus}
+      showDataList={showDataList}
     />
   );
 }

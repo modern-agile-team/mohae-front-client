@@ -8,7 +8,7 @@ interface Props {
 }
 
 function EmptySpinner(props: Props) {
-  const { loading, searchNone, boardNone, text, small } = props;
+  const { loading, searchNone, boardNone, subText, text, small } = props;
   const style = css`
     display: flex;
     flex-direction: column;
@@ -38,9 +38,12 @@ function EmptySpinner(props: Props) {
         height: 110px;
       }
       p {
+        color: ${color.dark1};
+      }
+      p:nth-of-type(2) {
         color: ${color.main};
       }
-      p::after {
+      p:nth-of-type(2)::after {
         content: '에 대한 검색결과가 없습니다.';
         color: ${color.dark1};
       }
@@ -84,6 +87,7 @@ function EmptySpinner(props: Props) {
       <div className="img-wrap">
         <Img src={checkAttrProps(imgs)} />
       </div>
+      {subText && <p>{subText}</p>}
       <p>{checkAttrProps(texts)}</p>
     </div>
   );

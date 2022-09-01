@@ -1,20 +1,7 @@
 /** @format */
 
-import {
-  Img,
-  Poster,
-  NewPost,
-  Box,
-  Profile,
-  FocusBar,
-  Category,
-  BasicModal,
-  MarkBox,
-  Btn,
-  OrderedImg,
-  Report,
-} from '../../../components';
-import { radius, font, color, shadow } from '../../../styles';
+import { Img, Btn } from '../../../components';
+import { font } from '../../../styles';
 import { css, cx } from '@emotion/css';
 
 interface Props {
@@ -64,10 +51,10 @@ const style = css`
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    > :nth-child(1) {
+    > :nth-of-type(1) {
       margin-top: 40px;
     }
-    > :nth-child(2) {
+    > :nth-of-type(2) {
       * {
         font-size: 24px;
       }
@@ -76,7 +63,7 @@ const style = css`
         margin-right: 4px;
       }
     }
-    > :nth-child(3) {
+    > :nth-of-type(3) {
       margin-top: 24px;
       text-align: center;
       font-size: 14px;

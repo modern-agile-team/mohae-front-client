@@ -49,7 +49,7 @@ export default function Options({
         height: 168px;
         background-color: white;
         overflow: scroll;
-        > :not(:nth-child(3n)) {
+        > :not(:nth-of-type(3n)) {
           margin: 0 14px 8px 0;
         }
       }
@@ -94,7 +94,7 @@ export default function Options({
         height: 100%;
         background-color: white;
         overflow: scroll;
-        > :nth-child(2n-1) {
+        > :nth-of-type(2n-1) {
           background-color: ${color.light1};
         }
       }

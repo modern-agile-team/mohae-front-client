@@ -1,20 +1,22 @@
-/** @format */
-
-import { useMemo, useState } from 'react';
+import { Dispatch, SetStateAction, useMemo, useState } from 'react';
 import { css, cx } from '@emotion/css';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import styled from '@emotion/styled';
-import { color, radius, font, shadow } from '../../../styles';
-import { Btn, Img } from '../../../components';
-import { AppDispatch, RootState } from '../../../redux/root';
+import { color, radius, shadow } from '../../../styles';
+import { Btn, Img, Popup } from '../../../components';
+import { RootState } from '../../../redux/root';
 import { ENDPOINT } from '../../../utils/ENDPOINT';
 import axios from 'axios';
 
 interface Object {
   [key: string]: any;
 }
+interface Props {
+  [key: string]: any;
+  setPopupView: Dispatch<SetStateAction<boolean>>;
+}
 
-export default function SelectInfo({ part, next }: Object) {
+export default function SelectInfo({ part, next, setPopupView }: Props) {
   const [open, setOpen] = useState<Object>({
     one: false,
     two: false,
@@ -164,7 +166,7 @@ export default function SelectInfo({ part, next }: Object) {
       })
       .then(res => {
         if (res.data.statusCode >= 200 && res.data.statusCode <= 204) {
-          next();
+          setPopupView(true);
           // sessionStorage.setItem('userEmail', res.data.response.email)
         } else {
           alert('다시 가입 해주세요');
@@ -185,7 +187,7 @@ export default function SelectInfo({ part, next }: Object) {
       })
       .then(res => {
         if (res.data.statusCode >= 200 && res.data.statusCode <= 204) {
-          next();
+          setPopupView(true);
         } else {
           alert('다시 가입 해주세요');
         }
@@ -528,11 +530,9 @@ const DemoSelectBox = styled.div`
   width: 100%;
   height: 240px;
   overflow: hidden;
-
   &::-webkit-scrollbar {
     display: none;
   }
-
   background-color: white;
   display: flex;
   flex-direction: column;
@@ -550,7 +550,6 @@ const SelectButton = styled.button`
   button {
     color: ${color.main};
   }
-
   ${shadow.normal};
 `;
 
@@ -586,7 +585,7 @@ const List = styled.div`
   height: 100%;
   background-color: white;
   overflow: scroll;
-  > :nth-child(2n-1) {
+  > :nth-of-type(2n-1) {
     background-color: ${color.light1};
   }
 `;
@@ -628,7 +627,7 @@ const CategoryOption = styled.div`
     height: 168px;
     background-color: white;
     overflow: scroll;
-    > :not(:nth-child(3n)) {
+    > :not(:nth-of-type(3n)) {
       margin: 0 14px 8px 0;
     }
   }
@@ -643,7 +642,6 @@ const Category = styled.button<{ select: number; intersted: number[] }>`
   align-items: center;
   border-radius: 6px;
   box-shadow: 0px 0px 8px 0px #84838d;
-
   span {
     color: ${props =>
       props.intersted.includes(props.select) ? color.main : '#a7a7ad'};
@@ -671,7 +669,6 @@ const Button = styled.button`
   font-size: 14px;
   font-weight: 400;
   color: #ffffff;
-
   &:disabled {
     background-color: #e7e7e8;
   }

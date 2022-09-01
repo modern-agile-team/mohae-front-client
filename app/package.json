@@ -36,9 +36,10 @@
   },
   "scripts": {
     "go": "cross-env REACT_APP_ENDPOINT=https://mo-hae.site/ react-scripts start",
-    "build": "react-scripts build",
+    "build": "cross-env REACT_APP_ENDPOINT=https://mo-hae.site/ react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "serve": "cross-env REACT_APP_ENDPOINT=https://mo-hae.site/ npx serve -l 8080 -s build -n"
   },
   "eslintConfig": {
     "extends": [

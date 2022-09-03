@@ -16,7 +16,6 @@ import {
   setInitialState as setInitialStateSpecData,
   getFindSpecs,
 } from '../../../redux/spec/reducer';
-import { BoardGetRequest } from '../../../redux/axios';
 import getToken from '../../../utils/getToken';
 import { useEffect } from 'react';
 import { post } from '../../../redux/post/reducer';

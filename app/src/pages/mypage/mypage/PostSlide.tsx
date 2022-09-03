@@ -2,16 +2,15 @@
 
 import { cx, css } from '@emotion/css';
 import { useState } from 'react';
-import { Img, NewPost } from '../../../components';
+import { Img } from '../../../components';
 import { shadow } from '../../../styles';
-import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../../redux/root';
-import { spec_create } from '../../../redux/modal/reducer';
+import { useParams } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { ENDPOINT } from '../../../utils/ENDPOINT';
 import setInterceptors from '../../../apis/common/setInterceptors';
 import { customAxios } from '../../../apis/instance';
+import { Link } from 'react-router-dom';
+import BoardPost from '../../../components/newPost/BoardPost';
 
 interface Props {
   [key: string]: any;
@@ -20,8 +19,7 @@ interface PARAMS {
   [key: string]: any;
 }
 
-export default function Slide({
-  onClick,
+export default function PostSlide({
   outsideBtn,
   items,
   action,
@@ -65,8 +63,7 @@ export default function Slide({
     take: PARAMS = {
       true: 3,
       false: 4,
-    },
-    navigate = useNavigate();
+    };
 
   const checkItems = () => {
     if (items.length) {
@@ -217,29 +214,15 @@ export default function Slide({
   };
 
   const viewPosts = () => {
-    console.log(items);
     if (items && items.length) {
       return items.map((contents: string, index: number) => (
         <div className={'board'} key={index}>
-          <NewPost page={'inSpec'} board={contents} />
+          <BoardPost page={'inSpec'} board={contents} />
         </div>
       ));
     } else if (checkSelf === 'false') {
       return <div className={'no-data'}>{text[action.type]}</div>;
     }
-  };
-
-  const openSpecCreate = useSelector(
-    (state: RootState) => state.modal.openSpecCreate,
-  );
-
-  const openAddPostModal = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    dispatch(spec_create(!openSpecCreate));
-    navigate({
-      search: '?create',
-    });
   };
 
   return (
@@ -249,14 +232,16 @@ export default function Slide({
           <div className={'box'}>
             <div className={'container'}>
               {checkSelf === 'true' && (
-                <button className={'add-post'} onClick={openAddPostModal}>
-                  <div className={'add-img'}>
-                    <Img src={'/img/close.png'} />
-                  </div>
-                  {!items.length && (
-                    <div className="spec-register">{'스펙 등록하기'}</div>
-                  )}
-                </button>
+                <Link to="/createPost">
+                  <button className={'add-post'}>
+                    <div className={'add-img'}>
+                      <Img src={'/img/close.png'} />
+                    </div>
+                    {!items.length && (
+                      <div className="spec-register">{'게시글 등록하기'}</div>
+                    )}
+                  </button>
+                </Link>
               )}
               {viewPosts()}
             </div>

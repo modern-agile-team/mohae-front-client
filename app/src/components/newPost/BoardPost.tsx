@@ -4,21 +4,13 @@ import { color, radius, font, shadow } from '../../styles';
 import { css, cx } from '@emotion/css';
 import Img from '../img/Img';
 import MarkBox from '../markbox/MarkBox';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../../redux/root';
 import { Link } from 'react-router-dom';
-import { spec_visit } from '../../redux/modal/reducer';
-import { get_spec_info } from '../../redux/spec/reducer';
-import { ENDPOINT } from '../../utils/ENDPOINT';
-import setInterceptors from '../../apis/common/setInterceptors';
-import { customAxios } from '../../apis/instance';
-import { ImgBox } from '../poster/ImgBox';
 
 interface Props {
   [key: string]: any;
 }
 
-export default function NewPost({ page, board }: Props) {
+export default function BoardPost({ page, board }: Props) {
   const text: { [key: string]: any } = {
     isOver: 'DAY',
   };
@@ -237,36 +229,8 @@ export default function NewPost({ page, board }: Props) {
   ) : (
     <> </>
   );
-
-  const isOpenSpecVisit = useSelector(
-    (state: RootState) => state.modal.openSpecVisit,
-  );
-  const dispatch = useDispatch();
-
-  const openModal = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    dispatch(spec_visit(!isOpenSpecVisit));
-    if (page === 'inSpec') {
-      setInterceptors(customAxios)
-        .get(`${ENDPOINT}/specs/spec/${board.no}`)
-        .then(res => {
-          if (res.data.statusCode >= 200 && res.data.statusCode <= 204) {
-            dispatch(get_spec_info(res.data.response));
-          }
-        })
-        .catch(err => {
-          console.log('err :>> ', err);
-        });
-    }
-  };
-
   return (
-    <Link
-      to={isNaN(board.target) ? `?spec/${board.no}` : `post/${board.no}`}
-      className={cx(style)}
-      onClick={openModal}
-    >
+    <Link to={`/post/${board.no}`} className={cx(style)}>
       <div className={'img'}>
         {board.photoUrl !== null ? (
           <img

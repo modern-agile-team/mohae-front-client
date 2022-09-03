@@ -77,7 +77,6 @@ const App: React.SFC = () => {
   return (
     <Router>
       <Routes>
-        <Route path="*" element={<Navigate to="/" replace />} />
         <Route path={'/'} element={<Layout main component={<Home />} />} />
         <Route path={'/hg'} element={<Layout component={<HG />} />} />
         <Route

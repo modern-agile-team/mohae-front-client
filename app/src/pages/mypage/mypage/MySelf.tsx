@@ -7,12 +7,13 @@ import Slide from './Slide';
 import { Img, Box, Profile, FocusBar, Category } from '../../../components';
 import { useNavigate } from 'react-router-dom';
 import ModifyProfile from '../../modifyProfile';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { remove_user } from '../../../redux/user/reducer';
 import { AppDispatch } from '../../../redux/root';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/root';
+import PostSlide from './PostSlide';
 
 interface Props {
   [key: string]: any;
@@ -124,7 +125,7 @@ export default function MySelf({ text, posts, actions, checkSelf }: Props) {
           </div>
           <div className={'section'}>
             <div className={'title'}>{text.resume.give}</div>
-            <Slide
+            <PostSlide
               outsideBtn
               checkSelf={checkSelf}
               viewNumber={3}
@@ -135,7 +136,7 @@ export default function MySelf({ text, posts, actions, checkSelf }: Props) {
           </div>
           <div className={'section'}>
             <div className={'title'}>{text.resume.got}</div>
-            <Slide
+            <PostSlide
               outsideBtn
               checkSelf={checkSelf}
               viewNumber={3}

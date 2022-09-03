@@ -5,11 +5,11 @@ import MarkBox from '../markbox/MarkBox';
 
 interface Props {
   img: string | null;
-  state: number;
-  shape: number;
+  state?: number;
+  shape?: number;
 }
 
-function ImgBox({ img, state, shape }: Props) {
+export function ImgBox({ img, state, shape }: Props) {
   const size = [264, 152];
 
   const zoomIn = keyframes`

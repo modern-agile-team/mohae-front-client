@@ -152,6 +152,8 @@ export default function Slide({
         .add-img {
           width: 24px;
           height: 24px;
+          margin-top: 11px;
+          margin-bottom: 6px;
           transform: rotate(45deg);
         }
       }
@@ -250,7 +252,9 @@ export default function Slide({
                   <div className={'add-img'}>
                     <Img src={'/img/close.png'} />
                   </div>
-                  <div>{'스펙 등록하기'}</div>
+                  {items.length && (
+                    <div className="spec-register">{'스펙 등록하기'}</div>
+                  )}
                 </button>
               )}
               {viewPosts()}

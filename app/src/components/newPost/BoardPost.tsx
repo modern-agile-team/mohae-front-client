@@ -5,12 +5,15 @@ import { css, cx } from '@emotion/css';
 import Img from '../img/Img';
 import MarkBox from '../markbox/MarkBox';
 import { Link } from 'react-router-dom';
+import styled from '@emotion/styled';
 
 interface Props {
   [key: string]: any;
+  isHelpPost?: boolean;
 }
 
-export default function BoardPost({ page, board }: Props) {
+export default function BoardPost({ page, board, isHelpPost }: Props) {
+  console.log(isHelpPost);
   const text: { [key: string]: any } = {
     isOver: 'DAY',
   };
@@ -89,13 +92,21 @@ export default function BoardPost({ page, board }: Props) {
         height: 100%;
         object-fit: fill;
       }
+      .mark {
+        width: 30px;
+        height: 30px;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+      }
       & > * {
         transition: 0.3s all ease-in-out;
         transform: scale(1);
       }
+
       > .logo {
-        width: 60px;
-        height: 45px;
+        background: white url('/img/logo.png') no-repeat center/cover;
+        background-size: 30%;
       }
 
       :hover {
@@ -238,10 +249,17 @@ export default function BoardPost({ page, board }: Props) {
             alt="boardImg"
           />
         ) : (
-          <div className={'logo'}>
-            <Img src={'/img/logo.png'} />
-          </div>
+          <Logo />
         )}
+        <div className="mark">
+          <Img
+            src={
+              isHelpPost
+                ? '/img/exclamation-mark-main.png'
+                : '/img/question-mark-main.png'
+            }
+          />
+        </div>
       </div>
       <div className={'info'}>
         <div className={'user'}>
@@ -260,3 +278,10 @@ export default function BoardPost({ page, board }: Props) {
     </Link>
   );
 }
+
+const Logo = styled.div`
+  width: 100%;
+  height: 100%;
+  background: white url('/img/logo.png') no-repeat center/cover;
+  background-size: 30%;
+`;

@@ -2,6 +2,7 @@
 
 import { color, radius, font, shadow } from '../../styles';
 import { css, cx } from '@emotion/css';
+import styled from '@emotion/styled';
 import Img from '../img/Img';
 import MarkBox from '../markbox/MarkBox';
 import { useSelector, useDispatch } from 'react-redux';
@@ -12,7 +13,6 @@ import { get_spec_info } from '../../redux/spec/reducer';
 import { ENDPOINT } from '../../utils/ENDPOINT';
 import setInterceptors from '../../apis/common/setInterceptors';
 import { customAxios } from '../../apis/instance';
-import { ImgBox } from '../poster/ImgBox';
 
 interface Props {
   [key: string]: any;
@@ -97,13 +97,21 @@ export default function NewPost({ page, board }: Props) {
         height: 100%;
         object-fit: fill;
       }
+      .logo {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+      .mark {
+        width: 30px;
+        height: 30px;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+      }
       & > * {
         transition: 0.3s all ease-in-out;
         transform: scale(1);
-      }
-      > .logo {
-        width: 60px;
-        height: 45px;
       }
 
       :hover {
@@ -237,7 +245,6 @@ export default function NewPost({ page, board }: Props) {
   ) : (
     <> </>
   );
-
   const isOpenSpecVisit = useSelector(
     (state: RootState) => state.modal.openSpecVisit,
   );
@@ -274,9 +281,7 @@ export default function NewPost({ page, board }: Props) {
             alt="boardImg"
           />
         ) : (
-          <div className={'logo'}>
-            <Img src={'/img/logo.png'} />
-          </div>
+          <Logo />
         )}
       </div>
       <div className={'info'}>
@@ -296,3 +301,10 @@ export default function NewPost({ page, board }: Props) {
     </Link>
   );
 }
+
+const Logo = styled.div`
+  width: 100%;
+  height: 100%;
+  background: white url('/img/logo.png') no-repeat center/cover;
+  background-size: 30%;
+`;

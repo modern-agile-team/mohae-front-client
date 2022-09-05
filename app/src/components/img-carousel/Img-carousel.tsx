@@ -47,6 +47,7 @@ export default function Carousel({
       align-items: center;
     `;
   };
+  console.log(container());
 
   const style = css`
     width: 100%;
@@ -60,10 +61,21 @@ export default function Carousel({
       height: 100%;
       overflow: hidden;
       border-radius: 6px;
-    }
+      .container {
+        ${container()}
+        .img {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 400px;
 
-    .container {
-      ${container()}
+          img {
+            width: 100%;
+          }
+        }
+      }
     }
 
     .btn {
@@ -93,15 +105,6 @@ export default function Carousel({
       bottom: 16px;
       left: 50%;
       transform: translateX(-50%);
-    }
-
-    .img {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 400px;
     }
   `;
 
@@ -140,9 +143,10 @@ export default function Carousel({
 
   const images = IMAGES.map((img: string, index: number) => (
     <div className={'img'} key={index}>
-      <Img src={img} />
+      <Img src="/img/logo.png" />
     </div>
   ));
+
   const circleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     setImgIndexIsDefine(Number(e.currentTarget.id));
   };
@@ -156,10 +160,18 @@ export default function Carousel({
     />
   ));
 
+  console.log(IMAGES);
+
   return (
     <div className={cx(style)}>
       <div className={'box'}>
-        <div className={'container'}>{images}</div>
+        <div className={'container'}>
+          {IMAGES.map((el: string, index: number) => (
+            <div className={'img'} key={index}>
+              <Img src={el} />
+            </div>
+          ))}
+        </div>
       </div>
       <button className={'btn prev'} onClick={clickArrowBtn} name="-" />
       <button className={'btn next'} onClick={clickArrowBtn} name="+" />

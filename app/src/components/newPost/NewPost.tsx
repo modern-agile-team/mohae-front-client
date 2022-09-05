@@ -256,7 +256,7 @@ export default function NewPost({ page, board }: Props) {
     dispatch(spec_visit(!isOpenSpecVisit));
     if (page === 'inSpec') {
       setInterceptors(customAxios)
-        .get(`${ENDPOINT}/specs/spec/${board.no}`)
+        .get(`${ENDPOINT}specs/spec/${board.no}`)
         .then(res => {
           if (res.data.statusCode >= 200 && res.data.statusCode <= 204) {
             dispatch(get_spec_info(res.data.response));

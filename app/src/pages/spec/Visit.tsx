@@ -26,13 +26,17 @@ export default function Visit() {
     title: '',
     description: '',
   });
+  const [imgIndex, setImgIndex] = useState<number>(0);
 
   useEffect(() => {}, []);
 
   const imgURLs =
     specInfo &&
     specInfo.specPhotos.length > 0 &&
-    specInfo.specPhotos.map((img: any, index: number) => img.photo_url);
+    specInfo.specPhotos.map(
+      (img: any, index: number) =>
+        `https://d2ffbnf2hpheay.cloudfront.net/${img.photo_url}`,
+    );
 
   const clickEditBtn = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -168,7 +172,12 @@ export default function Visit() {
         <div className={'wrapper'}>
           <PostIt big>
             <div className={'carousel'}>
-              <Carousel outsideBtn imgs={imgURLs && imgURLs} />
+              <Carousel
+                outsideBtn
+                imgs={imgURLs && imgURLs}
+                imgIndex={imgIndex}
+                setImgIndex={setImgIndex}
+              />
             </div>
           </PostIt>
           <Box size={[336, 470]}>{isEdit ? editLayout : viewLayout}</Box>

@@ -1,6 +1,6 @@
 /** @format */
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { css, cx } from '@emotion/css';
 import { color, radius, font } from '../../styles';
 import { Box, FocusBar, BasicModal, Btn } from '../../components';
@@ -11,6 +11,7 @@ import { spec_create } from '../../redux/modal/reducer';
 import { ENDPOINT } from '../../utils/ENDPOINT';
 import setInterceptors from '../../apis/common/setInterceptors';
 import { customAxios } from '../../apis/instance';
+import { Init_Form } from '../../redux/spec/reducer';
 
 export default function Edit() {
   const dispatch = useDispatch();
@@ -42,6 +43,7 @@ export default function Edit() {
     });
   };
   const addImages = useSelector((state: RootState) => state.spec.addImages);
+
   const createRequest = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!value.title || !value.description) {
       alert('제목과 내용을 입력해주세요.');
@@ -49,9 +51,16 @@ export default function Edit() {
     }
     e.preventDefault();
     e.stopPropagation();
-    addImages.append('title', value.title && value.title);
-    addImages.append('description', value.description && value.description);
-    const iterator = addImages.entries();
+
+    if (addImages.getAll('image').length === 0) {
+      const file = new File(['logo.png'], 'logo.png', {
+        type: 'image/jpg',
+      });
+      addImages.append('image', file);
+    }
+
+    addImages.append('title', value.title);
+    addImages.append('description', value.description);
 
     setInterceptors(customAxios)
       .post(`${ENDPOINT}specs/regist`, addImages, {
@@ -76,6 +85,16 @@ export default function Edit() {
   const reset = (e: React.MouseEvent) => {
     dispatch(spec_create(false));
   };
+  console.log(addImages.get('image'));
+  useEffect(() => {
+    if (!isOpen) {
+      setValue({
+        title: '',
+        description: '',
+      });
+      dispatch(Init_Form());
+    }
+  }, [isOpen]);
 
   return (
     <BasicModal big visible={isOpen} reset={reset}>

@@ -3,7 +3,7 @@
 import { cx, css } from '@emotion/css';
 import { Dispatch, SetStateAction, useState } from 'react';
 import Img from '../img/Img';
-import { color, radius, font, shadow } from '../../styles';
+import { color } from '../../styles';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/root';
 
@@ -13,7 +13,6 @@ interface Props {
 }
 
 export default function Carousel({
-  onClick,
   imgs,
   outsideBtn,
   imgIndex,
@@ -29,11 +28,15 @@ export default function Carousel({
     return String(imgIndex) ? imgIndex : sector;
   };
   const setImgIndexIsDefine = (index: number) => {
-    setImgIndex ? setImgIndex(index) : setSector(index);
+    //setImgIndex ? setImgIndex(index) : setSector(index);
+    if (!setImgIndex) setSector(index);
+    else setImgIndex(index);
   };
 
+  console.log(imgIndex);
+
   const container = () => {
-    const col = `calc(100% * ${IMAGES.length})`;
+    const col = IMAGES.length ? `calc(100% * ${IMAGES.length})` : '100%';
     const translate = `translateX(calc(${100 / IMAGES.length}% * ${
       (-1 * ((imgIndexIsDefine() % IMAGES.length) + IMAGES.length)) %
       IMAGES.length
@@ -47,7 +50,6 @@ export default function Carousel({
       align-items: center;
     `;
   };
-  console.log(container());
 
   const style = css`
     width: 100%;
@@ -73,6 +75,38 @@ export default function Carousel({
 
           img {
             width: 100%;
+          }
+        }
+
+        .altImg {
+          width: 50%;
+          height: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin: 0 auto;
+
+          img {
+            width: 50%;
+          }
+        }
+        .altcontainer {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          align-items: center;
+
+          .altImg {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 400px;
+
+            img {
+              width: 100%;
+            }
           }
         }
       }
@@ -135,23 +169,19 @@ export default function Carousel({
 
   const clickArrowBtn = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (e.currentTarget.name === '+') {
-      setImgIndexIsDefine(imgIndexIsDefine() + 1);
+      if (imgIndex === IMAGES.length - 1) setImgIndexIsDefine(0);
+      else setImgIndexIsDefine(imgIndexIsDefine() + 1);
     } else {
-      setImgIndexIsDefine(imgIndexIsDefine() - 1);
+      if (imgIndex === 0) setImgIndexIsDefine(IMAGES.length - 1);
+      else setImgIndexIsDefine(imgIndexIsDefine() - 1);
     }
   };
-
-  const images = IMAGES.map((img: string, index: number) => (
-    <div className={'img'} key={index}>
-      <Img src="/img/logo.png" />
-    </div>
-  ));
 
   const circleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     setImgIndexIsDefine(Number(e.currentTarget.id));
   };
 
-  const circles = IMAGES.map((img: string, index: number) => (
+  const circles = IMAGES.map((_: string, index: number) => (
     <button
       key={index}
       id={`${index}`}
@@ -160,23 +190,29 @@ export default function Carousel({
     />
   ));
 
-  console.log(IMAGES);
-
   return (
     <div className={cx(style)}>
       <div className={'box'}>
         <div className={'container'}>
-          {IMAGES.map((el: string, index: number) => (
-            <div className={'img'} key={index}>
-              <Img src={el} />
+          {IMAGES.length ? (
+            IMAGES.map((el: string, index: number) => (
+              <div className={'img'} key={index}>
+                <Img src={el} />
+              </div>
+            ))
+          ) : (
+            <div className={'altImg'}>
+              <Img src={'/img/logo.png'} />
             </div>
-          ))}
+          )}
         </div>
       </div>
       <button className={'btn prev'} onClick={clickArrowBtn} name="-" />
       <button className={'btn next'} onClick={clickArrowBtn} name="+" />
       {/* arrowBtn comp */}
-      <div className={'circles-container'}>{circles}</div>
+      {IMAGES.length > 1 && (
+        <div className={'circles-container'}>{circles}</div>
+      )}
     </div>
   );
 }

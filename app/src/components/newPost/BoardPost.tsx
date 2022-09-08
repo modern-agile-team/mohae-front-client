@@ -13,7 +13,6 @@ interface Props {
 }
 
 export default function BoardPost({ page, board, isHelpPost }: Props) {
-  console.log(isHelpPost);
   const text: { [key: string]: any } = {
     isOver: 'DAY',
   };

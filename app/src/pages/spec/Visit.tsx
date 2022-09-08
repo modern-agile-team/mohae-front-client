@@ -31,11 +31,9 @@ export default function Visit() {
   useEffect(() => {}, []);
 
   const imgURLs =
-    specInfo &&
-    specInfo.specPhotos.length > 0 &&
+    specInfo?.specPhotos.length > 0 &&
     specInfo.specPhotos.map(
-      (img: any, index: number) =>
-        `https://d2ffbnf2hpheay.cloudfront.net/${img.photo_url}`,
+      (img: any) => `https://d2ffbnf2hpheay.cloudfront.net/${img.photo_url}`,
     );
 
   const clickEditBtn = (e: React.MouseEvent<HTMLDivElement>) => {

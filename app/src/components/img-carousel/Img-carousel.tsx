@@ -33,6 +33,11 @@ export default function Carousel({
     else setImgIndex(index);
   };
 
+  const handleCheckPrevSlide = (index: number) => {
+    if (IMAGES.length + index === IMAGES.length) return false;
+    return true;
+  };
+
   console.log(imgIndex);
 
   const container = () => {
@@ -122,7 +127,10 @@ export default function Carousel({
 
     .prev {
       left: ${outsideBtn ? `-48px` : '0'};
-      background: url('/img/arrow-left-light1.png') no-repeat center/contain;
+      background-image: ${handleCheckPrevSlide(imgIndex)
+          ? '/img/arrow-left-light1.png'
+          : '/img/arrow-left-main.png'}
+        no-repeat center/contain;
     }
     .next {
       right: ${outsideBtn ? `-48px` : '0'};

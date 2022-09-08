@@ -85,7 +85,6 @@ export default function Edit() {
   const reset = (e: React.MouseEvent) => {
     dispatch(spec_create(false));
   };
-  console.log(addImages.get('image'));
   useEffect(() => {
     if (!isOpen) {
       setValue({
@@ -94,7 +93,7 @@ export default function Edit() {
       });
       dispatch(Init_Form());
     }
-  }, [isOpen]);
+  }, [dispatch, isOpen]);
 
   return (
     <BasicModal big visible={isOpen} reset={reset}>

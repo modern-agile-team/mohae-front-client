@@ -34,11 +34,20 @@ export default function Carousel({
   };
 
   const handleCheckPrevSlide = (index: number) => {
-    if (IMAGES.length + index === IMAGES.length) return false;
+    if (IMAGES.length + index === IMAGES.length) {
+      console.log(IMAGES.length)
+      return false;
+    }
     return true;
   };
 
-  console.log(imgIndex);
+  const handleCheckNextSlide = (index: number) => {
+    if (index === IMAGES.length - 1) {
+      return false;
+    }
+    return true;
+  };
+
 
   const container = () => {
     const col = IMAGES.length ? `calc(100% * ${IMAGES.length})` : '100%';
@@ -127,14 +136,13 @@ export default function Carousel({
 
     .prev {
       left: ${outsideBtn ? `-48px` : '0'};
-      background-image: ${handleCheckPrevSlide(imgIndex)
-          ? '/img/arrow-left-light1.png'
-          : '/img/arrow-left-main.png'}
-        no-repeat center/contain;
+      background: url(${handleCheckPrevSlide(imgIndex) ? '/img/arrow-left-main.png' : '/img/arrow-left-light1.png'}) 
+      no-repeat center/contain;
     }
     .next {
       right: ${outsideBtn ? `-48px` : '0'};
-      background: url('/img/arrow-right-light1.png') no-repeat center/contain;
+      background: url(${handleCheckNextSlide(imgIndex) ? '/img/arrow-right-main.png' : '/img/arrow-right-light1.png'})
+      no-repeat center/contain; 
     }
 
     .circles-container {
@@ -215,8 +223,8 @@ export default function Carousel({
           )}
         </div>
       </div>
-      <button className={'btn prev'} onClick={clickArrowBtn} name="-" />
-      <button className={'btn next'} onClick={clickArrowBtn} name="+" />
+      {IMAGES.length > 0 && <button className={'btn prev'} onClick={clickArrowBtn} name="-" />}
+      {IMAGES.length > 0 && <button className={'btn next'} onClick={clickArrowBtn} name="+" />}
       {/* arrowBtn comp */}
       {IMAGES.length > 1 && (
         <div className={'circles-container'}>{circles}</div>

@@ -28,7 +28,9 @@ export default function Visit() {
   });
   const [imgIndex, setImgIndex] = useState<number>(0);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if (!isOpen) setImgIndex(0);
+  }, [isOpen]);
 
   const imgURLs =
     specInfo?.specPhotos.length > 0 &&

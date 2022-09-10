@@ -88,6 +88,9 @@ export const spec = createSlice({
       state.specNo = null;
       state.addImages = new FormData();
     },
+    Init_Form: state => {
+      state.addImages = new FormData();
+    },
   },
   extraReducers: builder => {
     // builder
@@ -129,6 +132,7 @@ export const {
   get_spec_no,
   add_images,
   setInitialState,
+  Init_Form,
 } = spec.actions;
 export default spec.reducer;
 // action, reducer, store

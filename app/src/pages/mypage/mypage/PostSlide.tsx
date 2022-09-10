@@ -14,6 +14,7 @@ import BoardPost from '../../../components/newPost/BoardPost';
 
 interface Props {
   [key: string]: any;
+  isHelpPost?: boolean;
 }
 interface PARAMS {
   [key: string]: any;
@@ -26,6 +27,7 @@ export default function PostSlide({
   marginRight,
   viewNumber,
   checkSelf,
+  isHelpPost,
 }: Props) {
   const [sector, setSector] = useState(0),
     dispatch = useDispatch(),
@@ -217,7 +219,7 @@ export default function PostSlide({
     if (items && items.length) {
       return items.map((contents: string, index: number) => (
         <div className={'board'} key={index}>
-          <BoardPost page={'inSpec'} board={contents} />
+          <BoardPost page={'inSpec'} board={contents} isHelpPost={isHelpPost} />
         </div>
       ));
     } else if (checkSelf === 'false') {

@@ -3,7 +3,7 @@
 import { cx, css } from '@emotion/css';
 import { Dispatch, SetStateAction, useState } from 'react';
 import Img from '../img/Img';
-import { color, radius, font, shadow } from '../../styles';
+import { color } from '../../styles';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/root';
 
@@ -13,7 +13,6 @@ interface Props {
 }
 
 export default function Carousel({
-  onClick,
   imgs,
   outsideBtn,
   imgIndex,
@@ -29,11 +28,29 @@ export default function Carousel({
     return String(imgIndex) ? imgIndex : sector;
   };
   const setImgIndexIsDefine = (index: number) => {
-    setImgIndex ? setImgIndex(index) : setSector(index);
+    //setImgIndex ? setImgIndex(index) : setSector(index);
+    if (!setImgIndex) setSector(index);
+    else setImgIndex(index);
   };
 
+  const handleCheckPrevSlide = (index: number) => {
+    if (IMAGES.length + index === IMAGES.length) {
+      console.log(IMAGES.length)
+      return false;
+    }
+    return true;
+  };
+
+  const handleCheckNextSlide = (index: number) => {
+    if (index === IMAGES.length - 1) {
+      return false;
+    }
+    return true;
+  };
+
+
   const container = () => {
-    const col = `calc(100% * ${IMAGES.length})`;
+    const col = IMAGES.length ? `calc(100% * ${IMAGES.length})` : '100%';
     const translate = `translateX(calc(${100 / IMAGES.length}% * ${
       (-1 * ((imgIndexIsDefine() % IMAGES.length) + IMAGES.length)) %
       IMAGES.length
@@ -60,10 +77,53 @@ export default function Carousel({
       height: 100%;
       overflow: hidden;
       border-radius: 6px;
-    }
+      .container {
+        ${container()}
+        .img {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 400px;
 
-    .container {
-      ${container()}
+          img {
+            width: 100%;
+          }
+        }
+
+        .altImg {
+          width: 50%;
+          height: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin: 0 auto;
+
+          img {
+            width: 50%;
+          }
+        }
+        .altcontainer {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          align-items: center;
+
+          .altImg {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 400px;
+
+            img {
+              width: 100%;
+            }
+          }
+        }
+      }
     }
 
     .btn {
@@ -76,11 +136,13 @@ export default function Carousel({
 
     .prev {
       left: ${outsideBtn ? `-48px` : '0'};
-      background: url('/img/arrow-left-light1.png') no-repeat center/contain;
+      background: url(${handleCheckPrevSlide(imgIndex) ? '/img/arrow-left-main.png' : '/img/arrow-left-light1.png'}) 
+      no-repeat center/contain;
     }
     .next {
       right: ${outsideBtn ? `-48px` : '0'};
-      background: url('/img/arrow-right-light1.png') no-repeat center/contain;
+      background: url(${handleCheckNextSlide(imgIndex) ? '/img/arrow-right-main.png' : '/img/arrow-right-light1.png'})
+      no-repeat center/contain; 
     }
 
     .circles-container {
@@ -93,15 +155,6 @@ export default function Carousel({
       bottom: 16px;
       left: 50%;
       transform: translateX(-50%);
-    }
-
-    .img {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 400px;
     }
   `;
 
@@ -132,22 +185,19 @@ export default function Carousel({
 
   const clickArrowBtn = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (e.currentTarget.name === '+') {
-      setImgIndexIsDefine(imgIndexIsDefine() + 1);
+      if (imgIndex === IMAGES.length - 1) setImgIndexIsDefine(0);
+      else setImgIndexIsDefine(imgIndexIsDefine() + 1);
     } else {
-      setImgIndexIsDefine(imgIndexIsDefine() - 1);
+      if (imgIndex === 0) setImgIndexIsDefine(IMAGES.length - 1);
+      else setImgIndexIsDefine(imgIndexIsDefine() - 1);
     }
   };
 
-  const images = IMAGES.map((img: string, index: number) => (
-    <div className={'img'} key={index}>
-      <Img src={img} />
-    </div>
-  ));
   const circleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     setImgIndexIsDefine(Number(e.currentTarget.id));
   };
 
-  const circles = IMAGES.map((img: string, index: number) => (
+  const circles = IMAGES.map((_: string, index: number) => (
     <button
       key={index}
       id={`${index}`}
@@ -159,12 +209,26 @@ export default function Carousel({
   return (
     <div className={cx(style)}>
       <div className={'box'}>
-        <div className={'container'}>{images}</div>
+        <div className={'container'}>
+          {IMAGES.length ? (
+            IMAGES.map((el: string, index: number) => (
+              <div className={'img'} key={index}>
+                <Img src={el} />
+              </div>
+            ))
+          ) : (
+            <div className={'altImg'}>
+              <Img src={'/img/logo.png'} />
+            </div>
+          )}
+        </div>
       </div>
-      <button className={'btn prev'} onClick={clickArrowBtn} name="-" />
-      <button className={'btn next'} onClick={clickArrowBtn} name="+" />
+      {IMAGES.length > 0 && <button className={'btn prev'} onClick={clickArrowBtn} name="-" />}
+      {IMAGES.length > 0 && <button className={'btn next'} onClick={clickArrowBtn} name="+" />}
       {/* arrowBtn comp */}
-      <div className={'circles-container'}>{circles}</div>
+      {IMAGES.length > 1 && (
+        <div className={'circles-container'}>{circles}</div>
+      )}
     </div>
   );
 }

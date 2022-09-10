@@ -89,7 +89,10 @@ export const userSlice = createSlice({
       .addCase(getUserData.fulfilled, (state, { payload }) => {
         state.user = payload.response;
       })
-      .addCase(getUserData.rejected, (state, { payload }) => {});
+      .addCase(getUserData.rejected, (state, { payload }) => {
+        state.user = {};
+        sessionStorage.clear();
+      });
   },
 });
 // 생성 추가 삭제

@@ -18,9 +18,8 @@ import {
 } from '../../../redux/spec/reducer';
 import getToken from '../../../utils/getToken';
 import { useEffect } from 'react';
-import { post } from '../../../redux/post/reducer';
+
 export default function MyPage() {
-  const BOARDS = `boards/profile?`;
   const target = {
     0: '&target=false',
     // 받을래요
@@ -69,7 +68,7 @@ export default function MyPage() {
       dispatch(setInitialStateSpecData());
       dispatch(setInitialStateMypageProfile());
     };
-  }, []);
+  }, [checkSelf, paramNo, dispatch]);
 
   return (
     <Presenter

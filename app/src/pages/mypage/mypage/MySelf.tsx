@@ -132,6 +132,7 @@ export default function MySelf({ text, posts, actions, checkSelf }: Props) {
               items={posts.profileToHelp}
               action={actions.toHelp}
               marginRight={32}
+              isHelpPost
             />
           </div>
           <div className={'section'}>

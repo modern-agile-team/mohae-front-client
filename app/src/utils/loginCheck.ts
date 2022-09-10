@@ -8,11 +8,6 @@ export const loginCheck = () => {
   try {
     store.dispatch(getUserData(data?.userNo));
   } catch (err: any) {
-    if (err.response.status === 410) {
-      alert('세션이 만료되었습니다');
-      sessionStorage.clear();
-      store.dispatch(remove_user());
-      window.location.reload();
-    }
+    console.log(err);
   }
 };

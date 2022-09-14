@@ -35,7 +35,6 @@ export default function Carousel({
 
   const handleCheckPrevSlide = (index: number) => {
     if (IMAGES.length + index === IMAGES.length) {
-      console.log(IMAGES.length)
       return false;
     }
     return true;

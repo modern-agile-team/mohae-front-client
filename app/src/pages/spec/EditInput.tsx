@@ -1,13 +1,14 @@
 /** @format */
 
 import { css, cx } from '@emotion/css';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, SetStateAction } from 'react';
 import { color } from '../../styles';
 import { Img } from '../../components';
 import Style from '../../components/img-in-order/style';
 import { add_images } from '../../redux/spec/reducer';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../redux/root';
+import axios from 'axios';
 interface Props {
   [key: string]: any;
 }
@@ -29,6 +30,7 @@ export default function EditInputImg({ imgs, inline, test }: Props) {
   const [alarm, setAlarm] = useState(true);
   const [myImage, setMyImage] = useState<IMAGE[]>(clone || []);
   const addedImages = useSelector((state: RootState) => state.spec.addImages);
+  const array2 = [];
 
   const addImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.currentTarget.files || [];
@@ -51,14 +53,19 @@ export default function EditInputImg({ imgs, inline, test }: Props) {
   };
 
   useEffect(() => {
-    if (test) {
-      const images = [];
+    if (test.length) {
+      const images: SetStateAction<IMAGE[]> | { img: any; checked: boolean; File: File; }[] = [];
+
       for (let image of test) {
-        const file = new File(['logo.png'], image, {
-          type: 'image/jpg',
+        axios.get<Blob>(image.replace('https://d2ffbnf2hpheay.cloudfront.net/','https://mohae-image.s3.ap-northeast-2.amazonaws.com/'),
+        { responseType: 'blob' }).then(res => {
+          const file = new File([res.data], image, {
+            type: res.data.type,
+          });
+          addedImages.append('image', file);
+          images.push({img: image, checked: false, File: file})
+          
         });
-        addedImages.append('image', file);
-        images.push({img: image, checked: false, File: file})
         
       }
       setMyImage(images);
@@ -160,6 +167,7 @@ export default function EditInputImg({ imgs, inline, test }: Props) {
     // formData 내부의 파일 명
     for (let i = 0; i < formDataLenth; i++) {
       const target = imagesNumber.next().value[1];
+      console.log(target)
 
       if (targetName !== target.name) {
         newFormData.append('image', target);

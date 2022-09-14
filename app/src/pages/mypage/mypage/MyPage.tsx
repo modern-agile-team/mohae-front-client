@@ -33,6 +33,9 @@ export default function MyPage() {
   };
   const TOKEN = getToken();
   const userInfo = useSelector((state: RootState) => state.user.user);
+  const isOpenSpecVisit = useSelector(
+    (state: RootState) => state.modal.openSpecVisit,
+  );
   const userNo = TOKEN !== '' && String(userInfo.userNo);
   const paramNo = useParams().no;
   const checkSelf = String(userNo === paramNo);
@@ -69,6 +72,10 @@ export default function MyPage() {
       dispatch(setInitialStateMypageProfile());
     };
   }, [checkSelf, paramNo, dispatch]);
+
+  useEffect(() => {
+    if (!isOpenSpecVisit)  dispatch(getSpecs({ paramNo, takeParam: take[checkSelf] }));
+  },[dispatch, isOpenSpecVisit])
 
   return (
     <Presenter

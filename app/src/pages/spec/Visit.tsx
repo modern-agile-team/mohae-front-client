@@ -6,24 +6,25 @@ import { color, radius, font } from '../../styles';
 import { Box, FocusBar, BasicModal, Carousel, PostIt } from '../../components';
 import EditInputImg from './EditInput';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../../redux/root';
-import { get_spec_info } from '../../redux/spec/reducer';
+import { AppDispatch, RootState } from '../../redux/root';
+import { getDetailSpec, get_spec_info, Init_Form } from '../../redux/spec/reducer';
 import { Btn } from '../../components';
 import { spec_visit } from '../../redux/modal/reducer';
 import { ENDPOINT } from '../../utils/ENDPOINT';
 import setInterceptors from '../../apis/common/setInterceptors';
 import { customAxios } from '../../apis/instance';
+import { getSpecDetail } from '../../apis/spec';
 
 export default function Visit() {
   const isOpen = useSelector((state: RootState) => state.modal.openSpecVisit);
-  const images = useSelector((state: RootState) => state.spec.addImages);
+  const formData = useSelector((state: RootState) => state.spec.addImages);
 
   const text: { [key: string]: any } = {
     sir: '님',
   };
   const [isEdit, setIsEdit] = useState(false);
   const specInfo = useSelector((state: RootState) => state.spec.specInfo);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const [value, setValue] = useState({
     title: '',
     description: '',
@@ -34,8 +35,14 @@ export default function Visit() {
     if (!isOpen) setImgIndex(0);
   }, [isOpen]);
 
+  useEffect(() => {
+    if (!isEdit) {
+      dispatch(Init_Form())
+    }
+  },[isEdit])
+
   const imgURLs =
-    specInfo?.specPhotos.length > 0 &&
+    specInfo?.specPhotos &&
     specInfo.specPhotos.map(
       (img: any) => `https://d2ffbnf2hpheay.cloudfront.net/${img.photo_url}`,
     );
@@ -72,19 +79,19 @@ export default function Visit() {
   const patchRequest = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    const formData = new FormData();
+    formData.delete('title');
+    formData.delete('description');
     formData.append('title', value.title);
     formData.append('description', value.description);
-    formData.append('image', images.get('image'));
-    dispatch(
-      get_spec_info({
-        ...specInfo,
-        title: value.title,
-        description: value.description,
-      }),
-    );
-    setIsEdit(!isEdit);
 
+    if (formData.getAll('image').length === 0) {
+      const file = new File(['logo.png'], 'logo.png', {
+        type: 'image/jpg',
+      });
+      formData.append('image', file);
+    } 
+
+    
     setInterceptors(customAxios)
       .patch(`${ENDPOINT}specs/${specInfo.no && specInfo.no}`, formData, {
         headers: {
@@ -93,7 +100,8 @@ export default function Visit() {
         },
       })
       .then(res => {
-        console.log(`res.data`, res.data);
+        dispatch(getDetailSpec(specInfo.no))
+        setIsEdit(false);
       })
       .catch(err => {
         console.log('err :>> ', err);
@@ -159,6 +167,8 @@ export default function Visit() {
     });
     dispatch(spec_visit(!isOpen));
   };
+
+  
 
   return (
     <BasicModal big visible={isOpen} reset={reset}>

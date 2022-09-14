@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { css, cx } from '@emotion/css';
 import { color, radius, font } from '../../styles';
 import { Box, FocusBar, BasicModal, Carousel, PostIt } from '../../components';
+import EditInputImg from './EditInput';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../redux/root';
 import { get_spec_info } from '../../redux/spec/reducer';
@@ -15,6 +16,7 @@ import { customAxios } from '../../apis/instance';
 
 export default function Visit() {
   const isOpen = useSelector((state: RootState) => state.modal.openSpecVisit);
+  const images = useSelector((state: RootState) => state.spec.addImages);
 
   const text: { [key: string]: any } = {
     sir: '님',
@@ -73,6 +75,7 @@ export default function Visit() {
     const formData = new FormData();
     formData.append('title', value.title);
     formData.append('description', value.description);
+    formData.append('image', images.get('image'));
     dispatch(
       get_spec_info({
         ...specInfo,
@@ -170,6 +173,7 @@ export default function Visit() {
           </div>
         </div>
         <div className={'wrapper'}>
+          {!isEdit ? 
           <PostIt big>
             <div className={'carousel'}>
               <Carousel
@@ -180,6 +184,11 @@ export default function Visit() {
               />
             </div>
           </PostIt>
+          : <Box size={[600, 470]}>
+              <div className={'editbox'}>
+                <EditInputImg  edit test={imgURLs}/>
+             </div>
+           </Box>}          
           <Box size={[336, 470]}>{isEdit ? editLayout : viewLayout}</Box>
         </div>
       </div>
@@ -215,6 +224,11 @@ const style = css`
     display: flex;
     justify-content: space-between;
     > .box {
+      width: 100%;
+      height: 100%;
+      padding: 8px;
+    }
+    .editbox {
       width: 100%;
       height: 100%;
       padding: 8px;

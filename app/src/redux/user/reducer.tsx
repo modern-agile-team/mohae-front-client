@@ -90,8 +90,7 @@ export const userSlice = createSlice({
         state.user = payload.response;
       })
       .addCase(getUserData.rejected, (state, { payload }) => {
-        state.user = {};
-        sessionStorage.clear();
+        console.log(payload)
       });
   },
 });

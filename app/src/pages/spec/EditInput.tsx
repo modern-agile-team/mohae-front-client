@@ -4,7 +4,7 @@ import { css, cx } from '@emotion/css';
 import { useState, useEffect } from 'react';
 import { color } from '../../styles';
 import { Img } from '../../components';
-import Style from './../../components/img-in-order/style';
+import Style from '../../components/img-in-order/style';
 import { add_images } from '../../redux/spec/reducer';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../redux/root';
@@ -18,7 +18,7 @@ interface IMAGE {
   File: FormData | any;
 }
 
-export default function InputImg({ imgs, inline }: Props) {
+export default function EditInputImg({ imgs, inline, test }: Props) {
   const clone =
     imgs &&
     imgs.map((img: any) => ({
@@ -51,10 +51,26 @@ export default function InputImg({ imgs, inline }: Props) {
   };
 
   useEffect(() => {
+    if (test) {
+      const images = [];
+      for (let image of test) {
+        const file = new File(['logo.png'], image, {
+          type: 'image/jpg',
+        });
+        addedImages.append('image', file);
+        images.push({img: image, checked: false, File: file})
+        
+      }
+      setMyImage(images);
+      dispatch(add_images(addedImages));
+    }
     setTimeout(() => {
       setAlarm(false);
     }, 5000);
   }, []);
+
+ 
+
 
   const style = Style({ inline: inline });
 
@@ -91,7 +107,7 @@ export default function InputImg({ imgs, inline }: Props) {
       const newClone = myImage.filter(
         (each: any, index: number) => index !== idx
       );
-
+      
       const section = myImage.reduce((acc: any, cur: any) => {
         if (cur.checked) {
           return ++acc;
@@ -144,7 +160,7 @@ export default function InputImg({ imgs, inline }: Props) {
     // formData 내부의 파일 명
     for (let i = 0; i < formDataLenth; i++) {
       const target = imagesNumber.next().value[1];
-      console.log(imagesNumber)
+
       if (targetName !== target.name) {
         newFormData.append('image', target);
       }

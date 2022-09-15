@@ -142,30 +142,25 @@ export default function ModalProfile(props: Props) {
       dispatch(setInitialStateSpecData());
     };
   }, []);
-  console.log(userInfo?.photo_url)
-  console.log(userInfo?.photo_url ? 'https://d2ffbnf2hpheay.cloudfront.net/' +
-  userInfo?.photo_url +
-  '?w=150':null)
+
   const showProfile = () => {
-    if(userInfo) {
-      return userInfo?.photo_url ? 'https://d2ffbnf2hpheay.cloudfront.net/' +
-    userInfo?.photo_url +
-    '?w=150':null
+    if (userInfo) {
+      return userInfo?.photo_url
+        ? 'https://d2ffbnf2hpheay.cloudfront.net/' +
+            userInfo?.photo_url +
+            '?w=150'
+        : null;
     } else {
-      return 'loading'
+      return 'loading';
     }
-  }
+  };
 
   return (
     <>
       <BasicModal big visible={view} reset={reset}>
         <div className={cx(style)}>
           <div className="header">
-            <Profile
-              img={showProfile()}
-              size={150}
-              noneClick
-            />
+            <Profile img={showProfile()} size={150} noneClick />
             <div>
               <div className="row title">
                 <div className={'row sub-title'}>
@@ -246,6 +241,7 @@ export default function ModalProfile(props: Props) {
                 action={actions.toHelp}
                 marginRight={16}
                 checkSelf={checkSelf}
+                linkTo={'toPosting'}
               />
             </div>
             <div className={'section'}>
@@ -257,6 +253,7 @@ export default function ModalProfile(props: Props) {
                 action={actions.helpMe}
                 marginRight={16}
                 checkSelf={checkSelf}
+                linkTo={'toPosting'}
               />
             </div>
           </div>

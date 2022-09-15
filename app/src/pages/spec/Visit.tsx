@@ -4,39 +4,49 @@ import { useState, useEffect } from 'react';
 import { css, cx } from '@emotion/css';
 import { color, radius, font } from '../../styles';
 import { Box, FocusBar, BasicModal, Carousel, PostIt } from '../../components';
+import EditInputImg from './EditInput';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../../redux/root';
-import { get_spec_info } from '../../redux/spec/reducer';
+import { AppDispatch, RootState } from '../../redux/root';
+import { getDetailSpec, Init_Form } from '../../redux/spec/reducer';
 import { Btn } from '../../components';
 import { spec_visit } from '../../redux/modal/reducer';
 import { ENDPOINT } from '../../utils/ENDPOINT';
 import setInterceptors from '../../apis/common/setInterceptors';
 import { customAxios } from '../../apis/instance';
+import { IMAGE } from './EditInput';
 
 export default function Visit() {
   const isOpen = useSelector((state: RootState) => state.modal.openSpecVisit);
+  const formData = useSelector((state: RootState) => state.spec.addImages);
 
   const text: { [key: string]: any } = {
     sir: '님',
   };
   const [isEdit, setIsEdit] = useState(false);
+  const [imgFiles, setImgFiles] = useState<IMAGE[]>([]);
   const specInfo = useSelector((state: RootState) => state.spec.specInfo);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const [value, setValue] = useState({
     title: '',
     description: '',
   });
   const [imgIndex, setImgIndex] = useState<number>(0);
 
+  const imgURLs =
+    specInfo?.specPhotos &&
+    specInfo.specPhotos.map(
+      (img: any) => `https://d2ffbnf2hpheay.cloudfront.net/${img.photo_url}`,
+    );
+
   useEffect(() => {
     if (!isOpen) setImgIndex(0);
   }, [isOpen]);
 
-  const imgURLs =
-    specInfo?.specPhotos.length > 0 &&
-    specInfo.specPhotos.map(
-      (img: any) => `https://d2ffbnf2hpheay.cloudfront.net/${img.photo_url}`,
-    );
+  useEffect(() => {
+    if (!isEdit) {
+      dispatch(Init_Form());
+    }
+  }, [isEdit]);
 
   const clickEditBtn = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -70,17 +80,15 @@ export default function Visit() {
   const patchRequest = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    const formData = new FormData();
     formData.append('title', value.title);
     formData.append('description', value.description);
-    dispatch(
-      get_spec_info({
-        ...specInfo,
-        title: value.title,
-        description: value.description,
-      }),
-    );
-    setIsEdit(!isEdit);
+
+    if (formData.getAll('image').length === 0) {
+      const file = new File(['logo.png'], 'logo.png', {
+        type: 'image/jpg',
+      });
+      formData.append('image', file);
+    }
 
     setInterceptors(customAxios)
       .patch(`${ENDPOINT}specs/${specInfo.no && specInfo.no}`, formData, {
@@ -90,7 +98,8 @@ export default function Visit() {
         },
       })
       .then(res => {
-        console.log(`res.data`, res.data);
+        dispatch(getDetailSpec(specInfo.no));
+        setIsEdit(false);
       })
       .catch(err => {
         console.log('err :>> ', err);
@@ -170,16 +179,24 @@ export default function Visit() {
           </div>
         </div>
         <div className={'wrapper'}>
-          <PostIt big>
-            <div className={'carousel'}>
-              <Carousel
-                outsideBtn
-                imgs={imgURLs && imgURLs}
-                imgIndex={imgIndex}
-                setImgIndex={setImgIndex}
-              />
-            </div>
-          </PostIt>
+          {!isEdit ? (
+            <PostIt big>
+              <div className={'carousel'}>
+                <Carousel
+                  outsideBtn
+                  imgs={imgURLs && imgURLs}
+                  imgIndex={imgIndex}
+                  setImgIndex={setImgIndex}
+                />
+              </div>
+            </PostIt>
+          ) : (
+            <Box size={[600, 470]}>
+              <div className={'editbox'}>
+                <EditInputImg edit editImages={imgURLs} />
+              </div>
+            </Box>
+          )}
           <Box size={[336, 470]}>{isEdit ? editLayout : viewLayout}</Box>
         </div>
       </div>
@@ -215,6 +232,11 @@ const style = css`
     display: flex;
     justify-content: space-between;
     > .box {
+      width: 100%;
+      height: 100%;
+      padding: 8px;
+    }
+    .editbox {
       width: 100%;
       height: 100%;
       padding: 8px;

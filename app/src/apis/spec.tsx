@@ -1,3 +1,4 @@
+import { ENDPOINT } from '../utils/ENDPOINT';
 import setInterceptors from './common/setInterceptors';
 import { customAxios } from './instance';
 
@@ -35,3 +36,11 @@ export const getWantedSpecData = (
     `boards/profile?user=${paramNo}&take=${takeParam}&page=1&target=${false}`,
   );
 };
+
+export const getSpecDetail = (
+no: number
+) => {
+  return setInterceptors(customAxios).get(
+    `${ENDPOINT}specs/spec/${no}`,
+  );
+}

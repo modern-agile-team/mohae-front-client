@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useLocation, useParams } from 'react-router-dom';
+import{ useParams } from 'react-router-dom';
 import { getCommentList } from '../../apis/comment';
 import { setCommentArr } from '../../redux/comment/reducer';
 import Box from '../box/Box';
@@ -36,7 +36,6 @@ const Comment = () => {
     popup: false,
   });
   const { no } = useParams();
-  const location = useLocation();
   const dispatch = useDispatch();
   const buttonRef = useRef<HTMLButtonElement>(null);
   useLayoutEffect(() => {

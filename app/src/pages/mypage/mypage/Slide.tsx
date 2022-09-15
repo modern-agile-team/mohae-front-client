@@ -217,7 +217,6 @@ export default function Slide({
   };
 
   const viewPosts = () => {
-    console.log(items);
     if (items && items.length) {
       return items.map((contents: string, index: number) => (
         <div className={'board'} key={index}>

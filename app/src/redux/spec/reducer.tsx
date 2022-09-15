@@ -10,7 +10,7 @@ import {
   getWantedSpecData,
   Spec,
 } from '../../apis/spec';
-import { getSpecData } from '../../apis/spec';
+import { getSpecData, getSpecDetail } from '../../apis/spec';
 const GET_USER_SPECS = 'get_user_specs';
 const GET_USER_TOHELP = 'get_user_tohelp';
 const GET_USER_HELPME = 'get_user_helpme';
@@ -29,6 +29,14 @@ export const getSpecs = createAsyncThunk(
   async (body: Spec) => {
     const { paramNo, takeParam } = body;
     const response = await getSpecData(paramNo, takeParam);
+    return response.data;
+  },
+);
+
+export const getDetailSpec = createAsyncThunk(
+  'profile/getSpecDetail',
+  async (no: number) => {
+    const response = await getSpecDetail(no);
     return response.data;
   },
 );
@@ -120,7 +128,16 @@ export const spec = createSlice({
         state.profileHelpMe = payload.wantedSpecs.data.response;
         state.isLoading = false;
       })
-      .addCase(getFindSpecs.rejected, (state, { payload }) => {});
+      .addCase(getFindSpecs.rejected, (state, { payload }) => {})
+      .addCase(getDetailSpec.pending, (state, { payload }) => {
+        state.isLoading = true;
+      })
+      .addCase(getDetailSpec.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.specInfo = payload.response;
+      })
+
+     
   },
 });
 // 생성 추가 삭제

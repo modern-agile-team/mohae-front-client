@@ -201,7 +201,7 @@ export default function OrderedImg({
     dispatch(setImgs(newFormData));
   };
 
-  const 상세조회에서이미지클릭 = (index: number) => {
+  const setIndex = (index: number) => {
     if (setImgIndex) {
       setImgIndex(index);
     } else return () => {};
@@ -215,7 +215,7 @@ export default function OrderedImg({
             return (
               <button key={index} className={'item-box show'} name={`${index}`}>
                 <Img
-                  onClick={() => 상세조회에서이미지클릭(index)}
+                  onClick={() => setIndex(index)}
                   src={each.img}
                 />
               </button>

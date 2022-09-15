@@ -142,6 +142,19 @@ export default function ModalProfile(props: Props) {
       dispatch(setInitialStateSpecData());
     };
   }, []);
+  console.log(userInfo?.photo_url)
+  console.log(userInfo?.photo_url ? 'https://d2ffbnf2hpheay.cloudfront.net/' +
+  userInfo?.photo_url +
+  '?w=150':null)
+  const showProfile = () => {
+    if(userInfo) {
+      return userInfo?.photo_url ? 'https://d2ffbnf2hpheay.cloudfront.net/' +
+    userInfo?.photo_url +
+    '?w=150':null
+    } else {
+      return 'loading'
+    }
+  }
 
   return (
     <>
@@ -149,11 +162,7 @@ export default function ModalProfile(props: Props) {
         <div className={cx(style)}>
           <div className="header">
             <Profile
-              img={
-                'https://d2ffbnf2hpheay.cloudfront.net/' +
-                userInfo?.photo_url +
-                '?w=150'
-              }
+              img={showProfile()}
               size={150}
               noneClick
             />

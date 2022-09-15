@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { css, cx } from '@emotion/css';
 import { color, radius, font, shadow } from '../../styles';
-import { Img, NewPost } from '../../components';
+import { Img, NewPost, Poster } from '../../components';
 import {
   getHotAll,
   getHotProgressing,
@@ -12,6 +12,7 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../redux/root';
 import { AppDispatch } from '../../redux/root';
+import { Link } from 'react-router-dom';
 
 interface Props {
   [key: string]: any;
@@ -179,18 +180,9 @@ export default function Part4(props: Props) {
   const threeBoard = (boards: any) =>
     boardsInMain.allBoard[1] &&
     boards.map((board: any, index: number) => (
-      <div
-        key={index}
-        className={cx(
-          css`
-            width: 360px;
-            height: 284px;
-            ${shadow.normal}
-          `,
-        )}
-      >
-        <NewPost page={'inMain'} board={board} />
-      </div>
+      <Link key={index} to={`/post/${board.no}`}>
+        <Poster size="large" data={board} big />
+      </Link>
     ));
 
   const boardViewCheck: { [key: string]: any } = {

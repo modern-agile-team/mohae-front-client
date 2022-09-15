@@ -168,7 +168,6 @@ export default function PersonalInfo({ part, next }: Object) {
 
   const testInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const target = e.currentTarget.id;
-    console.log('target :>> ', target);
     e.preventDefault();
     e.stopPropagation();
     setInputValue({ ...inputValue, [target]: e.currentTarget.value });
@@ -217,6 +216,10 @@ export default function PersonalInfo({ part, next }: Object) {
   const clickNext = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    const emailCheck = `${inputValue.email}@${inputValue.emailCompany}`;
+    console.log(emailCheck);
+    console.log(emailCheck.replace(/@naver.com$|@daum.net$|@gmail.com$|@nate.com$/g,''))
+
 
     const finalRegistInfo: Object = {
       ...registInfo,

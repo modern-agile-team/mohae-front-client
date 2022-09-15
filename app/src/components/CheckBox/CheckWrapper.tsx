@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import Img from '../img/Img';
-import { FirstArticle } from '../../utils/Article';
 import { ArticleType } from '../../pages/login/register/Agreement';
-import { on } from 'events';
 
 interface Props {
   children: JSX.Element;
@@ -16,15 +14,21 @@ const CheckWrapper = ({ children, article, onCheck }: Props) => {
   return (
     <Wrapper>
       <CheckWrrpaer>
-        <CheckItem>
-          {article.checked ? (
-            <CheckDone onClick={() => onCheck(article.id)}>
-              <Img src={'/img/check.png'} />
-            </CheckDone>
-          ) : (
-            <CheckBox onClick={() => onCheck(article.id)} />
-          )}
-          <span>{article.title}</span>
+        <CheckItem
+          onClick={() => {
+            onCheck(article.id);
+          }}
+        >
+          <div id="wrap">
+            {article.checked ? (
+              <CheckDone>
+                <Img src={'/img/check.png'} />
+              </CheckDone>
+            ) : (
+              <CheckBox />
+            )}
+            <span>{article.title}</span>
+          </div>
         </CheckItem>
         <Image>
           <Img
@@ -34,7 +38,9 @@ const CheckWrapper = ({ children, article, onCheck }: Props) => {
         </Image>
       </CheckWrrpaer>
       <ContentWrapper show={show}>
-        <Content show={show}>{children}</Content>
+        <Content show={show} onClick={() => console.log('1', 1)}>
+          {children}
+        </Content>
       </ContentWrapper>
     </Wrapper>
   );
@@ -51,18 +57,22 @@ const CheckWrrpaer = styled.div`
   display: flex;
   align-items: center;
   margin-top: 15px;
+  justify-content: space-between;
 `;
 
 const CheckItem = styled.div`
-  display: flex;
-  align-items: center;
-  flex: 1;
+  #wrap {
+    display: flex;
+    align-items: center;
+    flex: 1;
+  }
 
   span {
     font-weight: 400;
     font-size: 14px;
     color: #84838d;
     margin-left: 8px;
+    cursor: pointer;
   }
 `;
 const CheckBox = styled.div`
@@ -82,6 +92,7 @@ const CheckDone = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 
   div {
     width: 8px;

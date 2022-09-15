@@ -47,7 +47,6 @@ export default function Carousel({
     return true;
   };
 
-
   const container = () => {
     const col = IMAGES.length ? `calc(100% * ${IMAGES.length})` : '100%';
     const translate = `translateX(calc(${100 / IMAGES.length}% * ${
@@ -70,6 +69,11 @@ export default function Carousel({
     background-color: white;
     position: relative;
     border-radius: inherit;
+
+    .test {
+      width: 100%;
+      height: 100%;
+    }
 
     .box {
       width: 100%;
@@ -135,13 +139,17 @@ export default function Carousel({
 
     .prev {
       left: ${outsideBtn ? `-48px` : '0'};
-      background: url(${handleCheckPrevSlide(imgIndex) ? '/img/arrow-left-main.png' : '/img/arrow-left-light1.png'}) 
-      no-repeat center/contain;
+      background: url(${handleCheckPrevSlide(imgIndex)
+          ? '/img/arrow-left-main.png'
+          : '/img/arrow-left-light1.png'})
+        no-repeat center/contain;
     }
     .next {
       right: ${outsideBtn ? `-48px` : '0'};
-      background: url(${handleCheckNextSlide(imgIndex) ? '/img/arrow-right-main.png' : '/img/arrow-right-light1.png'})
-      no-repeat center/contain; 
+      background: url(${handleCheckNextSlide(imgIndex)
+          ? '/img/arrow-right-main.png'
+          : '/img/arrow-right-light1.png'})
+        no-repeat center/contain;
     }
 
     .circles-container {
@@ -211,7 +219,7 @@ export default function Carousel({
         <div className={'container'}>
           {IMAGES.length ? (
             IMAGES.map((el: string, index: number) => (
-              <div className={'img'} key={index}>
+              <div className="img" key={index}>
                 <Img src={el} />
               </div>
             ))
@@ -222,8 +230,12 @@ export default function Carousel({
           )}
         </div>
       </div>
-      {IMAGES.length > 0 && <button className={'btn prev'} onClick={clickArrowBtn} name="-" />}
-      {IMAGES.length > 0 && <button className={'btn next'} onClick={clickArrowBtn} name="+" />}
+      {IMAGES.length > 0 && (
+        <button className={'btn prev'} onClick={clickArrowBtn} name="-" />
+      )}
+      {IMAGES.length > 0 && (
+        <button className={'btn next'} onClick={clickArrowBtn} name="+" />
+      )}
       {/* arrowBtn comp */}
       {IMAGES.length > 1 && (
         <div className={'circles-container'}>{circles}</div>

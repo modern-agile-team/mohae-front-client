@@ -1,10 +1,7 @@
 /** @format */
 
 import { useParams } from 'react-router-dom';
-import {
-  get_user_info,
-  setInitialState as setInitialStateMypageProfile,
-} from '../../../redux/mypage/reducer';
+import { setInitialState as setInitialStateMypageProfile } from '../../../redux/mypage/reducer';
 import Presenter from './Presenter';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../redux/root';
@@ -74,8 +71,9 @@ export default function MyPage() {
   }, [checkSelf, paramNo, dispatch]);
 
   useEffect(() => {
-    if (!isOpenSpecVisit)  dispatch(getSpecs({ paramNo, takeParam: take[checkSelf] }));
-  },[dispatch, isOpenSpecVisit])
+    if (!isOpenSpecVisit)
+      dispatch(getSpecs({ paramNo, takeParam: take[checkSelf] }));
+  }, [dispatch, isOpenSpecVisit]);
 
   return (
     <Presenter

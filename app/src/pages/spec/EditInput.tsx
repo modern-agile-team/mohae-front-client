@@ -13,13 +13,13 @@ interface Props {
   [key: string]: any;
 }
 
-interface IMAGE {
+export interface IMAGE {
   img: string;
   checked: boolean;
   File: FormData | any;
 }
 
-export default function EditInputImg({ imgs, inline, test }: Props) {
+export default function EditInputImg({ imgs, inline, editImages }: Props) {
   const clone =
     imgs &&
     imgs.map((img: any) => ({
@@ -30,7 +30,6 @@ export default function EditInputImg({ imgs, inline, test }: Props) {
   const [alarm, setAlarm] = useState(true);
   const [myImage, setMyImage] = useState<IMAGE[]>(clone || []);
   const addedImages = useSelector((state: RootState) => state.spec.addImages);
-  const array2 = [];
 
   const addImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.currentTarget.files || [];
@@ -53,31 +52,41 @@ export default function EditInputImg({ imgs, inline, test }: Props) {
   };
 
   useEffect(() => {
-    if (test.length) {
-      const images: SetStateAction<IMAGE[]> | { img: any; checked: boolean; File: File; }[] = [];
+    if (editImages.length) {
+      const getImages = async () => {
+        const files: File[] = [];
+        for (let image of editImages) {
+          await axios
+            .get<Blob>(
+              image.replace(
+                'https://d2ffbnf2hpheay.cloudfront.net/',
+                'https://mohae-image.s3.ap-northeast-2.amazonaws.com/',
+              ),
+              { responseType: 'blob' },
+            )
+            .then(res => {
+              const file = new File([res.data], image, {
+                type: res.data.type,
+              });
+              files.push(file);
+            });
+        }
 
-      for (let image of test) {
-        axios.get<Blob>(image.replace('https://d2ffbnf2hpheay.cloudfront.net/','https://mohae-image.s3.ap-northeast-2.amazonaws.com/'),
-        { responseType: 'blob' }).then(res => {
-          const file = new File([res.data], image, {
-            type: res.data.type,
-          });
-          addedImages.append('image', file);
-          images.push({img: image, checked: false, File: file})
-          
+        const newMyimage = files.map((file: any, i: any) => {
+          return { img: file.name, checked: false, File: file };
         });
-        
-      }
-      setMyImage(images);
-      dispatch(add_images(addedImages));
+        setMyImage(newMyimage);
+        newMyimage.map((el: any, i: any) =>
+          addedImages.append('image', el.File),
+        );
+        dispatch(add_images(addedImages));
+      };
+      getImages();
     }
     setTimeout(() => {
       setAlarm(false);
     }, 5000);
   }, []);
-
- 
-
 
   const style = Style({ inline: inline });
 
@@ -112,9 +121,9 @@ export default function EditInputImg({ imgs, inline, test }: Props) {
     if (!target.checked) {
       target.checked = !target.checked;
       const newClone = myImage.filter(
-        (each: any, index: number) => index !== idx
+        (each: any, index: number) => index !== idx,
       );
-      
+
       const section = myImage.reduce((acc: any, cur: any) => {
         if (cur.checked) {
           return ++acc;
@@ -167,7 +176,6 @@ export default function EditInputImg({ imgs, inline, test }: Props) {
     // formData 내부의 파일 명
     for (let i = 0; i < formDataLenth; i++) {
       const target = imagesNumber.next().value[1];
-      console.log(target)
 
       if (targetName !== target.name) {
         newFormData.append('image', target);

@@ -206,7 +206,6 @@ export default function OrderedImg({
       setImgIndex(index);
     } else return () => {};
   };
-
   const show = () => {
     return (
       <>

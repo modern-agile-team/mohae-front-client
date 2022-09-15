@@ -103,10 +103,6 @@ export default function Category({
       :hover {
         background-color: ${color.subtle};
       }
-      :active {
-        background-color: ${color.lighter};
-        color: white !important;
-      }
     `,
   };
 
@@ -127,13 +123,12 @@ export default function Category({
       {!(shape === 'square') && <div>{name || 'Category'}</div>}
     </Link>
   ) : (
-    <Link
-      to={`/${name}`}
+    <div
       id={id}
       onClick={onClick}
       className={cx(style[shape])}
     >
       {name || 'Category'}
-    </Link>
+    </div>
   );
 }

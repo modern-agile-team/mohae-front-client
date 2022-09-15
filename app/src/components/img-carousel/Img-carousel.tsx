@@ -25,10 +25,9 @@ export default function Carousel({
 
   const [sector, setSector] = useState(0);
   const imgIndexIsDefine = (): number => {
-    return String(imgIndex) ? imgIndex : sector;
+    return imgIndex ? imgIndex : sector;
   };
   const setImgIndexIsDefine = (index: number) => {
-    //setImgIndex ? setImgIndex(index) : setSector(index);
     if (!setImgIndex) setSector(index);
     else setImgIndex(index);
   };

@@ -42,7 +42,6 @@ export default function Register({ text, setFindPasswordView }: Props) {
   });
   const isOpenLogin = useSelector((state: RootState) => state.modal.openLogin);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const location = useLocation();
 
   const handleId = (e: React.ChangeEvent<HTMLInputElement>) => {

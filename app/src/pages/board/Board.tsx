@@ -210,7 +210,7 @@ function Presenter() {
                 to={`/post/${el.no}`}
                 ref={reduxData.length - 1 === i ? setTarget : null}
               >
-                <Poster data={reduxData[i]} />
+                <Poster size="midium" data={reduxData[i]} />
               </Link>
             );
           });

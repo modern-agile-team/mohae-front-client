@@ -7,10 +7,11 @@ interface Props {
   img: string | null;
   state?: number;
   shape?: number;
+  big?: boolean;
 }
 
-export function ImgBox({ img, state, shape }: Props) {
-  const size = [264, 152];
+export function ImgBox({ img, state, shape, big }: Props) {
+  const size = big ? [360, 208] : [264, 152];
 
   const zoomIn = keyframes`
   from {

@@ -6,10 +6,10 @@ import styled from '@emotion/styled';
 import Img from '../img/Img';
 import MarkBox from '../markbox/MarkBox';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../../redux/root';
+import { AppDispatch, RootState } from '../../redux/root';
 import { Link } from 'react-router-dom';
 import { spec_visit } from '../../redux/modal/reducer';
-import { get_spec_info } from '../../redux/spec/reducer';
+import { getDetailSpec, get_spec_info } from '../../redux/spec/reducer';
 import { ENDPOINT } from '../../utils/ENDPOINT';
 import setInterceptors from '../../apis/common/setInterceptors';
 import { customAxios } from '../../apis/instance';
@@ -248,13 +248,14 @@ export default function NewPost({ page, board }: Props) {
   const isOpenSpecVisit = useSelector(
     (state: RootState) => state.modal.openSpecVisit,
   );
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   const openModal = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     dispatch(spec_visit(!isOpenSpecVisit));
     if (page === 'inSpec') {
+      /*
       setInterceptors(customAxios)
         .get(`${ENDPOINT}specs/spec/${board.no}`)
         .then(res => {
@@ -265,6 +266,8 @@ export default function NewPost({ page, board }: Props) {
         .catch(err => {
           console.log('err :>> ', err);
         });
+        */
+       dispatch(getDetailSpec(board.no))
     }
   };
 

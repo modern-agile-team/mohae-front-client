@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction, useEffect } from 'react';
 import { css, cx } from '@emotion/css';
-import { PostIt, Btn, ReportModal, Box, Mosaic, Popup } from '../../components';
+import { PostIt, Btn, ReportModal,Mosaic, Popup } from '../../components';
 import PostBody from '../../components/pagecomp/PostBody';
 import PostImgs from '../../components/pagecomp/PostImgs';
 import PostInfo from './PostInfo';

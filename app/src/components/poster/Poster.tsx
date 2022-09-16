@@ -16,55 +16,56 @@ interface Props {
     areaNo: number;
     areaName: string;
     nickname: string;
+    area?: string;
   };
   big?: boolean;
   size: string;
 }
 
 function Poster({ data, big, size }: Props) {
-  const imgSizeTable = {
-    large: [360, 208],
-    midium: [264, 152],
-    small: [228, 120],
-  };
-  const postInfoSizeTable = {
-    large: css`
-      padding: 14px 16px;
-      height: 76px;
-      .title {
-        ${font.size[14]}
-      }
-      .title,
-      .writer,
-      .areaName {
-        height: 24px;
-      }
-    `,
-    midium: css`
-      padding: 8px 12px;
-      height: 56px;
-      .title {
-        ${font.size[12]}
-      }
-      .title,
-      .writer,
-      .areaName {
-        height: 20px;
-      }
-    `,
-    small: css`
-      padding: 16px;
-      height: 57px;
-      .title {
-        ${font.size[14]}
-      }
-      .title,
-      .writer,
-      .areaName {
-        height: 24px;
-      }
-    `,
-  };
+  // const imgSizeTable = {
+  //   large: [360, 208],
+  //   midium: [264, 152],
+  //   small: [228, 120],
+  // };
+  // const postInfoSizeTable = {
+  //   large: css`
+  //     padding: 14px 16px;
+  //     height: 76px;
+  //     .title {
+  //       ${font.size[14]}
+  //     }
+  //     .title,
+  //     .writer,
+  //     .areaName {
+  //       height: 24px;
+  //     }
+  //   `,
+  //   midium: css`
+  //     padding: 8px 12px;
+  //     height: 56px;
+  //     .title {
+  //       ${font.size[12]}
+  //     }
+  //     .title,
+  //     .writer,
+  //     .areaName {
+  //       height: 20px;
+  //     }
+  //   `,
+  //   small: css`
+  //     padding: 16px;
+  //     height: 57px;
+  //     .title {
+  //       ${font.size[14]}
+  //     }
+  //     .title,
+  //     .writer,
+  //     .areaName {
+  //       height: 24px;
+  //     }
+  //   `,
+  // };
   const style = css`
     @keyframes fadeInUp {
       0% {
@@ -140,7 +141,7 @@ function Poster({ data, big, size }: Props) {
         ${font.weight[700]}
       }
       .areaName {
-        ${font.size[12]}
+        ${big ? font.size[14] : font.size[12]}
         height: 20px;
       }
     }
@@ -199,7 +200,7 @@ function Poster({ data, big, size }: Props) {
           <p className="price">{data.price && data.price.toLocaleString()}</p>
         </div>
         <div className="hovered">
-          <p className="areaName">{data.areaName}</p>
+          <p className="areaName">{data.areaName || data.area}</p>
           {textContents()}
         </div>
       </div>

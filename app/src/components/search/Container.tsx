@@ -184,6 +184,7 @@ function Search(props: Props) {
 
   const hotKeyClick = (e: React.MouseEvent, no: number) => {
     e.preventDefault();
+    resetPageInfo && resetPageInfo();
     navigate(`/boards/${no}`);
   };
 

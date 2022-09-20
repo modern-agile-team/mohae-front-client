@@ -2,7 +2,7 @@
 
 import { cx, css } from '@emotion/css';
 import { useState } from 'react';
-import { Img, NewPost } from '../../../components';
+import { Img, NewPost, Poster } from '../../../components';
 import { shadow } from '../../../styles';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -27,6 +27,7 @@ export default function Slide({
   marginRight,
   viewNumber,
   checkSelf,
+  linkTo,
 }: Props) {
   const [sector, setSector] = useState(0),
     dispatch = useDispatch(),
@@ -219,7 +220,7 @@ export default function Slide({
     if (items && items.length) {
       return items.map((contents: string, index: number) => (
         <div className={'board'} key={index}>
-          <NewPost page={'inSpec'} board={contents} />
+          <NewPost page={'inSpec'} board={contents} linkTo={linkTo} />
         </div>
       ));
     } else if (checkSelf === 'false') {

@@ -3,16 +3,13 @@
 import { color, radius, font, shadow } from '../../styles';
 import { css, cx } from '@emotion/css';
 import styled from '@emotion/styled';
-import Img from '../img/Img';
 import MarkBox from '../markbox/MarkBox';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppDispatch, RootState } from '../../redux/root';
 import { Link } from 'react-router-dom';
 import { spec_visit } from '../../redux/modal/reducer';
-import { getDetailSpec, get_spec_info } from '../../redux/spec/reducer';
-import { ENDPOINT } from '../../utils/ENDPOINT';
-import setInterceptors from '../../apis/common/setInterceptors';
-import { customAxios } from '../../apis/instance';
+import { getDetailSpec } from '../../redux/spec/reducer';
+
 
 interface Props {
   [key: string]: any;

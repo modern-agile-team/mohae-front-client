@@ -5,7 +5,6 @@ import { useState } from 'react';
 import { Img, NewPost } from '../../../components';
 import { shadow } from '../../../styles';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../redux/root';
 import { spec_create } from '../../../redux/modal/reducer';

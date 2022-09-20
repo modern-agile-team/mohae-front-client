@@ -89,8 +89,14 @@ export const userSlice = createSlice({
       .addCase(getUserData.fulfilled, (state, { payload }) => {
         state.user = payload.response;
       })
-      .addCase(getUserData.rejected, (state, { payload }) => {
-        console.log(payload)
+      .addCase(getUserData.rejected, (state, action: any) => {
+        if (action.error.message === 'Request failed with status code 410') {
+          sessionStorage.removeItem('refresh_token');
+          sessionStorage.removeItem('access_token');
+          state.user = {};
+          alert('세션이 만료되었습니다');
+          window.location.reload();
+        }
       });
   },
 });

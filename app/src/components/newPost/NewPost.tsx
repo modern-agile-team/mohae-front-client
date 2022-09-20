@@ -7,7 +7,7 @@ import MarkBox from '../markbox/MarkBox';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppDispatch, RootState } from '../../redux/root';
 import { spec_visit } from '../../redux/modal/reducer';
-import { getDetailSpec, get_spec_info } from '../../redux/spec/reducer';
+import { getDetailSpec } from '../../redux/spec/reducer';
 import {} from 'react-router-dom';
 
 interface Props {

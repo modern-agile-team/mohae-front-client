@@ -44,7 +44,7 @@ export default function MySelf({ text, posts, actions, checkSelf }: Props) {
 
   return (
     <div className={cx(style)}>
-      {isOpen && <ModifyProfile userInfo={userInfo} />}
+      {isOpen && <ModifyProfile />}
       <div className={'user'}>
         <Box className={'box'} size={[304, 724]}>
           <div className="profileHeader">

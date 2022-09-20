@@ -7,6 +7,7 @@ import { shadow, radius } from '../../styles';
 
 interface Props {
   [key: string]: boolean | number | any;
+  profileForm: FormData;
 }
 
 function ProfileBox(props: Props) {
@@ -21,8 +22,6 @@ function ProfileBox(props: Props) {
       profileForm.append('image', file[0]);
     }
   };
-
-  console.log(profileImage);
 
   const profileImg = img !== null ? img : '/img/profile.png';
 

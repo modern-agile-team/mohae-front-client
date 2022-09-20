@@ -1,22 +1,21 @@
 /** @format */
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { css, cx } from '@emotion/css';
 import { color, radius, font, shadow } from '../../styles';
-import { Profile, BasicModal, Btn, Img } from '../../components';
+import { BasicModal, Btn, Img } from '../../components';
 import ProfileBox from '../../components/profile/ProfileBox';
 import PhoneNumberSelectBox from '../../components/profileselect/PhoneNumberSelectBox';
 import styled from '@emotion/styled';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/root';
+import axios from 'axios';
 
 interface Object {
   [key: string]: any;
 }
 
-interface Props {
-  userInfo: Object;
-}
-
-export default function ModifyProfile({ userInfo }: Props) {
+export default function ModifyProfile() {
   const [open, setOpen] = useState<Object>({
     one: false,
     two: false,
@@ -24,7 +23,15 @@ export default function ModifyProfile({ userInfo }: Props) {
     four: false,
   });
 
-  const profileForm = new FormData();
+  const [profileForm] = useState<FormData>(new FormData());
+  const user = useSelector((state: RootState) => state.user.user);
+  const [userInfo, setUserInfo] = useState<any>({
+    phone: user.phone,
+    nickname: user.nickname,
+    school: user.schoolNo,
+    major: user.majorNo,
+    categories: user.categories,
+  });
 
   const toggleSelectBox = (e: React.MouseEvent<HTMLDivElement>) => {
     const target = e.currentTarget.id;
@@ -92,6 +99,42 @@ export default function ModifyProfile({ userInfo }: Props) {
     },
     check: '중복확인',
   };
+
+  const onSelect = (
+    index: number,
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    if (e.currentTarget.name === 'phoneNumber') {
+      setUserInfo({
+        ...userInfo,
+        phone: e.currentTarget.value,
+      });
+    } else
+      setUserInfo({
+        ...userInfo,
+        [e.currentTarget.name]: index + 1,
+      });
+  };
+
+  useEffect(() => {
+    if (user.photo_url) {
+      const getImages = async () => {
+        await axios
+          .get<Blob>(
+            `https://mohae-image.s3.ap-northeast-2.amazonaws.com/${user.photo_url}`,
+
+            { responseType: 'blob' },
+          )
+          .then(res => {
+            const file = new File([res.data], user.photo_url, {
+              type: res.data.type,
+            });
+            profileForm.append('image', file);
+          });
+      };
+      getImages();
+    }
+  }, [user]);
 
   const style = css`
     width: 100%;
@@ -256,15 +299,14 @@ export default function ModifyProfile({ userInfo }: Props) {
       <div className={'wrapper'}>
         <div className={'left'}>
           <div className={'name'}>
-            <span>{userInfo.nickname}</span>
+            <span>{user.nickname}</span>
             <span>{text.sir}</span>
           </div>
           <div>
             <ProfileBox
               img={
-                (userInfo?.photo_url &&
-                  'https://d2ffbnf2hpheay.cloudfront.net/' +
-                    userInfo.photo_url) ||
+                (user?.photo_url &&
+                  'https://d2ffbnf2hpheay.cloudfront.net/' + user.photo_url) ||
                 '/img/profile.png'
               }
               size={160}
@@ -276,14 +318,14 @@ export default function ModifyProfile({ userInfo }: Props) {
         <div className={'right'}>
           <Contents>
             <div className={'label'}>{text.label.mail}</div>
-            <span>{userInfo.email}</span>
+            <span>{user.email}</span>
           </Contents>
           <Contents>
             <div className={'label'}>{text.label.nickname}</div>
             <div className={'input'}>
               <input
                 spellCheck={false}
-                placeholder={userInfo.nickname}
+                placeholder={user.nickname}
                 className={''}
               />
 
@@ -297,15 +339,18 @@ export default function ModifyProfile({ userInfo }: Props) {
             <div className={'phone'}>
               <div className={'btn white'}>
                 <div id="one" onClick={toggleSelectBox}>
-                  <PhoneNumberSelectBox />
+                  <PhoneNumberSelectBox
+                    onSelect={onSelect}
+                    userInfo={userInfo}
+                  />
                 </div>
               </div>
               <div className={'inset text'}>
                 <input
                   spellCheck={false}
                   placeholder={
-                    userInfo.phone
-                      ? userInfo.phone.substring(3, 11)
+                    user.phone
+                      ? user.phone.substring(3, 11)
                       : text.placeholder.phone
                   }
                   className={''}
@@ -328,7 +373,12 @@ export default function ModifyProfile({ userInfo }: Props) {
                     <Option>
                       <List>
                         {text.schools.map((school: string, index: number) => (
-                          <ListButton key={index} value={school} name="school">
+                          <ListButton
+                            key={index}
+                            value={school}
+                            name="school"
+                            onClick={e => onSelect(index, e)}
+                          >
                             {school}
                           </ListButton>
                         ))}

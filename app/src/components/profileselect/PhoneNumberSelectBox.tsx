@@ -3,13 +3,21 @@ import styled from '@emotion/styled';
 import { color, radius, shadow } from '../../styles';
 import Img from '../img/Img';
 
-const PhoneNumberSelectBox = () => {
+interface Props {
+  onSelect: (
+    index: number,
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => void;
+  userInfo: any;
+}
+
+const PhoneNumberSelectBox = ({ onSelect, userInfo }: Props) => {
   const phoneNumbers = ['010', '011', '02', '031'];
   return (
     <Container>
       <SelectButton>
         <PlaceHolder>
-          <span>선택</span>
+          {userInfo.phone ? <span>{userInfo.phone}</span> : <span>선택</span>}
         </PlaceHolder>
         <Arrow>
           <Img src="/img/arrow-down-dark3.png" />
@@ -18,7 +26,12 @@ const PhoneNumberSelectBox = () => {
       <Option>
         <List>
           {phoneNumbers.map((phoneNumber: string, index: number) => (
-            <ListButton key={index} value={phoneNumber} name="phoneNumber">
+            <ListButton
+              key={index}
+              value={phoneNumber}
+              name="phoneNumber"
+              onClick={e => onSelect(index, e)}
+            >
               {phoneNumber}
             </ListButton>
           ))}

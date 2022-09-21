@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import ModifyProfile from '../../modifyProfile';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { remove_user } from '../../../redux/user/reducer';
+import { getUserData, remove_user } from '../../../redux/user/reducer';
 import { AppDispatch } from '../../../redux/root';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/root';
@@ -41,6 +41,10 @@ export default function MySelf({ text, posts, actions, checkSelf }: Props) {
         <span>등록된 관심사가 없습니다</span>
       </Intersted>
     );
+
+  useEffect(() => {
+    dispatch(getUserData(userInfo.userNo));
+  }, [isOpen]);
 
   return (
     <div className={cx(style)}>

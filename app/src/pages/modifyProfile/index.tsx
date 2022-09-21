@@ -156,18 +156,21 @@ export default function ModifyProfile({ setIsOpen }: Props) {
       profileForm.append(key, JSON.stringify(userInfo[key]));
     }
 
+    console.log(profileForm.getAll('image'));
+
     editProfile(profileForm).then(res => {
       if (res.data.success) {
-        profileForm.delete('image');
-        for (let key in userInfo) {
-          profileForm.delete(key);
-        }
         setIsOpen(false);
       }
     });
   };
 
   useEffect(() => {
+    profileForm.delete('image');
+    for (let key in userInfo) {
+      profileForm.delete(key);
+    }
+    /*
     if (user.photo_url) {
       const getImages = async () => {
         await axios
@@ -183,8 +186,11 @@ export default function ModifyProfile({ setIsOpen }: Props) {
             profileForm.append('image', file);
           });
       };
+    
       getImages();
     }
+      */
+
     if (user) {
       setIntersted(
         user.categories.map((el: any) => {

@@ -89,7 +89,7 @@ export const userSlice = createSlice({
       .addCase(getUserData.fulfilled, (state, { payload }) => {
         state.user = payload.response;
       })
-      .addCase(getUserData.rejected, (state, action: any) => {
+      .addCase(getUserData.rejected, (state, action) => {
         if (action.error.message === 'Request failed with status code 410') {
           sessionStorage.removeItem('refresh_token');
           sessionStorage.removeItem('access_token');

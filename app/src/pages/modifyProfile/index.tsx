@@ -22,15 +22,18 @@ export default function ModifyProfile() {
     three: false,
     four: false,
   });
-
-  const [profileForm] = useState<FormData>(new FormData());
   const user = useSelector((state: RootState) => state.user.user);
+  const [profileForm] = useState<FormData>(new FormData());
+  const [intersted, setIntersted] = useState<string[]>([]);
+  const [phoneBehindNumber, setPhoneBehindNumber] = useState<string>(
+    user ? user.phone.slice(3, 11) : '',
+  );
   const [userInfo, setUserInfo] = useState<any>({
     phone: user.phone,
     nickname: user.nickname,
     school: user.schoolNo,
     major: user.majorNo,
-    categories: user.categories,
+    categories: user.categories.length ? [Number(user.categories[0].no)] : [],
   });
 
   const toggleSelectBox = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -107,13 +110,50 @@ export default function ModifyProfile() {
     if (e.currentTarget.name === 'phoneNumber') {
       setUserInfo({
         ...userInfo,
-        phone: e.currentTarget.value,
+        phone: e.currentTarget.value + phoneBehindNumber,
       });
     } else
       setUserInfo({
         ...userInfo,
         [e.currentTarget.name]: index + 1,
       });
+  };
+
+  const onPhoneBehindNumChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPhoneBehindNumber(e.target.value);
+  };
+
+  const onBlur = () => {
+    setUserInfo({
+      ...userInfo,
+      phone: userInfo.phone.slice(0, 3) + phoneBehindNumber,
+    });
+  };
+
+  const onCategrySelect = (
+    index: number,
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    if (userInfo.length === 3) {
+      return;
+    } else if (userInfo.categories.includes(index + 2)) {
+      return;
+    }
+    setUserInfo({
+      ...userInfo,
+      categories: [...userInfo.categories, index + 2],
+    });
+    setIntersted([...intersted, e.currentTarget.value]);
+  };
+
+  const onSubmit = () => {
+    for (let key in userInfo) {
+      profileForm.append(key, userInfo[key]);
+    }
+    for (let key in userInfo) {
+      console.log(profileForm.getAll(key));
+    }
+    console.log(profileForm.get('image'));
   };
 
   useEffect(() => {
@@ -348,11 +388,10 @@ export default function ModifyProfile() {
               <div className={'inset text'}>
                 <input
                   spellCheck={false}
-                  placeholder={
-                    user.phone
-                      ? user.phone.substring(3, 11)
-                      : text.placeholder.phone
-                  }
+                  placeholder={text.placeholder.phone}
+                  value={phoneBehindNumber}
+                  onChange={onPhoneBehindNumChange}
+                  onBlur={onBlur}
                   className={''}
                 />
               </div>
@@ -365,7 +404,7 @@ export default function ModifyProfile() {
                 <DemoSelectBox>
                   <SelectButton>
                     <PlaceHolder>
-                      <span>{text.placeholder.school}</span>
+                      {<span>{text.placeholder.school}</span>}
                     </PlaceHolder>
                     <Arrow>
                       <Img src="/img/arrow-down-dark3.png" />
@@ -404,7 +443,12 @@ export default function ModifyProfile() {
                     <Option>
                       <List>
                         {text.majors.map((major: string, index: number) => (
-                          <ListButton key={index} value={major} name="major">
+                          <ListButton
+                            key={index}
+                            value={major}
+                            name="major"
+                            onClick={e => onSelect(index, e)}
+                          >
                             {major}
                           </ListButton>
                         ))}
@@ -421,7 +465,21 @@ export default function ModifyProfile() {
               <div id="four" onClick={toggleSelectBox}>
                 <DemoSelectBox>
                   <SelectButton>
-                    <PlaceHolder>{text.placeholder.major}</PlaceHolder>
+                    <PlaceHolder>
+                      {userInfo.categories.length
+                        ? intersted.map((el: string, index: number) => (
+                            <CategoryWrapper>
+                              <Category
+                                key={index}
+                                select={index + 2}
+                                intersted={userInfo.categories}
+                              >
+                                {el}
+                              </Category>
+                            </CategoryWrapper>
+                          ))
+                        : text.placeholder.intersted}
+                    </PlaceHolder>
                     <Arrow>
                       <Img src="/img/arrow-down-dark3.png" />
                     </Arrow>
@@ -440,6 +498,9 @@ export default function ModifyProfile() {
                               key={index}
                               value={category}
                               name={category}
+                              onClick={e => onCategrySelect(index, e)}
+                              select={index + 2}
+                              intersted={userInfo.categories}
                             >
                               <span>{category}</span>
                             </Category>
@@ -456,7 +517,9 @@ export default function ModifyProfile() {
       </div>
       <div className={'footer'}>
         <div className={'btn'}>
-          <Btn main>{'저장'}</Btn>
+          <Btn main onClick={onSubmit}>
+            {'저장'}
+          </Btn>
         </div>
       </div>
     </div>
@@ -641,7 +704,7 @@ const CategoryOption = styled.div`
   }
 `;
 
-const Category = styled.button`
+const Category = styled.button<{ select: number; intersted: number[] }>`
   font-size: 14px;
   width: 100px;
   height: 36px;
@@ -651,7 +714,8 @@ const Category = styled.button`
   border-radius: 6px;
   box-shadow: 0px 0px 8px 0px #84838d;
   span {
-    color: '#a7a7ad';
+    color: ${props =>
+      props.intersted.includes(props.select) ? color.main : '#a7a7ad'};
   }
   :hover {
     background-color: ${color.subtle};

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { color, radius, shadow } from '../../styles';
+import { color, shadow } from '../../styles';
 import Img from '../img/Img';
 
 interface Props {
@@ -17,7 +17,7 @@ const PhoneNumberSelectBox = ({ onSelect, userInfo }: Props) => {
     <Container>
       <SelectButton>
         <PlaceHolder>
-          {userInfo.phone ? <span>{userInfo.phone}</span> : <span>선택</span>}
+          {userInfo.phone ? userInfo.phone.slice(0, 3) : <span>선택</span>}
         </PlaceHolder>
         <Arrow>
           <Img src="/img/arrow-down-dark3.png" />

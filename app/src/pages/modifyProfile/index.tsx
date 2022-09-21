@@ -8,29 +8,36 @@ import ProfileBox from '../../components/profile/ProfileBox';
 import PhoneNumberSelectBox from '../../components/profileselect/PhoneNumberSelectBox';
 import styled from '@emotion/styled';
 import { useSelector } from 'react-redux';
+import { editProfile } from '../../apis/profile';
 import { RootState } from '../../redux/root';
-import axios from 'axios';
 
 interface Object {
   [key: string]: any;
 }
 
-export default function ModifyProfile() {
+interface Props {
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export default function ModifyProfile({ setIsOpen }: Props) {
   const [open, setOpen] = useState<Object>({
     one: false,
     two: false,
     three: false,
     four: false,
   });
-
-  const [profileForm] = useState<FormData>(new FormData());
   const user = useSelector((state: RootState) => state.user.user);
+  const [profileForm] = useState<FormData>(new FormData());
+  const [intersted, setIntersted] = useState<string[]>([]);
+  const [phoneBehindNumber, setPhoneBehindNumber] = useState<string>(
+    user ? user?.phone?.slice(3, 11) : '',
+  );
   const [userInfo, setUserInfo] = useState<any>({
     phone: user.phone,
     nickname: user.nickname,
     school: user.schoolNo,
     major: user.majorNo,
-    categories: user.categories,
+    categories: [],
   });
 
   const toggleSelectBox = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -107,7 +114,7 @@ export default function ModifyProfile() {
     if (e.currentTarget.name === 'phoneNumber') {
       setUserInfo({
         ...userInfo,
-        phone: e.currentTarget.value,
+        phone: e.currentTarget.value + phoneBehindNumber,
       });
     } else
       setUserInfo({
@@ -116,23 +123,82 @@ export default function ModifyProfile() {
       });
   };
 
-  useEffect(() => {
-    if (user.photo_url) {
-      const getImages = async () => {
-        await axios
-          .get<Blob>(
-            `https://mohae-image.s3.ap-northeast-2.amazonaws.com/${user.photo_url}`,
+  const onPhoneBehindNumChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPhoneBehindNumber(e.target.value);
+  };
 
-            { responseType: 'blob' },
-          )
-          .then(res => {
-            const file = new File([res.data], user.photo_url, {
-              type: res.data.type,
-            });
-            profileForm.append('image', file);
-          });
-      };
-      getImages();
+  const onBlur = () => {
+    setUserInfo({
+      ...userInfo,
+      phone: userInfo.phone.slice(0, 3) + phoneBehindNumber,
+    });
+  };
+
+  const onCategrySelect = (
+    index: number,
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    if (userInfo.length === 3) {
+      return;
+    } else if (userInfo.categories.includes(index + 2)) {
+      return;
+    }
+    setUserInfo({
+      ...userInfo,
+      categories: [...userInfo.categories, index + 2],
+    });
+    setIntersted([...intersted, e.currentTarget.value]);
+  };
+
+  const onCategoryDelete = (category: string) => {
+    console.log(text.categories.indexOf(category) + 1);
+    setIntersted(intersted.filter((el: string) => el !== category));
+    setUserInfo({
+      ...userInfo,
+      categories: userInfo.categories.filter(
+        (el: number) => el !== text.categories.indexOf(category) + 1,
+      ),
+    });
+  };
+
+  console.log(intersted);
+
+  const onSubmit = () => {
+    /*
+    for (let key in userInfo) {
+      profileForm.append(key, JSON.stringify(userInfo[key]));
+    }
+    */
+
+    console.log(userInfo);
+
+    /*
+    editProfile(profileForm).then(res => {
+      if (res.data.success) {
+        setIsOpen(false);
+      }
+    });
+    */
+  };
+
+  useEffect(() => {
+    profileForm.delete('image');
+    for (let key in userInfo) {
+      profileForm.delete(key);
+    }
+
+    if (user) {
+      setIntersted(
+        user.categories.map((el: any) => {
+          return text.categories[el.no - 2];
+        }),
+      );
+      setUserInfo({
+        ...userInfo,
+        categories: user.categories.map((el: any) => {
+          return Number(el.no);
+        }),
+      });
     }
   }, [user]);
 
@@ -348,11 +414,10 @@ export default function ModifyProfile() {
               <div className={'inset text'}>
                 <input
                   spellCheck={false}
-                  placeholder={
-                    user.phone
-                      ? user.phone.substring(3, 11)
-                      : text.placeholder.phone
-                  }
+                  placeholder={text.placeholder.phone}
+                  value={phoneBehindNumber}
+                  onChange={onPhoneBehindNumChange}
+                  onBlur={onBlur}
                   className={''}
                 />
               </div>
@@ -365,7 +430,11 @@ export default function ModifyProfile() {
                 <DemoSelectBox>
                   <SelectButton>
                     <PlaceHolder>
-                      <span>{text.placeholder.school}</span>
+                      {userInfo.school ? (
+                        <span>{text.schools[userInfo.school - 1]}</span>
+                      ) : (
+                        <span>{text.placeholder.school}</span>
+                      )}
                     </PlaceHolder>
                     <Arrow>
                       <Img src="/img/arrow-down-dark3.png" />
@@ -396,7 +465,11 @@ export default function ModifyProfile() {
                 <DemoSelectBox>
                   <SelectButton>
                     <PlaceHolder>
-                      <span>{text.placeholder.major}</span>
+                      <span>
+                        {userInfo.major
+                          ? text.majors[userInfo.major - 1]
+                          : text.placeholder.major}
+                      </span>
                     </PlaceHolder>
                     <Arrow>
                       <Img src="/img/arrow-down-dark3.png" />
@@ -404,7 +477,12 @@ export default function ModifyProfile() {
                     <Option>
                       <List>
                         {text.majors.map((major: string, index: number) => (
-                          <ListButton key={index} value={major} name="major">
+                          <ListButton
+                            key={index}
+                            value={major}
+                            name="major"
+                            onClick={e => onSelect(index, e)}
+                          >
                             {major}
                           </ListButton>
                         ))}
@@ -421,7 +499,26 @@ export default function ModifyProfile() {
               <div id="four" onClick={toggleSelectBox}>
                 <DemoSelectBox>
                   <SelectButton>
-                    <PlaceHolder>{text.placeholder.major}</PlaceHolder>
+                    <PlaceHolder>
+                      {userInfo.categories.length
+                        ? intersted.map((el: string, index: number) => (
+                            <CategoryWrapper>
+                              <Category
+                                key={index}
+                                select={index + 2}
+                                intersted={userInfo.categories}
+                              >
+                                {el}
+                                <CloseButton
+                                  onClick={() => onCategoryDelete(el)}
+                                >
+                                  <Img src="/img/close-dark2.png" />
+                                </CloseButton>
+                              </Category>
+                            </CategoryWrapper>
+                          ))
+                        : text.placeholder.intersted}
+                    </PlaceHolder>
                     <Arrow>
                       <Img src="/img/arrow-down-dark3.png" />
                     </Arrow>
@@ -440,6 +537,9 @@ export default function ModifyProfile() {
                               key={index}
                               value={category}
                               name={category}
+                              onClick={e => onCategrySelect(index, e)}
+                              select={index + 2}
+                              intersted={userInfo.categories}
                             >
                               <span>{category}</span>
                             </Category>
@@ -456,7 +556,9 @@ export default function ModifyProfile() {
       </div>
       <div className={'footer'}>
         <div className={'btn'}>
-          <Btn main>{'저장'}</Btn>
+          <Btn main onClick={onSubmit}>
+            {'저장'}
+          </Btn>
         </div>
       </div>
     </div>
@@ -641,7 +743,7 @@ const CategoryOption = styled.div`
   }
 `;
 
-const Category = styled.button`
+const Category = styled.button<{ select: number; intersted: number[] }>`
   font-size: 14px;
   width: 100px;
   height: 36px;
@@ -650,8 +752,10 @@ const Category = styled.button`
   align-items: center;
   border-radius: 6px;
   box-shadow: 0px 0px 8px 0px #84838d;
+  position: relative;
   span {
-    color: '#a7a7ad';
+    color: ${props =>
+      props.intersted.includes(props.select) ? color.main : '#a7a7ad'};
   }
   :hover {
     background-color: ${color.subtle};
@@ -667,16 +771,10 @@ const CategoryWrapper = styled.div`
   width: 100%;
 `;
 
-const Button = styled.button`
-  width: 480px;
-  height: 52px;
-  border-radius: 6px;
-  background-color: #ff445e;
-  box-shadow: 0px 0px 8px 0px #84838d;
-  font-size: 14px;
-  font-weight: 400;
-  color: #ffffff;
-  &:disabled {
-    background-color: #e7e7e8;
-  }
+const CloseButton = styled.div`
+  width: 13px;
+  height: 13px;
+  position: absolute;
+  top: 5px;
+  right: 5px;
 `;

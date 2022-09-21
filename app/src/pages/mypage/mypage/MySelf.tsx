@@ -7,9 +7,9 @@ import Slide from './Slide';
 import { Img, Box, Profile, FocusBar, Category } from '../../../components';
 import { useNavigate } from 'react-router-dom';
 import ModifyProfile from '../../modifyProfile';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { remove_user } from '../../../redux/user/reducer';
+import { getUserData, remove_user } from '../../../redux/user/reducer';
 import { AppDispatch } from '../../../redux/root';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/root';
@@ -33,6 +33,7 @@ export default function MySelf({ text, posts, actions, checkSelf }: Props) {
             shape={'square'}
             img={`/img/category-${category.no - 1}.png`}
             name={category.name}
+            id={category.no}
           />
         </Box>
       ))
@@ -42,9 +43,13 @@ export default function MySelf({ text, posts, actions, checkSelf }: Props) {
       </Intersted>
     );
 
+  useEffect(() => {
+    dispatch(getUserData(userInfo.userNo));
+  }, [isOpen]);
+
   return (
     <div className={cx(style)}>
-      {isOpen && <ModifyProfile />}
+      {isOpen && <ModifyProfile setIsOpen={setIsOpen} />}
       <div className={'user'}>
         <Box className={'box'} size={[304, 724]}>
           <div className="profileHeader">

@@ -33,6 +33,10 @@ export default function MyPage() {
   const isOpenSpecVisit = useSelector(
     (state: RootState) => state.modal.openSpecVisit,
   );
+  const openSpecCreate = useSelector(
+    (state: RootState) => state.modal.openSpecCreate,
+  );
+
   const userNo = TOKEN !== '' && String(userInfo.userNo);
   const paramNo = useParams().no;
   const checkSelf = String(userNo === paramNo);
@@ -71,9 +75,9 @@ export default function MyPage() {
   }, [checkSelf, paramNo, dispatch]);
 
   useEffect(() => {
-    if (!isOpenSpecVisit)
+    if (!isOpenSpecVisit || !openSpecCreate)
       dispatch(getSpecs({ paramNo, takeParam: take[checkSelf] }));
-  }, [dispatch, isOpenSpecVisit]);
+  }, [dispatch, isOpenSpecVisit, openSpecCreate]);
 
   return (
     <Presenter

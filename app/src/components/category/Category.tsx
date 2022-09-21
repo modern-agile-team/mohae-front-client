@@ -123,11 +123,7 @@ export default function Category({
       {!(shape === 'square') && <div>{name || 'Category'}</div>}
     </Link>
   ) : (
-    <div
-      id={id}
-      onClick={onClick}
-      className={cx(style[shape])}
-    >
+    <div id={id} onClick={onClick} className={cx(style[shape])}>
       {name || 'Category'}
     </div>
   );

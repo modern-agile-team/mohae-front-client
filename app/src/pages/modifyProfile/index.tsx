@@ -16,7 +16,11 @@ interface Object {
   [key: string]: any;
 }
 
-export default function ModifyProfile() {
+interface Props {
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export default function ModifyProfile({ setIsOpen }: Props) {
   const [open, setOpen] = useState<Object>({
     one: false,
     two: false,
@@ -152,14 +156,18 @@ export default function ModifyProfile() {
       profileForm.append(key, JSON.stringify(userInfo[key]));
     }
 
-    editProfile(profileForm).then(res => console.log(res));
+    editProfile(profileForm).then(res => {
+      if (res.data.success) {
+        profileForm.delete('image');
+        for (let key in userInfo) {
+          profileForm.delete(key);
+        }
+        setIsOpen(false);
+      }
+    });
   };
 
   useEffect(() => {
-    profileForm.delete('image');
-    for (let key in userInfo) {
-      profileForm.delete(key);
-    }
     if (user.photo_url) {
       const getImages = async () => {
         await axios

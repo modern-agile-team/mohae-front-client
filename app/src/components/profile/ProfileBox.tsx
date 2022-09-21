@@ -2,6 +2,7 @@
 
 import { css, cx } from '@emotion/css';
 import styled from '@emotion/styled';
+import { profile } from 'console';
 import { useState } from 'react';
 import { shadow, radius } from '../../styles';
 
@@ -19,6 +20,7 @@ function ProfileBox(props: Props) {
 
     if (file) {
       setProfileImage(URL.createObjectURL(file[0]));
+      profileForm.delete('image');
       profileForm.append('image', file[0]);
     }
   };

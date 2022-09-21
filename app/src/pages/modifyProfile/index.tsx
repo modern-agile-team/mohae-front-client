@@ -8,6 +8,7 @@ import ProfileBox from '../../components/profile/ProfileBox';
 import PhoneNumberSelectBox from '../../components/profileselect/PhoneNumberSelectBox';
 import styled from '@emotion/styled';
 import { useSelector } from 'react-redux';
+import { editProfile } from '../../apis/profile';
 import { RootState } from '../../redux/root';
 import axios from 'axios';
 
@@ -33,7 +34,7 @@ export default function ModifyProfile() {
     nickname: user.nickname,
     school: user.schoolNo,
     major: user.majorNo,
-    categories: user.categories.length ? [Number(user.categories[0].no)] : [],
+    categories: [],
   });
 
   const toggleSelectBox = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -148,15 +149,17 @@ export default function ModifyProfile() {
 
   const onSubmit = () => {
     for (let key in userInfo) {
-      profileForm.append(key, userInfo[key]);
+      profileForm.append(key, JSON.stringify(userInfo[key]));
     }
-    for (let key in userInfo) {
-      console.log(profileForm.getAll(key));
-    }
-    console.log(profileForm.get('image'));
+
+    editProfile(profileForm).then(res => console.log(res));
   };
 
   useEffect(() => {
+    profileForm.delete('image');
+    for (let key in userInfo) {
+      profileForm.delete(key);
+    }
     if (user.photo_url) {
       const getImages = async () => {
         await axios
@@ -173,6 +176,19 @@ export default function ModifyProfile() {
           });
       };
       getImages();
+    }
+    if (user) {
+      setIntersted(
+        user.categories.map((el: any) => {
+          return text.categories[el.no - 2];
+        }),
+      );
+      setUserInfo({
+        ...userInfo,
+        categories: user.categories.map((el: any) => {
+          return Number(el.no);
+        }),
+      });
     }
   }, [user]);
 
@@ -404,7 +420,11 @@ export default function ModifyProfile() {
                 <DemoSelectBox>
                   <SelectButton>
                     <PlaceHolder>
-                      {<span>{text.placeholder.school}</span>}
+                      {userInfo.school ? (
+                        <span>{text.schools[userInfo.school - 1]}</span>
+                      ) : (
+                        <span>{text.placeholder.school}</span>
+                      )}
                     </PlaceHolder>
                     <Arrow>
                       <Img src="/img/arrow-down-dark3.png" />
@@ -435,7 +455,11 @@ export default function ModifyProfile() {
                 <DemoSelectBox>
                   <SelectButton>
                     <PlaceHolder>
-                      <span>{text.placeholder.major}</span>
+                      <span>
+                        {userInfo.major
+                          ? text.majors[userInfo.major - 1]
+                          : text.placeholder.major}
+                      </span>
                     </PlaceHolder>
                     <Arrow>
                       <Img src="/img/arrow-down-dark3.png" />

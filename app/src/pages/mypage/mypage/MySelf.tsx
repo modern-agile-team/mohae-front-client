@@ -33,6 +33,7 @@ export default function MySelf({ text, posts, actions, checkSelf }: Props) {
             shape={'square'}
             img={`/img/category-${category.no - 1}.png`}
             name={category.name}
+            id={category.no}
           />
         </Box>
       ))

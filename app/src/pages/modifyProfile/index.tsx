@@ -10,7 +10,6 @@ import styled from '@emotion/styled';
 import { useSelector } from 'react-redux';
 import { editProfile } from '../../apis/profile';
 import { RootState } from '../../redux/root';
-import axios from 'axios';
 
 interface Object {
   [key: string]: any;
@@ -31,7 +30,7 @@ export default function ModifyProfile({ setIsOpen }: Props) {
   const [profileForm] = useState<FormData>(new FormData());
   const [intersted, setIntersted] = useState<string[]>([]);
   const [phoneBehindNumber, setPhoneBehindNumber] = useState<string>(
-    user ? user.phone.slice(3, 11) : '',
+    user ? user?.phone?.slice(3, 11) : '',
   );
   const [userInfo, setUserInfo] = useState<any>({
     phone: user.phone,
@@ -151,18 +150,35 @@ export default function ModifyProfile({ setIsOpen }: Props) {
     setIntersted([...intersted, e.currentTarget.value]);
   };
 
+  const onCategoryDelete = (category: string) => {
+    console.log(text.categories.indexOf(category) + 1);
+    setIntersted(intersted.filter((el: string) => el !== category));
+    setUserInfo({
+      ...userInfo,
+      categories: userInfo.categories.filter(
+        (el: number) => el !== text.categories.indexOf(category) + 1,
+      ),
+    });
+  };
+
+  console.log(intersted);
+
   const onSubmit = () => {
+    /*
     for (let key in userInfo) {
       profileForm.append(key, JSON.stringify(userInfo[key]));
     }
+    */
 
-    console.log(profileForm.getAll('image'));
+    console.log(userInfo);
 
+    /*
     editProfile(profileForm).then(res => {
       if (res.data.success) {
         setIsOpen(false);
       }
     });
+    */
   };
 
   useEffect(() => {
@@ -170,26 +186,6 @@ export default function ModifyProfile({ setIsOpen }: Props) {
     for (let key in userInfo) {
       profileForm.delete(key);
     }
-    /*
-    if (user.photo_url) {
-      const getImages = async () => {
-        await axios
-          .get<Blob>(
-            `https://mohae-image.s3.ap-northeast-2.amazonaws.com/${user.photo_url}`,
-
-            { responseType: 'blob' },
-          )
-          .then(res => {
-            const file = new File([res.data], user.photo_url, {
-              type: res.data.type,
-            });
-            profileForm.append('image', file);
-          });
-      };
-    
-      getImages();
-    }
-      */
 
     if (user) {
       setIntersted(
@@ -513,6 +509,11 @@ export default function ModifyProfile({ setIsOpen }: Props) {
                                 intersted={userInfo.categories}
                               >
                                 {el}
+                                <CloseButton
+                                  onClick={() => onCategoryDelete(el)}
+                                >
+                                  <Img src="/img/close-dark2.png" />
+                                </CloseButton>
                               </Category>
                             </CategoryWrapper>
                           ))
@@ -751,6 +752,7 @@ const Category = styled.button<{ select: number; intersted: number[] }>`
   align-items: center;
   border-radius: 6px;
   box-shadow: 0px 0px 8px 0px #84838d;
+  position: relative;
   span {
     color: ${props =>
       props.intersted.includes(props.select) ? color.main : '#a7a7ad'};
@@ -769,16 +771,10 @@ const CategoryWrapper = styled.div`
   width: 100%;
 `;
 
-const Button = styled.button`
-  width: 480px;
-  height: 52px;
-  border-radius: 6px;
-  background-color: #ff445e;
-  box-shadow: 0px 0px 8px 0px #84838d;
-  font-size: 14px;
-  font-weight: 400;
-  color: #ffffff;
-  &:disabled {
-    background-color: #e7e7e8;
-  }
+const CloseButton = styled.div`
+  width: 13px;
+  height: 13px;
+  position: absolute;
+  top: 5px;
+  right: 5px;
 `;

@@ -8,7 +8,7 @@ import ModifyProfile from './modifyProfile';
 import Spec from './spec';
 import LoginModal from './login';
 import CreateAndEditPost from './createpost/Container';
-import Board from './board/Board';
+import Board from './board/Container';
 import Post from './post/Container';
 export {
   HG,

@@ -91,10 +91,10 @@ export const userSlice = createSlice({
       })
       .addCase(getUserData.rejected, (state, action) => {
         if (action.error.message === 'Request failed with status code 410') {
+          alert('세션이 만료되었습니다');
           sessionStorage.removeItem('refresh_token');
           sessionStorage.removeItem('access_token');
           state.user = {};
-          alert('세션이 만료되었습니다');
           window.location.reload();
         }
       });

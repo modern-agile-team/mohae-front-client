@@ -90,11 +90,11 @@ const App: React.SFC = () => {
         <Route path={'/spec/:no'} element={<Layout component={<Spec />} />} />
         <Route path={'/post/:no'} element={<Layout component={<Post />} />} />
         <Route
-          path={'/createpost'}
+          path={'/create/post'}
           element={<Layout component={<CreateAndEditPost type={'create'} />} />}
         />
         <Route
-          path={'/edit/:no'}
+          path={'/edit/post/:no'}
           element={<Layout component={<CreateAndEditPost type={'edit'} />} />}
         />
         <Route

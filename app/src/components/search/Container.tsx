@@ -1,7 +1,12 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import {
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from 'react-router-dom';
 import { RootState } from '../../redux/root';
 import { ENDPOINT } from '../../utils/ENDPOINT';
 import Presenter from './Presenter';
@@ -30,6 +35,7 @@ function Search(props: Props) {
   const getParams = (query: string): any => {
     return searchParams.get(query);
   };
+  const location = useLocation();
 
   const onBlur = () => {
     setShowDataList(false);
@@ -184,8 +190,15 @@ function Search(props: Props) {
 
   const hotKeyClick = (e: React.MouseEvent, no: number) => {
     e.preventDefault();
-    resetPageInfo && resetPageInfo();
-    navigate(`/boards/${no}`);
+    if (!location.search) {
+      if (location.pathname !== `/boards/${no}`) {
+        resetPageInfo && resetPageInfo();
+        navigate(`/boards/${no}`);
+      }
+    } else {
+      resetPageInfo && resetPageInfo();
+      navigate(`/boards/${no}`);
+    }
   };
 
   const deleteAll = () => {

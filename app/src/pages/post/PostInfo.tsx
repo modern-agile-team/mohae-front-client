@@ -1,9 +1,8 @@
-import React, { useState, Dispatch, SetStateAction } from 'react';
+import React, { useState } from 'react';
 import { css, cx } from '@emotion/css';
-import { color, font, radius } from '../../styles';
+import { color, font } from '../../styles';
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
-import { Props } from './Container';
 import { Btn, Popup } from '../../components';
 import PostWriter from './PostWriter';
 import { useSelector } from 'react-redux';
@@ -190,7 +189,7 @@ function PostInfo(props: PostInfoProps) {
         </div>
         <div className="sectionWrap-2">
           <div className="textBtnWrap">
-            <Link to={`/edit/${response.board.no}`}>
+            <Link to={`/edit/post/${response.board.no}`}>
               <p>수정하기</p>
             </Link>
             <p onClick={() => setPopupView(true)}>삭제하기</p>

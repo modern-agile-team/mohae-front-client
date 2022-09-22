@@ -172,6 +172,8 @@ export default function ModifyProfile({ setIsOpen }: Props) {
     });
   };
 
+  console.log(userInfo.categories);
+
   useEffect(() => {
     profileForm.delete('image');
     for (let key in userInfo) {
@@ -508,7 +510,7 @@ export default function ModifyProfile({ setIsOpen }: Props) {
                               </Category>
                             </CategoryWrapper>
                           ))
-                        : text.placeholder.intersted}
+                        : '관심사를 선택해주세요'}
                     </PlaceHolder>
                     <Arrow>
                       <Img src="/img/arrow-down-dark3.png" />

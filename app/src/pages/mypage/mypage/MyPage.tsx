@@ -72,12 +72,12 @@ export default function MyPage() {
       dispatch(setInitialStateSpecData());
       dispatch(setInitialStateMypageProfile());
     };
-  }, [checkSelf, paramNo, dispatch]);
+  }, []);
 
   useEffect(() => {
     if (!isOpenSpecVisit || !openSpecCreate)
       dispatch(getSpecs({ paramNo, takeParam: take[checkSelf] }));
-  }, [dispatch, isOpenSpecVisit, openSpecCreate]);
+  }, [isOpenSpecVisit, openSpecCreate]);
 
   return (
     <Presenter

@@ -89,7 +89,10 @@ function Popup({ text1, text2, visible, overlay, alarm, children }: Props) {
         </div>
         <div className={cx(btnWrapper)}>{children}</div>
       </Box>
-      <div className={cx(overlayStyle)}></div>
+      <div
+        className={cx(overlayStyle)}
+        onClick={() => overlay && overlay()}
+      ></div>
     </form>
   );
 }

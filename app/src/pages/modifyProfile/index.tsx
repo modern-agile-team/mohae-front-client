@@ -151,34 +151,25 @@ export default function ModifyProfile({ setIsOpen }: Props) {
   };
 
   const onCategoryDelete = (category: string) => {
-    console.log(text.categories.indexOf(category) + 1);
     setIntersted(intersted.filter((el: string) => el !== category));
     setUserInfo({
       ...userInfo,
       categories: userInfo.categories.filter(
-        (el: number) => el !== text.categories.indexOf(category) + 1,
+        (el: number) => el !== text.categories.indexOf(category) + 2,
       ),
     });
   };
 
-  console.log(intersted);
-
   const onSubmit = () => {
-    /*
     for (let key in userInfo) {
       profileForm.append(key, JSON.stringify(userInfo[key]));
     }
-    */
 
-    console.log(userInfo);
-
-    /*
     editProfile(profileForm).then(res => {
       if (res.data.success) {
         setIsOpen(false);
       }
     });
-    */
   };
 
   useEffect(() => {

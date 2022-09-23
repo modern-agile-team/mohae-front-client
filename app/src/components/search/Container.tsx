@@ -184,20 +184,20 @@ function Search(props: Props) {
       resetPageInfo && resetPageInfo();
     }
     if (main) {
-      navigate('boards/1' + query);
+      navigate('boards/categories/1' + query);
     }
   };
 
   const hotKeyClick = (e: React.MouseEvent, no: number) => {
     e.preventDefault();
     if (!location.search) {
-      if (location.pathname !== `/boards/${no}`) {
+      if (location.pathname !== `/boards/categories/${no}`) {
         resetPageInfo && resetPageInfo();
-        navigate(`/boards/${no}`);
+        navigate(`/boards/categories/${no}`);
       }
     } else {
       resetPageInfo && resetPageInfo();
-      navigate(`/boards/${no}`);
+      navigate(`/boards/categories/${no}`);
     }
   };
 

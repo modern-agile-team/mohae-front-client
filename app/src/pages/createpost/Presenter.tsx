@@ -142,7 +142,7 @@ function Presenter(props: Props) {
 
   const popupClose = () => {
     dispatch(setInitialState());
-    window.location.replace('/boards/1');
+    window.location.replace('/boards/categories/1');
   };
 
   return (

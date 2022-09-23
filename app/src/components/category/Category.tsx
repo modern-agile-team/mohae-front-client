@@ -108,7 +108,7 @@ export default function Category({
 
   return !(shape === 'row') ? (
     <Link
-      to={`/boards/${id}`}
+      to={`/boards/categories/${id}`}
       className={cx(style[shape])}
       onClick={String(id) !== no ? resetPageInfo : undefined}
     >

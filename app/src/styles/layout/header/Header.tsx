@@ -80,7 +80,7 @@ export default function Header(props: Props): ReactElement {
       </Link>
       <div className={'button-wrapper'}>
         <button className={'menu'}>
-          <Link to={'/boards/1'}>{text.boards}</Link>
+          <Link to={'/boards/categories/1'}>{text.boards}</Link>
         </button>
         <button className={'menu FAQ'}>
           {text.service}

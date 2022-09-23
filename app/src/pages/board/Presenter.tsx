@@ -102,19 +102,17 @@ function Presenter(props: Props) {
         </div>
         {showContents()}
       </div>
-      {loginPlz && (
-        <Popup
-          visible={loginPlz}
-          text1={'게시글 작성은 로그인 후 이용 가능합니다.'}
-          overlay={() => setLoginPlz(false)}
-        >
-          <div className={cx(popupStyle)}>
-            <Btn main onClick={() => setLoginPlz(false)}>
-              닫기
-            </Btn>
-          </div>
-        </Popup>
-      )}
+      <Popup
+        visible={loginPlz}
+        text1={'게시글 작성은 로그인 후 이용 가능합니다.'}
+        overlay={() => setLoginPlz(false)}
+      >
+        <div className={cx(popupStyle)}>
+          <Btn main onClick={() => setLoginPlz(false)}>
+            닫기
+          </Btn>
+        </div>
+      </Popup>
     </>
   );
 }

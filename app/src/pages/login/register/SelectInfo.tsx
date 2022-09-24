@@ -11,12 +11,19 @@ import axios from 'axios';
 interface Object {
   [key: string]: any;
 }
+
+interface PopupInfo {
+  view: boolean;
+  message: string;
+}
 interface Props {
   [key: string]: any;
-  setPopupView: Dispatch<SetStateAction<boolean>>;
+  setPopupInfo: Dispatch<
+    SetStateAction<{ register: PopupInfo; findPassword: PopupInfo }>
+  >;
 }
 
-export default function SelectInfo({ part, next, setPopupView }: Props) {
+export default function SelectInfo({ popupInfo, setPopupInfo }: Props) {
   const [open, setOpen] = useState<Object>({
     one: false,
     two: false,
@@ -176,13 +183,16 @@ export default function SelectInfo({ part, next, setPopupView }: Props) {
       })
       .then(res => {
         if (res.data.statusCode >= 200 && res.data.statusCode <= 204) {
-          setPopupView(true);
+          setPopupInfo({
+            ...popupInfo,
+            register: { ...popupInfo.register, view: true },
+          });
         } else {
           alert('다시 가입 해주세요');
         }
       })
       .catch(err => {
-        console.log('err :>> ', err);
+        alert(err.response.data.error.message);
       });
   };
 
@@ -196,13 +206,16 @@ export default function SelectInfo({ part, next, setPopupView }: Props) {
       })
       .then(res => {
         if (res.data.statusCode >= 200 && res.data.statusCode <= 204) {
-          setPopupView(true);
+          setPopupInfo({
+            ...popupInfo,
+            register: { ...popupInfo.register, view: true },
+          });
         } else {
           alert('다시 가입 해주세요');
         }
       })
       .catch(err => {
-        console.log('err :>> ', err);
+        alert(err.response.data.error.message);
       });
   };
 

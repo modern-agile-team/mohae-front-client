@@ -4,7 +4,7 @@ import { Img, FocusBar, Popup, Btn } from '../../components';
 import AuthModal from '../../components/modal/AuthModal';
 import { radius, font, color, shadow } from '../../styles';
 import { css, cx } from '@emotion/css';
-import { ReactElement, useEffect, useState } from 'react';
+import { ReactElement, useState } from 'react';
 import Login from './login/Login';
 import Agreement from './register/Agreement';
 import Main from './register/Main';
@@ -25,14 +25,17 @@ export default function Presenter({
   setPart,
   onClick,
 }: Props): ReactElement {
-  const [popupView, setPopupView] = useState(false);
+  const [popupInfo, setPopupInfo] = useState({
+    register: { view: false, message: '회원 가입이 완료 되었습니다.' },
+    findPassword: { view: false, message: '' },
+  });
   const mainContents = [
     <Login text={text} setFindPasswordView={onClick.findPassword} />,
     <Main text={text} next={onClick.enterRegister} />,
     <Agreement next={onClick.agreement} />,
     <PersonalInfo text={text} part={part} next={onClick.finishedInputInfo} />,
-    <SelectInfo next={onClick.finishedAll} setPopupView={setPopupView} />,
-    <FindPassword />,
+    <SelectInfo popupInfo={popupInfo} setPopupInfo={setPopupInfo} />,
+    <FindPassword popupInfo={popupInfo} setPopupInfo={setPopupInfo} />,
   ];
 
   const style = css`
@@ -196,6 +199,38 @@ export default function Presenter({
     );
   };
 
+  const handlePopupInfo = (): {
+    view: boolean;
+    message: string;
+    close: () => void;
+  } => {
+    if (popupInfo.findPassword.view) {
+      return {
+        view: popupInfo.findPassword.view,
+        message: popupInfo.findPassword.message,
+        close: () => {
+          setPopupInfo({
+            ...popupInfo,
+            findPassword: { view: false, message: '' },
+          });
+        },
+      };
+    } else if (popupInfo.register.view) {
+      return {
+        view: popupInfo.register.view,
+        message: popupInfo.register.message,
+        close: () => {
+          setPopupInfo({
+            ...popupInfo,
+            register: { ...popupInfo.register, view: false },
+          });
+          setPart(0);
+        },
+      };
+    }
+    return { view: false, message: '', close: () => {} };
+  };
+
   return (
     <>
       <AuthModal
@@ -215,35 +250,24 @@ export default function Presenter({
           </div>
         </div>
       </AuthModal>
-      {popupView && (
-        <>
-          <Popup
-            visible={popupView}
-            text1={'회원 가입이 완료 되었습니다.'}
-            overlay={() => {
-              setPopupView(false);
-              setPart(0);
-            }}
-          >
-            <BtnImgWrapper>
-              <Btn
-                main
-                onClick={() => {
-                  setPopupView(false);
-                  setPart(0);
-                }}
-              >
-                닫기
-              </Btn>
-            </BtnImgWrapper>
-          </Popup>
-        </>
+      {handlePopupInfo().view && (
+        <Popup
+          visible={handlePopupInfo().view}
+          text1={handlePopupInfo().message}
+          overlay={() => handlePopupInfo().close()}
+        >
+          <BtnImgWrapper>
+            <Btn main onClick={() => handlePopupInfo().close()}>
+              닫기
+            </Btn>
+          </BtnImgWrapper>
+        </Popup>
       )}
     </>
   );
 }
 
-const BtnImgWrapper = styled.div`
+const BtnImgWrapper = styled.button`
   width: 74px;
   height: 43px;
 `;

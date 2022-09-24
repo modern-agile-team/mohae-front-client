@@ -161,7 +161,7 @@ function PostInfo(props: PostInfoProps) {
       })
       .then(res => console.log(res))
       .catch(err => console.log(err));
-    window.location.replace('/boards/1');
+    window.location.replace('/boards/categories/1');
   };
 
   return (

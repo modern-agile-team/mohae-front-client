@@ -4,7 +4,7 @@ import {
   createAsyncThunk,
   AsyncThunkAction,
 } from '@reduxjs/toolkit';
-import { PostData, Data } from '../../pages/board/Board';
+import { PostData, Data } from '../../pages/board/Container';
 
 interface InitialState extends Data {
   loading: boolean;

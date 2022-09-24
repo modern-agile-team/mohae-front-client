@@ -89,7 +89,7 @@ function Post() {
   const location = useLocation();
 
   const btnClick = {
-    redirectBoard: () => window.location.replace('/boards/1'),
+    redirectBoard: () => window.location.replace('/boards/categories/1'),
     opneLoginModal: () => dispatch(open_login(true)),
   };
 

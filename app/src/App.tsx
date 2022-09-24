@@ -82,7 +82,7 @@ const App: React.SFC = () => {
         <Route path={'/'} element={<Layout main component={<Home />} />} />
         <Route path={'/hg'} element={<Layout component={<HG />} />} />
         <Route
-          path={'/boards/:no'}
+          path={'/boards/categories/:no'}
           element={<Layout component={<Board />} />}
         />
         <Route

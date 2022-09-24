@@ -216,15 +216,19 @@ export default function PersonalInfo({ part, next }: Object) {
   const clickNext = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    const emailCheck = `${inputValue.email}@${inputValue.emailCompany}`;
-    console.log(emailCheck);
-    console.log(emailCheck.replace(/@naver.com$|@daum.net$|@gmail.com$|@nate.com$/g,''))
 
+    const userInputValueCheck =
+      inputValue.emailCompany !== '이메일 선택'
+        ? `${inputValue.email.replace(
+            /@naver.com$|@daum.net$|@gmail.com$|@nate.com$/g,
+            '',
+          )}@${inputValue.emailCompany}`
+        : inputValue.email;
 
     const finalRegistInfo: Object = {
       ...registInfo,
       ...inputValue,
-      email: `${inputValue.email}@${inputValue.emailCompany}`,
+      email: userInputValueCheck,
     };
     delete finalRegistInfo.emailCompany;
     delete finalRegistInfo.checkPassword;

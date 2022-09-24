@@ -10,7 +10,6 @@ import styled from '@emotion/styled';
 import { useSelector } from 'react-redux';
 import { editProfile } from '../../apis/profile';
 import { RootState } from '../../redux/root';
-import axios from 'axios';
 import { ENDPOINT } from '../../utils/ENDPOINT';
 import { customAxios } from '../../apis/instance';
 import setInterceptors from '../../apis/common/setInterceptors';

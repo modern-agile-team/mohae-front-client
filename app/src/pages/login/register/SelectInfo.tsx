@@ -148,6 +148,16 @@ export default function SelectInfo({ part, next, setPopupView }: Props) {
     setPhoneBehindNumber(e.target.value);
   };
 
+  const onCategoryDelete = (category: string) => {
+    setIntersted(intersted.filter((el: string) => el !== category));
+    setInfo({
+      ...info,
+      intersted: info.intersted.filter(
+        (el: number) => el !== text.categories.indexOf(category) + 2,
+      ),
+    });
+  };
+
   const onSubmit = () => {
     const body = {
       ...registInfo,
@@ -167,7 +177,6 @@ export default function SelectInfo({ part, next, setPopupView }: Props) {
       .then(res => {
         if (res.data.statusCode >= 200 && res.data.statusCode <= 204) {
           setPopupView(true);
-          // sessionStorage.setItem('userEmail', res.data.response.email)
         } else {
           alert('다시 가입 해주세요');
         }
@@ -472,6 +481,9 @@ export default function SelectInfo({ part, next, setPopupView }: Props) {
                               intersted={info.intersted}
                             >
                               {el}
+                              <CloseButton onClick={() => onCategoryDelete(el)}>
+                                <Img src="/img/close-dark2.png" />
+                              </CloseButton>
                             </Category>
                           </CategoryWrapper>
                         ))
@@ -642,6 +654,7 @@ const Category = styled.button<{ select: number; intersted: number[] }>`
   align-items: center;
   border-radius: 6px;
   box-shadow: 0px 0px 8px 0px #84838d;
+  position: relative;
   span {
     color: ${props =>
       props.intersted.includes(props.select) ? color.main : '#a7a7ad'};
@@ -658,6 +671,14 @@ const Category = styled.button<{ select: number; intersted: number[] }>`
 const CategoryWrapper = styled.div`
   display: flex;
   width: 100%;
+`;
+
+const CloseButton = styled.div`
+  width: 13px;
+  height: 13px;
+  position: absolute;
+  top: 5px;
+  right: 5px;
 `;
 
 const Button = styled.button`

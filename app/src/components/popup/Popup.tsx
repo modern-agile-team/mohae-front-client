@@ -80,7 +80,12 @@ function Popup({ text1, text2, visible, overlay, alarm, children }: Props) {
   `;
 
   return (
-    <form onSubmit={() => overlay && overlay()}>
+    <form
+      onSubmit={e => {
+        e.preventDefault();
+        overlay && overlay();
+      }}
+    >
       <Box size={size} className={box}>
         <div className={cx(text)}>
           {text1}

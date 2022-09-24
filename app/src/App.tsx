@@ -26,6 +26,7 @@ import Inquire from './pages/inquire/inquire';
 import InquireSuccess from './pages/inquire/inquireSuccess';
 import Notice from './pages/faq/notice/Notice';
 import ChangePassword from './pages/login/findPassword/Container';
+import getToken, { getAccessToken } from './utils/getToken';
 
 injectGlobal`
   * {
@@ -74,6 +75,7 @@ injectGlobal`
 `;
 
 const App: React.SFC = () => {
+  const token = getAccessToken();
   return (
     <Router>
       <Routes>
@@ -85,7 +87,11 @@ const App: React.SFC = () => {
         />
         <Route
           path={'/mypage/:no'}
-          element={<Layout component={<MyPage />} />}
+          element={
+            <Layout
+              component={token ? <MyPage /> : <Navigate replace to="/" />}
+            />
+          }
         />
         <Route path={'/spec/:no'} element={<Layout component={<Spec />} />} />
         <Route path={'/post/:no'} element={<Layout component={<Post />} />} />

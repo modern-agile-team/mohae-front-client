@@ -79,8 +79,8 @@ export default function Register({ text, setFindPasswordView }: Props) {
             'refresh_token',
             res.data.response.refreshToken,
           );
-          loginCheck();
           window.location.replace(location.pathname);
+          loginCheck();
 
           dispatch(open_login(!isOpenLogin));
         } else {

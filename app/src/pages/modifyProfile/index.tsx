@@ -10,6 +10,9 @@ import styled from '@emotion/styled';
 import { useSelector } from 'react-redux';
 import { editProfile } from '../../apis/profile';
 import { RootState } from '../../redux/root';
+import { ENDPOINT } from '../../utils/ENDPOINT';
+import { customAxios } from '../../apis/instance';
+import setInterceptors from '../../apis/common/setInterceptors';
 
 interface Object {
   [key: string]: any;
@@ -29,6 +32,7 @@ export default function ModifyProfile({ setIsOpen }: Props) {
   const user = useSelector((state: RootState) => state.user.user);
   const [profileForm] = useState<FormData>(new FormData());
   const [intersted, setIntersted] = useState<string[]>([]);
+  const [nickNameValid, setNickNameValid] = useState<boolean>(false);
   const [phoneBehindNumber, setPhoneBehindNumber] = useState<string>(
     user ? user?.phone?.slice(3, 11) : '',
   );
@@ -160,7 +164,38 @@ export default function ModifyProfile({ setIsOpen }: Props) {
     });
   };
 
+  const onNickNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUserInfo({
+      ...userInfo,
+      nickname: e.currentTarget.value,
+    });
+    setNickNameValid(false);
+  };
+
+  const onNickNameValid = () => {
+    setInterceptors(customAxios)
+      .post(`${ENDPOINT}profile/check-nickname`, {
+        no: null,
+        nickname: userInfo.nickname,
+      })
+      .then(res => {
+        alert(res.data.msg);
+        setNickNameValid(true);
+      })
+
+      .catch(err => {
+        alert(err.response.data.error.message);
+        setNickNameValid(false);
+      });
+  };
+
   const onSubmit = () => {
+    if (user.nickname !== userInfo.nickname) {
+      if (!nickNameValid) {
+        alert('닉네임이 중복됩니다');
+        return;
+      }
+    }
     for (let key in userInfo) {
       profileForm.append(key, JSON.stringify(userInfo[key]));
     }
@@ -384,10 +419,13 @@ export default function ModifyProfile({ setIsOpen }: Props) {
                 spellCheck={false}
                 placeholder={user.nickname}
                 className={''}
+                onChange={e => onNickNameChange(e)}
               />
 
               <div className={'btn'}>
-                <Btn white>{text.check}</Btn>
+                <Btn white onClick={onNickNameValid}>
+                  {text.check}
+                </Btn>
               </div>
             </div>
           </Contents>
@@ -508,7 +546,7 @@ export default function ModifyProfile({ setIsOpen }: Props) {
                               </Category>
                             </CategoryWrapper>
                           ))
-                        : text.placeholder.intersted}
+                        : '관심사를 선택해주세요'}
                     </PlaceHolder>
                     <Arrow>
                       <Img src="/img/arrow-down-dark3.png" />

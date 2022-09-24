@@ -111,6 +111,7 @@ const Agreement = ({ next }: Object) => {
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
+  height: 25em;
 
   h1 {
     font-size: 16px;
@@ -124,6 +125,7 @@ const CheckItem = styled.div`
   display: flex;
   align-items: center;
   flex: 1;
+  margin-bottom: 20px;
 
   span {
     font-weight: 400;
@@ -160,16 +162,13 @@ const CheckDone = styled.div`
 
 const Button = styled.button`
   width: 480px;
-  height: 52px;
+  padding: 15px;
   border-radius: 6px;
   background-color: #ff445e;
   box-shadow: 0px 0px 8px 0px #84838d;
   font-size: 14px;
   font-weight: 400;
   color: #ffffff;
-  position: absolute;
-  bottom: 0px;
-  left: auto;
 
   &:disabled {
     background-color: #e7e7e8;

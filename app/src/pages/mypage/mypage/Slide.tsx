@@ -20,7 +20,6 @@ interface PARAMS {
 }
 
 export default function Slide({
-  onClick,
   outsideBtn,
   items,
   action,

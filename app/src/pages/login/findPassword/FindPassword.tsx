@@ -1,15 +1,25 @@
 import styled from '@emotion/styled';
 import axios from 'axios';
-import React, { useState } from 'react';
-import { Popup } from '../../../components';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import { ENDPOINT } from '../../../utils/ENDPOINT';
 
-function FindPassword() {
+interface PopupInfo {
+  view: boolean;
+  message: string;
+}
+
+interface Props {
+  popupInfo: { register: PopupInfo; findPassword: PopupInfo };
+  setPopupInfo: Dispatch<
+    SetStateAction<{ register: PopupInfo; findPassword: PopupInfo }>
+  >;
+}
+
+function FindPassword({ popupInfo, setPopupInfo }: Props) {
   const [userInputValue, setUserInputValue] = useState({
     name: '',
     email: '',
   });
-  const [popupInfo, setPopupInfo] = useState({ view: false, message: '' });
 
   const handleOnChange = (
     str: string,
@@ -34,61 +44,52 @@ function FindPassword() {
       await axios
         .post(`${ENDPOINT}email/forget/password`, userInputValue)
         .then(res => {
-          setPopupInfo({ ...popupInfo, view: true, message: res.data.msg });
+          setPopupInfo({
+            ...popupInfo,
+            findPassword: { view: true, message: res.data.msg },
+          });
+          setUserInputValue({ name: '', email: '' });
         });
     } catch (err: any) {
       setPopupInfo({
-        view: true,
-        message: err.response.data.error.message,
+        ...popupInfo,
+        findPassword: { view: true, message: err.response.data.error.message },
       });
     }
   };
 
-  const closePopup = () => {
-    setPopupInfo({ ...popupInfo, view: false });
-  };
-
   return (
-    <>
-      <Container onSubmit={e => sendEmail(e)}>
-        <section>
-          <p>비밀번호 찾기</p>
-          <p>가입 시 입력하신 이메일을 통해 찾을 수 있습니다.</p>
-          <Line />
-        </section>
-        <section>
-          <label>이름</label>
-          <Input
-            placeholder="이름을 입력해 주세요."
-            value={userInputValue.name}
-            onChange={e => handleOnChange('name', e)}
-          />
-        </section>
-        <section>
-          <label>이메일</label>
-          <Input
-            placeholder="이메일을 입력해 주세요."
-            type={'email'}
-            value={userInputValue.email}
-            onChange={e => handleOnChange('email', e)}
-          />
-        </section>
-        <SubmitButton able={submitAble()} onSubmit={e => sendEmail(e)}>
-          비밀번호 찾기
-        </SubmitButton>
-      </Container>
-      {popupInfo.view && (
-        <Popup
-          visible={popupInfo.view}
-          text1={popupInfo.message}
-          overlay={() => closePopup}
-        >
-          <PopupCloseButton type="submit" onClick={closePopup}>
-            닫기
-          </PopupCloseButton>
-        </Popup>
-      )}
-    </>
+    <Container onSubmit={e => sendEmail(e)}>
+      <section>
+        <p>비밀번호 찾기</p>
+        <p>가입 시 입력하신 이메일을 통해 찾을 수 있습니다.</p>
+        <Line />
+      </section>
+      <section>
+        <label>이름</label>
+        <Input
+          placeholder="이름을 입력해 주세요."
+          value={userInputValue.name}
+          onChange={e => handleOnChange('name', e)}
+        />
+      </section>
+      <section>
+        <label>이메일</label>
+        <Input
+          placeholder="이메일을 입력해 주세요."
+          type={'email'}
+          value={userInputValue.email}
+          onChange={e => handleOnChange('email', e)}
+        />
+      </section>
+      <SubmitButton
+        able={submitAble()}
+        type="submit"
+        onSubmit={e => sendEmail(e)}
+      >
+        비밀번호 찾기
+      </SubmitButton>
+    </Container>
   );
 }
 
@@ -150,15 +151,6 @@ const SubmitButton = styled.button<{ able: boolean }>`
   background-color: ${props => (props.able ? '#ff445e' : '#E7E7E8')};
   color: white;
   font-size: 14px;
-  border-radius: 6px;
-  box-shadow: 0px 0px 8px rgba(132, 131, 141, 0.5);
-`;
-
-const PopupCloseButton = styled.button`
-  width: 74px;
-  height: 43px;
-  background-color: #ff445e;
-  color: white;
   border-radius: 6px;
   box-shadow: 0px 0px 8px rgba(132, 131, 141, 0.5);
 `;

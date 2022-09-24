@@ -44,7 +44,9 @@ export default function MySelf({ text, posts, actions, checkSelf }: Props) {
     );
 
   useEffect(() => {
-    dispatch(getUserData(userInfo.userNo));
+    if (!isOpen) {
+      dispatch(getUserData(userInfo.userNo));
+    }
   }, [isOpen]);
 
   return (

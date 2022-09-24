@@ -34,13 +34,6 @@ export const setInterceptors = (instance: AxiosInstance): AxiosInstance => {
             await axios(originalRequest).catch(error => {
               if (error.response.status === 410) {
                 newToken = '';
-                console.log(error.response);
-                console.log('refresh');
-                /*
-                sessionStorage.removeItem('refresh_token');
-                sessionStorage.removeItem('access_token');
-                */
-
                 return Promise.reject(error);
               } else if (
                 error.response.data.error.statusCode === 401 &&

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { css, cx } from '@emotion/css';
 import { Img } from '../../../components';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../redux/root';
 
 interface Props {
   notice: {
@@ -17,6 +19,8 @@ interface Props {
 function subArticle({ notice, onEdit, onDelete }: Props) {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [isView, setIsView] = useState<boolean>(false);
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const user = useSelector((state: RootState) => state.user.user);
 
   return (
     <div
@@ -46,17 +50,21 @@ function subArticle({ notice, onEdit, onDelete }: Props) {
           <div className={cx(uploadDate)}>{notice.createdAt}</div>
         </div>
         <div className={cx(right)}>
-          <div
-            className={cx(edit)}
-            onClick={() => {
-              onEdit(notice.no, notice.title, notice.description);
-            }}
-          >
-            수정
-          </div>
-          <div className={cx(d2lete)} onClick={() => onDelete(notice.no)}>
-            삭제
-          </div>
+          {user.manager && (
+            <div
+              className={cx(edit)}
+              onClick={() => {
+                onEdit(notice.no, notice.title, notice.description);
+              }}
+            >
+              수정
+            </div>
+          )}
+          {user.manager && (
+            <div className={cx(d2lete)} onClick={() => onDelete(notice.no)}>
+              삭제
+            </div>
+          )}
           <div
             className={cx(css`
               width: 16px;
@@ -152,4 +160,5 @@ const left = css`
 const contents = css`
   border-left: 2px solid #ff445e;
   padding-left: 10px;
+  width: 90%;
 `;

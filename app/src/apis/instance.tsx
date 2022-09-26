@@ -17,7 +17,7 @@ export const customAxios = axios.create({
   baseURL: `${ENDPOINT}`,
   headers: {
     accept: 'application/json',
-    'api-key': 'mohae.com',
+    'api-key': 'mo-hae.com',
   },
   timeout: 10000,
 });

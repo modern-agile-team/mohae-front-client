@@ -5,6 +5,7 @@ import styled from '@emotion/styled';
 import { profile } from 'console';
 import { useState } from 'react';
 import { shadow, radius } from '../../styles';
+import Img from '../img/Img';
 
 interface Props {
   [key: string]: boolean | number | any;
@@ -14,6 +15,7 @@ interface Props {
 function ProfileBox(props: Props) {
   const { img, size, smallShadow, noneClick, profileForm } = props;
   const [profileImage, setProfileImage] = useState<string>('');
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.currentTarget.files;
@@ -23,6 +25,15 @@ function ProfileBox(props: Props) {
       profileForm.delete('image');
       profileForm.append('image', file[0]);
     }
+  };
+
+  const onBasicImgChange = () => {
+    setProfileImage('/img/profile.png');
+    profileForm.delete('image');
+    const file = new File(['profile.png'], 'profile.png', {
+      type: 'image/jpg',
+    });
+    profileForm.append('image', file);
   };
 
   const profileImg = img !== null ? img : '/img/profile.png';
@@ -64,25 +75,78 @@ function ProfileBox(props: Props) {
   return (
     <>
       <div className={cx(image)}></div>
-      <Input
-        type="file"
-        id="files"
-        accept="image/jpeg,image/gif,image/png"
-        onChange={onChange}
-      />
-      <label htmlFor="files" className={cx(imgUpdateBtn)}>
+      <div className={cx(imgUpdateBtn)}>
         <img
           className={cx(editPhotoImg)}
           alt="editPhoto"
           src="/img/camera.png"
+          onClick={() => setIsOpen(true)}
         />
-      </label>
+      </div>
+      {isOpen && (
+        <ChangeOption>
+          <Close onClick={() => setIsOpen(false)}>
+            <Img src="/img/close.png" />
+          </Close>
+          <Option>
+            <Input
+              type="file"
+              id="files"
+              accept="image/jpeg,image/gif,image/png"
+              onChange={onChange}
+            />
+            <label htmlFor="files">
+              <span>기기에서 이미지 선택</span>
+            </label>
+          </Option>
+          <Option onClick={onBasicImgChange}>
+            <span>기본 이미지로 변경</span>
+          </Option>
+        </ChangeOption>
+      )}
     </>
   );
 }
 
 const Input = styled.input`
   display: none;
+`;
+
+const ChangeOption = styled.div`
+  width: 160px;
+  height: 80px;
+  background-color: #ffffff;
+  box-shadow: 0px 0px 8px 0px #84838d;
+  border-radius: 6px;
+  position: absolute;
+`;
+const Option = styled.div`
+  width: 100%;
+  height: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #fcf3f4;
+  }
+
+  span {
+    font-size: 14px;
+    font-weight: 400;
+    color: #84838d;
+    cursor: pointer;
+  }
+`;
+
+const Close = styled.div`
+  width: 14px;
+  height: 14px;
+  position: absolute;
+  right: 5px;
+  top: 3px;
+  cursor: pointer;
 `;
 
 export default ProfileBox;

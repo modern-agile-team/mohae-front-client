@@ -12,6 +12,7 @@ import { editProfile } from '../../apis/profile';
 import { RootState } from '../../redux/root';
 import { ENDPOINT } from '../../utils/ENDPOINT';
 import { customAxios } from '../../apis/instance';
+import ChangePassword from './ChangePassword';
 import setInterceptors from '../../apis/common/setInterceptors';
 
 interface Object {
@@ -36,6 +37,7 @@ export default function ModifyProfile({ setIsOpen }: Props) {
   const [phoneBehindNumber, setPhoneBehindNumber] = useState<string>(
     user ? user?.phone?.slice(3, 11) : '',
   );
+  const [isChangePassword, setIsChangePassword] = useState<boolean>(false);
   const [userInfo, setUserInfo] = useState<any>({
     phone: user.phone,
     nickname: user.nickname,
@@ -311,6 +313,7 @@ export default function ModifyProfile({ setIsOpen }: Props) {
         }
         .light {
           color: ${color.dark3};
+          cursor: pointer;
         }
       }
       .right {
@@ -405,7 +408,9 @@ export default function ModifyProfile({ setIsOpen }: Props) {
               profileForm={profileForm}
             />
           </div>
-          <div className={'light'}>{'비밀번호 변경'}</div>
+          <div className={'light'} onClick={() => setIsChangePassword(true)}>
+            {'비밀번호 변경'}
+          </div>
         </div>
         <div className={'right'}>
           <Contents>
@@ -595,7 +600,11 @@ export default function ModifyProfile({ setIsOpen }: Props) {
 
   return (
     <BasicModal small visible={true}>
-      {contents}
+      {isChangePassword ? (
+        <ChangePassword setIsChangePassword={setIsChangePassword} />
+      ) : (
+        contents
+      )}
     </BasicModal>
   );
 }

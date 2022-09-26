@@ -1,7 +1,8 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { customAxios } from '../../apis/instance';
+import setInterceptors from '../../apis/common/setInterceptors';
 import EmptySpinner from '../../components/emptySpinner/EmptySpinner';
 import useRefactorPostingData from '../../customhook/useRefactorPostingData';
 import { setForEdit, setLoading } from '../../redux/createpost/reducer';
@@ -40,7 +41,7 @@ function CreateAndEditPost({ type }: Props) {
 
   useEffect(() => {
     if (type === 'edit') {
-      axios
+      setInterceptors(customAxios)
         .get(`${ENDPOINT}boards/${no}`, {
           headers: {
             Authorization: `Bearer ${getToken()}`,
@@ -92,7 +93,10 @@ function CreateAndEditPost({ type }: Props) {
         Authorization: `Bearer ${getToken()}`,
       },
     };
-    const axiosPostOrPatch = type === 'create' ? axios.post : axios.patch;
+    const axiosPostOrPatch =
+      type === 'create'
+        ? setInterceptors(customAxios).post
+        : setInterceptors(customAxios).patch;
 
     axiosPostOrPatch(URL, form, config)
       .then(res => {

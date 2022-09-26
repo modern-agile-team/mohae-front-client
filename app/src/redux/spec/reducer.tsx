@@ -11,6 +11,7 @@ import {
   Spec,
 } from '../../apis/spec';
 import { getSpecData, getSpecDetail } from '../../apis/spec';
+import { customAxios } from '../../apis/instance';
 const GET_USER_SPECS = 'get_user_specs';
 const GET_USER_TOHELP = 'get_user_tohelp';
 const GET_USER_HELPME = 'get_user_helpme';
@@ -20,7 +21,7 @@ const ADD_IMAGES = 'add_images';
 
 const asyncThunk = (name: string, param: string | number) =>
   createAsyncThunk<any, void, {}>(name, async () => {
-    const response = await axios.get(`${ENDPOINT}${param}`);
+    const response = await customAxios.get(`${ENDPOINT}${param}`);
     return response.data;
   });
 
@@ -135,9 +136,7 @@ export const spec = createSlice({
       .addCase(getDetailSpec.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.specInfo = payload.response;
-      })
-
-     
+      });
   },
 });
 // 생성 추가 삭제

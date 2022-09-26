@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useState } from 'react';
+import { customAxios } from '../../../apis/instance';
 import { ENDPOINT } from '../../../utils/ENDPOINT';
 import Presenter from './Presenter';
 import Succese from './Succese';
@@ -49,7 +50,7 @@ function ChangePassword() {
     e.preventDefault();
 
     try {
-      await axios
+      await customAxios
         .patch(`${ENDPOINT}auth/forget/password`, inputValue, {
           headers: { key: inputValue.email },
         })

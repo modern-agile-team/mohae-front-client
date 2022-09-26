@@ -32,7 +32,7 @@ export default function PersonalInfo({ part, next }: Object) {
     placeholder: {
       name: '이름을 입력해 주세요.',
       email: '이메일을 입력해 주세요.',
-      password: '비밀먼호를 입력해 주세요.',
+      password: '비밀번호를 입력해 주세요.',
       checkPassword: '비밀번호를 다시 한번 입력해 주세요.',
       nickname: '닉네임을 입력해 주세요. (3 ~ 8자)',
     },

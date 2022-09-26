@@ -8,6 +8,8 @@ import PostWriter from './PostWriter';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/root';
 import getToken from '../../utils/getToken';
+import setInterceptors from '../../apis/common/setInterceptors';
+import { customAxios } from '../../apis/instance';
 
 interface PostInfoProps {
   quickMenu?: boolean;
@@ -153,7 +155,7 @@ function PostInfo(props: PostInfoProps) {
   };
 
   const deletePost = () => {
-    axios
+    setInterceptors(customAxios)
       .delete(`https://mo-hae.site/boards/${no}`, {
         headers: {
           Authorization: `Bearer ${getToken()}`,

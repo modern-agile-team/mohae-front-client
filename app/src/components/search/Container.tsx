@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import {
@@ -9,6 +8,7 @@ import {
 } from 'react-router-dom';
 import { RootState } from '../../redux/root';
 import { ENDPOINT } from '../../utils/ENDPOINT';
+import { customAxios } from '../../apis/instance';
 import Presenter from './Presenter';
 
 interface Props {
@@ -50,7 +50,7 @@ function Search(props: Props) {
   };
 
   useEffect(() => {
-    axios
+    customAxios
       .get(`${ENDPOINT}categories/popular`)
       .then(res => {
         const addRanking = Object.keys(res.data.response).map(el => {

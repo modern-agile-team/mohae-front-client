@@ -2,11 +2,12 @@
 
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { customAxios } from '../../apis/instance';
 import { ENDPOINT } from '../../utils/ENDPOINT';
 
 const asyncThunk = (name: string, param: string) =>
   createAsyncThunk<any, void, {}>(name, async () => {
-    const response = await axios.get(`${ENDPOINT}${param}`);
+    const response = await customAxios.get(`${ENDPOINT}${param}`);
     return response.data;
   });
 

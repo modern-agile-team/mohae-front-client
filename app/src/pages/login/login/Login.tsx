@@ -16,6 +16,7 @@ import { RootState } from '../../../redux/root';
 import { useLocation } from 'react-router-dom';
 import { ENDPOINT } from '../../../utils/ENDPOINT';
 import { loginCheck } from '../../../utils/loginCheck';
+import { customAxios } from '../../../apis/instance';
 
 interface Props {
   text: {
@@ -61,7 +62,7 @@ export default function Register({ text, setFindPasswordView }: Props) {
   const requestLogin = (e: any) => {
     e.preventDefault();
 
-    axios
+    customAxios
       .post(
         `${ENDPOINT}auth/signin`,
         { email: inputValue.id, password: inputValue.password },

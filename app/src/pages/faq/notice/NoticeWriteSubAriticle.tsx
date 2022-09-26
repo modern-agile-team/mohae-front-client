@@ -50,7 +50,7 @@ function subArticle({ notice, onEdit, onDelete }: Props) {
           <div className={cx(uploadDate)}>{notice.createdAt}</div>
         </div>
         <div className={cx(right)}>
-          {user.manager && (
+          {user.manager ? (
             <div
               className={cx(edit)}
               onClick={() => {
@@ -59,11 +59,15 @@ function subArticle({ notice, onEdit, onDelete }: Props) {
             >
               수정
             </div>
+          ) : (
+            ''
           )}
-          {user.manager && (
+          {user.manager ? (
             <div className={cx(d2lete)} onClick={() => onDelete(notice.no)}>
               삭제
             </div>
+          ) : (
+            ''
           )}
           <div
             className={cx(css`

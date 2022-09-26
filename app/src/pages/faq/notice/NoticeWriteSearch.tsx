@@ -3,6 +3,8 @@ import { css, cx } from '@emotion/css';
 import { Img } from '../../../components';
 import { SearchProps } from './NoticeWriteSearchHeader';
 import { EditorState } from 'draft-js';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../redux/root';
 
 const search = ({
   setIsWrite,
@@ -17,24 +19,27 @@ const search = ({
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchItem(e.target.value);
   };
-
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const user = useSelector((state: RootState) => state.user.user);
   return (
     <div className={cx(container)}>
       <div className={cx(write)} onClick={() => setIsWrite(!isWrite)}>
-        <span
-          onClick={() => {
-            setForm({
-              ...form,
-              title: '',
-              description: '',
-              editForm: false,
-              postNo: 0,
-            });
-            setEditorState(EditorState.createEmpty());
-          }}
-        >
-          {isWrite ? '작성취소' : '작성하기'}
-        </span>
+        {user.manager && (
+          <span
+            onClick={() => {
+              setForm({
+                ...form,
+                title: '',
+                description: '',
+                editForm: false,
+                postNo: 0,
+              });
+              setEditorState(EditorState.createEmpty());
+            }}
+          >
+            {isWrite ? '작성취소' : '작성하기'}
+          </span>
+        )}
       </div>
       <form
         className={cx(wrap)}
@@ -102,9 +107,4 @@ const wrap = css`
   #placeHolder:focus {
     outline: none;
   }
-`;
-const searchIconSize = css`
-  width: 16px;
-  height: 16px;
-  cursor: pointer;
 `;

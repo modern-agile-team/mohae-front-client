@@ -108,7 +108,9 @@ const Notice = () => {
         }),
       );
     } else {
-      dispatch(getNotices(name!)).then(res => console.log(res));
+      if (name) {
+        dispatch(getNotices(name));
+      }
     }
   }, [dispatch, isWrite, name, searchItem]);
 

@@ -1,4 +1,4 @@
-import axios, { AxiosInstance } from 'axios';
+import axios from 'axios';
 import { ENDPOINT } from '../utils/ENDPOINT';
 import getToken from '../utils/getToken';
 
@@ -17,6 +17,7 @@ export const customAxios = axios.create({
   baseURL: `${ENDPOINT}`,
   headers: {
     accept: 'application/json',
+    'api-key': 'mohae.com',
   },
   timeout: 10000,
 });

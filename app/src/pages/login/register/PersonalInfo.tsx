@@ -11,6 +11,8 @@ import axios from 'axios';
 import { ENDPOINT } from '../../../utils/ENDPOINT';
 import getToken from '../../../utils/getToken';
 import styled from '@emotion/styled';
+import setInterceptors from '../../../apis/common/setInterceptors';
+import { customAxios } from '../../../apis/instance';
 
 interface Object {
   [key: string]: any;
@@ -189,7 +191,7 @@ export default function PersonalInfo({ part, next }: Object) {
     e.preventDefault();
     e.stopPropagation();
 
-    axios
+    setInterceptors(customAxios)
       .post(
         `${ENDPOINT}profile/check-nickname`,
         {

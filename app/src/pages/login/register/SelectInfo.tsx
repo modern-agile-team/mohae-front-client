@@ -7,6 +7,8 @@ import { Btn, Img, Popup } from '../../../components';
 import { RootState } from '../../../redux/root';
 import { ENDPOINT } from '../../../utils/ENDPOINT';
 import axios from 'axios';
+import { customAxios } from '../../../apis/instance';
+import setInterceptors from '../../../apis/common/setInterceptors';
 
 interface Object {
   [key: string]: any;
@@ -174,7 +176,7 @@ export default function SelectInfo({ popupInfo, setPopupInfo }: Props) {
       categories: info.intersted,
     };
 
-    axios
+    customAxios
       .post(`${ENDPOINT}auth/signup`, body, {
         headers: {
           accept: 'application/json',
@@ -197,7 +199,7 @@ export default function SelectInfo({ popupInfo, setPopupInfo }: Props) {
   };
 
   const onIgnore = () => {
-    axios
+    customAxios
       .post(`${ENDPOINT}auth/signup`, registInfo, {
         headers: {
           accept: 'application/json',

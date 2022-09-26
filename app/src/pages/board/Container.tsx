@@ -14,6 +14,7 @@ import {
 } from '../../redux/board/reducer';
 import Presenter from './Presenter';
 import getToken from '../../utils/getToken';
+import { customAxios } from '../../apis/instance';
 
 export interface PostData {
   decimalDay: number | null;
@@ -115,7 +116,7 @@ function Container() {
   const getData = () => {
     const filteringBaseURL = `https://mo-hae.site/boards/filter?take=8&page=${pageInfo.filtering.page}`;
     const categoryBaseURL = `https://mo-hae.site/boards/category/${no}?take=8&page=${pageInfo.category.page}`;
-    axios
+    customAxios
       .get(
         location.search ? filteringBaseURL + filteringQuery() : categoryBaseURL,
       )

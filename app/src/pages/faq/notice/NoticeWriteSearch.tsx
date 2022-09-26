@@ -24,7 +24,7 @@ const search = ({
   return (
     <div className={cx(container)}>
       <div className={cx(write)} onClick={() => setIsWrite(!isWrite)}>
-        {user.manager && (
+        {user.manager ? (
           <span
             onClick={() => {
               setForm({
@@ -39,6 +39,8 @@ const search = ({
           >
             {isWrite ? '작성취소' : '작성하기'}
           </span>
+        ) : (
+          ''
         )}
       </div>
       <form

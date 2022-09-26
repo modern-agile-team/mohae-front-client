@@ -91,6 +91,16 @@ export default function Presenter({
           height: 20px;
         }
       }
+      .loginoption {
+        display: flex;
+        justify-content: flex-end;
+        width: 100%;
+        cursor: pointer;
+        color: ${color.dark1};
+        margin: 16px 0 24px;
+        margin-right: 12px;
+        font-size: 14px;
+      }
       > .option {
         width: 100%;
         &,

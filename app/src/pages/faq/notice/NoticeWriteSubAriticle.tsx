@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { css, cx } from '@emotion/css';
 import { Img } from '../../../components';
-import { EditorState } from 'draft-js';
 
 interface Props {
   notice: {

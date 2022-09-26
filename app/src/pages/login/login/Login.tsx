@@ -13,7 +13,7 @@ import axios from 'axios';
 import { open_login } from '../../../redux/modal/reducer';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../redux/root';
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { ENDPOINT } from '../../../utils/ENDPOINT';
 import { loginCheck } from '../../../utils/loginCheck';
 
@@ -25,7 +25,7 @@ interface Props {
       id: string;
       pw: string;
     };
-    stayLogin: string;
+
     forgotPw: string;
     description: string;
     mohae: string;
@@ -120,11 +120,7 @@ export default function Register({ text, setFindPasswordView }: Props) {
           type={'password'}
         />
       </div>
-      <div className={'option'}>
-        <div>
-          <input id="keep-login" type="checkbox" />
-          <label htmlFor="keep-login">{text.stayLogin}</label>
-        </div>
+      <div className={'loginoption'}>
         <button id="find-password" type="button" onClick={e => findPassword(e)}>
           {text.forgotPw}
         </button>

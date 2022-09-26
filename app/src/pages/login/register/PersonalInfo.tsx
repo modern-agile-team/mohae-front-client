@@ -26,7 +26,7 @@ export default function PersonalInfo({ part, next }: Object) {
     title: {
       name: '이름',
       email: '이메일',
-      password: '비밀먼호',
+      password: '비밀번호',
       nickname: '닉네임',
     },
     placeholder: {

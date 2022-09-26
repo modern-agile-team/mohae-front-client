@@ -234,7 +234,7 @@ export default function PostSlide({
           <div className={'box'}>
             <div className={'container'}>
               {checkSelf === 'true' && (
-                <Link to="/createPost">
+                <Link to="/create/post">
                   <button className={'add-post'}>
                     <div className={'add-img'}>
                       <Img src={'/img/close.png'} />

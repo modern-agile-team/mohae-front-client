@@ -198,9 +198,15 @@ export default function ModifyProfile({ setIsOpen }: Props) {
         return;
       }
     }
-    for (let key in userInfo) {
-      profileForm.append(key, JSON.stringify(userInfo[key]));
-    }
+    profileForm.append('phone', JSON.stringify(userInfo['phone']));
+    profileForm.append('nickname', JSON.stringify(userInfo['nickname']));
+    profileForm.append('school', JSON.stringify(userInfo['school']));
+    profileForm.append('major', JSON.stringify(userInfo['major']));
+
+    if (userInfo.categories.length === 0)
+      profileForm.append('categories', JSON.stringify([null]));
+    else
+      profileForm.append('categories', JSON.stringify(userInfo['categories']));
 
     editProfile(profileForm).then(res => {
       if (res.data.success) {

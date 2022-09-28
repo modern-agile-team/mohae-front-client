@@ -43,7 +43,7 @@ function Presenter(props: Props) {
   const handleWriteBtn = () => {
     if (
       title.length > 2 &&
-      15 > title.length &&
+      16 > title.length &&
       price &&
       categoryNo !== null &&
       areaNo !== null &&

@@ -14,16 +14,16 @@ interface Props {
 
 export default function Part3(props: Props) {
   const [imgs, setImgs] = useState([
-    'img/guide-01.jpg',
-    'img/guide-02.jpg',
-    'img/guide-03.jpg',
-    'img/guide-04.jpg',
-    'img/guide-05.jpg',
-    'img/guide-06.jpg',
-    'img/guide-07.jpg',
-    'img/guide-08.jpg',
-    'img/guide-09.jpg',
-    'img/guide-10.jpg',
+    '/img/guide-01.jpg',
+    '/img/guide-02.jpg',
+    '/img/guide-03.jpg',
+    '/img/guide-04.jpg',
+    '/img/guide-05.jpg',
+    '/img/guide-06.jpg',
+    '/img/guide-07.jpg',
+    '/img/guide-08.jpg',
+    '/img/guide-09.jpg',
+    '/img/guide-10.jpg',
   ]);
   const [carouselContentsViewBig, setCarouselContentsViewBig] = useState(false);
   const [target, setTarget] = useState(1);

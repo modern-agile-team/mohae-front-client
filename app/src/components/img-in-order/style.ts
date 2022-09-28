@@ -163,7 +163,7 @@ export default function Style({ inline }: Props) {
       .icon {
         width: 30px;
         height: 30px;
-        background: url('img/add-white.png') no-repeat center/contain;
+        background: url('/img/add-white.png') no-repeat center/contain;
       }
 
       #input-file {

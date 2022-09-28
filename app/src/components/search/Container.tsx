@@ -178,7 +178,7 @@ function Search(props: Props) {
         );
         setValue('');
         resetPageInfo && resetPageInfo();
-      } else alert('두 글자 이상');
+      } else alert('두 글자 이상 검색 가능합니다.');
     } else {
       setSearchParams(query);
       resetPageInfo && resetPageInfo();

@@ -2,7 +2,7 @@
 
 import { css, cx } from '@emotion/css';
 import { color, shadow } from '../../style/palette';
-import { ReactElement } from 'react';
+import { Dispatch, ReactElement, SetStateAction } from 'react';
 import { Img, Btn } from '../../../components';
 import { open_login, open_register_modal } from '../../../redux/modal/reducer';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,9 +13,10 @@ import { decodeToken } from 'react-jwt';
 
 type Props = {
   [key: string]: any;
+  setSnapPageNumber?: Dispatch<SetStateAction<number>>;
 };
 
-export default function Header(props: Props): ReactElement {
+export default function Header({ setSnapPageNumber }: Props): ReactElement {
   const text = {
     boards: '게시판',
     service: '고객지원',
@@ -75,7 +76,11 @@ export default function Header(props: Props): ReactElement {
 
   return (
     <div className={cx(wrapper)}>
-      <Link className={'logo'} to={'/'}>
+      <Link
+        className={'logo'}
+        to={'/'}
+        onClick={() => setSnapPageNumber && setSnapPageNumber(0)}
+      >
         <Img src={'/img/logo.png'} />
       </Link>
       <div className={'button-wrapper'}>

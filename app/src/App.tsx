@@ -1,6 +1,6 @@
 /** @format */
 
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
   BrowserRouter as Router,
@@ -76,10 +76,26 @@ injectGlobal`
 
 const App: React.SFC = () => {
   const token = getAccessToken();
+  const [snapPageNumber, setSnapPageNumber] = useState(0);
   return (
     <Router>
       <Routes>
-        <Route path={'/'} element={<Layout main component={<Home />} />} />
+        <Route
+          path={'/'}
+          element={
+            <Layout
+              snapPageNumber={snapPageNumber}
+              setSnapPageNumber={setSnapPageNumber}
+              main
+              component={
+                <Home
+                  snapPageNumber={snapPageNumber}
+                  setSnapPageNumber={setSnapPageNumber}
+                />
+              }
+            />
+          }
+        />
         <Route path={'/hg'} element={<Layout component={<HG />} />} />
         <Route
           path={'/boards/categories/:no'}

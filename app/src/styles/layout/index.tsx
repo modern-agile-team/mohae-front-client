@@ -5,13 +5,18 @@ import Header from './header/Header';
 import Footer from './footer/Footer';
 import Main from './main/Main';
 import { color } from '../style/palette';
-import { ReactElement } from 'react';
+import { Dispatch, ReactElement, SetStateAction } from 'react';
 
 type Props = {
   [key: string]: any;
+  setSnapPageNumber?: Dispatch<SetStateAction<number>>;
 };
 
-export default function Layout({ main, component }: Props): ReactElement {
+export default function Layout({
+  setSnapPageNumber,
+  main,
+  component,
+}: Props): ReactElement {
   // const TOKEN = localStorage.getItem('');
 
   const wrapper: string = css`
@@ -38,7 +43,7 @@ export default function Layout({ main, component }: Props): ReactElement {
 
   return (
     <div className={cx(wrapper)}>
-      <Header />
+      <Header setSnapPageNumber={setSnapPageNumber} />
       {show}
     </div>
   );

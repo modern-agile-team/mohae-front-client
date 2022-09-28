@@ -2,7 +2,7 @@
 
 import { css, cx } from '@emotion/css';
 import { color, shadow } from '../../style/palette';
-import { ReactElement } from 'react';
+import { Dispatch, ReactElement, SetStateAction } from 'react';
 import { Img, Btn } from '../../../components';
 import { open_login, open_register_modal } from '../../../redux/modal/reducer';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,9 +13,10 @@ import { decodeToken } from 'react-jwt';
 
 type Props = {
   [key: string]: any;
+  setSnapPageNumber?: Dispatch<SetStateAction<number>>;
 };
 
-export default function Header(props: Props): ReactElement {
+export default function Header({ setSnapPageNumber }: Props): ReactElement {
   const text = {
     boards: '게시판',
     service: '고객지원',
@@ -75,22 +76,30 @@ export default function Header(props: Props): ReactElement {
 
   return (
     <div className={cx(wrapper)}>
-      <Link className={'logo'} to={'/'}>
+      <Link
+        className={'logo'}
+        to={'/'}
+        onClick={() => setSnapPageNumber && setSnapPageNumber(0)}
+      >
         <Img src={'/img/logo.png'} />
       </Link>
       <div className={'button-wrapper'}>
         <button className={'menu'}>
-          <Link to={'/boards/categories/1'}>{text.boards}</Link>
+          <Link className="hover" to={'/boards/categories/1'}>
+            {text.boards}
+          </Link>
         </button>
         <button className={'menu FAQ'}>
-          {text.service}
+          <p className="hover">{text.service}</p>
           <div className={'dropbox'}>
             <Link to={'/support/notices'}>{text.notice}</Link>
             <Link to={'/support/faqs'}>{text.FAQ}</Link>
           </div>
         </button>
         <button className={'menu'}>
-          <Link to={'/inquire'}>{text.inquire}</Link>
+          <Link className="hover" to={'/inquire'}>
+            {text.inquire}
+          </Link>
         </button>
 
         {getToken() !== '' ? userInfoBtn : loginButtons}
@@ -119,7 +128,6 @@ const wrapper = css`
   display: flex;
   justify-content: space-between;
   height: 59px;
-  /* overflow: hidden; */
   .logo {
     width: 57px;
     height: 100%;
@@ -130,25 +138,36 @@ const wrapper = css`
     justify-content: space-between;
     align-items: center;
     .menu {
-      height: 100%;
-      margin-right: 40px;
+      height: 43px;
+      width: 90px;
+      margin-right: 10px;
       font-size: 14px;
+      color: #4f4e5c;
+      .hover {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 6px;
+      }
+      &:hover .hover {
+        font-weight: 700;
+        box-shadow: 0px 0px 4px rgba(132, 131, 141, 0.25);
+        background-color: #fcf3f4;
+      }
     }
     .FAQ {
-      height: 23px;
-      display: flex;
-      flex-direction: column;
       position: relative;
-      /* overflow: hidden; */
       > .dropbox {
         position: absolute;
         display: flex;
         flex-direction: column;
         justify-content: space-around;
-        width: 84px;
+        width: 90px;
         height: fit-content;
         top: calc(100% + 8px);
-        left: -16px;
+        left: 0px;
         border-radius: 6px;
         ${shadow.normal};
         bottom: -100%;

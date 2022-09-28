@@ -8,13 +8,16 @@ interface Props {
   [key: string]: any;
 }
 
-export default function Snap({ contents }: Props) {
+export default function Snap({
+  contents,
+  snapPageNumber,
+  setSnapPageNumber,
+}: Props) {
   const section = [1, 2, 3, 4],
     size = 'calc(100vh - 59px)',
     // 높이
-    colors = [color.light1, color.light3],
-    // 반복할 배경 색상
-    [part, setPart] = useState(0);
+    colors = [color.light1, color.light3];
+  // 반복할 배경 색상
 
   const container = css`
     overflow: auto;
@@ -60,20 +63,24 @@ export default function Snap({ contents }: Props) {
   `;
 
   const clickCircle = (e: React.MouseEvent<HTMLButtonElement>) => {
-    setPart(Number(e.currentTarget.name));
+    setSnapPageNumber(Number(e.currentTarget.name));
   };
 
   const wheelHandler = useCallback(
     (e: React.WheelEvent<HTMLDivElement>) => {
       const move = e.deltaY;
       section.forEach((sector, index) => {
-        if (move > 10 && part === index && !(index === section.length - 1)) {
+        if (
+          move > 10 &&
+          snapPageNumber === index &&
+          !(index === section.length - 1)
+        ) {
           setTimeout(() => {
-            setPart(part + 1);
+            setSnapPageNumber(snapPageNumber + 1);
           }, 700);
-        } else if (move < -10 && part === index && !(index === 0)) {
+        } else if (move < -10 && snapPageNumber === index && !(index === 0)) {
           setTimeout(() => {
-            setPart(part - 1);
+            setSnapPageNumber(snapPageNumber - 1);
           }, 700);
         }
       });
@@ -83,7 +90,7 @@ export default function Snap({ contents }: Props) {
 
   const pageCircles = section.map((i, index) => {
     const target =
-      part === index
+      snapPageNumber === index
         ? css`
             background-color: ${color.main};
             width: 14px;
@@ -104,7 +111,7 @@ export default function Snap({ contents }: Props) {
 
   const box = () => {
     const row = `calc(${size} * ${section.length})`;
-    const translate = `translateY(calc(${size} * ${-part}))`;
+    const translate = `translateY(calc(${size} * ${-snapPageNumber}))`;
     return css`
       height: ${row};
       transition: all 0.8s cubic-bezier(0.61, 0.31, 0.36, 0.69);
@@ -133,7 +140,7 @@ export default function Snap({ contents }: Props) {
       <div
         className={cx(
           circleWrapper,
-          !part
+          !snapPageNumber
             ? css`
                 display: none;
               `

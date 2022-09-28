@@ -80,17 +80,21 @@ export default function Header(props: Props): ReactElement {
       </Link>
       <div className={'button-wrapper'}>
         <button className={'menu'}>
-          <Link to={'/boards/categories/1'}>{text.boards}</Link>
+          <Link className="hover" to={'/boards/categories/1'}>
+            {text.boards}
+          </Link>
         </button>
         <button className={'menu FAQ'}>
-          {text.service}
+          <p className="hover">{text.service}</p>
           <div className={'dropbox'}>
             <Link to={'/support/notices'}>{text.notice}</Link>
             <Link to={'/support/faqs'}>{text.FAQ}</Link>
           </div>
         </button>
         <button className={'menu'}>
-          <Link to={'/inquire'}>{text.inquire}</Link>
+          <Link className="hover" to={'/inquire'}>
+            {text.inquire}
+          </Link>
         </button>
 
         {getToken() !== '' ? userInfoBtn : loginButtons}
@@ -119,7 +123,6 @@ const wrapper = css`
   display: flex;
   justify-content: space-between;
   height: 59px;
-  /* overflow: hidden; */
   .logo {
     width: 57px;
     height: 100%;
@@ -132,14 +135,18 @@ const wrapper = css`
     .menu {
       height: 43px;
       width: 90px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       margin-right: 10px;
       font-size: 14px;
-      border-radius: 6px;
       color: #4f4e5c;
-      &:hover {
+      .hover {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 6px;
+      }
+      &:hover .hover {
         font-weight: 700;
         box-shadow: 0px 0px 4px rgba(132, 131, 141, 0.25);
         background-color: #fcf3f4;
@@ -147,7 +154,6 @@ const wrapper = css`
     }
     .FAQ {
       position: relative;
-      /* overflow: hidden; */
       > .dropbox {
         position: absolute;
         display: flex;

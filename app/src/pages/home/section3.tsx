@@ -179,10 +179,10 @@ export default function Part3(props: Props) {
       <div className={'wrapper'}>
         <div className={'container'}>
           <button onClick={clickMove} id={'-'} className={'arrow prev'}>
-            <Img src={'img/arrow-left-main.png'} />
+            <Img src={'/img/arrow-left-main.png'} />
           </button>
           <button onClick={clickMove} id={'+'} className={'arrow next'}>
-            <Img src={'img/arrow-right-main.png'} />
+            <Img src={'/img/arrow-right-main.png'} />
           </button>
           <div className={'box'}>{imgCarousel}</div>
         </div>
@@ -195,10 +195,10 @@ export default function Part3(props: Props) {
               onWheel={e => e.stopPropagation()}
             >
               <button onClick={clickMove} id={'-'} className={'arrow prev'}>
-                <Img src={'img/arrow-left-main.png'} />
+                <Img src={'/img/arrow-left-main.png'} />
               </button>
               <button onClick={clickMove} id={'+'} className={'arrow next'}>
-                <Img src={'img/arrow-right-main.png'} />
+                <Img src={'/img/arrow-right-main.png'} />
               </button>
               <div className="contents-wrapper">
                 <Contents src={imgs[target]}></Contents>

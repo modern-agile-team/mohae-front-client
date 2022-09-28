@@ -130,14 +130,22 @@ const wrapper = css`
     justify-content: space-between;
     align-items: center;
     .menu {
-      height: 100%;
-      margin-right: 40px;
+      height: 43px;
+      width: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 10px;
       font-size: 14px;
+      border-radius: 6px;
+      color: #4f4e5c;
+      &:hover {
+        font-weight: 700;
+        box-shadow: 0px 0px 4px rgba(132, 131, 141, 0.25);
+        background-color: #fcf3f4;
+      }
     }
     .FAQ {
-      height: 23px;
-      display: flex;
-      flex-direction: column;
       position: relative;
       /* overflow: hidden; */
       > .dropbox {
@@ -145,10 +153,10 @@ const wrapper = css`
         display: flex;
         flex-direction: column;
         justify-content: space-around;
-        width: 84px;
+        width: 90px;
         height: fit-content;
         top: calc(100% + 8px);
-        left: -16px;
+        left: 0px;
         border-radius: 6px;
         ${shadow.normal};
         bottom: -100%;

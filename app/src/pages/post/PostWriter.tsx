@@ -4,6 +4,7 @@ import { color, font } from '../../styles';
 import Btns from './Btns';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/root';
+import getToken from '../../utils/getToken';
 
 interface PostWriterProps {
   close: () => void;
@@ -13,6 +14,7 @@ function PostWriter({ close }: PostWriterProps) {
   const reduxData = useSelector(
     (state: RootState) => state.post.data.response.board,
   );
+  const loginState = getToken() || null;
 
   const userImg =
     reduxData.userPhotoUrl !== null
@@ -63,6 +65,7 @@ function PostWriter({ close }: PostWriterProps) {
         <div className="userData">
           <Profile
             img={userImg}
+            noneClick={loginState !== null ? false : true}
             size={60}
             smallShadow
             userNumber={reduxData.userNo}

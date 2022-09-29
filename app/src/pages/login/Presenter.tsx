@@ -29,10 +29,25 @@ export default function Presenter({
     register: { view: false, message: '회원 가입이 완료 되었습니다.' },
     findPassword: { view: false, message: '' },
   });
+  const [agreementContentsShow, setAgreementContentsShow] = useState<{
+    [key: number]: boolean;
+  }>({
+    1: false,
+    2: false,
+    3: false,
+  });
+  const agreementContentsAllClose = () => {
+    setAgreementContentsShow({ 1: false, 2: false, 3: false });
+  };
   const mainContents = [
     <Login text={text} setFindPasswordView={onClick.findPassword} />,
     <Main text={text} next={onClick.enterRegister} />,
-    <Agreement next={onClick.agreement} />,
+    <Agreement
+      agreementContentsAllClose={agreementContentsAllClose}
+      showContent={agreementContentsShow}
+      setShowContent={setAgreementContentsShow}
+      next={onClick.agreement}
+    />,
     <PersonalInfo text={text} part={part} next={onClick.finishedInputInfo} />,
     <SelectInfo popupInfo={popupInfo} setPopupInfo={setPopupInfo} />,
     <FindPassword popupInfo={popupInfo} setPopupInfo={setPopupInfo} />,

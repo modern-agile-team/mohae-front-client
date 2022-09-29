@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import styled from '@emotion/styled';
 import Img from '../img/Img';
 import { ArticleType } from '../../pages/login/register/Agreement';
@@ -7,10 +7,24 @@ interface Props {
   children: JSX.Element;
   article: ArticleType;
   onCheck: (id: number) => void;
+  index: number;
+  showContent: boolean;
+  setShowContent: Dispatch<SetStateAction<{ [key: number]: boolean }>>;
 }
 
-const CheckWrapper = ({ children, article, onCheck }: Props) => {
-  const [show, setShow] = useState<boolean>(false);
+const CheckWrapper = ({
+  children,
+  article,
+  onCheck,
+  showContent,
+  setShowContent,
+  index,
+}: Props) => {
+  const handleContentsOpen = () => {
+    setShowContent(prev => {
+      return { ...prev, [index]: !showContent };
+    });
+  };
   return (
     <Wrapper>
       <CheckWrrpaer>
@@ -32,13 +46,17 @@ const CheckWrapper = ({ children, article, onCheck }: Props) => {
         </CheckItem>
         <Image>
           <Img
-            src={show ? '/img/arrow-up-dark3.png' : '/img/arrow-down-dark3.png'}
-            onClick={() => setShow(!show)}
+            src={
+              showContent
+                ? '/img/arrow-up-dark3.png'
+                : '/img/arrow-down-dark3.png'
+            }
+            onClick={handleContentsOpen}
           />
         </Image>
       </CheckWrrpaer>
-      <ContentWrapper show={show}>
-        <Content show={show} onClick={() => console.log('1', 1)}>
+      <ContentWrapper showContent={showContent}>
+        <Content showContent={showContent} onClick={() => console.log('1', 1)}>
           {children}
         </Content>
       </ContentWrapper>
@@ -108,15 +126,15 @@ const Image = styled.div`
   justify-content: center;
   align-items: center;
 `;
-const ContentWrapper = styled.div<{ show: boolean }>`
+const ContentWrapper = styled.div<{ showContent: boolean }>`
   width: 100%;
   margin-top: 7px;
-  padding: ${props => (props.show ? '3px' : '0px')};
+  padding: ${props => (props.showContent ? '3px' : '0px')};
   background-color: #ffffff;
 `;
-const Content = styled.div<{ show: boolean }>`
+const Content = styled.div<{ showContent: boolean }>`
   width: 469px;
-  height: ${props => (props.show ? '168px' : '0px')};
+  height: ${props => (props.showContent ? '168px' : '0px')};
   background-color: #ffffff;
   overflow-y: auto;
   transition: height 0.4s;

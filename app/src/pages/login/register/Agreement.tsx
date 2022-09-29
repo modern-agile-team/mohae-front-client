@@ -2,7 +2,7 @@
 
 import { Img } from '../../../components';
 import styled from '@emotion/styled';
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppDispatch, RootState } from '../../../redux/root';
 import { update_regist_info } from '../../../redux/user/reducer';
@@ -15,6 +15,9 @@ import CheckWrapper from '../../../components/CheckBox/CheckWrapper';
 
 interface Object {
   [key: string]: any;
+  showContent: { [key: number]: boolean };
+  setShowContent: Dispatch<SetStateAction<{ [key: number]: boolean }>>;
+  agreementContentsAllClose: () => void;
 }
 
 export interface ArticleType {
@@ -24,7 +27,12 @@ export interface ArticleType {
   checked: boolean;
 }
 
-const Agreement = ({ next }: Object) => {
+const Agreement = ({
+  next,
+  showContent,
+  setShowContent,
+  agreementContentsAllClose,
+}: Object) => {
   const [articles, setArticle] = useState<ArticleType[]>([
     {
       id: 1,
@@ -72,6 +80,7 @@ const Agreement = ({ next }: Object) => {
       }),
     );
     next();
+    agreementContentsAllClose();
   };
 
   useEffect(() => {
@@ -81,8 +90,15 @@ const Agreement = ({ next }: Object) => {
   return (
     <Wrapper>
       <h1>약관 동의</h1>
-      {articles.map((article: ArticleType) => (
-        <CheckWrapper key={article.id} article={article} onCheck={onCheck}>
+      {articles.map((article: ArticleType, i) => (
+        <CheckWrapper
+          showContent={showContent[i]}
+          setShowContent={setShowContent}
+          key={article.id}
+          article={article}
+          onCheck={onCheck}
+          index={i}
+        >
           {article.contents}
         </CheckWrapper>
       ))}

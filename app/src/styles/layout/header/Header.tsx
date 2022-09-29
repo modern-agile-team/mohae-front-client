@@ -152,9 +152,7 @@ const wrapper = css`
         border-radius: 6px;
       }
       &:hover .hover {
-        font-weight: 700;
-        box-shadow: 0px 0px 4px rgba(132, 131, 141, 0.25);
-        background-color: #fcf3f4;
+        color: ${color.main};
       }
     }
     .FAQ {

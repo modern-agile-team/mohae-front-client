@@ -37,7 +37,11 @@ const CommentItem = (props: DefaultProps) => {
             handleModalView={handleModalView}
           />
           <span id="comment-created-date">{commentCreatedAt}</span>
-          <p>{commentContent}</p>
+          <p
+            dangerouslySetInnerHTML={{
+              __html: commentContent.replace(/\n/g, '<br />'),
+            }}
+          />
         </CommentHeader>
         <Replies
           commentIndex={commentIndex}

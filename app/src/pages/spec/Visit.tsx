@@ -13,17 +13,16 @@ import { spec_visit } from '../../redux/modal/reducer';
 import { ENDPOINT } from '../../utils/ENDPOINT';
 import setInterceptors from '../../apis/common/setInterceptors';
 import { customAxios } from '../../apis/instance';
-import { IMAGE } from './EditInput';
 
 export default function Visit() {
   const isOpen = useSelector((state: RootState) => state.modal.openSpecVisit);
   const formData = useSelector((state: RootState) => state.spec.addImages);
+  const visitorInfo = useSelector((state: RootState) => state.user.user);
 
   const text: { [key: string]: any } = {
     sir: '님',
   };
   const [isEdit, setIsEdit] = useState(false);
-  const [imgFiles, setImgFiles] = useState<IMAGE[]>([]);
   const specInfo = useSelector((state: RootState) => state.spec.specInfo);
   const dispatch = useDispatch<AppDispatch>();
   const [value, setValue] = useState({
@@ -174,9 +173,11 @@ export default function Visit() {
             <span className={'user'}>{specInfo && specInfo.nickname}</span>
             <span>{text.sir}</span>
           </div>
-          <div className={'report-btn'} onClick={clickEditBtn}>
-            <Btn white>{isEdit ? '수정 중...' : '수정하기'}</Btn>
-          </div>
+          {specInfo?.userNo === visitorInfo.userNo && (
+            <div className={'report-btn'} onClick={clickEditBtn}>
+              <Btn white>{isEdit ? '수정 중...' : '수정하기'}</Btn>
+            </div>
+          )}
         </div>
         <div className={'wrapper'}>
           {!isEdit ? (

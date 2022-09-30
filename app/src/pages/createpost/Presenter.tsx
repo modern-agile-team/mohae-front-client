@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { css, cx } from '@emotion/css';
 import { Box, Btn, Img, MarkBox, Popup } from '../../components';
 import SelectBox from '../../components/selectbox/SelectBox';
@@ -10,7 +10,6 @@ import PostImgs from '../../components/pagecomp/PostImgs';
 import { useDispatch, useSelector } from 'react-redux';
 import { setInitialState, setTarget } from '../../redux/createpost/reducer';
 import { RootState } from '../../redux/root';
-import { Link } from 'react-router-dom';
 
 interface Props {
   selectBoxClick: (i: number) => void;
@@ -48,7 +47,8 @@ function Presenter(props: Props) {
       categoryNo !== null &&
       areaNo !== null &&
       deadline !== null &&
-      description.length > 8
+      description.replace(/<[^>]*>?/g, '').length > 8 &&
+      description.replace(/<[^>]*>?/g, '').length < 1000
     ) {
       return (
         <div className="write-btn" onClick={e => creationCompleteAction(e)}>

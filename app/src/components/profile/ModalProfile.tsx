@@ -157,7 +157,7 @@ export default function ModalProfile(props: Props) {
 
   return (
     <>
-      <BasicModal big visible={view} reset={reset}>
+      <BasicModal big visible={view} reset={reset} usingModalProfile>
         <div className={cx(style)}>
           <div className="header">
             <Profile img={showProfile()} size={150} noneClick />

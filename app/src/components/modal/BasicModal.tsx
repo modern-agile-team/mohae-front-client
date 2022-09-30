@@ -5,17 +5,22 @@ import { css, cx } from '@emotion/css';
 import { Box } from '../../components';
 import Img from '../img/Img';
 import { animation } from './modalAnimation';
-import { color, shadow, font } from '../../styles';
 import { close_all } from '../../redux/modal/reducer';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState, AppDispatch } from '../../redux/root';
-import { useNavigate, Navigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../redux/root';
 
 interface Props {
   [key: string]: any;
 }
 
-function BasicModal({ reset, visible, big, preBtn, children }: Props) {
+function BasicModal({
+  reset,
+  visible,
+  big,
+  preBtn,
+  children,
+  usingModalProfile,
+}: Props) {
   const [modalState, setModalState] = useState(visible);
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
@@ -86,7 +91,7 @@ function BasicModal({ reset, visible, big, preBtn, children }: Props) {
         css`
           height: fit-content;
           overflow: hidden;
-        `
+        `,
       )}
     >
       <Box
@@ -103,9 +108,11 @@ function BasicModal({ reset, visible, big, preBtn, children }: Props) {
             />
           </div>
         )}
-        <div className={cx(closeBtn, cursor)}>
-          <Img src={'/img/close.png'} onClick={close} />
-        </div>
+        {!usingModalProfile && (
+          <div className={cx(closeBtn, cursor)}>
+            <Img src={'/img/close.png'} onClick={close} />
+          </div>
+        )}
         {children}
       </Box>
       <div onClick={close} className={cx(overlay)}></div>

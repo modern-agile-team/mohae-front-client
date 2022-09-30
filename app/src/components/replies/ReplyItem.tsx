@@ -40,7 +40,11 @@ const ReplyItem = (props: DefaultProps) => {
         />
         <CommentHeader>
           <span id="comment-created-date">{replyCreatedAt}</span>
-          <p>{replyContent}</p>
+          <p
+            dangerouslySetInnerHTML={{
+              __html: replyContent.replace(/\n/g, '<br />'),
+            }}
+          />
         </CommentHeader>
       </CommentSection>
     </Wrapper>

@@ -115,11 +115,9 @@ export default function Categories({ num, resetPageInfo }: Props) {
       width: 120px;
       height: 120px;
       margin-right: ${`${margin}px`};
-      :hover {
-        animation: ${shake} 1.5s infinite;
-      }
       :active {
         background-color: ${color.lighter};
+        border-radius: 6px;
       }
     }
 
@@ -155,7 +153,7 @@ export default function Categories({ num, resetPageInfo }: Props) {
       </div>
       {Array(showNumber)
         .fill(undefined)
-        .map((item, index) => (
+        .map((_, index) => (
           <div className={'each'} key={index}>
             <Category
               key={index}
@@ -181,7 +179,7 @@ export default function Categories({ num, resetPageInfo }: Props) {
   );
 
   useEffect(() => {
-    const originArray = list.map((category, index) => index);
+    const originArray = list.map((_, index) => index);
     setArr(originArray);
     const updatedArr = [...originArray];
     for (

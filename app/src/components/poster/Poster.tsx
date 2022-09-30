@@ -70,11 +70,11 @@ function Poster({ data, big, size }: Props) {
     @keyframes fadeInUp {
       0% {
         opacity: 0;
-        transform: translate3d(0, 8px, 0);
+        /* transform: translate3d(0, 8px, 0); */
       }
       100% {
         opacity: 1;
-        transform: translateZ(0);
+        /* transform: translateZ(0); */
       }
     }
     &:hover {

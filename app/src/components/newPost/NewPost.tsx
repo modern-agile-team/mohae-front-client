@@ -112,7 +112,6 @@ export default function NewPost({ page, board, linkTo }: Props) {
 
       :hover {
         & > * {
-          transition: 0.3s all ease-in-out;
           transform: scale(1.2);
         }
       }

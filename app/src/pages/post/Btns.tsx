@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { css, cx } from '@emotion/css';
 import { Btn, Img } from '../../components';
-import { useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   minusLikeCount,
@@ -20,7 +20,6 @@ interface BtnsProps {
 function Btns(props: BtnsProps) {
   const { close } = props;
   const { no } = useParams();
-  const location = useLocation();
   const dispatch = useDispatch();
   const { isLike, likeCount } = useSelector(
     (state: RootState) => state.post.data.response.board,
@@ -29,10 +28,18 @@ function Btns(props: BtnsProps) {
     (state: RootState) => state.post.data,
   );
   const token = getToken() || null;
+  const [timer, setTimer] = useState<NodeJS.Timeout>();
+  const [isLikeState, setIsLikeState] = useState(isLike);
 
-  const body = JSON.stringify({
-    judge: isLike,
-  });
+  const body = (prevIsLikeState: number | boolean | null | undefined) => {
+    return {
+      judge: !prevIsLikeState,
+    };
+  };
+
+  useEffect(() => {
+    setIsLikeState(isLike);
+  }, [isLike]);
 
   const header = {
     headers: {
@@ -41,86 +48,83 @@ function Btns(props: BtnsProps) {
     },
   };
 
-  const onClick = {
-    like: () => {
-      dispatch(setIsLike(!isLike));
-    },
-    report: () => {
-      close();
-    },
-  };
-
-  const handleLikeCount = () => {
-    isLike
-      ? dispatch(plusLikeCount(likeCount + 1))
-      : dispatch(minusLikeCount(likeCount - 1));
-  };
-  useEffect(() => {
-    if (token !== null) {
-      const debounceAxios = setTimeout(() => {
-        setInterceptors(customAxios)
-          .post(`https://mo-hae.site/like/board/${no}`, body, header)
-          .then(res => {
-            handleLikeCount();
-          })
-          .catch(err => {
-            if (err.response.status === 410) {
-              sessionStorage.removeItem('access_token');
-              sessionStorage.removeItem('refresh_token');
-              window.location.replace(location.pathname);
-            }
-          });
-      }, 300);
-      return () => clearTimeout(debounceAxios);
+  const debouncingRequest = async (
+    prevIsLikeState: number | boolean | null | undefined,
+  ) => {
+    if (timer) {
+      clearTimeout(timer);
     }
-  }, [isLike]);
+    const newTimer = setTimeout(async () => {
+      try {
+        await setInterceptors(customAxios)
+          .post(
+            `https://mo-hae.site/like/board/${no}`,
+            body(prevIsLikeState),
+            header,
+          )
+          .then(_ => {
+            dispatch(setIsLike(!prevIsLikeState));
+            !prevIsLikeState
+              ? dispatch(plusLikeCount(likeCount + 1))
+              : dispatch(minusLikeCount(likeCount - 1));
+          });
+      } catch (e) {
+        console.error('error', e);
+      }
+    }, 800);
+    setTimer(newTimer);
+  };
 
-  const btnImg = {
-    like: () => {
-      if (token !== null) {
-        return (
-          <Btn white onClick={() => onClick.like()}>
-            <div className="imgWrap">
-              <Img
-                src={
-                  !isLike ? '/img/heart-main.png' : '/img/heart-filled-main.png'
-                }
-              />
-            </div>
-          </Btn>
-        );
-      } else
-        return (
-          <Btn white disable>
-            <div className="imgWrap">
-              <Img src="/img/heart-light1.png" />
-            </div>
-          </Btn>
-        );
-    },
+  const handleLikeButtonClick = () => {
+    setIsLikeState(prev => {
+      debouncingRequest(prev);
+      return !prev;
+    });
+  };
 
-    report: () => {
-      return token === null ||
-        (decoded && decoded.userNo === response.board.userNo) ? (
-        <Btn white disable>
-          <div className="imgWrap">
-            <Img src="/img/report-light1.png" />
-          </div>
-        </Btn>
-      ) : (
-        <Btn white onClick={() => onClick.report()}>
-          <div className="imgWrap">
-            <Img src="/img/report-main.png" />
-          </div>
-        </Btn>
-      );
-    },
+  const createLikeBtnUI = () => {
+    return token !== null ? (
+      <Btn white onClick={handleLikeButtonClick}>
+        <div className="imgWrap">
+          <Img
+            src={
+              !isLike || !isLikeState
+                ? '/img/heart-main.png'
+                : '/img/heart-filled-main.png'
+            }
+          />
+        </div>
+      </Btn>
+    ) : (
+      <Btn white disable>
+        <div className="imgWrap">
+          <Img src="/img/heart-light1.png" />
+        </div>
+      </Btn>
+    );
+  };
+
+  const createReportBtnUI = () => {
+    return token === null ||
+      (decoded && decoded.userNo === response.board.userNo) ? (
+      <Btn white disable>
+        <div className="imgWrap">
+          <Img src="/img/report-light1.png" />
+        </div>
+      </Btn>
+    ) : (
+      <Btn white onClick={() => close()}>
+        <div className="imgWrap">
+          <Img src="/img/report-main.png" />
+        </div>
+      </Btn>
+    );
   };
 
   return (
     <div className={cx(style)}>
-      <div className="btnWrap">{btnImg.like()}</div>
-      <div className="btnWrap">{btnImg.report()}</div>
+      <div className="btnWrap">{createLikeBtnUI()}</div>
+      <div className="btnWrap">{createReportBtnUI()}</div>
     </div>
   );
 }

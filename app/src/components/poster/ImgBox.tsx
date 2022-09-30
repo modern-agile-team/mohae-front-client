@@ -15,10 +15,10 @@ export function ImgBox({ img, state, shape, big }: Props) {
 
   const zoomIn = keyframes`
   from {
-    background-size: 30%;
+    background-size: 100%;
   }
   to {
-    background-size: 50%;
+    background-size: 120%;
   }
   `;
 

@@ -69,46 +69,47 @@ function Input(props: InputProps) {
     }
   `;
 
-  const contents = () => {
-    const cancle = css`
-      visibility: ${value ? 'visible' : 'hidden'};
-      margin: ${board ? '14px 16px 0px 0px' : '18px 16px 0px 0px'};
+  const cancle = css`
+    visibility: ${value ? 'visible' : 'hidden'};
+    margin: ${board ? '14px 16px 0px 0px' : '18px 16px 0px 0px'};
+    ${board
+      ? `width: 15px;
+        height: 15px;`
+      : `width: 28px;
+        height: 28px;`}
+  `;
+  const common = css`
+    width: 47px;
+    height: 43px;
+    margin: ${main ? '12px 12px 0px 4px' : '0'};
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    div {
       ${board
-        ? `width: 15px;
-      height: 15px;`
-        : `width: 28px;
-      height: 28px;`}
-    `;
+        ? `width: 18px;
+        height: 18px;`
+        : `width: 31px;
+        height: 31px;`}
+    }
+  `;
 
-    const iconStyle = (filter?: string) => {
-      const common = css`
-        width: 47px;
-        height: 43px;
-        margin: ${main ? '12px 12px 0px 4px' : '0'};
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        div {
-          ${board
-            ? `width: 18px;
-          height: 18px;`
-            : `width: 31px;
-          height: 31px;`}
-        }
-      `;
-      return filter
-        ? css`
-            ${common}
-            ${radius[6]}
-            background-color: ${showFilter && color.subtle};
-            ${showFilter && shadow.inputMain};
-          `
-        : css`
-            ${common}
-            ${radius[6]}
-          `;
-    };
+  const iconStyle = (filter?: string) => {
+    return filter
+      ? css`
+          ${common}
+          ${radius[6]}
+          background-color: ${showFilter && color.subtle};
+          ${showFilter && shadow.inputMain};
+        `
+      : css`
+          ${common}
+          ${radius[6]}
+        `;
+  };
 
+  const contents = () => {
     return (
       <>
         <div className={cx(cancle)} onClick={() => setValue('')}>

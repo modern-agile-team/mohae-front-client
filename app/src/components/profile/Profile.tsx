@@ -2,6 +2,9 @@
 
 import { css, cx } from '@emotion/css';
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { RootState } from '../../redux/root';
 import { shadow, radius } from '../../styles';
 import ModalProfile from './ModalProfile';
 
@@ -12,6 +15,11 @@ interface Props {
 function Profile(props: Props) {
   const { img, size, smallShadow, noneClick, userNumber } = props;
   const [userProfileView, setUserProfileView] = useState(false);
+  const localUserNo = useSelector((state: RootState) => state.user.user.userNo);
+  const postingUserNo = useSelector(
+    (state: RootState) => state.post.data.response.board.userNo,
+  );
+  const navigate = useNavigate();
 
   const profileImg = img !== null ? img : '/img/profile.png';
 
@@ -49,21 +57,20 @@ function Profile(props: Props) {
     height: 20px;
   `;
 
-  const openUserProfile = () => {
-    setUserProfileView(prev => !prev);
+  const handleProfileClick = () => {
+    if (noneClick) return;
+    if (localUserNo === postingUserNo) {
+      return navigate(`/mypage/${localUserNo}`);
+    } else {
+      return setUserProfileView(prev => !prev);
+    }
   };
 
   return (
     <>
-      <div
-        onClick={!noneClick ? openUserProfile : undefined}
-        className={cx(image)}
-      ></div>
+      <div onClick={handleProfileClick} className={cx(image)}></div>
       {editBtn && (
-        <div
-          className={cx(imgUpdateBtn)}
-          // onClick={() => alert('이미지 수정 버튼 클릭')}
-        >
+        <div className={cx(imgUpdateBtn)}>
           <img
             className={cx(editPhotoImg)}
             alt="editPhoto"
@@ -73,7 +80,7 @@ function Profile(props: Props) {
       )}
       {userProfileView && (
         <ModalProfile
-          reset={openUserProfile}
+          reset={() => setUserProfileView(prev => !prev)}
           userNo={userNumber}
           view={userProfileView}
         />

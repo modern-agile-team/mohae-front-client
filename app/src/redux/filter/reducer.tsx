@@ -1,15 +1,7 @@
-import {
-  createSlice,
-  PayloadAction,
-  createAsyncThunk,
-  AsyncThunkAction,
-} from '@reduxjs/toolkit';
-import axios from 'axios';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { FilterInitialState } from '../../types/filterType';
 
-interface Props {
-  data: any;
-}
-const initialState: Props = {
+const initialState: { data: FilterInitialState } = {
   data: {
     check: {
       sort: { 0: false, 1: true, 2: false },

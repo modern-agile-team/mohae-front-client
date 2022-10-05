@@ -10,6 +10,7 @@ import { RootState } from '../../redux/root';
 import { ENDPOINT } from '../../utils/ENDPOINT';
 import { customAxios } from '../../apis/instance';
 import Presenter from './Presenter';
+import { FilterInitialState, ObjDataProcessing } from '../../types/filterType';
 
 interface Props {
   board?: boolean;
@@ -24,7 +25,9 @@ function Search(props: Props) {
     JSON.parse(localStorage.getItem('currentSearch') || '[]'),
   );
   const { no } = useParams();
-  const filterData = useSelector((state: RootState) => state.filter.data);
+  const filterData: FilterInitialState = useSelector(
+    (state: RootState) => state.filter.data,
+  );
   const [searchParams, setSearchParams] = useSearchParams();
   const [showFilter, setShowFilter] = useState(false);
   const [showDataList, setShowDataList] = useState(false);
@@ -61,7 +64,7 @@ function Search(props: Props) {
       .catch(err => console.log('err', err));
   }, []);
 
-  const objDataProcessing = (): any => {
+  const objDataProcessing = (): ObjDataProcessing => {
     const changeNull = (filteringValue: boolean | number | string) => {
       if (
         filteringValue === false ||

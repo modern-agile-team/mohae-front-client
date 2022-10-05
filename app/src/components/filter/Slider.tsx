@@ -18,92 +18,12 @@ const Slider = (props: Props) => {
   const dispatch = useDispatch();
   const minVal = useSelector((state: RootState) => state.filter.data.price.min);
   const maxVal = useSelector((state: RootState) => state.filter.data.price.max);
-  const wrapSlider = css`
-    position: relative;
-    width: 748px;
-    div {
-      position: absolute;
-    }
-  `;
-
-  const attrSilder = (track?: string) => {
-    const common = css`
-      ${radius[6]};
-      height: 5px;
-      overflow: hidden;
-    `;
-
-    return track
-      ? css`
-          ${common}
-          background-color: ${color.light4};
-          width: 100%;
-          z-index: 1;
-        `
-      : css`
-          ${common}
-          background-color: ${color.main};
-          z-index: 2;
-        `;
-  };
-
-  const sliderStyle = css`
-    .thumb--min {
-      z-index: 3;
-    }
-
-    .thumb--max {
-      z-index: 4;
-    }
-
-    input[type='range'] {
-      -webkit-appearance: none;
-      -webkit-tap-highlight-color: transparent;
-      pointer-events: none;
-      position: absolute;
-      height: 0;
-      width: 748px;
-      outline: none;
-      ::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        -webkit-tap-highlight-color: transparent;
-      }
-      ::-webkit-slider-thumb {
-        background-color: #f1f5f7;
-        border: none;
-        border-radius: 50%;
-        box-shadow: 0 0 1px 1px #ced4da;
-        cursor: pointer;
-        height: 20px;
-        width: 20px;
-        margin-top: 4px;
-        pointer-events: all;
-        position: relative;
-      }
-      .thumb--min {
-        height: 25px;
-        width: 25px;
-      }
-      ::-moz-range-thumb {
-        background-color: ${color.light4};
-        border: none;
-        ${radius.circle}
-        box-shadow: 0 0 1px 1px #ced4da;
-        cursor: pointer;
-        height: 18px;
-        width: 18px;
-        margin-top: 4px;
-        pointer-events: all;
-        position: relative;
-      }
-    }
-  `;
 
   const getPercent = useCallback(
     value => Math.round(((value - min) / (max - min)) * 100),
     [min, max],
   );
-  console.log(maxValRef.current);
+
   useEffect(() => {
     const minPercent = getPercent(minVal);
 
@@ -160,3 +80,84 @@ const Slider = (props: Props) => {
 };
 
 export default Slider;
+
+const wrapSlider = css`
+  position: relative;
+  width: 748px;
+  div {
+    position: absolute;
+  }
+`;
+
+const attrSilder = (track?: string) => {
+  const common = css`
+    ${radius[6]};
+    height: 5px;
+    overflow: hidden;
+  `;
+
+  return track
+    ? css`
+        ${common}
+        background-color: ${color.light4};
+        width: 100%;
+        z-index: 1;
+      `
+    : css`
+        ${common}
+        background-color: ${color.main};
+        z-index: 2;
+      `;
+};
+
+const sliderStyle = css`
+  .thumb--min {
+    z-index: 3;
+  }
+
+  .thumb--max {
+    z-index: 4;
+  }
+
+  input[type='range'] {
+    -webkit-appearance: none;
+    -webkit-tap-highlight-color: transparent;
+    pointer-events: none;
+    position: absolute;
+    height: 0;
+    width: 748px;
+    outline: none;
+    ::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    ::-webkit-slider-thumb {
+      background-color: #f1f5f7;
+      border: none;
+      border-radius: 50%;
+      box-shadow: 0 0 1px 1px #ced4da;
+      cursor: pointer;
+      height: 20px;
+      width: 20px;
+      margin-top: 4px;
+      pointer-events: all;
+      position: relative;
+    }
+    .thumb--min {
+      height: 25px;
+      width: 25px;
+    }
+    ::-moz-range-thumb {
+      background-color: ${color.light4};
+      border: none;
+      ${radius.circle}
+      box-shadow: 0 0 1px 1px #ced4da;
+      cursor: pointer;
+      height: 18px;
+      width: 18px;
+      margin-top: 4px;
+      pointer-events: all;
+      position: relative;
+    }
+  }
+`;

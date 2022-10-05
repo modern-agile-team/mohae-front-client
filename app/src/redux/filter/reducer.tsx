@@ -47,35 +47,33 @@ const filter = createSlice({
     setMax: (state, action: PayloadAction<any>) => {
       state.data.price.max = action.payload;
     },
+    resetFilteringSetting: state => {
+      state.data = {
+        check: {
+          sort: { 0: false, 1: true, 2: false },
+          target: { 0: false, 1: false },
+          date: { 0: false, 1: false, 2: false, 3: false },
+          free: { 0: false },
+        },
+        area: {
+          areaName: '전체 지역',
+          areaNo: '0',
+        },
+        price: {
+          min: 0,
+          max: 1000000,
+        },
+      };
+    },
   },
 });
 
-export const { setCheck, setAreaName, setAreaNo, setMin, setMax } =
-  filter.actions;
+export const {
+  setCheck,
+  setAreaName,
+  setAreaNo,
+  setMin,
+  setMax,
+  resetFilteringSetting,
+} = filter.actions;
 export default filter.reducer;
-
-// {
-//   [key: string]:
-//     | { [key: string]: { [key: number]: boolean } }
-//     | { [key: string]: string }
-//     | { [key: string]: number };
-// };
-
-// {
-//   data: {
-//     check: {
-//       sort: { [key: string]: boolean };
-//       target: { [key: string]: boolean };
-//       date: { [key: string]: boolean };
-//       free: { [key: string]: boolean };
-//     };
-//     area: {
-//       areaName: string;
-//       areaNo: string;
-//     };
-//     price: {
-//       min: number;
-//       max: number;
-//     };
-//   };
-// }

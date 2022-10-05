@@ -1,6 +1,6 @@
 import React, { Dispatch, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCheck, setAreaName, setAreaNo } from '../../redux/filter/reducer';
+import { setCheck, resetFilteringSetting } from '../../redux/filter/reducer';
 import { RootState } from '../../redux/root';
 import MarkBox from '../markbox/MarkBox';
 import Presenter from './Presenter';
@@ -21,16 +21,7 @@ function Filter({ setShowFilter, showFilter, onSubmit }: Props) {
   const [view, setView] = useState<{ [key: number]: boolean }>({ 0: false });
 
   const resetSetting = () => {
-    const resetItem = {
-      sort: { 0: false, 1: true, 2: false },
-      target: { 0: false, 1: false },
-      date: { 0: false, 1: false, 2: false, 3: false },
-      free: { 0: false },
-    };
-
-    dispatch(setCheck(resetItem));
-    dispatch(setAreaName('전체 지역'));
-    dispatch(setAreaNo('0'));
+    dispatch(resetFilteringSetting());
   };
 
   const setItemCheck = (list: string, key: string) => {

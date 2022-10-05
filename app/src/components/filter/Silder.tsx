@@ -103,13 +103,12 @@ const Slider = (props: Props) => {
     value => Math.round(((value - min) / (max - min)) * 100),
     [min, max],
   );
-
+  console.log(maxValRef.current);
   useEffect(() => {
     const minPercent = getPercent(minVal);
-    const maxRefPercent = getPercent(maxValRef.current);
+
     if (range.current) {
       range.current.style.left = `${minPercent}%`;
-      range.current.style.width = `${maxRefPercent - minPercent}%`;
     }
   }, [minVal, getPercent, maxVal]);
 
@@ -118,7 +117,9 @@ const Slider = (props: Props) => {
     const maxPercent = getPercent(maxVal);
 
     if (range.current) {
-      range.current.style.width = `${maxPercent - minRefPercent}%`;
+      range.current.style.width = `${
+        minVal === 0 && maxVal === 1000000 ? '100' : maxPercent - minRefPercent
+      }%`;
     }
   }, [maxVal, getPercent, minVal]);
 

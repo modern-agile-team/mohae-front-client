@@ -2,7 +2,7 @@ import React, { Dispatch } from 'react';
 import { css, cx } from '@emotion/css';
 import { Btn, SelectBtn } from '../button';
 import { color, font } from '../../styles';
-import Slider from './Silder';
+import Slider from './Slider';
 import SelectBox from '../selectbox/SelectBox';
 import Img from '../img/Img';
 import type { type } from './Container';

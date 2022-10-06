@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import { css, cx } from '@emotion/css';
-import { color, radius } from '../../styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { setMax, setMin } from '../../redux/filter/reducer';
 import { RootState } from '../../redux/root';
@@ -91,7 +90,7 @@ const wrapSlider = css`
 
 const attrSilder = (track?: string) => {
   const common = css`
-    ${radius[6]};
+    border-radius: 6px;
     height: 5px;
     overflow: hidden;
   `;
@@ -99,13 +98,13 @@ const attrSilder = (track?: string) => {
   return track
     ? css`
         ${common}
-        background-color: ${color.light4};
+        background-color: #E7E7E8;
         width: 100%;
         z-index: 1;
       `
     : css`
         ${common}
-        background-color: ${color.main};
+        background-color: #ff445e;
         z-index: 2;
       `;
 };
@@ -148,9 +147,9 @@ const sliderStyle = css`
       width: 25px;
     }
     ::-moz-range-thumb {
-      background-color: ${color.light4};
+      background-color: #e7e7e8;
       border: none;
-      ${radius.circle}
+      border-radius: 50%;
       box-shadow: 0 0 1px 1px #ced4da;
       cursor: pointer;
       height: 18px;

@@ -13,7 +13,6 @@ import { color, Layout } from './styles';
 import {
   Board,
   CreateAndEditPost,
-  HG,
   Home,
   MyPage,
   Post,
@@ -37,7 +36,6 @@ injectGlobal`
     -webkit-box-sizing: border-box;
     box-sizing: border-box; 
     line-height: 170%;
-    /* color: ${color.dark1}; */
   }
   textarea {
     resize: none;
@@ -96,7 +94,6 @@ const App: React.SFC = () => {
             />
           }
         />
-        <Route path={'/hg'} element={<Layout component={<HG />} />} />
         <Route
           path={'/boards/categories/:no'}
           element={<Layout component={<Board />} />}

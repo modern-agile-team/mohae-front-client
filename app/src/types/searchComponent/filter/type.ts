@@ -9,6 +9,7 @@ interface FilterInitialState {
     [key: string]: number;
   };
 }
+
 interface ObjDataProcessing {
   check: {
     sort: {

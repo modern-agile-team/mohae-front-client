@@ -1,6 +1,5 @@
 /** @format */
 
-import HG from './test/HG';
 import Home from './home/Home';
 import { MyPage } from './mypage';
 import Resign from './resign';
@@ -11,7 +10,6 @@ import CreateAndEditPost from './createpost/Container';
 import Board from './board/Container';
 import Post from './post/Container';
 export {
-  HG,
   Home,
   MyPage,
   Resign,

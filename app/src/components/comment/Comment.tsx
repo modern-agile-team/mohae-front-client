@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import{ useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { getCommentList } from '../../apis/comment';
 import { setCommentArr } from '../../redux/comment/reducer';
 import Box from '../box/Box';
@@ -10,25 +10,6 @@ import { ReportModal } from '../modal';
 import Popup from '../popup/Popup';
 import CommentInputForm from './CommentInputForm';
 import CommentList from './CommentList';
-
-export interface Replies {
-  replyNo: number;
-  replyContent: string;
-  replyWriterNo: number;
-  replyWriterPhotoUrl: string;
-  replyCreatedAt: string;
-}
-
-export interface CommentList {
-  commentContent: string;
-  commentCreatedAt: string;
-  commentNo: number;
-  commenterNickname: string;
-  commenterNo: number;
-  commenterPhotoUrl: string;
-  isCommenter: number;
-  replies: Replies[];
-}
 
 const Comment = () => {
   const [view, setView] = useState<{ [key: string]: boolean }>({

@@ -4,14 +4,9 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/root';
 import Replies from '../replies/Replies';
 import Profile from '../profile/Profile';
+import { CommentItemProps } from '../../types/comment/type';
 
-interface DefaultProps {
-  handleModalView: () => void;
-  handlePopupView: () => void;
-  commentIndex: number;
-}
-
-const CommentItem = (props: DefaultProps) => {
+const CommentItem = (props: CommentItemProps) => {
   const { commentIndex, handleModalView, handlePopupView } = props;
   const { commentContent, commenterPhotoUrl, commentCreatedAt, commenterNo } =
     useSelector((state: RootState) => state.comment.data[commentIndex]);

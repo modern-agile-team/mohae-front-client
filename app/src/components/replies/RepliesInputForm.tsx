@@ -7,15 +7,10 @@ import { color } from '../../styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCommentArr } from '../../redux/comment/reducer';
 import { RootState } from '../../redux/root';
-import { Replies } from '../comment/Comment';
+import { RepliesInputFromProps, ReplyList } from '../../types/replies/type';
 import { createReply } from '../../apis/replies';
 
-interface Props {
-  commentIndex: number;
-  handlePopupView: () => void;
-}
-
-const RepliesInputForm = (props: Props) => {
+const RepliesInputForm = (props: RepliesInputFromProps) => {
   const { handlePopupView, commentIndex } = props;
   const [reply, setReply] = useState<string>('');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -33,8 +28,8 @@ const RepliesInputForm = (props: Props) => {
     setReply(e.target.value);
   };
 
-  const addNewRelpy = (newReply: Replies) => {
-    const newCommentArr = comments.filter((el, i) => {
+  const addNewRelpy = (newReply: ReplyList) => {
+    const newCommentArr = comments.filter((_, i) => {
       return i !== commentIndex;
     });
 
@@ -51,7 +46,7 @@ const RepliesInputForm = (props: Props) => {
       await createReply({
         no: comments[commentIndex].commentNo,
         body: { content: reply },
-      }).then(res => {
+      }).then(_ => {
         const newReply = {
           replyNo: 1,
           replyContent: reply,

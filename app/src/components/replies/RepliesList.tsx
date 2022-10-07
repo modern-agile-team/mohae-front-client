@@ -1,17 +1,12 @@
+import { RepliesListProps } from '../../types/replies/type';
 import ReplyItem from './ReplyItem';
 
-interface Props {
-  handleModalView: () => void;
-  replies: object[];
-  commentIndex: number;
-}
-
-const RepliesList = (props: Props) => {
+const RepliesList = (props: RepliesListProps) => {
   const { commentIndex, handleModalView, replies } = props;
 
   return (
     <ul>
-      {replies.map((reply, i) => {
+      {replies.map((_, i) => {
         return (
           <ReplyItem
             key={i}

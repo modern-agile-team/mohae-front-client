@@ -5,14 +5,9 @@ import { RootState } from '../../redux/root';
 import Img from '../img/Img';
 import RepliesList from './RepliesList';
 import RepliesInputForm from './RepliesInputForm';
+import { RepliesProps } from '../../types/replies/type';
 
-interface Props {
-  handleModalView: () => void;
-  handlePopupView: () => void;
-  commentIndex: number;
-}
-
-function Replies(props: Props) {
+function Replies(props: RepliesProps) {
   const { commentIndex, handleModalView, handlePopupView } = props;
   const replies = useSelector(
     (state: RootState) => state.comment.data[commentIndex].replies,

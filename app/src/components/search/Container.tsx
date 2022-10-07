@@ -1,27 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import {
-  useLocation,
-  useNavigate,
-  useParams,
-  useSearchParams,
-} from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { RootState } from '../../redux/root';
-import { ENDPOINT } from '../../utils/ENDPOINT';
-import { customAxios } from '../../apis/instance';
 import Presenter from './Presenter';
-import { FilterInitialState, ObjDataProcessing } from '../../types/filterType';
+import {
+  FilterInitialState,
+  ObjDataProcessing,
+} from '../../types/searchComponent/filter/type';
+import { ContainerProps } from '../../types/searchComponent/type';
 
-interface Props {
-  board?: boolean;
-  main?: boolean;
-  resetPageInfo?: () => void;
-}
-
-function Search(props: Props) {
+function Search(props: ContainerProps) {
   const { board, main, resetPageInfo } = props;
   const [value, setValue] = useState<string>('');
-  const [localValue, setLocalValue] = useState<string[]>(
+  const [userSearched, setUerSearched] = useState<string[]>(
     JSON.parse(localStorage.getItem('currentSearch') || '[]'),
   );
   const { no } = useParams();
@@ -31,14 +22,10 @@ function Search(props: Props) {
   const [searchParams, setSearchParams] = useSearchParams();
   const [showFilter, setShowFilter] = useState(false);
   const [showDataList, setShowDataList] = useState(false);
-  const [hotKeys, setHotKeys] = useState<
-    { no: number; name: string; ranking: number }[]
-  >([]);
   const navigate = useNavigate();
   const getParams = (query: string): any => {
     return searchParams.get(query);
   };
-  const location = useLocation();
 
   const onBlur = () => {
     setShowDataList(false);
@@ -51,18 +38,6 @@ function Search(props: Props) {
       setShowDataList(true);
     }
   };
-
-  useEffect(() => {
-    customAxios
-      .get(`${ENDPOINT}categories/popular`)
-      .then(res => {
-        const addRanking = Object.keys(res.data.response).map(el => {
-          return { ...res.data.response[el], ranking: Number(el) + 1 };
-        });
-        setHotKeys([...addRanking]);
-      })
-      .catch(err => console.log('err', err));
-  }, []);
 
   const objDataProcessing = (): ObjDataProcessing => {
     const changeNull = (filteringValue: boolean | number | string) => {
@@ -140,8 +115,9 @@ function Search(props: Props) {
       return decodeURIComponent(getParams('title'));
     }
   };
+
   const onSubmit = (
-    e: React.FormEvent<HTMLFormElement>,
+    e: React.MouseEvent | React.FormEvent<HTMLFormElement>,
     str: string,
     historyValue?: string,
   ) => {
@@ -171,48 +147,26 @@ function Search(props: Props) {
     if (str === 'search') {
       if (value.length > 1) {
         setSearchParams(query);
-
+        if (main) {
+          navigate('boards/categories/1' + query);
+        }
         localStorage.setItem(
           'currentSearch',
-          JSON.stringify([value, ...localValue]),
+          JSON.stringify([value, ...userSearched]),
         );
-        setLocalValue(
+        setUerSearched(
           JSON.parse(localStorage.getItem('currentSearch') || '[]'),
         );
         setValue('');
         resetPageInfo && resetPageInfo();
-      } else alert('두 글자 이상 검색 가능합니다.');
+      } else {
+        alert('두 글자 이상 검색 가능합니다.');
+        setValue('');
+      }
     } else {
       setSearchParams(query);
       resetPageInfo && resetPageInfo();
     }
-    if (main) {
-      navigate('boards/categories/1' + query);
-    }
-  };
-
-  const hotKeyClick = (e: React.MouseEvent, no: number) => {
-    e.preventDefault();
-    if (!location.search) {
-      if (location.pathname !== `/boards/categories/${no}`) {
-        resetPageInfo && resetPageInfo();
-        navigate(`/boards/categories/${no}`);
-      }
-    } else {
-      resetPageInfo && resetPageInfo();
-      navigate(`/boards/categories/${no}`);
-    }
-  };
-
-  const deleteAll = () => {
-    localStorage.removeItem('currentSearch');
-    setLocalValue([]);
-  };
-
-  const deleteList = (i: number) => {
-    const newLocal = localValue.filter((el, index) => index != i);
-    localStorage.setItem('currentSearch', JSON.stringify(newLocal));
-    setLocalValue(newLocal);
   };
 
   return (
@@ -220,18 +174,15 @@ function Search(props: Props) {
       style={board ? 'board' : 'main'}
       value={value}
       setValue={setValue}
-      deleteAll={deleteAll}
-      deleteList={deleteList}
       showFilter={showFilter}
       setShowFilter={setShowFilter}
-      hotKeys={hotKeys}
-      localValue={localValue}
-      hotKeyClick={hotKeyClick}
-      setLocalValue={setLocalValue}
+      userSearched={userSearched}
+      setUerSearched={setUerSearched}
       onSubmit={onSubmit}
       onBlur={onBlur}
       onFocus={onFocus}
       showDataList={showDataList}
+      resetPageInfo={resetPageInfo}
     />
   );
 }

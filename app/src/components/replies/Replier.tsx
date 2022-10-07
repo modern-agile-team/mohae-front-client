@@ -1,19 +1,13 @@
 import styled from '@emotion/styled';
 import Img from '../img/Img';
-import decodingToken from '../../utils/decodingToken';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/root';
 import { setCommentArr } from '../../redux/comment/reducer';
 import { deleteReply } from '../../apis/replies';
+import { ReplierProps } from '../../types/replies/type';
 
-interface Props {
-  commentIndex: number;
-  handleModalView: () => void;
-  replyIndex: number;
-}
-
-const Replier = (props: Props) => {
+const Replier = (props: ReplierProps) => {
   const { handleModalView, commentIndex, replyIndex } = props;
   const userInfo = useSelector((state: RootState) => state.user.user);
   const [detailsView, setDetailsView] = useState(false);
@@ -43,8 +37,8 @@ const Replier = (props: Props) => {
   };
 
   const deleteReplyRequest = () => {
-    deleteReply({ no: commentNo, replyNo: replyNo }).then(res => {
-      const newCommentArr = commentList.filter((el, i) => {
+    deleteReply({ no: commentNo, replyNo: replyNo }).then(_ => {
+      const newCommentArr = commentList.filter((_, i) => {
         return i !== commentIndex;
       });
 

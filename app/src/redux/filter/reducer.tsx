@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { FilterInitialState } from '../../types/filterType';
+import { FilterInitialState } from '../../types/searchComponent/filter/type';
 
 const initialState: { data: FilterInitialState } = {
   data: {

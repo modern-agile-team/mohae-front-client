@@ -1,17 +1,11 @@
 import styled from '@emotion/styled';
-import Img from '../img/Img';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/root';
 import Replier from './Replier';
 import Profile from '../profile/Profile';
+import { ReplyItemProps } from '../../types/replies/type';
 
-interface DefaultProps {
-  handleModalView: () => void;
-  commentIndex: number;
-  replyIndex: number;
-}
-
-const ReplyItem = (props: DefaultProps) => {
+const ReplyItem = (props: ReplyItemProps) => {
   const { commentIndex, handleModalView, replyIndex } = props;
   const { replyContent, replyCreatedAt, replyWriterPhotoUrl, replyWriterNo } =
     useSelector(

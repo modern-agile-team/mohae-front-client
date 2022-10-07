@@ -1,10 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { CommentList } from '../../components/comment/Comment';
+import { CommentList } from '../../types/comment/type';
 
-interface InitialState {
-  data: CommentList[];
-}
-const initialState: InitialState = {
+const initialState: { data: CommentList[] } = {
   data: [],
 };
 
@@ -12,16 +9,16 @@ const comment = createSlice({
   name: 'comment',
   initialState,
   reducers: {
-    setCommentArr: (state, action: PayloadAction<any>) => {
+    setCommentArr: (state, action: PayloadAction<CommentList[]>) => {
       state.data = action.payload;
     },
     setInitialState: state => {
       state.data = [];
     },
-    setAddCommentArr: (state, action: PayloadAction<any>) => {
+    setAddCommentArr: (state, action: PayloadAction<CommentList>) => {
       state.data = [...state.data, action.payload];
     },
-    setAddReplies: (state: any, action: PayloadAction<any>) => {
+    setAddReplies: (state: any, action: PayloadAction<CommentList>) => {
       state.data = [...state.data, action.payload];
     },
   },

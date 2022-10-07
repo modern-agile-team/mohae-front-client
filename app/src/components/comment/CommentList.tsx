@@ -1,19 +1,15 @@
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/root';
+import { CommentListProps } from '../../types/comment/type';
 import CommentItem from './CommentItem';
 
-interface Props {
-  handleModalView: () => void;
-  handlePopupView: () => void;
-}
-
-const CommentList = (props: Props) => {
+const CommentList = (props: CommentListProps) => {
   const { handleModalView, handlePopupView } = props;
   const commentList = useSelector((state: RootState) => state.comment.data);
 
   return (
     <ul>
-      {commentList.map((comment, i) => {
+      {commentList.map((_, i) => {
         return (
           <CommentItem
             key={i}

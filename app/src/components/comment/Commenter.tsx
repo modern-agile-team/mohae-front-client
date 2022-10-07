@@ -1,19 +1,14 @@
 import styled from '@emotion/styled';
 import Img from '../img/Img';
-import decodingToken from '../../utils/decodingToken';
 import { useState } from 'react';
 import { deleteComment } from '../../apis/comment';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/root';
 import { setCommentArr } from '../../redux/comment/reducer';
+import { CommenterProps } from '../../types/comment/type';
 
-interface Props {
-  commentIndex: number;
-  handleModalView: () => void;
-}
-
-const Commenter = (props: Props) => {
+const Commenter = (props: CommenterProps) => {
   const { handleModalView, commentIndex } = props;
   const userInfo = useSelector((state: RootState) => state.user.user);
   const [detailsView, setDetailsView] = useState(false);
@@ -41,7 +36,7 @@ const Commenter = (props: Props) => {
   };
 
   const deleteCommentRequest = () => {
-    deleteComment({ no: Number(no), commentNo: commentNo }).then(res => {
+    deleteComment({ no: Number(no), commentNo: commentNo }).then(_ => {
       dispatch(
         setCommentArr(commentList.filter(el => el.commentNo !== commentNo)),
       );

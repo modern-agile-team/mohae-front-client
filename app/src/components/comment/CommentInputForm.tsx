@@ -9,12 +9,9 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAddCommentArr } from '../../redux/comment/reducer';
 import { RootState } from '../../redux/root';
+import { CommentInputFormProps } from '../../types/comment/type';
 
-interface Props {
-  handleModalView: () => void;
-}
-
-const CommentInputForm = (props: Props) => {
+const CommentInputForm = (props: CommentInputFormProps) => {
   const { handleModalView } = props;
   const [comment, setComment] = useState<string>('');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -40,7 +37,8 @@ const CommentInputForm = (props: Props) => {
         await createComment({
           no: Number(no),
           body: { content: comment },
-        }).then(res => {
+        }).then(_ => {
+          console.log(_.data);
           const newComment = {
             commentContent: comment,
             commentCreatedAt: `${today.year}년 ${

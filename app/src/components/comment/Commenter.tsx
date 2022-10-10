@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import Img from '../img/Img';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { deleteComment } from '../../apis/comment';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,7 +9,7 @@ import { setCommentArr } from '../../redux/comment/reducer';
 import { CommenterProps } from '../../types/comment/type';
 
 const Commenter = (props: CommenterProps) => {
-  const { handleModalView, commentIndex } = props;
+  const { handleModalView, handleEditingButton, commentIndex } = props;
   const userInfo = useSelector((state: RootState) => state.user.user);
   const [detailsView, setDetailsView] = useState(false);
   const { no } = useParams();
@@ -33,6 +33,11 @@ const Commenter = (props: CommenterProps) => {
 
   const handleDeailsView = () => {
     setDetailsView(!detailsView);
+  };
+
+  const editButtonClick = () => {
+    handleEditingButton();
+    handleDeailsView();
   };
 
   const deleteCommentRequest = () => {
@@ -63,7 +68,7 @@ const Commenter = (props: CommenterProps) => {
         <>
           <RelativeWrapper>
             <MoreDetails>
-              <span>수정하기</span>
+              <span onClick={editButtonClick}>수정하기</span>
               <span onClick={deleteCommentRequest}>삭제하기</span>
             </MoreDetails>
           </RelativeWrapper>

@@ -17,6 +17,7 @@ interface CommentList {
 
 interface CommenterProps extends TypeForExtends {
   commentIndex: number;
+  handleEditingButton: () => void;
 }
 
 interface CommentItemProps extends TypeForExtends {
@@ -26,6 +27,14 @@ interface CommentItemProps extends TypeForExtends {
 
 interface CommentListProps extends TypeForExtends {
   handlePopupView: () => void;
+}
+
+interface CommentInputProps {
+  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  onSubmit: () => Promise<void>;
+  value: string;
+  usedForEdit: boolean;
+  handleClose?: () => void;
 }
 
 interface ExtendsTypeUsedInAPI {
@@ -45,6 +54,7 @@ export type {
   TypeForExtends as CommentInputFormProps,
   CommentItemProps,
   CommentListProps,
+  CommentInputProps,
   EditAndDeleteParameterType,
   ExtendsTypeUsedInAPI as PostParameterType,
 };

@@ -17,11 +17,11 @@ export const createComment = ({
   return setInterceptors(customAxios).post(`/board/${no}/comments`, body);
 };
 
-export const editComment = (
-  no: number,
-  commentNo: number,
-  body: EditAndDeleteParameterType,
-): Promise<AxiosResponse> => {
+export const editComment = ({
+  no,
+  commentNo,
+  body,
+}: EditAndDeleteParameterType): Promise<AxiosResponse> => {
   return setInterceptors(customAxios).put(
     `/board/${no}/comments/${commentNo}`,
     body,

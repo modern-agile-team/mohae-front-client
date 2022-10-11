@@ -52,12 +52,6 @@ function Replies(props: RepliesProps) {
   );
 }
 const RepliesWrapper = styled.div`
-  p {
-    font-style: normal;
-    font-weight: 500;
-    font-size: 14px;
-    color: #4f4e5c;
-  }
   #replies {
     font-style: normal;
     font-weight: 400;

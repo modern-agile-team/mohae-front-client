@@ -8,7 +8,8 @@ import { deleteReply } from '../../apis/replies';
 import { ReplierProps } from '../../types/replies/type';
 
 const Replier = (props: ReplierProps) => {
-  const { handleModalView, commentIndex, replyIndex } = props;
+  const { handleModalView, commentIndex, replyIndex, handleEditingButton } =
+    props;
   const userInfo = useSelector((state: RootState) => state.user.user);
   const [detailsView, setDetailsView] = useState(false);
   const dispatch = useDispatch();
@@ -34,6 +35,11 @@ const Replier = (props: ReplierProps) => {
 
   const handleDeailsView = () => {
     setDetailsView(!detailsView);
+  };
+
+  const editButtonClick = () => {
+    handleEditingButton();
+    handleDeailsView();
   };
 
   const deleteReplyRequest = () => {
@@ -71,7 +77,7 @@ const Replier = (props: ReplierProps) => {
         <>
           <RelativeWrapper>
             <MoreDetails>
-              <span>수정하기</span>
+              <span onClick={editButtonClick}>수정하기</span>
               <span onClick={deleteReplyRequest}>삭제하기</span>
             </MoreDetails>
           </RelativeWrapper>

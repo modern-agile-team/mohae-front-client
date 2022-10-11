@@ -31,6 +31,7 @@ interface ReplyItemProps extends TypeForExtends {
 
 interface ReplierProps extends TypeForExtends {
   handleModalView: () => void;
+  handleEditingButton: () => void;
   replyIndex: number;
 }
 

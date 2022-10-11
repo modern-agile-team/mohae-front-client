@@ -55,7 +55,6 @@ const CommentItem = (props: CommentItemProps) => {
   };
 
   const handleOnSubmit = async () => {
-    handleEditingButton();
     try {
       await editComment({
         no: Number(no),
@@ -69,15 +68,13 @@ const CommentItem = (props: CommentItemProps) => {
             return { ...el, commentContent: editingComment.value };
           } else return { ...el };
         });
+        handleEditingButton();
         dispatch(setCommentArr(newCommentArr));
       });
     } catch (err) {
       console.log(err);
     }
   };
-
-  console.log(commentArr);
-  console.log(editingComment.value);
 
   return (
     <Wrapper>
@@ -99,6 +96,7 @@ const CommentItem = (props: CommentItemProps) => {
           <span id="comment-created-date">{commentCreatedAt}</span>
           {!editingComment.willEdit ? (
             <p
+              id="content"
               dangerouslySetInnerHTML={{
                 __html: commentContent.replace(/\n/g, '<br />'),
               }}
@@ -150,6 +148,12 @@ const CommentHeader = styled.div`
     font-weight: 400;
     font-size: 12px;
     color: #a7a7ad;
+  }
+  #content {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    color: #4f4e5c;
   }
 `;
 

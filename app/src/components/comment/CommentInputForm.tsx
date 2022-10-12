@@ -15,6 +15,18 @@ const CommentInputForm = (props: CommentInputFormProps) => {
   const dispatch = useDispatch();
   const userInfo = useSelector((state: RootState) => state.user.user);
   const commentList = useSelector((state: RootState) => state.comment.data);
+  const [errorState, setErrorState] = useState<{
+    message: string;
+    errorOccurred: boolean;
+  }>({
+    message: '댓글 작성에 실패하였습니다.',
+    errorOccurred: false,
+  });
+  const handleErrorState = (occurs: boolean) => {
+    setErrorState(prev => {
+      return { ...prev, errorOccurred: occurs };
+    });
+  };
 
   const handleChangeComment = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setComment(e.target.value);
@@ -27,7 +39,7 @@ const CommentInputForm = (props: CommentInputFormProps) => {
   };
 
   const handleSubmit = async () => {
-    if (comment.length) {
+    if (0 < comment.length && comment.length < 500) {
       try {
         await createComment({
           no: Number(no),
@@ -47,12 +59,13 @@ const CommentInputForm = (props: CommentInputFormProps) => {
           };
           dispatch(setAddCommentArr(newComment));
           handleModalView();
+          handleErrorState(false);
         });
         setComment('');
       } catch (err) {
-        console.log(err);
+        alert('알 수 없는 에러가 발생하였습니다.');
       }
-    }
+    } else handleErrorState(true);
   };
 
   return (
@@ -66,6 +79,8 @@ const CommentInputForm = (props: CommentInputFormProps) => {
         onChange={handleChangeComment}
         value={comment}
         usedForEdit={false}
+        errorMessage={errorState.message}
+        errorState={errorState.errorOccurred}
       />
     </Wrapper>
   );

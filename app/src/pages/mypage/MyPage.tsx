@@ -1,10 +1,10 @@
 /** @format */
 
 import { useParams } from 'react-router-dom';
-import { setInitialState as setInitialStateMypageProfile } from '../../../redux/mypage/reducer';
-import Presenter from './Presenter';
+import { setInitialState as setInitialStateMypageProfile } from '../../redux/mypage/reducer';
+import { Presenter } from './components';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../redux/root';
+import { AppDispatch, RootState } from '../../redux/root';
 import {
   get_user_specs,
   get_user_tohelp,
@@ -12,8 +12,8 @@ import {
   getSpecs,
   setInitialState as setInitialStateSpecData,
   getFindSpecs,
-} from '../../../redux/spec/reducer';
-import getToken from '../../../utils/getToken';
+} from '../../redux/spec/reducer';
+import getToken from '../../utils/getToken';
 import { useEffect } from 'react';
 
 export default function MyPage() {
@@ -46,23 +46,6 @@ export default function MyPage() {
   };
   const posts = useSelector((state: RootState) => state.spec);
   const dispatch = useDispatch<AppDispatch>();
-
-  /*
-  const text: { [key: string]: any } = {
-    sir: '님',
-    registerDate: '가입일 :',
-    logout: '로그아웃',
-    interesting: '관심사',
-    boards: '게시물',
-    like: '좋아요',
-    resume: {
-      spec: '내 스펙 관리',
-      give: '해줄래요 이력',
-      got: '구할래요 이력',
-    },
-    rating: '총 평점',
-  };
-  */
 
   useEffect(() => {
     dispatch(getSpecs({ paramNo, takeParam: take[checkSelf] }));

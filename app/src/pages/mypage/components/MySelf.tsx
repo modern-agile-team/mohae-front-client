@@ -1,6 +1,4 @@
 /** @format */
-
-import { css, cx } from '@emotion/css';
 import styled from '@emotion/styled';
 import { color, font } from '../../../styles';
 import Slide from './Slide';
@@ -112,7 +110,6 @@ export default function MySelf({ posts, actions, checkSelf }: MyPageProps) {
                 <span>등록된 관심사가 없습니다</span>
               </Intersted>
             )}
-            ;
           </div>
         </Box>
         <div className={'boards'}>

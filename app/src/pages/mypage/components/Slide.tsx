@@ -2,7 +2,7 @@
 
 import { cx, css } from '@emotion/css';
 import { useState } from 'react';
-import { Img, NewPost, Poster } from '../../../components';
+import { Img, NewPost } from '../../../components';
 import { shadow } from '../../../styles';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,9 +12,16 @@ import { ENDPOINT } from '../../../utils/ENDPOINT';
 import setInterceptors from '../../../apis/common/setInterceptors';
 import { customAxios } from '../../../apis/instance';
 
-interface Props {
-  [key: string]: any;
+export interface SlideProps {
+  outsideBtn: boolean;
+  checkSelf: string;
+  viewNumber: number;
+  items: any;
+  action: any;
+  marginRight: number;
+  isHelpPost?: boolean;
 }
+
 interface PARAMS {
   [key: string]: any;
 }
@@ -26,8 +33,7 @@ export default function Slide({
   marginRight,
   viewNumber,
   checkSelf,
-  linkTo,
-}: Props) {
+}: SlideProps) {
   const [sector, setSector] = useState(0),
     dispatch = useDispatch(),
     userId = useParams().no,
@@ -219,7 +225,7 @@ export default function Slide({
     if (items && items.length) {
       return items.map((contents: string, index: number) => (
         <div className={'board'} key={index}>
-          <NewPost page={'inSpec'} board={contents} linkTo={linkTo} />
+          <NewPost page={'inSpec'} board={contents} />
         </div>
       ));
     } else if (checkSelf === 'false') {

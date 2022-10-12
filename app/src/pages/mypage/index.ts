@@ -1,5 +1,5 @@
 /** @format */
 
-import MyPage from './mypage/MyPage';
+import MyPage from './MyPage';
 
 export { MyPage };

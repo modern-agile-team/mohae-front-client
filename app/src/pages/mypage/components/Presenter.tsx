@@ -1,7 +1,6 @@
 /** @format */
 
-import OtherPage from './OtherPage';
-import MySelf from './MySelf';
+import { MySelf, OtherPage } from './index';
 import { ActionCreatorWithPayload } from '@reduxjs/toolkit';
 
 export interface MyPageProps {

@@ -29,6 +29,18 @@ const ReplyItem = (props: ReplyItemProps) => {
     willEdit: false,
     value: replyContent,
   });
+  const [errorState, setErrorState] = useState<{
+    message: string;
+    errorOccurred: boolean;
+  }>({
+    message: '대댓글 수정에 실패하였습니다.',
+    errorOccurred: false,
+  });
+  const handleErrorState = (occurs: boolean) => {
+    setErrorState(prev => {
+      return { ...prev, errorOccurred: occurs };
+    });
+  };
 
   const handleEditingButton = () => {
     setEditingingReply(prev => {
@@ -68,20 +80,23 @@ const ReplyItem = (props: ReplyItemProps) => {
   };
 
   const handleOnSubmit = async () => {
-    try {
-      await editReply({
-        no: commentArr[commentIndex].commentNo,
-        replyNo: replyNo,
-        body: {
-          content: editingReply.value,
-        },
-      }).then(_ => {
-        handleEditingButton();
-        dispatch(setCommentArr(newRepliesArr()));
-      });
-    } catch (err) {
-      console.log(err);
-    }
+    if (0 < editingReply.value.length && editingReply.value.length < 500) {
+      try {
+        await editReply({
+          no: commentArr[commentIndex].commentNo,
+          replyNo: replyNo,
+          body: {
+            content: editingReply.value,
+          },
+        }).then(_ => {
+          handleEditingButton();
+          dispatch(setCommentArr(newRepliesArr()));
+          handleErrorState(false);
+        });
+      } catch (err) {
+        alert('알 수 없는 에러가 발생하였습니다.');
+      }
+    } else handleErrorState(true);
   };
 
   const profileImg = replyWriterPhotoUrl
@@ -122,6 +137,8 @@ const ReplyItem = (props: ReplyItemProps) => {
                 value={editingReply.value}
                 usedForEdit={true}
                 handleClose={handleEditingButton}
+                errorMessage={errorState.message}
+                errorState={errorState.errorOccurred}
               />
             </EditInputWrapper>
           )}

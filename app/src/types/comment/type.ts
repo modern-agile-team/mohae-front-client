@@ -35,6 +35,8 @@ interface CommentInputProps {
   value: string;
   usedForEdit: boolean;
   handleClose?: () => void;
+  errorState: boolean;
+  errorMessage: string;
 }
 
 interface ExtendsTypeUsedInAPI {

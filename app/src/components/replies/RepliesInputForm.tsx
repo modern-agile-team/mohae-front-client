@@ -1,9 +1,6 @@
 import styled from '@emotion/styled';
-import React, { useRef, useState } from 'react';
-import useResizeTextArea from '../../customhook/useResizeTextArea';
-import Img from '../img/Img';
-import { Btn } from '../button';
-import { color } from '../../styles';
+import React, { useState } from 'react';
+import ReplyInput from '../input/comment/CommentInput';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCommentArr } from '../../redux/comment/reducer';
 import { RootState } from '../../redux/root';
@@ -13,8 +10,18 @@ import { createReply } from '../../apis/replies';
 const RepliesInputForm = (props: RepliesInputFromProps) => {
   const { handlePopupView, commentIndex } = props;
   const [reply, setReply] = useState<string>('');
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const resizeTextArea = useResizeTextArea(textareaRef);
+  const [errorState, setErrorState] = useState<{
+    message: string;
+    errorOccurred: boolean;
+  }>({
+    message: '대댓글 작성에 실패하였습니다.',
+    errorOccurred: false,
+  });
+  const handleErrorState = (occurs: boolean) => {
+    setErrorState(prev => {
+      return { ...prev, errorOccurred: occurs };
+    });
+  };
   const dispatch = useDispatch();
   const userInfo = useSelector((state: RootState) => state.user.user);
   const day = new Date();
@@ -42,54 +49,44 @@ const RepliesInputForm = (props: RepliesInputFromProps) => {
   };
 
   const handleSubmit = async () => {
-    try {
-      await createReply({
-        no: comments[commentIndex].commentNo,
-        body: { content: reply },
-      }).then(_ => {
-        const newReply = {
-          replyNo: 1,
-          replyContent: reply,
-          replyWriterNo: userInfo.userNo || 1,
-          replyWriterPhotoUrl: userInfo.photo_url || null,
-          replyCreatedAt: `${today.year}년 ${
-            today.month >= 10 ? today.month : '0' + today.month
-          }월 ${today.date >= 10 ? today.date : '0' + today.date}일`,
-        };
-        dispatch(setCommentArr(addNewRelpy(newReply)));
-        handlePopupView();
-      });
-      setReply('');
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const onClickToWrite = () => {
-    if (reply.length) {
-      return handleSubmit();
-    }
+    if (0 < reply.length && reply.length < 500) {
+      try {
+        await createReply({
+          no: comments[commentIndex].commentNo,
+          body: { content: reply },
+        }).then(_ => {
+          const newReply = {
+            replyNo: 1,
+            replyContent: reply,
+            replyWriterNo: userInfo.userNo || 1,
+            replyWriterPhotoUrl: userInfo.photo_url || null,
+            replyCreatedAt: `${today.year}년 ${
+              today.month >= 10 ? today.month : '0' + today.month
+            }월 ${today.date >= 10 ? today.date : '0' + today.date}일`,
+          };
+          dispatch(setCommentArr(addNewRelpy(newReply)));
+          handlePopupView();
+        });
+        setReply('');
+        handleErrorState(false);
+      } catch (err) {
+        alert('알 수 없는 에러가 발생하였습니다.');
+      }
+    } else handleErrorState(true);
   };
 
   return (
     <Wrapper>
-      <FormContainer>
-        <textarea
-          ref={textareaRef}
-          onKeyUp={resizeTextArea}
+      <ReplyInputWrapper>
+        <ReplyInput
+          onSubmit={handleSubmit}
           onChange={handleChangeComment}
-          placeholder="댓글을 입력해 주세요."
           value={reply}
+          usedForEdit={false}
+          errorMessage={errorState.message}
+          errorState={errorState.errorOccurred}
         />
-        <div className="write-btn">
-          <Btn main onClick={onClickToWrite}>
-            <p>작성</p>
-            <div className="write-img">
-              <Img src="/img/write.png" />
-            </div>
-          </Btn>
-        </div>
-      </FormContainer>
+      </ReplyInputWrapper>
     </Wrapper>
   );
 };
@@ -98,27 +95,6 @@ export default RepliesInputForm;
 
 const Wrapper = styled.section``;
 
-const FormContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  padding-top: 16px;
+const ReplyInputWrapper = styled.div`
   width: 1024px;
-  textarea {
-    width: 100%;
-    padding: 16px;
-    background: #ffffff;
-    box-shadow: inset 0px 0px 8px rgba(132, 131, 141, 0.2);
-    border-radius: 6px;
-    margin-bottom: 16px;
-  }
-  .write-btn {
-    background: ${color.main};
-    border-radius: 6px;
-    font-weight: bold;
-    box-shadow: 0px 0px 8px rgba(132, 131, 141, 0.5);
-    p {
-      color: white;
-    }
-  }
 `;

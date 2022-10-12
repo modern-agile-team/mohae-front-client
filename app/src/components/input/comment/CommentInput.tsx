@@ -5,7 +5,15 @@ import Img from '../../img/Img';
 import { CommentInputProps } from '../../../types/comment/type';
 
 function CommentInput(props: CommentInputProps) {
-  const { onChange, onSubmit, value, usedForEdit, handleClose } = props;
+  const {
+    onChange,
+    onSubmit,
+    value,
+    usedForEdit,
+    handleClose,
+    errorState,
+    errorMessage,
+  } = props;
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const resizeTextArea = useResizeTextArea(textareaRef);
 
@@ -14,38 +22,43 @@ function CommentInput(props: CommentInputProps) {
   }, []);
 
   return (
-    <FormContainer>
-      <StyledTextArea
-        ref={textareaRef}
-        onKeyUp={resizeTextArea}
-        onChange={onChange}
-        placeholder="댓글을 입력해 주세요. (최대 500자)"
-        value={value}
-      />
-      <ButtonsWrapper className="write-btn">
-        <StyledButton background="#ff445e" type="submit" onClick={onSubmit}>
-          <p>작성</p>
-          <div className="write-img">
-            <Img id="img" src="/img/write.png" />
-          </div>
-        </StyledButton>
-        {usedForEdit && (
-          <StyledButton background="#fff" onClick={handleClose}>
-            <p>취소</p>
-          </StyledButton>
+    <>
+      <FormContainer errorState={errorState}>
+        {errorState && (
+          <ErrorMessage id="error-message">{errorMessage}</ErrorMessage>
         )}
-      </ButtonsWrapper>
-    </FormContainer>
+        <StyledTextArea
+          ref={textareaRef}
+          onKeyUp={resizeTextArea}
+          onChange={onChange}
+          placeholder="댓글을 입력해 주세요. (최대 500자)"
+          value={value}
+        />
+        <ButtonsWrapper className="write-btn">
+          <StyledButton background="#ff445e" type="submit" onClick={onSubmit}>
+            <p>작성</p>
+            <div className="write-img">
+              <Img id="img" src="/img/write.png" />
+            </div>
+          </StyledButton>
+          {usedForEdit && (
+            <StyledButton background="#fff" onClick={handleClose}>
+              <p>취소</p>
+            </StyledButton>
+          )}
+        </ButtonsWrapper>
+      </FormContainer>
+    </>
   );
 }
 
 export default CommentInput;
 
-const FormContainer = styled.div`
+const FormContainer = styled.div<{ errorState: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  padding-top: 16px;
+  padding-top: ${props => (!props.errorState ? '24px' : '0px')};
   width: 100%;
 `;
 
@@ -77,4 +90,14 @@ const StyledButton = styled.button<{ background: string }>`
   box-shadow: 0px 0px 8px rgba(132, 131, 141, 0.5);
   border-radius: 6px;
   padding: 12px 26px;
+`;
+
+const ErrorMessage = styled.p`
+  font-size: 12px;
+  font-family: 'Bold';
+  color: red;
+  width: 100%;
+  height: 24px;
+  padding-bottom: 4px;
+  vertical-align: middle;
 `;

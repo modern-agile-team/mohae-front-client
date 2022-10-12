@@ -30,6 +30,18 @@ const CommentItem = (props: CommentItemProps) => {
     willEdit: false,
     value: commentContent,
   });
+  const [errorState, setErrorState] = useState<{
+    message: string;
+    errorOccurred: boolean;
+  }>({
+    message: '대댓글 수정에 실패하였습니다.',
+    errorOccurred: false,
+  });
+  const handleErrorState = (occurs: boolean) => {
+    setErrorState(prev => {
+      return { ...prev, errorOccurred: occurs };
+    });
+  };
 
   const profileImg =
     commenterPhotoUrl !== null
@@ -55,25 +67,28 @@ const CommentItem = (props: CommentItemProps) => {
   };
 
   const handleOnSubmit = async () => {
-    try {
-      await editComment({
-        no: Number(no),
-        commentNo: commentNo,
-        body: {
-          content: editingComment.value,
-        },
-      }).then(_ => {
-        const newCommentArr = commentArr.map((el, i) => {
-          if (el.commentNo === commentNo) {
-            return { ...el, commentContent: editingComment.value };
-          } else return { ...el };
+    if (0 < editingComment.value.length && editingComment.value.length < 500) {
+      try {
+        await editComment({
+          no: Number(no),
+          commentNo: commentNo,
+          body: {
+            content: editingComment.value,
+          },
+        }).then(_ => {
+          const newCommentArr = commentArr.map((el, i) => {
+            if (el.commentNo === commentNo) {
+              return { ...el, commentContent: editingComment.value };
+            } else return { ...el };
+          });
+          handleEditingButton();
+          dispatch(setCommentArr(newCommentArr));
+          handleErrorState(false);
         });
-        handleEditingButton();
-        dispatch(setCommentArr(newCommentArr));
-      });
-    } catch (err) {
-      console.log(err);
-    }
+      } catch (err) {
+        alert('알 수 없는 에러가 발생하였습니다.');
+      }
+    } else handleErrorState(true);
   };
 
   return (
@@ -109,6 +124,8 @@ const CommentItem = (props: CommentItemProps) => {
                 onSubmit={handleOnSubmit}
                 onChange={handleOnChangeForEditing}
                 handleClose={handleEditingButton}
+                errorMessage={errorState.message}
+                errorState={errorState.errorOccurred}
               />
             </EditInputWrapper>
           )}

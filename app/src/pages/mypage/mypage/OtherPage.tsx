@@ -14,13 +14,10 @@ import {
 
 import Slide from './Slide';
 import { useSelector } from 'react-redux';
+import { MyPageProps } from './Presenter';
 import { RootState } from '../../../redux/root';
 
-interface Props {
-  [key: string]: any;
-}
-
-export default function OtherPage({ text, posts, actions, checkSelf }: Props) {
+export default function OtherPage({ posts, actions, checkSelf }: MyPageProps) {
   const userInfo = useSelector((state: RootState) => state.user.user);
   const interestedCategories =
     userInfo &&
@@ -38,7 +35,7 @@ export default function OtherPage({ text, posts, actions, checkSelf }: Props) {
             <div className="row title">
               <div className={'row sub-title'}>
                 <div className={'name'}>{userInfo && userInfo.nickname}</div>
-                <div className={'sir'}>{text.sir}</div>
+                <div className={'sir'}>님</div>
                 <div className={'row sub-title'}>{interestedCategories}</div>
               </div>
               <div className={'row btns'}>
@@ -68,9 +65,7 @@ export default function OtherPage({ text, posts, actions, checkSelf }: Props) {
                     <Img src={'/img/post.png'} />
                   </div>
                   <div className={'text'}>
-                    <span>{`${text.boards} ${
-                      userInfo && userInfo.boardNum
-                    }`}</span>
+                    <span>{`게시물 ${userInfo && userInfo.boardNum}`}</span>
                   </div>
                 </div>
                 <div className={'column item'}>
@@ -78,9 +73,7 @@ export default function OtherPage({ text, posts, actions, checkSelf }: Props) {
                     <Img src={'/img/heart-main.png'} />
                   </div>
                   <div className={'text'}>
-                    <span>{`${text.like} ${
-                      userInfo && userInfo.likedUserNum
-                    }`}</span>
+                    <span>{`좋아요 ${userInfo && userInfo.likedUserNum}`}</span>
                   </div>
                 </div>
               </div>

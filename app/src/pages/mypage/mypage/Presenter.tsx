@@ -2,29 +2,22 @@
 
 import OtherPage from './OtherPage';
 import MySelf from './MySelf';
+import { ActionCreatorWithPayload } from '@reduxjs/toolkit';
 
-interface Props {
-  [key: string]: any;
+export interface MyPageProps {
+  posts: any;
+  actions: {
+    specs: ActionCreatorWithPayload<any, string>;
+    toHelp: ActionCreatorWithPayload<any, string>;
+    helpMe: ActionCreatorWithPayload<any, string>;
+  };
+  checkSelf: string;
 }
 
-export default function MyPage({ text, posts, actions, checkSelf }: Props) {
+export default function MyPage({ posts, actions, checkSelf }: MyPageProps) {
   if (checkSelf === 'true') {
-    return (
-      <MySelf
-        text={text}
-        posts={posts}
-        actions={actions}
-        checkSelf={checkSelf}
-      />
-    );
+    return <MySelf posts={posts} actions={actions} checkSelf={checkSelf} />;
   } else {
-    return (
-      <OtherPage
-        text={text}
-        posts={posts}
-        actions={actions}
-        checkSelf={checkSelf}
-      />
-    );
+    return <OtherPage posts={posts} actions={actions} checkSelf={checkSelf} />;
   }
 }

@@ -47,6 +47,7 @@ export default function MyPage() {
   const posts = useSelector((state: RootState) => state.spec);
   const dispatch = useDispatch<AppDispatch>();
 
+  /*
   const text: { [key: string]: any } = {
     sir: '님',
     registerDate: '가입일 :',
@@ -61,6 +62,7 @@ export default function MyPage() {
     },
     rating: '총 평점',
   };
+  */
 
   useEffect(() => {
     dispatch(getSpecs({ paramNo, takeParam: take[checkSelf] }));
@@ -79,12 +81,5 @@ export default function MyPage() {
       dispatch(getSpecs({ paramNo, takeParam: take[checkSelf] }));
   }, [isOpenSpecVisit, openSpecCreate]);
 
-  return (
-    <Presenter
-      text={text}
-      posts={posts}
-      actions={actions}
-      checkSelf={checkSelf}
-    />
-  );
+  return <Presenter posts={posts} actions={actions} checkSelf={checkSelf} />;
 }

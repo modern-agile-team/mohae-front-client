@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Props } from '../../pages/post/Container';
+import { PostData } from '../../types/post/type';
 
-interface InitialState extends Props {
+interface InitialState extends PostData {
   loading: boolean;
 }
 
@@ -9,18 +9,6 @@ const initialState: InitialState = {
   loading: true,
   data: {
     date: '',
-    msg: '',
-    token: '',
-    decoded: {
-      email: '',
-      exp: 0,
-      expiration: '',
-      iat: 0,
-      issuer: '',
-      nickname: '',
-      photoUrl: '',
-      userNo: 0,
-    },
     response: {
       authorization: false,
       board: {

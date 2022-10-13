@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { css, cx } from '@emotion/css';
-import { Box, Carousel, MarkBox, OrderedImg } from '..';
-import { radius } from '../../styles';
-import { Props } from '../../pages/post/Container';
+import { Box, Carousel, MarkBox, OrderedImg } from '../../../../components';
+import { radius } from '../../../../styles';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../redux/root';
+import { RootState } from '../../../../redux/root';
+import { PostData } from '../../../../types/post/type';
 
 interface PostImgsProps {
-  data?: Props;
+  data?: PostData;
   view?: boolean;
   getValue?: boolean;
   type?: string;

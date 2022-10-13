@@ -54,6 +54,7 @@ function Popup({ text1, text2, visible, overlay, alarm, children }: Props) {
     justify-content: center;
     align-items: center;
     text-align: center;
+    color: #4f4e5c;
     ${font.size[14]}
     ${font.weight[400]}
   `;

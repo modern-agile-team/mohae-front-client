@@ -3,10 +3,9 @@ import { css, cx } from '@emotion/css';
 import { Box, Btn, Img, MarkBox, Popup } from '../../components';
 import SelectBox from '../../components/selectbox/SelectBox';
 import { color, font } from '../../styles';
-import PostBody from '../../components/pagecomp/PostBody';
+import { PostBody, PostImgs } from './component';
 import { SelectBtn } from '../../components/button';
 import Input from './Input';
-import PostImgs from '../../components/pagecomp/PostImgs';
 import { useDispatch, useSelector } from 'react-redux';
 import { setInitialState, setTarget } from '../../redux/createpost/reducer';
 import { RootState } from '../../redux/root';
@@ -47,7 +46,7 @@ function Presenter(props: Props) {
       categoryNo !== null &&
       areaNo !== null &&
       deadline !== null &&
-      description.replace(/<[^>]*>?/g, '').length > 8 &&
+      description.replace(/<[^>]*>?/g, '').length > 0 &&
       description.replace(/<[^>]*>?/g, '').length < 1000
     ) {
       return (

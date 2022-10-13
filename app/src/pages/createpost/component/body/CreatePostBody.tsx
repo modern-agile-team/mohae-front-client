@@ -1,13 +1,13 @@
 import React from 'react';
 import { css, cx } from '@emotion/css';
-import { Box, TextEditor } from '..';
-import { Props } from '../../pages/post/Container';
+import { Box, TextEditor } from '../../../../components';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../redux/root';
+import { RootState } from '../../../../redux/root';
+import { PostData } from '../../../../types/post/type';
 
 // 본문, 거래 참고 사항
 interface PostBodyProps {
-  data?: Props;
+  data?: PostData;
   view?: boolean;
   getValue?: boolean;
   type?: string;

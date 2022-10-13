@@ -23,8 +23,10 @@ import Popup from './popup/Popup';
 import { Poster } from './poster';
 import NewPost from './newPost/NewPost';
 import SelectBox from './selectbox/SelectBox';
+import Comment from './comment/Comment';
 
 export {
+  Comment,
   Category,
   PostIt,
   Input,

@@ -66,6 +66,10 @@ const ButtonsWrapper = styled.div`
   display: flex;
   justify-content: end;
   gap: 8px;
+  .write-img {
+    width: 15px;
+    height: 15px;
+  }
 `;
 
 const StyledTextArea = styled.textarea`

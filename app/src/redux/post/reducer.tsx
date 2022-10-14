@@ -1,8 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { PostData } from '../../types/post/type';
+import { PostData, PostResponse } from '../../types/post/type';
 
 interface InitialState extends PostData {
   loading: boolean;
+}
+interface SetPostDataAction {
+  date: string;
+  response: PostResponse;
 }
 
 const initialState: InitialState = {
@@ -43,7 +47,7 @@ export const post = createSlice({
   name: 'post',
   initialState,
   reducers: {
-    setPostData: (state, action: PayloadAction<any>) => {
+    setPostData: (state, action: PayloadAction<SetPostDataAction>) => {
       state.data = action.payload;
       state.data.response.board.isLike =
         action.payload.response.board.isLike === true ||
@@ -52,13 +56,13 @@ export const post = createSlice({
           : false;
       state.loading = false;
     },
-    setIsLike: (state, action: PayloadAction<any>) => {
+    setIsLike: (state, action: PayloadAction<boolean>) => {
       state.data.response.board.isLike = action.payload;
     },
-    plusLikeCount: (state, action: PayloadAction<any>) => {
+    plusLikeCount: (state, action: PayloadAction<number>) => {
       state.data.response.board.likeCount = action.payload;
     },
-    minusLikeCount: (state, action: PayloadAction<any>) => {
+    minusLikeCount: (state, action: PayloadAction<number>) => {
       state.data.response.board.likeCount = action.payload;
     },
     setIsDeadline: state => {

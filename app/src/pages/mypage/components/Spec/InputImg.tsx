@@ -1,25 +1,24 @@
 /** @format */
 
 import { css, cx } from '@emotion/css';
-import { useState, useEffect, SetStateAction } from 'react';
-import { color } from '../../styles';
-import { Img } from '../../components';
-import Style from '../../components/img-in-order/style';
-import { add_images } from '../../redux/spec/reducer';
+import { useState, useEffect } from 'react';
+import { color } from '../../../../styles';
+import { Img } from '../../../../components';
+import Style from '../../../../components/img-in-order/style';
+import { add_images } from '../../../../redux/spec/reducer';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../../redux/root';
-import axios from 'axios';
+import { RootState } from '../../../../redux/root';
 interface Props {
   [key: string]: any;
 }
 
-export interface IMAGE {
+interface IMAGE {
   img: string;
   checked: boolean;
   File: FormData | any;
 }
 
-export default function EditInputImg({ imgs, inline, editImages }: Props) {
+export default function InputImg({ imgs, inline }: Props) {
   const clone =
     imgs &&
     imgs.map((img: any) => ({
@@ -52,37 +51,6 @@ export default function EditInputImg({ imgs, inline, editImages }: Props) {
   };
 
   useEffect(() => {
-    if (editImages.length) {
-      const getImages = async () => {
-        const files: File[] = [];
-        for (let image of editImages) {
-          await axios
-            .get<Blob>(
-              image.replace(
-                'https://d2ffbnf2hpheay.cloudfront.net/',
-                'https://mohae-image.s3.ap-northeast-2.amazonaws.com/',
-              ),
-              { responseType: 'blob' },
-            )
-            .then(res => {
-              const file = new File([res.data], image, {
-                type: res.data.type,
-              });
-              files.push(file);
-            });
-        }
-
-        const newMyimage = files.map((file: any, i: any) => {
-          return { img: file.name, checked: false, File: file };
-        });
-        setMyImage(newMyimage);
-        newMyimage.map((el: any, i: any) =>
-          addedImages.append('image', el.File),
-        );
-        dispatch(add_images(addedImages));
-      };
-      getImages();
-    }
     setTimeout(() => {
       setAlarm(false);
     }, 5000);
@@ -176,7 +144,7 @@ export default function EditInputImg({ imgs, inline, editImages }: Props) {
     // formData 내부의 파일 명
     for (let i = 0; i < formDataLenth; i++) {
       const target = imagesNumber.next().value[1];
-
+      console.log(imagesNumber);
       if (targetName !== target.name) {
         newFormData.append('image', target);
       }

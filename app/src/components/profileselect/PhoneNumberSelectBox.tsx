@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { color, shadow } from '../../styles';
+import { color } from '../../styles';
 import Img from '../img/Img';
 
 interface Props {
@@ -40,14 +40,11 @@ const PhoneNumberSelectBox = ({ onSelect, userInfo }: Props) => {
     </Container>
   );
 };
-
-export default PhoneNumberSelectBox;
-
 const Container = styled.div`
   width: 100px;
   height: 240px;
   border-radius: 6px;
-  ${shadow.normal};
+  box-shadow: 0px 0px 8px rgba(132, 131, 141, 0.5);
   overflow: hidden;
   &::-webkit-scrollbar {
     display: none;
@@ -60,7 +57,7 @@ const Container = styled.div`
 `;
 
 const SelectButton = styled.button`
-  color: ${color.dark2};
+  color: #84838d;
   width: 100%;
   height: 52px;
   padding: 16px;
@@ -68,9 +65,9 @@ const SelectButton = styled.button`
   justify-content: space-between;
   align-items: center;
   button {
-    color: ${color.main};
+    color: #ff445e;
   }
-  ${shadow.normal};
+  box-shadow: 0px 0px 8px rgba(132, 131, 141, 0.5);
 `;
 
 const PlaceHolder = styled.div`
@@ -106,7 +103,7 @@ const List = styled.div`
   background-color: white;
   overflow: scroll;
   > :nth-of-type(2n-1) {
-    background-color: ${color.light1};
+    background-color: #f9f9f9;
   }
 `;
 
@@ -118,3 +115,5 @@ const ListButton = styled.button`
   justify-content: center;
   align-items: center;
 `;
+
+export default PhoneNumberSelectBox;

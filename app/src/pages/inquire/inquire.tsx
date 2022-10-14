@@ -27,7 +27,7 @@ const Inquire = () => {
   const navigate = useNavigate();
   const token = getToken();
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     if (!token) {
       setModal(true);
       return;
@@ -38,14 +38,13 @@ const Inquire = () => {
 
     try {
       setLoading(true);
-      postQuestion(fileData.formData).then(res => {
-        if (res.data.success) {
-          setLoading(false);
-          navigate('/success');
-        }
-      });
+      const response = await postQuestion(fileData.formData);
+
+      if (response.success) navigate('/success');
     } catch (err: any) {
       console.log(err);
+    } finally {
+      setLoading(false);
     }
   };
 

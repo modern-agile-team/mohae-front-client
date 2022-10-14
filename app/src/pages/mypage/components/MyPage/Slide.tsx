@@ -2,15 +2,15 @@
 
 import { cx, css } from '@emotion/css';
 import { useState } from 'react';
-import { Img, NewPost } from '../../../components';
-import { shadow } from '../../../styles';
+import { Img, NewPost } from '../../../../components';
+import { shadow } from '../../../../styles';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../../redux/root';
-import { spec_create } from '../../../redux/modal/reducer';
-import { ENDPOINT } from '../../../utils/ENDPOINT';
-import setInterceptors from '../../../apis/common/setInterceptors';
-import { customAxios } from '../../../apis/instance';
+import { RootState } from '../../../../redux/root';
+import { spec_create } from '../../../../redux/modal/reducer';
+import { ENDPOINT } from '../../../../utils/ENDPOINT';
+import setInterceptors from '../../../../apis/common/setInterceptors';
+import { customAxios } from '../../../../apis/instance';
 
 export interface SlideProps {
   outsideBtn: boolean;

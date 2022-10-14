@@ -1,7 +1,6 @@
 /** @format */
 
 import { css, cx } from '@emotion/css';
-import { color, font } from '../../../styles';
 
 import {
   Img,
@@ -10,12 +9,12 @@ import {
   Category,
   BasicModal,
   Btn,
-} from '../../../components';
+} from '../../../../components';
 
-import Slide from './Slide';
+import { Slide } from './index';
 import { useSelector } from 'react-redux';
-import { MyPageProps } from './Presenter';
-import { RootState } from '../../../redux/root';
+import { MyPageProps } from '../../../../types/myPage/myPage';
+import { RootState } from '../../../../redux/root';
 
 export default function OtherPage({ posts, actions, checkSelf }: MyPageProps) {
   const userInfo = useSelector((state: RootState) => state.user.user);
@@ -159,7 +158,7 @@ const style = css`
         }
       }
       .name {
-        ${font.weight[700]}
+        font-weight: 700;
         font-size: 24px;
       }
       > div > div:not(:last-child) {
@@ -197,7 +196,6 @@ const style = css`
         height: 30px;
         :hover {
           cursor: pointer;
-          /* background-color: ${color.subtle}; */
         }
       }
     }

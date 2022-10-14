@@ -1,18 +1,17 @@
 /** @format */
 import styled from '@emotion/styled';
-import { color, font } from '../../../styles';
-import Slide from './Slide';
-import { Img, Box, Profile, FocusBar, Category } from '../../../components';
+import { color, font } from '../../../../styles';
+import { Slide, PostSlide } from './index';
+import { Img, Box, Profile, FocusBar, Category } from '../../../../components';
 import { useNavigate } from 'react-router-dom';
-import ModifyProfile from '../../modifyProfile';
+import ModifyProfile from '../../../modifyProfile';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { getUserData, remove_user } from '../../../redux/user/reducer';
-import { AppDispatch } from '../../../redux/root';
+import { getUserData, remove_user } from '../../../../redux/user/reducer';
+import { AppDispatch } from '../../../../redux/root';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../redux/root';
-import { MyPageProps } from './Presenter';
-import PostSlide from './PostSlide';
+import { MyPageProps } from '../../../../types/myPage/myPage';
+import { RootState } from '../../../../redux/root';
 
 export default function MySelf({ posts, actions, checkSelf }: MyPageProps) {
   const navigate = useNavigate();
@@ -192,7 +191,7 @@ const Container = styled.div`
           > :nth-child(1) {
             font-size: 22px;
             line-height: 170%;
-            ${font.weight[700]}
+            font-family: 'Bold';
           }
         }
 
@@ -205,10 +204,10 @@ const Container = styled.div`
           padding: 6px;
           cursor: pointer;
           &:hover {
-            background: ${color.light4};
+            background: #e7e7e8;
           }
           &:active {
-            background: ${color.main};
+            background: #ff445e;
           }
         }
       }
@@ -223,7 +222,7 @@ const Container = styled.div`
         }
         padding-bottom: 16px;
         font-size: 12px;
-        color: ${color.dark3};
+        color: #a7a7ad;
       }
       .date {
         margin-left: 4px;
@@ -231,7 +230,7 @@ const Container = styled.div`
     }
     .logout {
       font-size: 12px;
-      color: ${color.dark3};
+      color: #a7a7ad;
       padding-bottom: 32px;
     }
     .personal-info {
@@ -247,7 +246,7 @@ const Container = styled.div`
       .item {
         width: 80px;
         height: 52px;
-        color: ${color.dark1};
+        color: #4f4e5c;
         font-size: 12px;
         display: flex;
         flex-direction: column;
@@ -259,7 +258,7 @@ const Container = styled.div`
     .interest {
       padding: 32px 0 16px;
       font-size: 14px;
-      ${font.weight[700]}
+      font-family: 'Bold';
     }
     .categories {
       width: 100%;
@@ -282,8 +281,8 @@ const Container = styled.div`
         width: 100%;
         height: fit-content;
         > .title {
-          color: ${color.dark1};
-          ${font.weight[700]}
+          color: #4f4e5c;
+          font-family: 'Bold';
           line-height: 170%;
           margin-bottom: 16px;
         }

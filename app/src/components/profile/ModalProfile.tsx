@@ -2,7 +2,7 @@
 
 import { css, cx } from '@emotion/css';
 import { Img, Box, Profile, Category, BasicModal, Btn } from '../index';
-import Slide from '../../pages/mypage/components/Slide';
+import { Slide } from '../../pages/mypage/components/MyPage';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/root';
 import getToken from '../../utils/getToken';

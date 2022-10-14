@@ -3,8 +3,8 @@
 import Home from './home/Home';
 import { MyPage } from './mypage';
 import Resign from './resign';
-import ModifyProfile from './modifyProfile';
-import Spec from './spec';
+import ModifyProfile from './mypage/components/ModifyProfile';
+import Spec from './mypage/components/Spec';
 import LoginModal from './login';
 import CreateAndEditPost from './createpost/Container';
 import Board from './board/Container';

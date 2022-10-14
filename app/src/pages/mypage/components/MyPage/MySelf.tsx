@@ -1,10 +1,9 @@
 /** @format */
 import styled from '@emotion/styled';
-import { color, font } from '../../../../styles';
 import { Slide, PostSlide } from './index';
 import { Img, Box, Profile, FocusBar, Category } from '../../../../components';
 import { useNavigate } from 'react-router-dom';
-import ModifyProfile from '../../../modifyProfile';
+import ModifyProfile from '../ModifyProfile';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { getUserData, remove_user } from '../../../../redux/user/reducer';

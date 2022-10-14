@@ -2,8 +2,8 @@
 
 import { css, cx } from '@emotion/css';
 
-import { color } from '../../styles';
-import { Category } from '../../components';
+import { color } from '../../../../styles';
+import { Category } from '../../../../components';
 
 interface Props {
   [key: string]: any;

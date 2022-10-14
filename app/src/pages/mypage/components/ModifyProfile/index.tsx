@@ -2,18 +2,18 @@
 
 import { useState, useEffect } from 'react';
 import { css, cx } from '@emotion/css';
-import { color, radius, font, shadow } from '../../styles';
-import { BasicModal, Btn, Img } from '../../components';
-import ProfileBox from '../../components/profile/ProfileBox';
-import PhoneNumberSelectBox from '../../components/profileselect/PhoneNumberSelectBox';
+import { color, radius, font, shadow } from '../../../../styles';
+import { BasicModal, Btn, Img } from '../../../../components';
+import ProfileBox from '../../../../components/profile/ProfileBox';
+import PhoneNumberSelectBox from '../../../../components/profileselect/PhoneNumberSelectBox';
 import styled from '@emotion/styled';
 import { useSelector } from 'react-redux';
-import { editProfile } from '../../apis/profile';
-import { RootState } from '../../redux/root';
-import { ENDPOINT } from '../../utils/ENDPOINT';
-import { customAxios } from '../../apis/instance';
+import { editProfile } from '../../../../apis/profile';
+import { RootState } from '../../../../redux/root';
+import { ENDPOINT } from '../../../../utils/ENDPOINT';
+import { customAxios } from '../../../../apis/instance';
 import ChangePassword from './ChangePassword';
-import setInterceptors from '../../apis/common/setInterceptors';
+import setInterceptors from '../../../../apis/common/setInterceptors';
 
 interface Object {
   [key: string]: any;

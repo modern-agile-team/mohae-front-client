@@ -10,10 +10,10 @@ interface PostData {
 
 interface PostResponse {
   authorization: boolean;
-  board: PostInfo;
+  board: PosterDetails;
 }
 
-interface PostInfo {
+interface PosterDetails {
   areaName: string;
   areaNo: number;
   boardPhotoUrls: string | null;
@@ -48,7 +48,7 @@ interface ModalViewState {
 
 // ******ComponentsProps TYPES******
 interface PresenterProps {
-  requestHandleDeadline: (data: PostInfo) => void;
+  requestHandleDeadline: (data: PosterDetails) => void;
   modalView: { report: boolean; isDeadline: boolean; mustLogin: boolean };
   setModalView: Dispatch<React.SetStateAction<ModalViewState>>;
 }
@@ -65,7 +65,7 @@ interface PostUserInteractionProps {
 export type {
   PostData,
   PostResponse,
-  PostInfo,
+  PosterDetails,
   ModalViewState,
   PresenterProps,
   PageComponetsProps,

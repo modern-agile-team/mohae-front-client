@@ -9,7 +9,7 @@ import {
 import { RootState } from '../../redux/root';
 import EmptySpinner from '../../components/emptySpinner/EmptySpinner';
 import { setInitialState as setInitialCommentState } from '../../redux/comment/reducer';
-import { Board, ModalViewState } from '../../types/post/type';
+import { PosterDetails, ModalViewState } from '../../types/post/type';
 import {
   requestGetPostData,
   requestPostClosing,
@@ -48,7 +48,7 @@ function Post() {
     }
   };
 
-  const requestHandleDeadline = (data: Board) => {
+  const requestHandleDeadline = (data: PosterDetails) => {
     const handlingRequest = !data.isDeadline
       ? requestPostClosing
       : requestPostReopening;

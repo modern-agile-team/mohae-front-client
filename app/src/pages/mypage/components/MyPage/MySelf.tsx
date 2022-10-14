@@ -1,47 +1,22 @@
 /** @format */
-
-import { css, cx } from '@emotion/css';
 import styled from '@emotion/styled';
-import { color, font } from '../../../styles';
-import Slide from './Slide';
-import { Img, Box, Profile, FocusBar, Category } from '../../../components';
+import { Slide, PostSlide } from './index';
+import { Img, Box, Profile, FocusBar, Category } from '../../../../components';
 import { useNavigate } from 'react-router-dom';
-import ModifyProfile from '../../modifyProfile';
+import ModifyProfile from '../ModifyProfile';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { getUserData, remove_user } from '../../../redux/user/reducer';
-import { AppDispatch } from '../../../redux/root';
+import { getUserData, remove_user } from '../../../../redux/user/reducer';
+import { AppDispatch } from '../../../../redux/root';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../redux/root';
-import PostSlide from './PostSlide';
+import { MyPageProps } from '../../../../types/myPage/myPage';
+import { RootState } from '../../../../redux/root';
 
-interface Props {
-  [key: string]: any;
-}
-
-export default function MySelf({ text, posts, actions, checkSelf }: Props) {
+export default function MySelf({ posts, actions, checkSelf }: MyPageProps) {
   const navigate = useNavigate();
   const userInfo = useSelector((state: RootState) => state.user.user);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
-
-  const interested =
-    userInfo && userInfo.categories.length ? (
-      userInfo.categories.map((category: any, index: number) => (
-        <Box key={index} size={[80, 80]}>
-          <Category
-            shape={'square'}
-            img={`/img/category-${category.no - 1}.png`}
-            name={category.name}
-            id={category.no}
-          />
-        </Box>
-      ))
-    ) : (
-      <Intersted>
-        <span>등록된 관심사가 없습니다</span>
-      </Intersted>
-    );
 
   useEffect(() => {
     if (!isOpen) {
@@ -50,7 +25,7 @@ export default function MySelf({ text, posts, actions, checkSelf }: Props) {
   }, [isOpen]);
 
   return (
-    <div className={cx(style)}>
+    <Container>
       {isOpen && <ModifyProfile setIsOpen={setIsOpen} />}
       <div className={'user'}>
         <Box className={'box'} size={[304, 724]}>
@@ -58,7 +33,7 @@ export default function MySelf({ text, posts, actions, checkSelf }: Props) {
             <div className="blank"></div>
             <div className={'name'}>
               <div>{userInfo && userInfo.nickname}</div>
-              <div>{text.sir}</div>
+              <div>님</div>
             </div>
             <div
               className="modifyBtn"
@@ -82,7 +57,7 @@ export default function MySelf({ text, posts, actions, checkSelf }: Props) {
             />
           </div>
           <div className={'register'}>
-            <div>{text.registerDate}</div>
+            <div>가입일</div>
             <div className={'date'}>{userInfo && userInfo.createdAt}</div>
           </div>
           <button
@@ -94,16 +69,16 @@ export default function MySelf({ text, posts, actions, checkSelf }: Props) {
               navigate('/');
             }}
           >
-            {text.logout}
+            로그아웃
           </button>
           <div className={'personal-info'}>
             <div className={'item'}>
               <Img src={'/img/post.png'} />
-              <span>{`${text.boards} ${userInfo && userInfo.boardNum}`}</span>
+              <span>{`게시물 ${userInfo && userInfo.boardNum}`}</span>
             </div>
             <div className={'item'}>
               <Img src={'/img/heart-main.png'} />
-              <span>{`${text.like} ${userInfo && userInfo.likedUserNum}`}</span>
+              <span>{`좋아요 ${userInfo && userInfo.likedUserNum}`}</span>
             </div>
             <div className={'item'}>
               <Img src={'/img/university.png'} />
@@ -115,12 +90,29 @@ export default function MySelf({ text, posts, actions, checkSelf }: Props) {
             </div>
           </div>
           <FocusBar thin light />
-          <div className={'interest'}>{text.interesting}</div>
-          <div className={'categories'}>{interested}</div>
+          <div className={'interest'}>관심사</div>
+          <div className={'categories'}>
+            {userInfo && userInfo.categories.length ? (
+              userInfo.categories.map((category: any, index: number) => (
+                <Box key={index} size={[80, 80]}>
+                  <Category
+                    shape={'square'}
+                    img={`/img/category-${category.no - 1}.png`}
+                    name={category.name}
+                    id={category.no}
+                  />
+                </Box>
+              ))
+            ) : (
+              <Intersted>
+                <span>등록된 관심사가 없습니다</span>
+              </Intersted>
+            )}
+          </div>
         </Box>
         <div className={'boards'}>
           <div className={'section'}>
-            <div className={'title'}>{text.resume.spec}</div>
+            <div className={'title'}>내 스펙 관리</div>
             <Slide
               outsideBtn
               checkSelf={checkSelf}
@@ -131,7 +123,7 @@ export default function MySelf({ text, posts, actions, checkSelf }: Props) {
             />
           </div>
           <div className={'section'}>
-            <div className={'title'}>{text.resume.give}</div>
+            <div className={'title'}>해줄래요 이력</div>
             <PostSlide
               outsideBtn
               checkSelf={checkSelf}
@@ -143,7 +135,7 @@ export default function MySelf({ text, posts, actions, checkSelf }: Props) {
             />
           </div>
           <div className={'section'}>
-            <div className={'title'}>{text.resume.got}</div>
+            <div className={'title'}>구할래요 이력</div>
             <PostSlide
               outsideBtn
               checkSelf={checkSelf}
@@ -155,11 +147,11 @@ export default function MySelf({ text, posts, actions, checkSelf }: Props) {
           </div>
         </div>
       </div>
-    </div>
+    </Container>
   );
 }
 
-const style = css`
+const Container = styled.div`
   width: 100%;
   height: fit-content;
 
@@ -198,7 +190,7 @@ const style = css`
           > :nth-child(1) {
             font-size: 22px;
             line-height: 170%;
-            ${font.weight[700]}
+            font-family: 'Bold';
           }
         }
 
@@ -211,10 +203,10 @@ const style = css`
           padding: 6px;
           cursor: pointer;
           &:hover {
-            background: ${color.light4};
+            background: #e7e7e8;
           }
           &:active {
-            background: ${color.main};
+            background: #ff445e;
           }
         }
       }
@@ -229,7 +221,7 @@ const style = css`
         }
         padding-bottom: 16px;
         font-size: 12px;
-        color: ${color.dark3};
+        color: #a7a7ad;
       }
       .date {
         margin-left: 4px;
@@ -237,7 +229,7 @@ const style = css`
     }
     .logout {
       font-size: 12px;
-      color: ${color.dark3};
+      color: #a7a7ad;
       padding-bottom: 32px;
     }
     .personal-info {
@@ -253,7 +245,7 @@ const style = css`
       .item {
         width: 80px;
         height: 52px;
-        color: ${color.dark1};
+        color: #4f4e5c;
         font-size: 12px;
         display: flex;
         flex-direction: column;
@@ -265,7 +257,7 @@ const style = css`
     .interest {
       padding: 32px 0 16px;
       font-size: 14px;
-      ${font.weight[700]}
+      font-family: 'Bold';
     }
     .categories {
       width: 100%;
@@ -288,8 +280,8 @@ const style = css`
         width: 100%;
         height: fit-content;
         > .title {
-          color: ${color.dark1};
-          ${font.weight[700]}
+          color: #4f4e5c;
+          font-family: 'Bold';
           line-height: 170%;
           margin-bottom: 16px;
         }

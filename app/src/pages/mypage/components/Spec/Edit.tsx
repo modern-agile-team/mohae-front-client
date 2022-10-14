@@ -2,16 +2,16 @@
 
 import { useEffect, useState } from 'react';
 import { css, cx } from '@emotion/css';
-import { color, radius, font } from '../../styles';
-import { Box, FocusBar, BasicModal, Btn } from '../../components';
+import { color, radius, font } from '../../../../styles';
+import { Box, FocusBar, BasicModal, Btn } from '../../../../components';
 import InputImg from './InputImg';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../../redux/root';
-import { spec_create } from '../../redux/modal/reducer';
-import { ENDPOINT } from '../../utils/ENDPOINT';
-import setInterceptors from '../../apis/common/setInterceptors';
-import { customAxios } from '../../apis/instance';
-import { Init_Form } from '../../redux/spec/reducer';
+import { RootState } from '../../../../redux/root';
+import { spec_create } from '../../../../redux/modal/reducer';
+import { ENDPOINT } from '../../../../utils/ENDPOINT';
+import setInterceptors from '../../../../apis/common/setInterceptors';
+import { customAxios } from '../../../../apis/instance';
+import { Init_Form } from '../../../../redux/spec/reducer';
 
 export default function Edit() {
   const dispatch = useDispatch();

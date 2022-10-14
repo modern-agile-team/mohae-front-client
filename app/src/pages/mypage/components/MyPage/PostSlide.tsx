@@ -2,20 +2,17 @@
 
 import { cx, css } from '@emotion/css';
 import { useState } from 'react';
-import { Img } from '../../../components';
-import { shadow } from '../../../styles';
+import { Img } from '../../../../components';
+import { shadow } from '../../../../styles';
 import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { ENDPOINT } from '../../../utils/ENDPOINT';
-import setInterceptors from '../../../apis/common/setInterceptors';
-import { customAxios } from '../../../apis/instance';
+import { ENDPOINT } from '../../../../utils/ENDPOINT';
+import setInterceptors from '../../../../apis/common/setInterceptors';
+import { customAxios } from '../../../../apis/instance';
 import { Link } from 'react-router-dom';
-import BoardPost from '../../../components/newPost/BoardPost';
+import { SlideProps } from './Slide';
+import BoardPost from '../../../../components/newPost/BoardPost';
 
-interface Props {
-  [key: string]: any;
-  isHelpPost?: boolean;
-}
 interface PARAMS {
   [key: string]: any;
 }
@@ -28,7 +25,7 @@ export default function PostSlide({
   viewNumber,
   checkSelf,
   isHelpPost,
-}: Props) {
+}: SlideProps) {
   const [sector, setSector] = useState(0),
     dispatch = useDispatch(),
     userId = useParams().no,

@@ -2,17 +2,23 @@
 
 import { useState, useEffect } from 'react';
 import { css, cx } from '@emotion/css';
-import { color, radius, font } from '../../styles';
-import { Box, FocusBar, BasicModal, Carousel, PostIt } from '../../components';
+import { color, radius, font } from '../../../../styles';
+import {
+  Box,
+  FocusBar,
+  BasicModal,
+  Carousel,
+  PostIt,
+} from '../../../../components';
 import EditInputImg from './EditInput';
 import { useSelector, useDispatch } from 'react-redux';
-import { AppDispatch, RootState } from '../../redux/root';
-import { getDetailSpec, Init_Form } from '../../redux/spec/reducer';
-import { Btn } from '../../components';
-import { spec_visit } from '../../redux/modal/reducer';
-import { ENDPOINT } from '../../utils/ENDPOINT';
-import setInterceptors from '../../apis/common/setInterceptors';
-import { customAxios } from '../../apis/instance';
+import { AppDispatch, RootState } from '../../../../redux/root';
+import { getDetailSpec, Init_Form } from '../../../../redux/spec/reducer';
+import { Btn } from '../../../../components';
+import { spec_visit } from '../../../../redux/modal/reducer';
+import { ENDPOINT } from '../../../../utils/ENDPOINT';
+import setInterceptors from '../../../../apis/common/setInterceptors';
+import { customAxios } from '../../../../apis/instance';
 
 export default function Visit() {
   const isOpen = useSelector((state: RootState) => state.modal.openSpecVisit);

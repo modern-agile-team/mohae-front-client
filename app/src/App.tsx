@@ -19,8 +19,8 @@ import {
   LoginModal,
   Spec,
 } from './pages';
-import Edit from './pages/spec/Edit';
-import Visit from './pages/spec/Visit';
+import Edit from './pages/mypage/components/Spec/Edit';
+import Visit from './pages/mypage/components/Spec/Visit';
 import Inquire from './pages/inquire/inquire';
 import InquireSuccess from './pages/inquire/inquireSuccess';
 import Notice from './pages/faq/notice/Notice';

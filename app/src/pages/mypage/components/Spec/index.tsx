@@ -1,10 +1,16 @@
 /** @format */
 
 import { css, cx } from '@emotion/css';
-import { color, radius, font } from '../../styles';
-import { Box, FocusBar, BasicModal, Btn, OrderedImg } from '../../components';
+import { color, radius, font } from '../../../../styles';
+import {
+  Box,
+  FocusBar,
+  BasicModal,
+  Btn,
+  OrderedImg,
+} from '../../../../components';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../redux/root';
+import { RootState } from '../../../../redux/root';
 
 export default function Spec() {
   const isOpen = useSelector((state: RootState) => state.modal.openSpecCreate);

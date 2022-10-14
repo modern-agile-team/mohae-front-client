@@ -2,18 +2,18 @@
 
 import { useState, useEffect } from 'react';
 import { css, cx } from '@emotion/css';
-import { color, radius, font, shadow } from '../../styles';
-import { BasicModal, Btn, Img } from '../../components';
-import ProfileBox from '../../components/profile/ProfileBox';
-import PhoneNumberSelectBox from '../../components/profileselect/PhoneNumberSelectBox';
+import { color, radius, font, shadow } from '../../../../styles';
+import { BasicModal, Btn, Img } from '../../../../components';
+import ProfileBox from '../../../../components/profile/ProfileBox';
+import PhoneNumberSelectBox from '../../../../components/profileselect/PhoneNumberSelectBox';
 import styled from '@emotion/styled';
 import { useSelector } from 'react-redux';
-import { editProfile } from '../../apis/profile';
-import { RootState } from '../../redux/root';
-import { ENDPOINT } from '../../utils/ENDPOINT';
-import { customAxios } from '../../apis/instance';
+import { editProfile } from '../../../../apis/profile';
+import { RootState } from '../../../../redux/root';
+import { ENDPOINT } from '../../../../utils/ENDPOINT';
+import { customAxios } from '../../../../apis/instance';
 import ChangePassword from './ChangePassword';
-import setInterceptors from '../../apis/common/setInterceptors';
+import setInterceptors from '../../../../apis/common/setInterceptors';
 
 interface Object {
   [key: string]: any;
@@ -634,7 +634,7 @@ const Contents = styled.div`
       margin-right: 20px;
       display: flex;
       padding-left: 20px;
-      color: ${color.dark1};
+      color: #4f4e5c;
     }
 
     .btn {
@@ -650,7 +650,7 @@ const Contents = styled.div`
     justify-content: center;
     align-items: center;
     vertical-align: text-bottom;
-    color: ${color.dark1};
+    color: #4f4e5c;
   }
 
   .input {
@@ -664,7 +664,7 @@ const Contents = styled.div`
       margin-right: 20px;
       display: flex;
       padding-left: 20px;
-      color: ${color.dark1};
+      color: #4f4e5c;
     }
 
     .btn {
@@ -674,13 +674,13 @@ const Contents = styled.div`
   }
 
   span {
-    color: ${color.dark1};
+    color: #4f4e5c;
   }
 `;
 
 const DemoSelectBox = styled.div`
-  ${radius[6]};
-  ${shadow.normal};
+  border-radius: 6px;
+  box-shadow: 0px 0px 8px rgba(132, 131, 141, 0.5);
   width: 100%;
   height: 240px;
   overflow: hidden;
@@ -694,7 +694,7 @@ const DemoSelectBox = styled.div`
 `;
 
 const SelectButton = styled.button`
-  color: ${color.dark2};
+  color: #84838d;
   width: 100%;
   height: 52px;
   padding: 16px;
@@ -702,9 +702,9 @@ const SelectButton = styled.button`
   justify-content: space-between;
   align-items: center;
   button {
-    color: ${color.main};
+    color: #ff445e;
   }
-  ${shadow.normal};
+  box-shadow: 0px 0px 8px rgba(132, 131, 141, 0.5);
 `;
 
 const PlaceHolder = styled.div`
@@ -740,7 +740,7 @@ const List = styled.div`
   background-color: white;
   overflow: scroll;
   > :nth-of-type(2n-1) {
-    background-color: ${color.light1};
+    background-color: #f9f9f9;
   }
 `;
 
@@ -802,10 +802,10 @@ const Category = styled.button<{ select: number; intersted: number[] }>`
       props.intersted.includes(props.select) ? color.main : '#a7a7ad'};
   }
   :hover {
-    background-color: ${color.subtle};
+    background-color: #fcf3f4;
   }
   :active {
-    background-color: ${color.lighter};
+    background-color: #ffa1af;
     color: white !important;
   }
 `;

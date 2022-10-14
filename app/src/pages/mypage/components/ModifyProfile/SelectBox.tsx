@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import { css, cx } from '@emotion/css';
-import { color, radius, shadow } from '../../styles';
-import { Img, Category } from '../../components';
+import { color, radius, shadow } from '../../../../styles';
+import { Img, Category } from '../../../../components';
 import Options from './Options';
 import { current } from '@reduxjs/toolkit';
 
@@ -287,4 +287,3 @@ export default function SelectBox({
     </div>
   );
 }
-

@@ -4,16 +4,16 @@ import { Dispatch } from 'react';
 interface PostData {
   data: {
     date: string;
-    response: Response;
+    response: PostResponse;
   };
 }
 
-interface Response {
+interface PostResponse {
   authorization: boolean;
-  board: Board;
+  board: PostInfo;
 }
 
-interface Board {
+interface PostInfo {
   areaName: string;
   areaNo: number;
   boardPhotoUrls: string | null;
@@ -48,7 +48,7 @@ interface ModalViewState {
 
 // ******ComponentsProps TYPES******
 interface PresenterProps {
-  requestHandleDeadline: (data: Board) => void;
+  requestHandleDeadline: (data: PostInfo) => void;
   modalView: { report: boolean; isDeadline: boolean; mustLogin: boolean };
   setModalView: Dispatch<React.SetStateAction<ModalViewState>>;
 }
@@ -64,8 +64,8 @@ interface PostUserInteractionProps {
 
 export type {
   PostData,
-  Response,
-  Board,
+  PostResponse,
+  PostInfo,
   ModalViewState,
   PresenterProps,
   PageComponetsProps,

@@ -223,20 +223,11 @@ export default function NewPost({ page, board, linkTo }: Props) {
   );
 
   const markBox = board.isDeadline ? (
-    page === 'inMain' || page === 'inBoard' ? (
-      <MarkBox
-        shape={board && board.target}
-        state={board && board.isDeadline}
-        big
-        hover
-      />
-    ) : (
-      <MarkBox
-        big
-        shape={board && board.target}
-        state={board && board.isDeadline}
-      />
-    )
+    <MarkBox
+      shape={board && board.target}
+      state={board && board.isDeadline}
+      size={'big'}
+    />
   ) : (
     <> </>
   );

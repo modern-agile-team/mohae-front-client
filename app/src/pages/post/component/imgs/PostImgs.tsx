@@ -50,7 +50,7 @@ function PostImgs() {
           setImgIndex={setTargetingImgIndex}
         />
         <div className="markBox">
-          <MarkBox shape={target} state={isDeadline} big hover />
+          <MarkBox shape={target} state={isDeadline} size={'big'} />
         </div>
       </Box>
       {loadingGetImg()}
@@ -61,6 +61,7 @@ function PostImgs() {
 export default PostImgs;
 
 const Container = styled.section`
+  position: relative;
   .carouselBox {
     width: 360px;
     height: 360px;

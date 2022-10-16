@@ -10,7 +10,7 @@ function Summary() {
   );
   return (
     <PostItWrapper summary={summary}>
-      <PostIt small>
+      <PostIt size="small">
         <div
           className="summary-container"
           dangerouslySetInnerHTML={{

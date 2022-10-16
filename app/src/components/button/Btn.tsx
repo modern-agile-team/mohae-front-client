@@ -1,9 +1,13 @@
 /** @format */
 
 import { css, cx } from '@emotion/css';
-import React from 'react';
-import { Props } from '.';
+import React, { ReactNode } from 'react';
 import { color, font, radius, shadow } from '../../styles';
+
+interface Props {
+  [props: string]: React.ReactNode;
+  onClick?: (e: React.MouseEvent) => any | ReactNode;
+}
 
 function Btn(props: Props) {
   const {
@@ -93,9 +97,9 @@ function Btn(props: Props) {
     };
 
     return Object.keys(props)
-      .map((el) => table[el])
-      .filter((el) => el)
-      .map((el) => (disable ? el.disable : el.able));
+      .map(el => table[el])
+      .filter(el => el)
+      .map(el => (disable ? el.disable : el.able));
   };
 
   const categoryBtn = () => {

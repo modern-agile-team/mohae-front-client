@@ -187,7 +187,7 @@ export default function Visit() {
         </div>
         <div className={'wrapper'}>
           {!isEdit ? (
-            <PostIt big>
+            <PostIt size="big">
               <div className={'carousel'}>
                 <Carousel
                   outsideBtn

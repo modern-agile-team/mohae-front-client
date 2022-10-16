@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Btn, Popup } from '../../../../components';
+import { MainButton, Popup, WhiteButton } from '../../../../components';
 import styled from '@emotion/styled';
 import PostUserInteraction from './presenter/PostUserInteraction';
 import PostDetails from './presenter/PostDetails';
@@ -23,14 +23,18 @@ function Container() {
           text2={'삭제 시 게시판으로 이동합니다.'}
         >
           <PopupButton>
-            <Btn white onClick={handleDeletePopupView}>
+            <WhiteButton
+              type="button"
+              able={true}
+              onClick={handleDeletePopupView}
+            >
               닫기
-            </Btn>
+            </WhiteButton>
           </PopupButton>
           <PopupButton>
-            <Btn main onClick={clickDeleteButton}>
+            <MainButton type="button" able={true} onClick={clickDeleteButton}>
               삭제하기
-            </Btn>
+            </MainButton>
           </PopupButton>
         </Popup>
       )

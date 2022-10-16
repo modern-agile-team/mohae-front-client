@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { css, cx } from '@emotion/css';
 import { Box } from '../../components';
 import { animation } from './modalAnimation';
-import { Btn } from '../button';
+import { MainButton } from '../button';
 import Report from '../check-label/CheckLabel';
 import Img from '../img/Img';
 import { color, font } from '../../styles';
@@ -203,9 +203,13 @@ function ReportModal({ visible, close, board, user }: Props) {
         <Report checkList={checkList} setCheckList={setCheckList} />
         <div className="wrap">
           <div className={'send-btn'}>
-            <Btn main onClick={() => ReportOnSubmit(report())}>
+            <MainButton
+              type="button"
+              able={true}
+              onClick={() => ReportOnSubmit(report())}
+            >
               {'전송'}
-            </Btn>
+            </MainButton>
           </div>
         </div>
       </Box>
@@ -223,9 +227,13 @@ function ReportModal({ visible, close, board, user }: Props) {
           overlay={successPopupClose}
         >
           <div className={cx(btnWrap)}>
-            <Btn main onClick={() => successPopupClose()}>
+            <MainButton
+              type="button"
+              able={true}
+              onClick={() => successPopupClose()}
+            >
               닫기
-            </Btn>
+            </MainButton>
           </div>
         </Popup>
       )}

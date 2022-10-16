@@ -1,4 +1,4 @@
-import { Dispatch } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 
 // ******Posting DATA TYPES******
 interface PostData {
@@ -50,7 +50,7 @@ interface ModalViewState {
 interface PresenterProps {
   requestHandleDeadline: (data: PosterDetails) => void;
   modalView: { report: boolean; isDeadline: boolean; mustLogin: boolean };
-  setModalView: Dispatch<React.SetStateAction<ModalViewState>>;
+  setModalView: Dispatch<SetStateAction<ModalViewState>>;
 }
 
 interface PageComponetsProps {

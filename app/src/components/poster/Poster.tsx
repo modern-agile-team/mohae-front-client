@@ -23,58 +23,13 @@ interface Props {
 }
 
 function Poster({ data, big, size }: Props) {
-  // const imgSizeTable = {
-  //   large: [360, 208],
-  //   midium: [264, 152],
-  //   small: [228, 120],
-  // };
-  // const postInfoSizeTable = {
-  //   large: css`
-  //     padding: 14px 16px;
-  //     height: 76px;
-  //     .title {
-  //       ${font.size[14]}
-  //     }
-  //     .title,
-  //     .writer,
-  //     .areaName {
-  //       height: 24px;
-  //     }
-  //   `,
-  //   midium: css`
-  //     padding: 8px 12px;
-  //     height: 56px;
-  //     .title {
-  //       ${font.size[12]}
-  //     }
-  //     .title,
-  //     .writer,
-  //     .areaName {
-  //       height: 20px;
-  //     }
-  //   `,
-  //   small: css`
-  //     padding: 16px;
-  //     height: 57px;
-  //     .title {
-  //       ${font.size[14]}
-  //     }
-  //     .title,
-  //     .writer,
-  //     .areaName {
-  //       height: 24px;
-  //     }
-  //   `,
-  // };
   const style = css`
     @keyframes fadeInUp {
       0% {
         opacity: 0;
-        /* transform: translate3d(0, 8px, 0); */
       }
       100% {
         opacity: 1;
-        /* transform: translateZ(0); */
       }
     }
     &:hover {

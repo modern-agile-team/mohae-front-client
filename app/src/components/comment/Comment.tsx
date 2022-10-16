@@ -1,11 +1,11 @@
 import styled from '@emotion/styled';
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getCommentList } from '../../apis/comment';
 import { setCommentArr } from '../../redux/comment/reducer';
 import Box from '../box/Box';
-import { Btn } from '../button';
+import { MainButton } from '../button';
 import { ReportModal } from '../modal';
 import Popup from '../popup/Popup';
 import CommentInputForm from './CommentInputForm';
@@ -18,10 +18,6 @@ const Comment = () => {
   });
   const { no } = useParams();
   const dispatch = useDispatch();
-  const buttonRef = useRef<HTMLButtonElement>(null);
-  useLayoutEffect(() => {
-    if (buttonRef.current !== null) buttonRef.current.focus();
-  });
 
   const handleModalView = (str: string) => {
     setView(prev => {
@@ -60,13 +56,13 @@ const Comment = () => {
             overlay={() => handleModalView('popup')}
           >
             <BtnImgWrapper>
-              <Btn
-                ref={buttonRef}
-                main
+              <MainButton
+                type="button"
+                able={true}
                 onClick={() => handleModalView('popup')}
               >
                 닫기
-              </Btn>
+              </MainButton>
             </BtnImgWrapper>
           </Popup>
         </>

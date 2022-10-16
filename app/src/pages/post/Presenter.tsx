@@ -1,5 +1,11 @@
 import styled from '@emotion/styled';
-import { Btn, ReportModal, Mosaic, Popup, Comment } from '../../components';
+import {
+  ReportModal,
+  Mosaic,
+  Popup,
+  Comment,
+  MainButton,
+} from '../../components';
 import {
   PostImgs,
   PostInfo,
@@ -61,7 +67,11 @@ function Presenter(props: PresenterProps) {
     return (
       visible && (
         <Popup visible={visible} text1={text} overlay={() => overlay}>
-          <PopupButton onClick={overlay}>닫기</PopupButton>
+          <ButtonWrap>
+            <MainButton type="button" able={true} onClick={overlay}>
+              닫기
+            </MainButton>
+          </ButtonWrap>
         </Popup>
       )
     );
@@ -94,9 +104,9 @@ function Presenter(props: PresenterProps) {
         <Comment />
         {userNo === response.board.userNo && (
           <PostClosingButtonWrap onClick={closingPostBtnClick}>
-            <Btn main>
+            <MainButton type="button" able={true}>
               {response.board.isDeadline ? '마감 취소' : '마감 하기'}
-            </Btn>
+            </MainButton>
           </PostClosingButtonWrap>
         )}
       </Wrapper>
@@ -139,13 +149,9 @@ const QuickMenuWrapper = styled.div`
   animation: fadeInDown 1s;
 `;
 
-const PopupButton = styled.button`
+const ButtonWrap = styled.button`
   width: 100px;
   height: 43px;
-  background-color: #ff445e;
-  color: white;
-  box-shadow: 0px 0px 8px rgba(132, 131, 141, 0.5);
-  border-radius: 6px;
 `;
 
 const PostClosingButtonWrap = styled.div`

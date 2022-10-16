@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Img } from '../../../../components';
+import { Img, WhiteButton } from '../../../../components';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -85,19 +85,23 @@ function Btns(props: BtnsProps) {
 
   return (
     <Container>
-      <WhiteButton able={authorization} onClick={handleLikeButtonClick}>
-        <div className="imgWrap">
-          <Img src={likeButtonImg} />
-        </div>
-      </WhiteButton>
-      <WhiteButton
-        able={reportButtonState.able}
-        onClick={handleReportButtonClick}
-      >
-        <div className="imgWrap">
-          <Img src={reportButtonState.img} />
-        </div>
-      </WhiteButton>
+      <ButtonWrap>
+        <WhiteButton able={authorization} onClick={handleLikeButtonClick}>
+          <div className="img-wrap">
+            <Img src={likeButtonImg} />
+          </div>
+        </WhiteButton>
+      </ButtonWrap>
+      <ButtonWrap>
+        <WhiteButton
+          able={reportButtonState.able}
+          onClick={handleReportButtonClick}
+        >
+          <div className="img-wrap">
+            <Img src={reportButtonState.img} />
+          </div>
+        </WhiteButton>
+      </ButtonWrap>
     </Container>
   );
 }
@@ -108,25 +112,17 @@ const Container = styled.section`
   display: flex;
   justify-content: space-between;
   width: 128px;
-  .imgWrap {
+  .img-wrap {
     width: 32px;
     height: 32px;
   }
 `;
 
-const WhiteButton = styled.button<{ able: boolean }>`
-  display: flex;
-  align-items: center;
-  justify-content: center;
+const ButtonWrap = styled.div`
   width: 60px;
   height: 60px;
-  background-color: white;
-  border-radius: 6px;
-  box-shadow: 0px 0px 8px rgba(132, 131, 141, 0.5);
-  &:hover {
-    background-color: ${props => (props.able ? '#FCF3F4' : 'white')};
-  }
-  &:active {
-    background-color: ${props => (props.able ? '#FFA1AF' : 'white')};
+  .write-img {
+    width: 15px;
+    height: 15px;
   }
 `;

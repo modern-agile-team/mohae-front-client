@@ -9,7 +9,7 @@ import OrderedImg from './img-in-order/OrderedImg';
 import Snap from './snap-scroll/Snap';
 import Img from './img/Img';
 import Box from './box/Box';
-import Btn from './button/Btn';
+import { Btn, WhiteButton, MainButton } from './button';
 import MarkBox from './markbox/MarkBox';
 import Mosaic from './mosaic/Mosaic';
 import PostIt from './postit/PostIt';
@@ -53,4 +53,6 @@ export {
   NewPost,
   SelectBox,
   Categories,
+  WhiteButton,
+  MainButton,
 };

@@ -56,8 +56,7 @@ function PostImgs(props: PostImgsProps) {
           <MarkBox
             shape={reduxDatas.target}
             state={reduxDatas.isDeadline}
-            big
-            hover
+            size={'big'}
           />
         </div>
       </Box>

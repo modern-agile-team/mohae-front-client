@@ -82,11 +82,11 @@ const contents: type = {
   sort: ['인기순', '최신순', '오래된순'],
   target: [
     <>
-      <MarkBox shape={0} state={0} />
+      <MarkBox shape={0} state={0} size={'small'} />
       해줄래요
     </>,
     <>
-      <MarkBox shape={1} state={0} />
+      <MarkBox shape={1} state={0} size={'small'} />
       구할래요
     </>,
   ],

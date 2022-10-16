@@ -241,6 +241,7 @@ export default function ModalProfile(props: Props) {
                 action={actions.toHelp}
                 marginRight={16}
                 checkSelf={checkSelf}
+                linkTo={'toPosting'}
               />
             </div>
             <div className={'section'}>
@@ -252,6 +253,7 @@ export default function ModalProfile(props: Props) {
                 action={actions.helpMe}
                 marginRight={16}
                 checkSelf={checkSelf}
+                linkTo={'toPosting'}
               />
             </div>
           </div>

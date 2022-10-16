@@ -270,11 +270,11 @@ const container = css`
 
 const contents = [
   <>
-    <MarkBox shape={0} state={0} />
+    <MarkBox shape={0} state={0} size={'small'} />
     해줄래요
   </>,
   <>
-    <MarkBox shape={1} state={0} />
+    <MarkBox shape={1} state={0} size={'small'} />
     구할래요
   </>,
 ];

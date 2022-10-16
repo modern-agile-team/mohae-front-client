@@ -24,7 +24,7 @@ function PostWriter(props: PostWriterProps) {
         <WriterID className="user-data">
           <Profile
             img={userProfileImg}
-            noneClick={authorization}
+            noneClick={!authorization}
             size={60}
             smallShadow
             userNumber={board.userNo}

@@ -20,6 +20,7 @@ export interface SlideProps {
   action: any;
   marginRight: number;
   isHelpPost?: boolean;
+  linkTo?: string;
 }
 
 interface PARAMS {
@@ -33,6 +34,7 @@ export default function Slide({
   marginRight,
   viewNumber,
   checkSelf,
+  linkTo,
 }: SlideProps) {
   const [sector, setSector] = useState(0),
     dispatch = useDispatch(),
@@ -225,7 +227,7 @@ export default function Slide({
     if (items && items.length) {
       return items.map((contents: string, index: number) => (
         <div className={'board'} key={index}>
-          <NewPost page={'inSpec'} board={contents} />
+          <NewPost page={'inSpec'} board={contents} linkTo={linkTo} />
         </div>
       ));
     } else if (checkSelf === 'false') {

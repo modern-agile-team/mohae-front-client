@@ -1,10 +1,20 @@
-import React, { useRef, useCallback, useState, useEffect } from 'react';
+import React, {
+  useRef,
+  useCallback,
+  useState,
+  useEffect,
+  ReactNode,
+} from 'react';
 import { css, cx } from '@emotion/css';
 import { color, font, radius, shadow } from '../../styles';
-import { Props } from '../../components/button';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/root';
 import { setPrice, setSummary, setTitle } from '../../redux/createpost/reducer';
+
+interface Props {
+  [props: string]: React.ReactNode;
+  onClick?: (e: React.MouseEvent) => any | ReactNode;
+}
 
 function Input(props: Props) {
   const { small, big } = props;

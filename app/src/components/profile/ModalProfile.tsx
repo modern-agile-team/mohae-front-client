@@ -2,7 +2,7 @@
 
 import { css, cx } from '@emotion/css';
 import { Img, Box, Profile, Category, BasicModal, Btn } from '../index';
-import { Slide } from '../../pages/mypage/components/MyPage';
+import { PostSlide, Slide } from '../../pages/mypage/components/MyPage';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/root';
 import getToken from '../../utils/getToken';
@@ -234,26 +234,25 @@ export default function ModalProfile(props: Props) {
             </div>
             <div className={'section'}>
               <div className={'title'}>{'해줄래요 이력'}</div>
-              <Slide
+              <PostSlide
                 outsideBtn
                 viewNumber={4}
                 items={posts.profileToHelp}
                 action={actions.toHelp}
                 marginRight={16}
                 checkSelf={checkSelf}
-                linkTo={'toPosting'}
               />
             </div>
             <div className={'section'}>
               <div className={'title'}>{'받을래요 이력'}</div>
-              <Slide
+              <PostSlide
                 outsideBtn
                 viewNumber={4}
                 items={posts.profileHelpMe}
                 action={actions.helpMe}
                 marginRight={16}
                 checkSelf={checkSelf}
-                linkTo={'toPosting'}
+                isHelpPost
               />
             </div>
           </div>

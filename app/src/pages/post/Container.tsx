@@ -76,7 +76,7 @@ function Post() {
       dispatch(setInitialPostState());
       dispatch(setInitialCommentState());
     };
-  }, []);
+  }, [no]);
 
   const returnComponent = () => {
     return !loading ? (

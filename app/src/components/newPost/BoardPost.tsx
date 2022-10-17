@@ -109,7 +109,7 @@ export default function BoardPost({ page, board, isHelpPost }: Props) {
       }
 
       :hover {
-        & > * {
+        & > img {
           transition: 0.3s all ease-in-out;
           transform: scale(1.2);
         }

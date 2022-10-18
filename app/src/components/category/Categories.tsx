@@ -1,11 +1,11 @@
 /** @format */
 
 import { cx, css } from '@emotion/css';
-import { keyframes } from '@emotion/react';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { color, radius, font, shadow } from '../../styles';
+import { color } from '../../styles';
 import Category from './Category';
+import { categoryList } from './categoryList';
 
 interface Props {
   num: number;
@@ -13,31 +13,8 @@ interface Props {
 }
 
 export default function Categories({ num, resetPageInfo }: Props) {
-  const categoryList = [
-    '전체',
-    '디자인',
-    'IT / 개발',
-    '사진 / 영상',
-    '기획 / 마케팅',
-    '번역 / 통역',
-    '문서작업',
-    '컨설팅',
-    '법률',
-    '과외 / 레슨',
-    '상담 / 운세',
-    '이벤트',
-    '핸드메이드',
-    '취미',
-    '생활서비스',
-    '기타',
-  ];
   const param = useParams().no;
-  const list = categoryList.map((category: string, index: number) => ({
-    name: category,
-    no: index + 1,
-    img: `/img/category-${index}.png`,
-  }));
-  const [arr, setArr] = useState(list.map((category, index) => index));
+  const [arr, setArr] = useState(categoryList.map((_, index) => index));
   const itemsize = 120;
   const margin = num === 7 ? 48 : 24;
   const showNumber = num || 7;
@@ -128,9 +105,9 @@ export default function Categories({ num, resetPageInfo }: Props) {
         <Category
           key={'first'}
           shape={'circle'}
-          name={list[arr[arr.length - 1]].name}
-          id={list[arr[arr.length - 1]].no}
-          img={list[arr[arr.length - 1]].img}
+          name={categoryList[arr[arr.length - 1]].name}
+          id={categoryList[arr[arr.length - 1]].no}
+          img={categoryList[arr[arr.length - 1]].img}
           resetPageInfo={resetPageInfo}
         />
       </div>
@@ -141,9 +118,9 @@ export default function Categories({ num, resetPageInfo }: Props) {
             <Category
               key={index}
               shape={'circle'}
-              id={list[arr[index]].no}
-              name={list[arr[index]].name}
-              img={list[arr[index]].img}
+              id={categoryList[arr[index]].no}
+              name={categoryList[arr[index]].name}
+              img={categoryList[arr[index]].img}
               resetPageInfo={resetPageInfo}
             />
           </div>
@@ -152,9 +129,9 @@ export default function Categories({ num, resetPageInfo }: Props) {
         <Category
           key={'last'}
           shape={'circle'}
-          id={list[arr[showNumber]].no}
-          name={list[arr[showNumber]].name}
-          img={list[arr[showNumber]].img}
+          id={categoryList[arr[showNumber]].no}
+          name={categoryList[arr[showNumber]].name}
+          img={categoryList[arr[showNumber]].img}
           resetPageInfo={resetPageInfo}
         />
       </div>
@@ -162,7 +139,7 @@ export default function Categories({ num, resetPageInfo }: Props) {
   );
 
   useEffect(() => {
-    const originArray = list.map((_, index) => index);
+    const originArray = categoryList.map((_, index) => index);
     setArr(originArray);
     const updatedArr = [...originArray];
     for (

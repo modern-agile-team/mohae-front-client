@@ -3,11 +3,11 @@ import { PresenterProps } from '../../types/board/type';
 import { Contents, InteractionPart } from './components';
 
 function Presenter(props: PresenterProps) {
-  const { resetPageInfo, setTarget } = props;
+  const { resetPageNation, setTarget } = props;
 
   return (
     <>
-      <InteractionPart resetPageInfo={resetPageInfo} />
+      <InteractionPart resetPageNation={resetPageNation} />
       <Contents setTarget={setTarget} />
     </>
   );

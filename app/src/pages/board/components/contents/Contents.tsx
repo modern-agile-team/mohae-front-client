@@ -12,11 +12,7 @@ import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { Poster, PostsNotExist, Spinner } from '../../../../components';
 import { categoryList } from '../../../../components/category/categoryList';
 import { RootState } from '../../../../redux/root';
-import { BoardDetails } from '../../../../types/board/type';
-
-interface ContentsProps {
-  setTarget: Dispatch<SetStateAction<Element | null>>;
-}
+import { BoardDetails, ContentsProps } from '../../../../types/board/type';
 
 interface KeepCheckingResIsEmpty {
   currentResLength: null | number;

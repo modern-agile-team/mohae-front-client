@@ -21,7 +21,7 @@ interface HotCategoriesType {
 }
 
 interface HotCategoriesProps {
-  resetPageInfo?: () => void;
+  resetPageNation?: () => void;
   onBlur: () => void;
   children: React.ReactNode;
 }
@@ -33,7 +33,7 @@ interface UserSearchedKeysProps extends TypeForExtends {
 interface DataListProps extends TypeForExtends {
   showDataList: boolean;
   showFilter: boolean;
-  resetPageInfo?: () => void;
+  resetPageNation?: () => void;
 }
 
 export type {

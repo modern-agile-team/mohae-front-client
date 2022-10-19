@@ -10,13 +10,10 @@ import {
 import { categoryList } from '../../../../components/category/categoryList';
 import { useNavigate, useParams } from 'react-router-dom';
 import getToken from '../../../../utils/getToken';
-
-interface InteractionPartProps {
-  resetPageInfo: () => void;
-}
+import { InteractionPartProps } from '../../../../types/board/type';
 
 function InteractionPart(props: InteractionPartProps) {
-  const { resetPageInfo } = props;
+  const { resetPageNation } = props;
   const navigation = useNavigate();
   const { no } = useParams();
   const categoryName = categoryList[Number(no) - 1].name;
@@ -32,9 +29,9 @@ function InteractionPart(props: InteractionPartProps) {
   return (
     <>
       <CategoryBoard>{`${categoryName} 게시판`}</CategoryBoard>
-      <Categories num={7} resetPageInfo={resetPageInfo} />
+      <Categories num={7} resetPageNation={resetPageNation} />
       <FlexWrapper>
-        <Search board resetPageInfo={resetPageInfo} />
+        <Search board resetPageNation={resetPageNation} />
         <ButtonWrapper>
           <MainButton type="button" able={true} onClick={controlWriteButton}>
             <p>글쓰기</p>

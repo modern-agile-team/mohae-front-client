@@ -1,12 +1,16 @@
 import { Dispatch, SetStateAction } from 'react';
 
 interface PresenterProps {
-  resetPageInfo: () => void;
+  resetPageNation: () => void;
   setTarget: Dispatch<SetStateAction<Element | null>>;
-  categories: { no: string; name: string }[];
-  controlWriteButton: () => void;
-  loginPlz: boolean;
-  //   setLoginPlz: Dispatch<SetStateAction<boolean>>;
+}
+
+interface ContentsProps {
+  setTarget: Dispatch<SetStateAction<Element | null>>;
+}
+
+interface InteractionPartProps {
+  resetPageNation: () => void;
 }
 
 interface BoardDetails {
@@ -26,4 +30,10 @@ interface BoardResponse {
   response: BoardDetails[];
 }
 
-export type { PresenterProps, BoardDetails, BoardResponse };
+export type {
+  PresenterProps,
+  ContentsProps,
+  InteractionPartProps,
+  BoardDetails,
+  BoardResponse,
+};

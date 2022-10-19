@@ -9,7 +9,7 @@ import { useDispatch } from 'react-redux';
 import Presenter from './Presenter';
 import { customAxios } from '../../apis/instance';
 
-interface PageInfo {
+interface PageNation {
   category: {
     page: number;
     totalPage: number;
@@ -30,7 +30,7 @@ function Container() {
     query: location.search,
     no: no,
   });
-  const [pageInfo, setPageInfo] = useState<PageInfo>({
+  const [pageNation, setPageNation] = useState<PageNation>({
     category: {
       page: 1,
       totalPage: 1,
@@ -68,8 +68,8 @@ function Container() {
   }, [location.search]);
 
   const getData = async () => {
-    const filteringBaseURL = `https://mo-hae.site/boards/filter?take=8&page=${pageInfo.filtering.page}`;
-    const categoryBaseURL = `https://mo-hae.site/boards/category/${no}?take=8&page=${pageInfo.category.page}`;
+    const filteringBaseURL = `https://mo-hae.site/boards/filter?take=8&page=${pageNation.filtering.page}`;
+    const categoryBaseURL = `https://mo-hae.site/boards/category/${no}?take=8&page=${pageNation.category.page}`;
     try {
       await customAxios
         .get(
@@ -80,20 +80,20 @@ function Container() {
         .then(res => {
           if (!location.search) {
             dispatch(setResCategorys(res.data.response));
-            setPageInfo((prev: PageInfo) => ({
+            setPageNation((prev: PageNation) => ({
               category: {
                 ...prev.category,
-                totalPage: pageInfo.category.totalPage + 1,
+                totalPage: pageNation.category.totalPage + 1,
               },
               filtering: { page: 1, totalPage: 1 },
             }));
           } else {
             dispatch(setResFiltering(res.data.response));
-            setPageInfo((prev: PageInfo) => ({
+            setPageNation((prev: PageNation) => ({
               category: { page: 1, totalPage: 1 },
               filtering: {
                 ...prev.filtering,
-                totalPage: pageInfo.filtering.totalPage + 1,
+                totalPage: pageNation.filtering.totalPage + 1,
               },
             }));
           }
@@ -112,7 +112,7 @@ function Container() {
   useEffect(() => {
     const deboucing = setTimeout(() => {
       if (urlInfo.no === no && urlInfo.query === location.search) {
-        setPageInfo(prev => prev);
+        setPageNation(prev => prev);
         getData();
       } else {
         dispatch(setResArrEmpty());
@@ -121,12 +121,17 @@ function Container() {
       }
     }, 500);
     return () => clearTimeout(deboucing);
-  }, [location.search, no, pageInfo.category.page, pageInfo.filtering.page]);
+  }, [
+    location.search,
+    no,
+    pageNation.category.page,
+    pageNation.filtering.page,
+  ]);
 
   const handleIntersect = useCallback(
     ([entry]: IntersectionObserverEntry[]) => {
       if (entry.isIntersecting) {
-        setPageInfo(prev => {
+        setPageNation(prev => {
           if (prev.category.totalPage > prev.category.page) {
             return {
               category: { ...prev.category, page: prev.category.page + 1 },
@@ -156,14 +161,14 @@ function Container() {
     return () => observer.disconnect();
   }, [handleIntersect, target]);
 
-  const resetPageInfo = () => {
-    setPageInfo({
+  const resetPageNation = () => {
+    setPageNation({
       category: { page: 1, totalPage: 1 },
       filtering: { page: 1, totalPage: 1 },
     });
   };
 
-  return <Presenter resetPageInfo={resetPageInfo} setTarget={setTarget} />;
+  return <Presenter resetPageNation={resetPageNation} setTarget={setTarget} />;
 }
 
 export default Container;

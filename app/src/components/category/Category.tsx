@@ -8,7 +8,7 @@ import { Link, useLocation, useParams } from 'react-router-dom';
 
 interface Props {
   [key: string]: any;
-  resetPageInfo?: () => void;
+  resetPageNation?: () => void;
 }
 
 export default function Category({
@@ -18,7 +18,7 @@ export default function Category({
   id,
   className,
   onClick,
-  resetPageInfo,
+  resetPageNation,
 }: Props): ReactElement {
   const { no } = useParams();
   const style: { [key: string]: any } = {
@@ -75,7 +75,6 @@ export default function Category({
         color: ${color.dark1};
         ${font.weight[700]};
         background-color: rgba(255, 255, 255, 0.65);
-        /* backdrop-filter: blur(2px); */
       }
 
       :hover {
@@ -110,7 +109,7 @@ export default function Category({
     <Link
       to={`/boards/categories/${id}`}
       className={cx(style[shape])}
-      onClick={String(id) !== no ? resetPageInfo : undefined}
+      onClick={String(id) !== no ? resetPageNation : undefined}
     >
       {!(shape === 'row') && (
         <>

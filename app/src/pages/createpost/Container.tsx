@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { customAxios } from '../../apis/instance';
 import setInterceptors from '../../apis/common/setInterceptors';
-import EmptySpinner from '../../components/emptySpinner/EmptySpinner';
 import useRefactorPostingData from '../../customhook/useRefactorPostingData';
 import { setForEdit, setLoading } from '../../redux/createpost/reducer';
 import { setInitialState } from '../../redux/createpost/reducer';
@@ -11,6 +10,7 @@ import { RootState } from '../../redux/root';
 import { ENDPOINT } from '../../utils/ENDPOINT';
 import getToken from '../../utils/getToken';
 import Presenter from './Presenter';
+import { Spinner } from '../../components';
 
 interface Props {
   type: string;
@@ -164,7 +164,7 @@ function CreateAndEditPost({ type }: Props) {
           type={type}
         />
       ) : (
-        <EmptySpinner loading />
+        <Spinner size="big" />
       )}
     </>
   );

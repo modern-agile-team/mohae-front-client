@@ -18,7 +18,7 @@ function Presenter(props: PresenterProps) {
     onBlur,
     onFocus,
     showDataList,
-    resetPageInfo,
+    resetPageNation,
   } = props;
 
   return (
@@ -41,7 +41,7 @@ function Presenter(props: PresenterProps) {
         onSubmit={onSubmit}
         onBlur={onBlur}
         showDataList={showDataList}
-        resetPageInfo={resetPageInfo}
+        resetPageNation={resetPageNation}
       />
       {showFilter && (
         <Filter

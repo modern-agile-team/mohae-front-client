@@ -8,7 +8,7 @@ import {
 } from '../../../types/searchComponent/dataList/type';
 
 function HotCategories(props: HotCategoriesProps) {
-  const { resetPageInfo, onBlur, children } = props;
+  const { resetPageNation, onBlur, children } = props;
   const location = useLocation();
   const navigate = useNavigate();
   const [searchParams, __] = useSearchParams();
@@ -42,11 +42,11 @@ function HotCategories(props: HotCategoriesProps) {
 
     if (!location.search) {
       if (location.pathname !== `/boards/categories/${no}`) {
-        resetPageInfo && resetPageInfo();
+        resetPageNation && resetPageNation();
         navigate(`/boards/categories/${no}`);
       }
     } else {
-      resetPageInfo && resetPageInfo();
+      resetPageNation && resetPageNation();
       navigate(`/boards/categories/${no}`);
     }
 

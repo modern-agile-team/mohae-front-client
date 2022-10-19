@@ -7,7 +7,6 @@ import {
   setPostData,
 } from '../../redux/post/reducer';
 import { RootState } from '../../redux/root';
-import EmptySpinner from '../../components/emptySpinner/EmptySpinner';
 import { setInitialState as setInitialCommentState } from '../../redux/comment/reducer';
 import { PosterDetails, ModalViewState } from '../../types/post/type';
 import {
@@ -15,6 +14,7 @@ import {
   requestPostClosing,
   requestPostReopening,
 } from '../../apis/post';
+import { Spinner } from '../../components';
 
 function Post() {
   const { no } = useParams();
@@ -86,7 +86,7 @@ function Post() {
         requestHandleDeadline={requestHandleDeadline}
       />
     ) : (
-      <EmptySpinner loading />
+      <Spinner size="big" />
     );
   };
 

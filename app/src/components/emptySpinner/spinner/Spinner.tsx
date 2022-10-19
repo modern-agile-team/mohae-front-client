@@ -32,6 +32,7 @@ const Common = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: #f9f9f9;
 `;
 
 const BigContainer = styled(Common)`
@@ -41,8 +42,8 @@ const BigContainer = styled(Common)`
   width: 100vw;
   height: 100vh;
   .img-wrap {
-    width: 500px;
-    height: 500px;
+    width: 400px;
+    height: 400px;
   }
 `;
 

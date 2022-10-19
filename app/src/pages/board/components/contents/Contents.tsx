@@ -1,11 +1,4 @@
-import React, {
-  Dispatch,
-  SetStateAction,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import styled from '@emotion/styled';
 import { useSelector } from 'react-redux';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
@@ -14,7 +7,7 @@ import { categoryList } from '../../../../components/category/categoryList';
 import { RootState } from '../../../../redux/root';
 import { BoardDetails, ContentsProps } from '../../../../types/board/type';
 
-interface KeepCheckingResIsEmpty {
+interface KeepCheckingIsResEmpty {
   currentResLength: null | number;
   stopRequest: boolean;
 }
@@ -24,14 +17,14 @@ function Contents(props: ContentsProps) {
   const { no } = useParams();
   const [searchParams, _] = useSearchParams();
   const { response, loading } = useSelector((state: RootState) => state.board);
-  const [keepCheckingResIsEmpty, setKeepCheckingResIsEmpty] =
-    useState<KeepCheckingResIsEmpty>({
+  const [keepCheckingIsResEmpty, setKeepCheckingIsResEmpty] =
+    useState<KeepCheckingIsResEmpty>({
       currentResLength: null,
       stopRequest: false,
     });
 
   const memorization = useMemo(() => {
-    setKeepCheckingResIsEmpty({
+    setKeepCheckingIsResEmpty({
       currentResLength: null,
       stopRequest: false,
     });
@@ -43,7 +36,7 @@ function Contents(props: ContentsProps) {
   }, [no, searchParams.get('title')]);
 
   useEffect(() => {
-    setKeepCheckingResIsEmpty(prev => {
+    setKeepCheckingIsResEmpty(prev => {
       if (prev.currentResLength === response.length) {
         return { ...prev, stopRequest: true };
       } else {
@@ -58,7 +51,7 @@ function Contents(props: ContentsProps) {
         key={i}
         className="link-wrap"
         to={`/post/${el.no}`}
-        ref={keepCheckingResIsEmpty.stopRequest ? null : setTarget}
+        ref={keepCheckingIsResEmpty.stopRequest ? null : setTarget}
       >
         <Poster size="medium" data={response[i]} />
       </Link>
@@ -84,15 +77,15 @@ function Contents(props: ContentsProps) {
 
   const loadingForMorePoster = useCallback(() => {
     return (
-      keepCheckingResIsEmpty.currentResLength !== null &&
-      keepCheckingResIsEmpty.currentResLength > 8 &&
-      !keepCheckingResIsEmpty.stopRequest && (
+      keepCheckingIsResEmpty.currentResLength !== null &&
+      keepCheckingIsResEmpty.currentResLength > 8 &&
+      !keepCheckingIsResEmpty.stopRequest && (
         <div className="spinner">
           <Spinner size="small" />
         </div>
       )
     );
-  }, [keepCheckingResIsEmpty]);
+  }, [keepCheckingIsResEmpty]);
 
   return (
     <ContentsContainer>

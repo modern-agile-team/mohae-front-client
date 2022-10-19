@@ -1,20 +1,20 @@
 import { css, cx } from '@emotion/css';
 import styled from '@emotion/styled';
-import SideBar from '../notice/NoticeWriteSidebar';
-import ArticleTitle from '../notice/NoticeWriteAriticleTitle';
-import HeaderSearch from '../notice/NoticeWriteSearchHeader';
-import CommetContainer from '../notice/NoticeCommentWrapper';
+import SideBar from './notice/NoticeWriteSidebar';
+import ArticleTitle from './notice/NoticeWriteAriticleTitle';
+import HeaderSearch from './notice/NoticeWriteSearchHeader';
+import CommetContainer from './notice/NoticeCommentWrapper';
 import { useCallback, useEffect, useState } from 'react';
 import {
   createNoticePost,
   getNotices,
   searchNotices,
-} from '../../../redux/notice/reducer';
+} from '../../redux/notice/reducer';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch } from '../../../redux/root';
-import { RootState } from '../../../redux/root';
+import { AppDispatch } from '../../redux/root';
+import { RootState } from '../../redux/root';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import { deleteNoticePost } from '../../../apis/notice';
+import { deleteNoticePost } from '../../apis/notice';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import { EditorState, convertToRaw, ContentState } from 'draft-js';

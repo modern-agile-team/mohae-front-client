@@ -7,7 +7,7 @@ import {
 } from '../../redux/board/reducer';
 import { useDispatch } from 'react-redux';
 import Presenter from './Presenter';
-import { customAxios } from '../../apis/instance';
+import { requestCategorySelected, requestFiltering } from '../../apis/board';
 
 interface PageNation {
   category: {
@@ -24,10 +24,10 @@ function Container() {
   const dispatch = useDispatch();
   const { no } = useParams();
   const [searchParams, _] = useSearchParams();
-  const location = useLocation();
+  const { search: queryString } = useLocation();
   const [target, setTarget] = useState<Element | null>(null);
   const [urlInfo, setUrlInfo] = useState({
-    query: location.search,
+    query: queryString,
     no: no,
   });
   const [pageNation, setPageNation] = useState<PageNation>({
@@ -65,39 +65,37 @@ function Container() {
       'min',
     )}${getParams('max')}${getParams('areaNo')}${getParams('popular')}`;
     return queryString;
-  }, [location.search]);
+  }, [queryString]);
+
+  const handlingRequest = () => {
+    return queryString
+      ? requestFiltering(pageNation.filtering.page, filteringQuery())
+      : requestCategorySelected(Number(no), pageNation.category.page);
+  };
 
   const getData = async () => {
-    const filteringBaseURL = `https://mo-hae.site/boards/filter?take=8&page=${pageNation.filtering.page}`;
-    const categoryBaseURL = `https://mo-hae.site/boards/category/${no}?take=8&page=${pageNation.category.page}`;
     try {
-      await customAxios
-        .get(
-          location.search
-            ? filteringBaseURL + filteringQuery()
-            : categoryBaseURL,
-        )
-        .then(res => {
-          if (!location.search) {
-            dispatch(setResCategorys(res.data.response));
-            setPageNation((prev: PageNation) => ({
-              category: {
-                ...prev.category,
-                totalPage: pageNation.category.totalPage + 1,
-              },
-              filtering: { page: 1, totalPage: 1 },
-            }));
-          } else {
-            dispatch(setResFiltering(res.data.response));
-            setPageNation((prev: PageNation) => ({
-              category: { page: 1, totalPage: 1 },
-              filtering: {
-                ...prev.filtering,
-                totalPage: pageNation.filtering.totalPage + 1,
-              },
-            }));
-          }
-        });
+      await handlingRequest().then(res => {
+        if (!queryString) {
+          dispatch(setResCategorys(res.data.response));
+          setPageNation((prev: PageNation) => ({
+            category: {
+              ...prev.category,
+              totalPage: pageNation.category.totalPage + 1,
+            },
+            filtering: { page: 1, totalPage: 1 },
+          }));
+        } else {
+          dispatch(setResFiltering(res.data.response));
+          setPageNation((prev: PageNation) => ({
+            category: { page: 1, totalPage: 1 },
+            filtering: {
+              ...prev.filtering,
+              totalPage: pageNation.filtering.totalPage + 1,
+            },
+          }));
+        }
+      });
     } catch (err) {
       alert('알 수 없는 에러가 발생하였습니다.');
     }
@@ -111,22 +109,19 @@ function Container() {
 
   useEffect(() => {
     const deboucing = setTimeout(() => {
-      if (urlInfo.no === no && urlInfo.query === location.search) {
+      if (urlInfo.no === no && urlInfo.query === queryString) {
         setPageNation(prev => prev);
         getData();
       } else {
         dispatch(setResArrEmpty());
         getData();
-        setUrlInfo({ query: location.search, no: no });
+        setUrlInfo({ query: queryString, no: no });
       }
     }, 500);
-    return () => clearTimeout(deboucing);
-  }, [
-    location.search,
-    no,
-    pageNation.category.page,
-    pageNation.filtering.page,
-  ]);
+    return () => {
+      clearTimeout(deboucing);
+    };
+  }, [queryString, no, pageNation.category.page, pageNation.filtering.page]);
 
   const handleIntersect = useCallback(
     ([entry]: IntersectionObserverEntry[]) => {

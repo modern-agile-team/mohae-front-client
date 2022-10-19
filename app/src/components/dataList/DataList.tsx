@@ -13,7 +13,7 @@ function DataList(props: DataListProps) {
     onSubmit,
     onBlur,
     showDataList,
-    resetPageInfo,
+    resetPageNation,
   } = props;
 
   return (
@@ -28,7 +28,7 @@ function DataList(props: DataListProps) {
         >
           <TitleContainer>최근 검색어</TitleContainer>
         </UserSearchedKeys>
-        <HotCategories resetPageInfo={resetPageInfo} onBlur={onBlur}>
+        <HotCategories resetPageNation={resetPageNation} onBlur={onBlur}>
           <TitleContainer>인기 카테고리</TitleContainer>
         </HotCategories>
       </div>

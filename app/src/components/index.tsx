@@ -24,6 +24,8 @@ import { Poster } from './poster';
 import NewPost from './newPost/NewPost';
 import SelectBox from './selectbox/SelectBox';
 import Comment from './comment/Comment';
+import Spinner from './emptySpinner/spinner/Spinner';
+import PostsNotExist from './emptySpinner/PostsNotExist/PostsNotExist';
 
 export {
   Comment,
@@ -55,4 +57,6 @@ export {
   Categories,
   WhiteButton,
   MainButton,
+  Spinner,
+  PostsNotExist,
 };

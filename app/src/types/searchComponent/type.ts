@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction } from 'react';
 interface ContainerProps {
   board?: boolean;
   main?: boolean;
-  resetPageInfo?: () => void;
+  resetPageNation?: () => void;
 }
 
 interface PresenterProps {
@@ -22,7 +22,7 @@ interface PresenterProps {
   onBlur: () => void;
   onFocus: () => void;
   showDataList: boolean;
-  resetPageInfo?: () => void;
+  resetPageNation?: () => void;
 }
 
 export type { ContainerProps, PresenterProps };

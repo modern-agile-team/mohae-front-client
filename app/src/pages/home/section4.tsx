@@ -181,7 +181,7 @@ export default function Part4(props: Props) {
     boardsInMain.allBoard[1] &&
     boards.map((board: any, index: number) => (
       <Link key={index} to={`/post/${board.no}`}>
-        <Poster size="large" data={board} big />
+        <Poster size="large" data={board} />
       </Link>
     ));
 

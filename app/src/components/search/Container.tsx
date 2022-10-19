@@ -10,7 +10,7 @@ import {
 import { ContainerProps } from '../../types/searchComponent/type';
 
 function Search(props: ContainerProps) {
-  const { board, main, resetPageInfo } = props;
+  const { board, main, resetPageNation } = props;
   const [value, setValue] = useState<string>('');
   const [userSearched, setUerSearched] = useState<string[]>(
     JSON.parse(localStorage.getItem('currentSearch') || '[]'),
@@ -158,14 +158,14 @@ function Search(props: ContainerProps) {
           JSON.parse(localStorage.getItem('currentSearch') || '[]'),
         );
         setValue('');
-        resetPageInfo && resetPageInfo();
+        resetPageNation && resetPageNation();
       } else {
         alert('두 글자 이상 검색 가능합니다.');
         setValue('');
       }
     } else {
       setSearchParams(query);
-      resetPageInfo && resetPageInfo();
+      resetPageNation && resetPageNation();
     }
   };
 
@@ -182,7 +182,7 @@ function Search(props: ContainerProps) {
       onBlur={onBlur}
       onFocus={onFocus}
       showDataList={showDataList}
-      resetPageInfo={resetPageInfo}
+      resetPageNation={resetPageNation}
     />
   );
 }

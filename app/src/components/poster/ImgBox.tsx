@@ -8,13 +8,13 @@ interface Props {
   img: string | null;
   state: number;
   shape: number;
-  big?: boolean;
+  size: 'large' | 'medium';
 }
 
-export function ImgBox({ img, state, shape, big }: Props) {
+export function ImgBox({ img, state, shape, size }: Props) {
   const memorization = useMemo(() => {
     return {
-      size: big ? [360, 208] : [264, 152],
+      size: size === 'large' ? [360, 208] : [264, 152],
       zoomIn: keyframes`
     from {
       background-size: 100%;

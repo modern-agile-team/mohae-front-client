@@ -1,48 +1,25 @@
 /** @format */
 
 import { cx, css } from '@emotion/css';
-import { keyframes } from '@emotion/react';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { color, radius, font, shadow } from '../../styles';
+import { color } from '../../styles';
 import Category from './Category';
+import { categoryList } from './categoryList';
 
 interface Props {
   num: number;
-  resetPageInfo?: () => void;
+  resetPageNation?: () => void;
 }
 
-export default function Categories({ num, resetPageInfo }: Props) {
-  const categoryList = [
-      '전체',
-      '디자인',
-      'IT / 개발',
-      '사진 / 영상',
-      '기획 / 마케팅',
-      '번역 / 통역',
-      '문서작업',
-      '컨설팅',
-      '법률',
-      '과외 / 레슨',
-      '상담 / 운세',
-      '이벤트',
-      '핸드메이드',
-      '취미',
-      '생활서비스',
-      '기타',
-    ],
-    param = useParams().no,
-    list = categoryList.map((category: string, index: number) => ({
-      name: category,
-      no: index + 1,
-      img: `/img/category-${index}.png`,
-    })),
-    [arr, setArr] = useState(list.map((category, index) => index)),
-    itemsize = 120,
-    margin = num === 7 ? 48 : 24,
-    showNumber = num || 7,
-    [sector, setSector] = useState(0),
-    move = itemsize + margin;
+export default function Categories({ num, resetPageNation }: Props) {
+  const param = useParams().no;
+  const [arr, setArr] = useState(categoryList.map((_, index) => index));
+  const itemsize = 120;
+  const margin = num === 7 ? 48 : 24;
+  const showNumber = num || 7;
+  const [sector, setSector] = useState(0);
+  const move = itemsize + margin;
 
   const wrapper = () => {
     const row = `${itemsize * 1.09523 + 16}px`;
@@ -70,26 +47,9 @@ export default function Categories({ num, resetPageInfo }: Props) {
       transition: ${time};
       transform: ${translate};
       position: relative;
+      color: #4f4e5c;
     `;
   };
-
-  const shake = keyframes`
-    0% {
-      transform: translateY(0);
-    }
-    10%{
-      transform: translateY(-15px);
-    }
-    20% {
-      transform: translateY(0);
-    }
-    45% {
-      transform: translateY(-10px);
-    }
-    50% {
-      transform: translateY(0);
-    }
-  `;
 
   const style = css`
     @media (max-width: 1200px) {
@@ -145,10 +105,10 @@ export default function Categories({ num, resetPageInfo }: Props) {
         <Category
           key={'first'}
           shape={'circle'}
-          name={list[arr[arr.length - 1]].name}
-          id={list[arr[arr.length - 1]].no}
-          img={list[arr[arr.length - 1]].img}
-          resetPageInfo={resetPageInfo}
+          name={categoryList[arr[arr.length - 1]].name}
+          id={categoryList[arr[arr.length - 1]].no}
+          img={categoryList[arr[arr.length - 1]].img}
+          resetPageNation={resetPageNation}
         />
       </div>
       {Array(showNumber)
@@ -158,10 +118,10 @@ export default function Categories({ num, resetPageInfo }: Props) {
             <Category
               key={index}
               shape={'circle'}
-              id={list[arr[index]].no}
-              name={list[arr[index]].name}
-              img={list[arr[index]].img}
-              resetPageInfo={resetPageInfo}
+              id={categoryList[arr[index]].no}
+              name={categoryList[arr[index]].name}
+              img={categoryList[arr[index]].img}
+              resetPageNation={resetPageNation}
             />
           </div>
         ))}
@@ -169,17 +129,17 @@ export default function Categories({ num, resetPageInfo }: Props) {
         <Category
           key={'last'}
           shape={'circle'}
-          id={list[arr[showNumber]].no}
-          name={list[arr[showNumber]].name}
-          img={list[arr[showNumber]].img}
-          resetPageInfo={resetPageInfo}
+          id={categoryList[arr[showNumber]].no}
+          name={categoryList[arr[showNumber]].name}
+          img={categoryList[arr[showNumber]].img}
+          resetPageNation={resetPageNation}
         />
       </div>
     </div>
   );
 
   useEffect(() => {
-    const originArray = list.map((_, index) => index);
+    const originArray = categoryList.map((_, index) => index);
     setArr(originArray);
     const updatedArr = [...originArray];
     for (

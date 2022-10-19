@@ -133,8 +133,14 @@ function Search(props: ContainerProps) {
       objDataProcessing().check.target,
     )}&date=${drawObjKey(objDataProcessing().check.date)}&free=${drawObjKey(
       objDataProcessing().check.free,
-    )}&min=${objDataProcessing().check.free[1]}&max=${
-      objDataProcessing().check.free[1]
+    )}&min=${
+      objDataProcessing().check.free[1] === null
+        ? objDataProcessing().price.min
+        : null
+    }&max=${
+      objDataProcessing().check.free[1] === null
+        ? objDataProcessing().price.max
+        : null
     }&areaNo=${objDataProcessing().area.areaNo}`;
     e.preventDefault();
 

@@ -1,6 +1,22 @@
+import { Dispatch } from 'react';
+
+//------------------------------------------------------------
+interface ExtendsTypeForPage {
+  setShowFilter: Dispatch<React.SetStateAction<boolean>>;
+  onSubmit: (e: React.MouseEvent | React.ChangeEvent, str: string) => void;
+}
+
+interface ExtendsTypeForSection {
+  setItemCheck: (param: {
+    key: 'target' | 'sort' | 'date' | 'free';
+    index: number;
+  }) => void;
+}
+//------------------------------------------------------------
+
 interface FilterInitialState {
   check: {
-    [key: string]: { [key: number | string]: boolean };
+    [key: string]: { [key: string]: boolean };
   };
   area: {
     [key: string]: string;
@@ -13,23 +29,49 @@ interface FilterInitialState {
 interface ObjDataProcessing {
   check: {
     sort: {
-      [key: string | number]: string | number | true | null;
+      [key: string | number]: string | number | boolean | null;
     };
     target: {
-      [key: string]: string | number | true | null;
+      [key: string]: string | number | boolean | null;
     };
     date: {
-      [key: number]: string | number | true | null;
+      [key: number]: string | number | boolean | null;
     };
-    free: { 1: string | number | true | null };
+    free: { 1: string | number | boolean | null };
   };
   area: {
-    areaNo: string | number | true | null;
+    areaNo: string | number | boolean | null;
   };
   price: {
-    min: string | number | true | null;
-    max: string | number | true | null;
+    min: string | number | boolean | null;
+    max: string | number | boolean | null;
   };
 }
 
-export type { FilterInitialState, ObjDataProcessing };
+interface ContainerProps extends ExtendsTypeForPage {
+  setShowFilter: Dispatch<React.SetStateAction<boolean>>;
+  onSubmit: (e: React.MouseEvent | React.ChangeEvent, str: string) => void;
+}
+
+interface PresenterProps extends ExtendsTypeForPage {
+  setItemCheck: (param: {
+    key: 'target' | 'sort' | 'date' | 'free';
+    index: number;
+  }) => void;
+  onSubmit: (e: React.MouseEvent | React.ChangeEvent, str: string) => void;
+  setShowFilter: Dispatch<React.SetStateAction<boolean>>;
+}
+
+interface BottomSectionProps extends ExtendsTypeForSection {
+  onSubmit: (e: React.ChangeEvent | React.MouseEvent, str: string) => void;
+  setShowFilter: Dispatch<React.SetStateAction<boolean>>;
+}
+
+export type {
+  FilterInitialState,
+  ObjDataProcessing,
+  ContainerProps,
+  PresenterProps,
+  BottomSectionProps,
+  ExtendsTypeForSection as SectionProps,
+};

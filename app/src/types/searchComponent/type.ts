@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 
 interface ContainerProps {
   board?: boolean;
@@ -10,18 +10,13 @@ interface PresenterProps {
   value: string;
   setValue: Dispatch<SetStateAction<string>>;
   style: string;
-  showFilter: boolean;
-  setShowFilter: Dispatch<React.SetStateAction<boolean>>;
   userSearched: string[];
   setUerSearched: Dispatch<React.SetStateAction<string[]>>;
   onSubmit: (
-    e: React.MouseEvent | React.FormEvent<HTMLFormElement>,
+    e: React.MouseEvent | React.FormEvent<HTMLFormElement> | React.ChangeEvent,
     str: string,
     searchValue?: string,
   ) => void;
-  onBlur: () => void;
-  onFocus: () => void;
-  showDataList: boolean;
   resetPageNation?: () => void;
 }
 

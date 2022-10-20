@@ -20,23 +20,9 @@ function Search(props: ContainerProps) {
     (state: RootState) => state.filter.data,
   );
   const [searchParams, setSearchParams] = useSearchParams();
-  const [showFilter, setShowFilter] = useState(false);
-  const [showDataList, setShowDataList] = useState(false);
   const navigate = useNavigate();
   const getParams = (query: string): any => {
     return searchParams.get(query);
-  };
-
-  const onBlur = () => {
-    setShowDataList(false);
-  };
-
-  const onFocus = () => {
-    if (showFilter) {
-      return;
-    } else {
-      setShowDataList(true);
-    }
   };
 
   const objDataProcessing = (): ObjDataProcessing => {
@@ -106,7 +92,7 @@ function Search(props: ContainerProps) {
     return value ? value : null;
   };
 
-  const titleQuery = (historyValue?: string) => {
+  const handleTitleQuery = (historyValue?: string) => {
     if (historyValue) {
       return historyValue;
     } else if (value) {
@@ -116,32 +102,38 @@ function Search(props: ContainerProps) {
     }
   };
 
+  const handlePriceQuery = () => {
+    return {
+      min:
+        objDataProcessing().check.free[1] === null
+          ? objDataProcessing().price.min
+          : null,
+      max:
+        objDataProcessing().check.free[1] === null
+          ? objDataProcessing().price.max
+          : null,
+    };
+  };
+
   const onSubmit = (
-    e: React.MouseEvent | React.FormEvent<HTMLFormElement>,
+    e: React.MouseEvent | React.FormEvent<HTMLFormElement> | React.ChangeEvent,
     str: string,
     historyValue?: string,
   ) => {
-    onBlur();
     if (searchParams.get('title') === value) {
       e.preventDefault();
       setValue('');
       return;
     }
-    const query = `?categoryNo=${no || 1}&title=${titleQuery(
+    const query = `?categoryNo=${no || 1}&title=${handleTitleQuery(
       historyValue,
     )}${sortQuery()}&target=${drawObjKey(
       objDataProcessing().check.target,
     )}&date=${drawObjKey(objDataProcessing().check.date)}&free=${drawObjKey(
       objDataProcessing().check.free,
-    )}&min=${
-      objDataProcessing().check.free[1] === null
-        ? objDataProcessing().price.min
-        : null
-    }&max=${
-      objDataProcessing().check.free[1] === null
-        ? objDataProcessing().price.max
-        : null
-    }&areaNo=${objDataProcessing().area.areaNo}`;
+    )}&min=${handlePriceQuery().min}&max=${handlePriceQuery().max}&areaNo=${
+      objDataProcessing().area.areaNo
+    }`;
     e.preventDefault();
 
     if (str === 'search') {
@@ -174,14 +166,9 @@ function Search(props: ContainerProps) {
       style={board ? 'board' : 'main'}
       value={value}
       setValue={setValue}
-      showFilter={showFilter}
-      setShowFilter={setShowFilter}
       userSearched={userSearched}
       setUerSearched={setUerSearched}
       onSubmit={onSubmit}
-      onBlur={onBlur}
-      onFocus={onFocus}
-      showDataList={showDataList}
       resetPageNation={resetPageNation}
     />
   );

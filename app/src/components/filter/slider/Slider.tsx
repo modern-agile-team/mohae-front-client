@@ -1,15 +1,15 @@
 import React, { useCallback, useEffect, useRef } from 'react';
-import { css, cx } from '@emotion/css';
+import styled from '@emotion/styled';
 import { useDispatch, useSelector } from 'react-redux';
-import { setMax, setMin } from '../../redux/filter/reducer';
-import { RootState } from '../../redux/root';
+import { setMax, setMin } from '../../../redux/filter/reducer';
+import { RootState } from '../../../redux/root';
 
-interface Props {
+interface SliderProps {
   min: number;
   max: number;
 }
 
-const Slider = (props: Props) => {
+const Slider = (props: SliderProps) => {
   const { min, max } = props;
   const minValRef = useRef(min);
   const maxValRef = useRef(max);
@@ -43,7 +43,7 @@ const Slider = (props: Props) => {
   }, [maxVal, getPercent, minVal]);
 
   return (
-    <div className={cx(sliderStyle)}>
+    <Wrapper>
       <input
         type="range"
         min={min}
@@ -68,19 +68,18 @@ const Slider = (props: Props) => {
         }}
         className="thumb--max"
       />
-
-      <div className={cx(wrapSlider)}>
-        <div className={cx(attrSilder('track'))}>
-          <div ref={range} className={cx(attrSilder())} />
-        </div>
-      </div>
-    </div>
+      <SliderWrapper>
+        <TrackWrapper>
+          <InsideRange ref={range} />
+        </TrackWrapper>
+      </SliderWrapper>
+    </Wrapper>
   );
 };
 
 export default Slider;
 
-const wrapSlider = css`
+const SliderWrapper = styled.div`
   position: relative;
   width: 748px;
   div {
@@ -88,28 +87,24 @@ const wrapSlider = css`
   }
 `;
 
-const attrSilder = (track?: string) => {
-  const common = css`
-    border-radius: 6px;
-    height: 5px;
-    overflow: hidden;
-  `;
+const TrackWrapper = styled.div`
+  border-radius: 6px;
+  height: 5px;
+  overflow: hidden;
+  background-color: #e7e7e8;
+  width: 100%;
+  z-index: 1;
+`;
 
-  return track
-    ? css`
-        ${common}
-        background-color: #E7E7E8;
-        width: 100%;
-        z-index: 1;
-      `
-    : css`
-        ${common}
-        background-color: #ff445e;
-        z-index: 2;
-      `;
-};
+const InsideRange = styled.div`
+  border-radius: 6px;
+  height: 5px;
+  overflow: hidden;
+  background-color: #ff445e;
+  z-index: 2;
+`;
 
-const sliderStyle = css`
+const Wrapper = styled.div`
   .thumb--min {
     z-index: 3;
   }

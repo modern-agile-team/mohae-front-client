@@ -5,7 +5,7 @@ interface Props {
   able: boolean;
   children: React.ReactNode;
   type: string;
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent) => void;
 }
 
 function MainButton(props: Props) {

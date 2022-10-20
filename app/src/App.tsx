@@ -23,7 +23,7 @@ import Edit from './pages/mypage/components/Spec/Edit';
 import Visit from './pages/mypage/components/Spec/Visit';
 import Inquire from './pages/inquire/inquire';
 import InquireSuccess from './pages/inquire/inquireSuccess';
-import Notice from './pages/faq/notice/Notice';
+import Notice from './pages/faq/Notice';
 import ChangePassword from './pages/login/findPassword/Container';
 import getToken, { getAccessToken } from './utils/getToken';
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Input from '../input/searchInput/Input';
 import Filter from '../filter/Container';
 import DataList from '../dataList/DataList';
@@ -8,18 +8,27 @@ import { PresenterProps } from '../../types/searchComponent/type';
 function Presenter(props: PresenterProps) {
   const {
     style,
-    showFilter,
-    setShowFilter,
     userSearched,
     setUerSearched,
     value,
     setValue,
     onSubmit,
-    onBlur,
-    onFocus,
-    showDataList,
     resetPageNation,
   } = props;
+
+  const [showFilter, setShowFilter] = useState(false);
+  const [showDataList, setShowDataList] = useState(false);
+  const onBlur = () => {
+    setShowDataList(false);
+  };
+
+  const onFocus = () => {
+    if (showFilter) {
+      return;
+    } else {
+      setShowDataList(true);
+    }
+  };
 
   return (
     <Wrapper>
@@ -44,11 +53,7 @@ function Presenter(props: PresenterProps) {
         resetPageNation={resetPageNation}
       />
       {showFilter && (
-        <Filter
-          showFilter={showFilter}
-          setShowFilter={setShowFilter}
-          onSubmit={onSubmit}
-        />
+        <Filter setShowFilter={setShowFilter} onSubmit={onSubmit} />
       )}
     </Wrapper>
   );

@@ -1,23 +1,18 @@
 import React, { useState } from 'react';
-import Input from '../input/searchInput/Input';
 import Filter from '../filter/Container';
 import DataList from '../dataList/DataList';
 import styled from '@emotion/styled';
 import { PresenterProps } from '../../types/searchComponent/type';
+import Container from '../input/searchInput/Container';
 
 function Presenter(props: PresenterProps) {
-  const {
-    style,
-    userSearched,
-    setUerSearched,
-    value,
-    setValue,
-    onSubmit,
-    resetPageNation,
-  } = props;
-
+  const { used, resetPageNation } = props;
   const [showFilter, setShowFilter] = useState(false);
   const [showDataList, setShowDataList] = useState(false);
+  const [userSearched, setUerSearched] = useState<string[]>(
+    JSON.parse(localStorage.getItem('currentSearch') || '[]'),
+  );
+
   const onBlur = () => {
     setShowDataList(false);
   };
@@ -32,29 +27,26 @@ function Presenter(props: PresenterProps) {
 
   return (
     <Wrapper>
-      <Input
-        value={value}
-        setValue={setValue}
-        style={style}
-        showFilter={showFilter}
-        setShowFilter={setShowFilter}
-        onSubmit={onSubmit}
+      <Container
         onBlur={onBlur}
         onFocus={onFocus}
-      />
-      <DataList
-        style={style}
         showFilter={showFilter}
         userSearched={userSearched}
         setUerSearched={setUerSearched}
-        onSubmit={onSubmit}
+        setShowFilter={setShowFilter}
+        resetPageNation={resetPageNation}
+        used={used}
+      />
+      <DataList
+        used={used}
+        showFilter={showFilter}
+        userSearched={userSearched}
+        setUerSearched={setUerSearched}
         onBlur={onBlur}
         showDataList={showDataList}
         resetPageNation={resetPageNation}
       />
-      {showFilter && (
-        <Filter setShowFilter={setShowFilter} onSubmit={onSubmit} />
-      )}
+      {showFilter && <Filter setShowFilter={setShowFilter} />}
     </Wrapper>
   );
 }

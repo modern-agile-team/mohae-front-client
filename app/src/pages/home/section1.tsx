@@ -31,7 +31,7 @@ export default function Part1() {
         <div className={'description'}>{text.mainDesc}</div>
         <div className={'input-wrapper'}>
           <div className={'main-img'} />
-          <Search main />
+          <Search used="main" />
         </div>
       </div>
       <div className={'category'}>

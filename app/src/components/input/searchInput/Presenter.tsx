@@ -1,9 +1,9 @@
 import React, { useRef } from 'react';
 import Img from '../../img/Img';
 import styled from '@emotion/styled';
-import { SearchInputProps } from '../../../types/searchComponent/searchInput/type';
+import { PresenterProps } from '../../../types/searchComponent/searchInput/type';
 
-function Input(props: SearchInputProps) {
+function Presenter(props: PresenterProps) {
   const {
     showFilter,
     setShowFilter,
@@ -12,27 +12,27 @@ function Input(props: SearchInputProps) {
     onSubmit,
     onBlur,
     onFocus,
-    style,
+    used,
   } = props;
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleOnSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    onSubmit(e, 'search');
+    onSubmit(e);
     inputRef.current?.blur();
   };
 
   return (
     <FormContainer
       id="inputWrap"
-      used={style}
+      used={used}
       value={value}
       showFilter={showFilter}
-      onSubmit={e => handleOnSubmit(e)}
-      onBlur={() => onBlur()}
-      onFocus={() => onFocus()}
+      onSubmit={handleOnSubmit}
+      onBlur={onBlur}
+      onFocus={onFocus}
     >
       <StyledInput
-        used={style}
+        used={used}
         type="text"
         placeholder="검색어를 입력해 주세요."
         onChange={e => setValue(e.target.value)}
@@ -41,18 +41,18 @@ function Input(props: SearchInputProps) {
       />
       <DeleteInputValueImg
         value={value}
-        used={style}
+        used={used}
         onClick={() => setValue('')}
       >
         <Img src="/img/close-dark2.png" />
       </DeleteInputValueImg>
       <hr />
-      <SearchIcon used={style} type="submit">
+      <SearchIcon used={used} type="submit">
         <Img src="/img/search.png" />
       </SearchIcon>
-      {style === 'board' && (
+      {used === 'board' && (
         <FilterIcon
-          used={style}
+          used={used}
           showFilter={showFilter}
           onClick={() => setShowFilter && setShowFilter(!showFilter)}
         >
@@ -63,7 +63,7 @@ function Input(props: SearchInputProps) {
   );
 }
 
-export default Input;
+export default Presenter;
 
 const FormContainer = styled.form<{
   used: string;

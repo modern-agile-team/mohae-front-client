@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import styled from '@emotion/styled';
-import { useSearchParams } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import Img from '../../img/Img';
 import { UserSearchedKeysProps } from '../../../types/searchComponent/dataList/type';
 
 function UserSearchedKeys(props: UserSearchedKeysProps) {
-  const { userSearched, setUerSearched, onSubmit, onBlur, style, children } =
+  const { onSubmit, onBlur, userSearched, setUerSearched, used, children } =
     props;
+  const { search: queryString } = useLocation();
   const [searchParams, __] = useSearchParams();
   const [_, setSearchQuery] = useState<string | null>(
     searchParams.get('title'),
@@ -32,17 +33,17 @@ function UserSearchedKeys(props: UserSearchedKeysProps) {
       if (prev === searchValue) {
         return prev;
       } else {
-        onSubmit(e, 'fliter', searchValue);
+        onSubmit(e, searchValue);
         onBlur();
         return searchValue;
       }
     });
   };
 
-  const searchList = () => {
+  const searchList = useCallback(() => {
     if (userSearched.length === 0) {
       return (
-        <SearchKeysContents used={style} hover={false}>
+        <SearchKeysContents used={used} hover={false}>
           <div id="list">최근 검색 내역이 없습니다.</div>
         </SearchKeysContents>
       );
@@ -51,7 +52,7 @@ function UserSearchedKeys(props: UserSearchedKeysProps) {
         return (
           i < 5 && (
             <SearchKeysContents
-              used={style}
+              used={used}
               hover={true}
               key={i}
               onClick={e => handleSearchHistory(e, el)}
@@ -65,10 +66,10 @@ function UserSearchedKeys(props: UserSearchedKeysProps) {
         );
       });
     }
-  };
+  }, [queryString]);
 
   return (
-    <Container used={style}>
+    <Container used={used}>
       <div id="titleWrap">
         {children}
         <div id="allClear" onClick={deleteAll}>

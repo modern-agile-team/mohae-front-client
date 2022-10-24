@@ -3,7 +3,7 @@ import { Dispatch } from 'react';
 //------------------------------------------------------------
 interface ExtendsTypeForPage {
   setShowFilter: Dispatch<React.SetStateAction<boolean>>;
-  onSubmit: (e: React.MouseEvent | React.ChangeEvent, str: string) => void;
+  // onSubmit: (e: React.MouseEvent | React.ChangeEvent, str: string) => void;
 }
 
 interface ExtendsTypeForSection {
@@ -50,7 +50,7 @@ interface ObjDataProcessing {
 
 interface ContainerProps extends ExtendsTypeForPage {
   setShowFilter: Dispatch<React.SetStateAction<boolean>>;
-  onSubmit: (e: React.MouseEvent | React.ChangeEvent, str: string) => void;
+  // onSubmit: (e: React.MouseEvent | React.ChangeEvent, str: string) => void;
 }
 
 interface PresenterProps extends ExtendsTypeForPage {

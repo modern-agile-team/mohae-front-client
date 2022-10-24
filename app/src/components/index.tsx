@@ -13,8 +13,8 @@ import { Btn, WhiteButton, MainButton } from './button';
 import MarkBox from './markbox/MarkBox';
 import Mosaic from './mosaic/Mosaic';
 import PostIt from './postit/PostIt';
-import { Search } from './search/Container';
-import Input from './input/searchInput/Input';
+import Search from './search/Container';
+import Container from './input/searchInput/Container';
 import TextEditor from './input/text-editor/Editor';
 import { FocusBar, HalfBar } from './focusBar';
 import Profile from './profile/Profile';
@@ -31,7 +31,7 @@ export {
   Comment,
   Category,
   PostIt,
-  Input,
+  Container,
   Search,
   Mosaic,
   Text,

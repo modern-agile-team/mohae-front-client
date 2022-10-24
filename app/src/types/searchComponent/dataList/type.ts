@@ -2,14 +2,9 @@ import { Dispatch } from 'react';
 
 //------------------------------------------------------------
 interface TypeForExtends {
-  style: string;
+  used: string;
   userSearched: string[];
   setUerSearched: Dispatch<React.SetStateAction<string[]>>;
-  onSubmit: (
-    e: React.MouseEvent | React.FormEvent<HTMLFormElement>,
-    str: string,
-    searchValue?: string,
-  ) => void;
   onBlur: () => void;
 }
 //------------------------------------------------------------
@@ -28,6 +23,10 @@ interface HotCategoriesProps {
 
 interface UserSearchedKeysProps extends TypeForExtends {
   children: React.ReactNode;
+  onSubmit: (
+    e: React.MouseEvent | React.FormEvent<HTMLFormElement>,
+    searchValue: string,
+  ) => void;
 }
 
 interface DataListProps extends TypeForExtends {

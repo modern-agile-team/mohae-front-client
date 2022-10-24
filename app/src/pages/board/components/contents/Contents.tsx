@@ -1,7 +1,12 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import styled from '@emotion/styled';
 import { useSelector } from 'react-redux';
-import { Link, useParams, useSearchParams } from 'react-router-dom';
+import {
+  Link,
+  useLocation,
+  useParams,
+  useSearchParams,
+} from 'react-router-dom';
 import { Poster, PostsNotExist, Spinner } from '../../../../components';
 import { categoryList } from '../../../../components/category/categoryList';
 import { RootState } from '../../../../redux/root';
@@ -16,6 +21,7 @@ function Contents(props: ContentsProps) {
   const { setTarget } = props;
   const { no } = useParams();
   const [searchParams, _] = useSearchParams();
+  const { search: queryString } = useLocation();
   const { response, loading } = useSelector((state: RootState) => state.board);
   const [keepCheckingIsResEmpty, setKeepCheckingIsResEmpty] =
     useState<KeepCheckingIsResEmpty>({
@@ -33,7 +39,7 @@ function Contents(props: ContentsProps) {
       categoryName: categoryList[Number(no) - 1].name,
       titleSearch: searchParams.get('title'),
     };
-  }, [no, searchParams.get('title')]);
+  }, [no, queryString]);
 
   useEffect(() => {
     setKeepCheckingIsResEmpty(prev => {

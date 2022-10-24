@@ -1,14 +1,22 @@
 import { Dispatch } from 'react';
 
-interface SearchInputProps {
+interface TypeForExtends {
   setShowFilter?: Dispatch<React.SetStateAction<boolean>>;
   showFilter?: boolean;
-  value: string;
-  setValue: Dispatch<React.SetStateAction<string>>;
-  onSubmit: (e: React.FormEvent<HTMLFormElement>, str: string) => void;
   onBlur: () => void;
   onFocus: () => void;
-  style: string;
+  used: string;
 }
 
-export type { SearchInputProps };
+interface ContainerProps extends TypeForExtends {
+  userSearched: string[];
+  setUerSearched: Dispatch<React.SetStateAction<string[]>>;
+}
+
+interface PresenterProps extends TypeForExtends {
+  value: string;
+  setValue: Dispatch<React.SetStateAction<string>>;
+  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+}
+
+export type { ContainerProps, PresenterProps };

@@ -34,7 +34,6 @@ function Presenter(props: PresenterProps) {
         userSearched={userSearched}
         setUerSearched={setUerSearched}
         setShowFilter={setShowFilter}
-        resetPageNation={resetPageNation}
         used={used}
       />
       <DataList

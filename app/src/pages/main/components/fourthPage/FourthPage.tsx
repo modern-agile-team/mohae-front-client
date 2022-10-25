@@ -1,22 +1,15 @@
-/** @format */
-
 import { useState, useEffect } from 'react';
 import { css, cx } from '@emotion/css';
-import { color, radius, font, shadow } from '../../styles';
-import { Img, NewPost, Poster } from '../../components';
+import { color, radius, font } from '../../../../styles';
+import { Img, Poster } from '../../../../components';
 import {
   getHotAll,
   getHotProgressing,
   getHotOver,
-} from '../../redux/main/reducer';
+} from '../../../../redux/main/reducer';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../../redux/root';
-import { AppDispatch } from '../../redux/root';
+import { RootState, AppDispatch } from '../../../../redux/root';
 import { Link } from 'react-router-dom';
-
-interface Props {
-  [key: string]: any;
-}
 
 interface Focus {
   [key: string]: string;
@@ -25,7 +18,7 @@ interface Focus {
 interface Text {
   [key: string]: any | Focus;
 }
-export default function Part4(props: Props) {
+function FourthPage() {
   const text: Text = {
     focus: { all: 'All', inProgress: '진행 중', end: '마감' },
   };
@@ -221,3 +214,5 @@ export default function Part4(props: Props) {
     </div>
   );
 }
+
+export default FourthPage;

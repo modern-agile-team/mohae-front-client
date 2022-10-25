@@ -1,11 +1,6 @@
-/** @format */
-
-import { useState, useEffect, Dispatch, SetStateAction } from 'react';
+import { useEffect, Dispatch, SetStateAction } from 'react';
 import { Snap } from '../../components';
-import Part1 from './section1';
-import Part2 from './section2';
-import Part3 from './section3';
-import Part4 from './section4';
+import { FirstPage, SecondPage, ThirdPage, FourthPage } from './components';
 import { useSearchParams } from 'react-router-dom';
 
 interface Props {
@@ -13,9 +8,14 @@ interface Props {
   setSnapPageNumber: Dispatch<SetStateAction<number>>;
 }
 
-export default function Home({ snapPageNumber, setSnapPageNumber }: Props) {
-  const contents = [<Part1 />, <Part2 />, <Part3 />, <Part4 />];
-  const [searchParams, setSearchParams] = useSearchParams();
+function Main({ snapPageNumber, setSnapPageNumber }: Props) {
+  const contents = [
+    <FirstPage />,
+    <SecondPage />,
+    <ThirdPage />,
+    <FourthPage />,
+  ];
+  const [_, setSearchParams] = useSearchParams();
 
   useEffect(() => {
     setSearchParams('');
@@ -32,3 +32,5 @@ export default function Home({ snapPageNumber, setSnapPageNumber }: Props) {
     />
   );
 }
+
+export default Main;

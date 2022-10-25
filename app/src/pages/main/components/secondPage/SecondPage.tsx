@@ -1,9 +1,7 @@
-/** @format */
-
 import { css, cx } from '@emotion/css';
-import { color, radius, font, shadow } from '../../styles';
+import { color, radius, shadow } from '../../../../styles';
 
-export default function Part2() {
+function SecondPage() {
   const text = {
     recommend: {
       '1-1': `쉽고 빠르게 내가 원하는 분야의`,
@@ -113,3 +111,5 @@ export default function Part2() {
 
   return <>{page}</>;
 }
+
+export default SecondPage;

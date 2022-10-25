@@ -1,10 +1,8 @@
-/** @format */
-
 import { css, cx } from '@emotion/css';
-import { color } from '../../styles';
-import { Categories, Img, Search } from '../../components';
+import { color } from '../../../../styles';
+import { Categories, Img, Search } from '../../../../components';
 
-export default function Part1() {
+function FirstPage() {
   const text: { [key: string]: any } = {
     wannaHelp: '도움이 필요할 땐,',
     name: {
@@ -44,6 +42,8 @@ export default function Part1() {
     </div>
   );
 }
+
+export default FirstPage;
 
 const style = css`
   padding: calc((100vh - 59px - 647px) / 2) calc((100% - 1128px) / 2);

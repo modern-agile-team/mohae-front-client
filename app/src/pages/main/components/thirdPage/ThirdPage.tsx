@@ -1,18 +1,10 @@
-/** @format */
-
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { css, cx } from '@emotion/css';
-import { color, radius, font, shadow } from '../../styles';
-import { Img } from '../../components';
-import { setMaxListeners } from 'process';
+import { color, radius } from '../../../../styles';
+import { Img } from '../../../../components';
 import styled from '@emotion/styled';
-import { url } from 'inspector';
 
-interface Props {
-  [key: string]: any;
-}
-
-export default function Part3(props: Props) {
+function ThirdPage() {
   const [imgs, setImgs] = useState([
     '/img/guide-01.jpg',
     '/img/guide-02.jpg',
@@ -211,6 +203,8 @@ export default function Part3(props: Props) {
     </div>
   );
 }
+
+export default ThirdPage;
 
 const Overlay = styled.div`
   position: absolute;

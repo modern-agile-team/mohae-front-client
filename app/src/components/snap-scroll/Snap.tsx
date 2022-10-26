@@ -23,8 +23,6 @@ export default function Snap({
     overflow: auto;
     height: fit-content;
     background-color: blue;
-    scroll-snap-type: y;
-    scroll-snap-type: y mandatory;
     &::-webkit-scrollbar {
       display: none;
     }

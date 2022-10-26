@@ -29,7 +29,7 @@ function InteractionPart(props: InteractionPartProps) {
   return (
     <>
       <CategoryBoard>{`${categoryName} 게시판`}</CategoryBoard>
-      <Categories num={7} resetPageNation={resetPageNation} />
+      <Categories num={7} />
       <FlexWrapper>
         <Search used="board" resetPageNation={resetPageNation} />
         <ButtonWrapper>

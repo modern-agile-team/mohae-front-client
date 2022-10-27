@@ -12,8 +12,8 @@ interface Props {
     photoUrl: string | null;
     price: number | null;
     target: number;
-    areaNo: number;
-    areaName: string;
+    areaNo?: number;
+    areaName?: string;
     nickname: string;
     area?: string;
   };

@@ -1,14 +1,10 @@
-import { useEffect, Dispatch, SetStateAction } from 'react';
+import { useEffect } from 'react';
 import { Snap } from '../../components';
 import { FirstPage, SecondPage, ThirdPage, FourthPage } from './components';
 import { useSearchParams } from 'react-router-dom';
+import { MainProps } from '../../types/main/fourthPage/type';
 
-interface Props {
-  snapPageNumber: number;
-  setSnapPageNumber: Dispatch<SetStateAction<number>>;
-}
-
-function Main({ snapPageNumber, setSnapPageNumber }: Props) {
+function Main({ snapPageNumber, setSnapPageNumber }: MainProps) {
   const contents = [
     <FirstPage />,
     <SecondPage />,

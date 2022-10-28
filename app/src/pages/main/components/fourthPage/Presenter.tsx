@@ -2,7 +2,10 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { Poster } from '../../../../components';
 import { HotBoardsFilter, Tropy } from './components';
-import { HotBoard, PresenterProps } from '../../../../types/main/type';
+import {
+  HotBoard,
+  PresenterProps,
+} from '../../../../types/main/fourthPage/type';
 import { Link } from 'react-router-dom';
 
 function Presenter({ focus, setFocus, hotBoardsBasket }: PresenterProps) {

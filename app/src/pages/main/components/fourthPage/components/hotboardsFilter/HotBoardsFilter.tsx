@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { HotBoardsFilterProps } from '../../../../../../types/main/type';
+import { HotBoardsFilterProps } from '../../../../../../types/main/fourthPage/type';
 
 function HotBoardsFilter({ focus, setFocus }: HotBoardsFilterProps) {
   const text: { [key: string]: string } = {

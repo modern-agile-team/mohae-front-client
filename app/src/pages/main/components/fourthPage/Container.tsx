@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { requestHotBoards } from '../../../../apis/hotBoards';
-import { HotBoard, HotBoardsBasket } from '../../../../types/main/type';
+import { HotBoard, HotBoardsBasket } from '../../../../types/main/fourthPage/type';
 import Presenter from './Presenter';
 
 function Container() {

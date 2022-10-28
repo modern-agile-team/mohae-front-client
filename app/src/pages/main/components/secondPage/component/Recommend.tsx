@@ -1,10 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
-
-interface RecommendProps {
-  imgUrl: { default: string; hover: string };
-  text: { first: string; second: string };
-}
+import { RecommendProps } from '../../../../../types/main/secondPage/type';
 
 function Recommend(props: RecommendProps) {
   const { imgUrl, text } = props;

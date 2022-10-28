@@ -1,12 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import Recommend from './component/Recommend';
-
-interface Basket {
-  [numberKey: number]: {
-    [key: string]: string;
-  };
-}
+import { Basket } from '../../../../types/main/secondPage/type';
 
 function Presenter() {
   const imgBasket: Basket = {

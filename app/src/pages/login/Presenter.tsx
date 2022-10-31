@@ -1,6 +1,6 @@
 /** @format */
 
-import { Img, FocusBar, Popup, Btn } from '../../components';
+import { Img, Popup, Btn } from '../../components';
 import AuthModal from '../../components/modal/AuthModal';
 import { radius, font, color, shadow } from '../../styles';
 import { css, cx } from '@emotion/css';

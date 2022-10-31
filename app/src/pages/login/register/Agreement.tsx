@@ -162,7 +162,10 @@ const CheckDone = styled.div`
   height: 16px;
   border-radius: 2px;
   box-shadow: 0px 0px 4px 0px #84838d;
-
+  background-color: #ff445e;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
 
   div {

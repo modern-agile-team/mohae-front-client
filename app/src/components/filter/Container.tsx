@@ -1,100 +1,151 @@
-import React, { Dispatch, useState } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCheck, resetFilteringSetting } from '../../redux/filter/reducer';
+import { setCheck } from '../../redux/filter/reducer';
 import { RootState } from '../../redux/root';
-import MarkBox from '../markbox/MarkBox';
 import Presenter from './Presenter';
+import {
+  ContainerProps,
+  FilterInitialState,
+  ObjDataProcessing,
+} from '../../types/searchComponent/filter/type';
+import { useParams, useSearchParams } from 'react-router-dom';
 
-interface type {
-  [title: string]: any;
+interface SetItemCheckParams {
+  key: 'target' | 'sort' | 'date' | 'free';
+  index: number;
 }
 
-interface Props {
-  setShowFilter: Dispatch<React.SetStateAction<boolean>>;
-  showFilter: boolean;
-  onSubmit: (e: any, str: string) => void;
-}
-
-function Filter({ setShowFilter, showFilter, onSubmit }: Props) {
-  const filterData: any = useSelector((state: RootState) => state.filter.data);
+function Filter({ setShowFilter }: ContainerProps) {
   const dispatch = useDispatch();
-  const [view, setView] = useState<{ [key: number]: boolean }>({ 0: false });
+  const { check, area, price }: FilterInitialState = useSelector(
+    (state: RootState) => state.filter.data,
+  );
+  const { no } = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const resetSetting = () => {
-    dispatch(resetFilteringSetting());
+  const getParams = (query: string): any => {
+    return searchParams.get(query);
+  };
+  const changeNull = (filteringValue: boolean | number | string) => {
+    if (
+      filteringValue === false ||
+      filteringValue === 0 ||
+      filteringValue === 1000000
+    ) {
+      return null;
+    } else return filteringValue;
   };
 
-  const setItemCheck = (list: string, key: string) => {
-    const reset = Object.keys(filterData.check[list]).map(
-      (el: any, i) => false,
-    );
+  const objDataProcessing: ObjDataProcessing = {
+    check: {
+      sort: {
+        1: changeNull(check.sort[0]),
+        DESC: changeNull(check.sort[1]),
+        ASC: changeNull(check.sort[2]),
+      },
+      target: {
+        0: changeNull(check.target[0]),
+        1: changeNull(check.target[1]),
+      },
+      date: {
+        7: changeNull(check.date[0]),
+        30: changeNull(check.date[1]),
+        60: changeNull(check.date[2]),
+        0: changeNull(check.date[3]),
+      },
+      free: { 1: changeNull(check.free[0]) },
+    },
+    area: {
+      areaNo: changeNull(area.areaNo),
+    },
+    price: {
+      min: changeNull(price.min),
+      max: changeNull(price.max),
+    },
+  };
+
+  const sortQuery = () => {
+    if (objDataProcessing.check.sort[1] !== null) {
+      return '&popular=1';
+    } else
+      return (
+        '&sort=' +
+        Object.keys(objDataProcessing.check.sort)
+          .map((el, i) => {
+            if (objDataProcessing.check.sort[el] !== null) {
+              return Object.keys(objDataProcessing.check.sort)[i];
+            }
+          })
+          .filter(el => el)[0]
+      );
+  };
+
+  const drawObjKey = (obj: any) => {
+    const value = Object.keys(obj)
+      .map((el, i) => {
+        if (obj[el] !== null) {
+          return Object.keys(obj)[i];
+        }
+      })
+      .filter(el => el)[0];
+    return value ? value : null;
+  };
+
+  const handlePriceQuery = () => {
+    return {
+      min:
+        objDataProcessing.check.free[1] === null
+          ? objDataProcessing.price.min
+          : null,
+      max:
+        objDataProcessing.check.free[1] === null
+          ? objDataProcessing.price.max
+          : null,
+    };
+  };
+
+  const onSubmitTest = (
+    e: React.MouseEvent | React.FormEvent<HTMLFormElement> | React.ChangeEvent,
+  ) => {
+    const query = `?categoryNo=${no}&title=${getParams(
+      'title',
+    )}${sortQuery()}&target=${drawObjKey(
+      objDataProcessing.check.target,
+    )}&date=${drawObjKey(objDataProcessing.check.date)}&free=${drawObjKey(
+      objDataProcessing.check.free,
+    )}&min=${handlePriceQuery().min}&max=${handlePriceQuery().max}&areaNo=${
+      objDataProcessing.area.areaNo
+    }`;
+    e.preventDefault();
+
+    setSearchParams(query);
+  };
+
+  const setItemCheck = (param: SetItemCheckParams) => {
+    const resetValue = Object.keys(check[param.key]).map((_: string, __) => {
+      return false;
+    });
 
     const newItem = {
-      sort: { ...filterData.check.sort },
-      target: { ...filterData.check.target },
-      date: { ...filterData.check.date },
-      free: { ...filterData.check.free },
-      [list]: {
-        ...reset,
-        [key]: !filterData.check[list][key],
+      sort: { ...check.sort },
+      target: { ...check.target },
+      date: { ...check.date },
+      free: { ...check.free },
+      [param.key]: {
+        ...resetValue,
+        [param.index]: !check[param.key][param.index],
       },
     };
     dispatch(setCheck(newItem));
   };
 
-  const priceRange = (minValue: number, maxValue: number) => {
-    if (filterData.check.free[0]) {
-      return `무료`;
-    }
-    if (0 < minValue && maxValue < 1000000) {
-      return `${minValue.toLocaleString()} 원 ~ ${maxValue.toLocaleString()} 원`;
-    }
-    if (minValue > 0) {
-      return `${minValue.toLocaleString()} 원 이상`;
-    }
-    if (maxValue < 1000000) {
-      return `${maxValue.toLocaleString()} 원 이하`;
-    }
-
-    return '모든 가격대';
-  };
-
   return (
     <Presenter
-      contents={contents}
-      texts={texts}
-      priceRange={priceRange}
-      view={view}
-      setView={setView}
       setItemCheck={setItemCheck}
-      resetSetting={resetSetting}
-      onSubmit={onSubmit}
+      onSubmit={onSubmitTest}
       setShowFilter={setShowFilter}
-      showFilter={showFilter}
     />
   );
 }
 
 export default Filter;
-export type { type };
-
-const contents: type = {
-  sort: ['인기순', '최신순', '오래된순'],
-  target: [
-    <>
-      <MarkBox shape={0} state={0} size={'small'} />
-      해줄래요
-    </>,
-    <>
-      <MarkBox shape={1} state={0} size={'small'} />
-      구할래요
-    </>,
-  ],
-  date: ['1주일', '1개월', '3개월', '상시'],
-  free: ['무료'],
-};
-
-const texts: type = {
-  top: ['정렬', '대상'],
-  mid: ['기간', '지역'],
-};

@@ -1,7 +1,6 @@
 import { keyframes } from '@emotion/css';
 import { Box } from '../../components';
 import MarkBox from '../markbox/MarkBox';
-import { useMemo } from 'react';
 import styled from '@emotion/styled';
 
 interface Props {
@@ -11,31 +10,28 @@ interface Props {
   size: 'large' | 'medium';
 }
 
-export function ImgBox({ img, state, shape, size }: Props) {
-  const memorization = useMemo(() => {
-    return {
-      size: size === 'large' ? [360, 208] : [264, 152],
-      zoomIn: keyframes`
-    from {
-      background-size: 100%;
-    }
-    to {
-      background-size: 120%;
-    }
-    `,
-      posterImg:
-        img && img !== null
-          ? `https://d2ffbnf2hpheay.cloudfront.net/${img}?w=264&h152`
-          : '/img/logo.png',
-    };
-  }, []);
+function ImgBox({ img, state, shape, size }: Props) {
+  const posterImg =
+    img && img !== null
+      ? `https://d2ffbnf2hpheay.cloudfront.net/${img}?w=264&h152`
+      : '/img/logo.png';
+
+  const zoomIn = keyframes`
+  from {
+    background-size: 100%;
+  }
+  to {
+    background-size: 120%;
+  }
+  `;
+  const containerSize = size === 'large' ? [360, 208] : [264, 152];
 
   return (
     <Container
       img={img}
-      posterImg={memorization.posterImg}
-      animation={memorization.zoomIn}
-      size={memorization.size}
+      posterImg={posterImg}
+      animation={zoomIn}
+      size={containerSize}
     >
       <div className="markBox">
         <MarkBox shape={shape} state={state} size={'small'} />

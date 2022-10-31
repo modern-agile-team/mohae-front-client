@@ -29,9 +29,9 @@ function InteractionPart(props: InteractionPartProps) {
   return (
     <>
       <CategoryBoard>{`${categoryName} 게시판`}</CategoryBoard>
-      <Categories num={7} resetPageNation={resetPageNation} />
+      <Categories num={7} />
       <FlexWrapper>
-        <Search board resetPageNation={resetPageNation} />
+        <Search used="board" resetPageNation={resetPageNation} />
         <ButtonWrapper>
           <MainButton type="button" able={true} onClick={controlWriteButton}>
             <p>글쓰기</p>

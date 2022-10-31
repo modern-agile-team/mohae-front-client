@@ -9,10 +9,9 @@ import { categoryList } from './categoryList';
 
 interface Props {
   num: number;
-  resetPageNation?: () => void;
 }
 
-export default function Categories({ num, resetPageNation }: Props) {
+export default function Categories({ num }: Props) {
   const param = useParams().no;
   const [arr, setArr] = useState(categoryList.map((_, index) => index));
   const itemsize = 120;
@@ -108,7 +107,6 @@ export default function Categories({ num, resetPageNation }: Props) {
           name={categoryList[arr[arr.length - 1]].name}
           id={categoryList[arr[arr.length - 1]].no}
           img={categoryList[arr[arr.length - 1]].img}
-          resetPageNation={resetPageNation}
         />
       </div>
       {Array(showNumber)
@@ -121,7 +119,6 @@ export default function Categories({ num, resetPageNation }: Props) {
               id={categoryList[arr[index]].no}
               name={categoryList[arr[index]].name}
               img={categoryList[arr[index]].img}
-              resetPageNation={resetPageNation}
             />
           </div>
         ))}
@@ -132,7 +129,6 @@ export default function Categories({ num, resetPageNation }: Props) {
           id={categoryList[arr[showNumber]].no}
           name={categoryList[arr[showNumber]].name}
           img={categoryList[arr[showNumber]].img}
-          resetPageNation={resetPageNation}
         />
       </div>
     </div>

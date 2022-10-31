@@ -8,7 +8,6 @@ import { Link, useLocation, useParams } from 'react-router-dom';
 
 interface Props {
   [key: string]: any;
-  resetPageNation?: () => void;
 }
 
 export default function Category({
@@ -18,7 +17,6 @@ export default function Category({
   id,
   className,
   onClick,
-  resetPageNation,
 }: Props): ReactElement {
   const { no } = useParams();
   const style: { [key: string]: any } = {
@@ -106,11 +104,7 @@ export default function Category({
   };
 
   return !(shape === 'row') ? (
-    <Link
-      to={`/boards/categories/${id}`}
-      className={cx(style[shape])}
-      onClick={String(id) !== no ? resetPageNation : undefined}
-    >
+    <Link to={`/boards/categories/${id}`} className={cx(style[shape])}>
       {!(shape === 'row') && (
         <>
           <div className={'icon'}>

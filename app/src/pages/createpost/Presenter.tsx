@@ -82,10 +82,13 @@ function Presenter(props: Props) {
         onClick={e => dispatch(setTarget(Number(e.currentTarget.id)))}
       >
         <SelectBtn
-          large
           onChange={() => setTargetCheck(i)}
           checked={targetChecked[i]}
-          type={'radio'}
+          attributes={{
+            size: 'large',
+            name: 'target',
+            type: 'radio',
+          }}
         >
           {el}
         </SelectBtn>

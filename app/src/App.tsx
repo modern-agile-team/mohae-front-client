@@ -13,7 +13,7 @@ import { color, Layout } from './styles';
 import {
   Board,
   CreateAndEditPost,
-  Home,
+  Main,
   MyPage,
   Post,
   LoginModal,
@@ -86,7 +86,7 @@ const App: React.SFC = () => {
               setSnapPageNumber={setSnapPageNumber}
               main
               component={
-                <Home
+                <Main
                   snapPageNumber={snapPageNumber}
                   setSnapPageNumber={setSnapPageNumber}
                 />

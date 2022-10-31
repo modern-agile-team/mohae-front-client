@@ -3,28 +3,60 @@ import styled from '@emotion/styled';
 import HotCategories from './Contents/HotCategories';
 import UserSearchedKeys from './Contents/UserSearchedKeys';
 import { DataListProps } from '../../types/searchComponent/dataList/type';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 
 function DataList(props: DataListProps) {
   const {
-    style,
+    used,
     showFilter,
     userSearched,
     setUerSearched,
-    onSubmit,
     onBlur,
     showDataList,
     resetPageNation,
   } = props;
+  const { no } = useParams();
+  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const getParams = (query: string): string | null => {
+    return searchParams.get(query);
+  };
+
+  const sortQuery = () => {
+    if (getParams('popular') !== null) {
+      return '&popular=1';
+    } else return `&sort=${getParams('sort')}`;
+  };
+
+  const onSubmit = (
+    e: React.MouseEvent | React.FormEvent<HTMLFormElement> | React.ChangeEvent,
+    userSearched: string,
+  ) => {
+    e.preventDefault();
+
+    const query = `?categoryNo=${
+      no || 1
+    }&title=${userSearched}${sortQuery()}&target=${getParams(
+      'target',
+    )}&date=${getParams('date')}&free=${getParams('free')}&min=${getParams(
+      'min',
+    )}&max=${getParams('max')}&areaNo=${getParams('areaNo')}`;
+
+    setSearchParams(query);
+    if (used === 'main') {
+      navigate('boards/categories/1' + query);
+    }
+  };
 
   return (
-    <Container showFilter={showFilter} showDataList={showDataList} used={style}>
+    <Container showFilter={showFilter} showDataList={showDataList} used={used}>
       <div id="dataListWrap">
         <UserSearchedKeys
           userSearched={userSearched}
           setUerSearched={setUerSearched}
           onSubmit={onSubmit}
           onBlur={onBlur}
-          style={style}
+          used={used}
         >
           <TitleContainer>최근 검색어</TitleContainer>
         </UserSearchedKeys>

@@ -2,17 +2,13 @@
 
 import { useState, useEffect, useCallback, Fragment } from 'react';
 import { css, cx } from '@emotion/css';
-import { color, radius, font, shadow } from '../../styles';
+import { color, radius, font, shadow } from '../../../../styles';
 
 interface Props {
   [key: string]: any;
 }
 
-export default function Snap({
-  contents,
-  snapPageNumber,
-  setSnapPageNumber,
-}: Props) {
+function SnapScroll({ contents, snapPageNumber, setSnapPageNumber }: Props) {
   const section = [1, 2, 3, 4],
     size = 'calc(100vh - 59px)',
     // 높이
@@ -153,3 +149,5 @@ export default function Snap({
     </div>
   );
 }
+
+export default SnapScroll;

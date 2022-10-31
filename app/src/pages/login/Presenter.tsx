@@ -195,9 +195,6 @@ export default function Presenter({
       z-index: 8;
     }
     #submit-btn {
-      width: 100%;
-      height: 100%;
-      ${radius[6]}
       background-color: ${color.main};
       color: white;
       ${font.size[14]}

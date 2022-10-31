@@ -7,7 +7,6 @@ import { Btn, Img, Popup } from '../../../components';
 import { RootState } from '../../../redux/root';
 import { ENDPOINT } from '../../../utils/ENDPOINT';
 import { customAxios } from '../../../apis/instance';
-import setInterceptors from '../../../apis/common/setInterceptors';
 
 interface Object {
   [key: string]: any;

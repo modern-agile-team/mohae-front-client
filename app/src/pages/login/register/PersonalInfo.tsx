@@ -7,7 +7,6 @@ import { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../redux/root';
 import { update_regist_info } from '../../../redux/user/reducer';
-import axios from 'axios';
 import { ENDPOINT } from '../../../utils/ENDPOINT';
 import getToken from '../../../utils/getToken';
 import styled from '@emotion/styled';

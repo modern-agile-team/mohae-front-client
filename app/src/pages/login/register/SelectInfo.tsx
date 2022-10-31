@@ -3,12 +3,10 @@ import { css, cx } from '@emotion/css';
 import { useSelector } from 'react-redux';
 import styled from '@emotion/styled';
 import { color, radius, shadow } from '../../../styles';
-import { Btn, Img, Popup } from '../../../components';
+import { Btn, Img } from '../../../components';
 import { RootState } from '../../../redux/root';
 import { ENDPOINT } from '../../../utils/ENDPOINT';
-import axios from 'axios';
 import { customAxios } from '../../../apis/instance';
-import setInterceptors from '../../../apis/common/setInterceptors';
 
 interface Object {
   [key: string]: any;

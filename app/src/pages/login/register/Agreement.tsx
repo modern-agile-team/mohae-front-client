@@ -150,9 +150,6 @@ const CheckItem = styled.div`
   }
 `;
 const CheckBox = styled.div`
-  width: 16px;
-  height: 16px;
-  border-radius: 2px;
   background-color: #ffffff;
   box-shadow: 0px 0px 4px 0px #84838d;
   cursor: pointer;

@@ -160,17 +160,7 @@ const Container = styled.div`
     flex-direction: column;
   }
 
-  > .user {
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    height: fit-content;
-    margin: 40px 0 64px;
-    > .box {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 24px 24px 73px;
+ 
 
       .profileHeader {
         display: flex;

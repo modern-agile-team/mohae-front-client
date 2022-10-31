@@ -1,6 +1,12 @@
-import { useEffect } from 'react';
-import { Snap } from '../../components';
-import { FirstPage, SecondPage, ThirdPage, FourthPage } from './components';
+import React, { useEffect } from 'react';
+import {
+  FirstPage,
+  SecondPage,
+  ThirdPage,
+  FourthPage,
+  SnapScroll,
+  Container,
+} from './components';
 import { useSearchParams } from 'react-router-dom';
 import { MainProps } from '../../types/main/fourthPage/type';
 
@@ -21,7 +27,7 @@ function Main({ snapPageNumber, setSnapPageNumber }: MainProps) {
   }, []);
 
   return (
-    <Snap
+    <Container
       snapPageNumber={snapPageNumber}
       setSnapPageNumber={setSnapPageNumber}
       contents={contents}

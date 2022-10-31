@@ -6,7 +6,6 @@ import { color, radius, shadow } from '../../../styles';
 import { Btn, Img, Popup } from '../../../components';
 import { RootState } from '../../../redux/root';
 import { ENDPOINT } from '../../../utils/ENDPOINT';
-import axios from 'axios';
 import { customAxios } from '../../../apis/instance';
 import setInterceptors from '../../../apis/common/setInterceptors';
 

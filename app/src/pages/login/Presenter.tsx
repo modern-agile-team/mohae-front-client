@@ -14,7 +14,10 @@ import FindPassword from './findPassword/FindPassword';
 import styled from '@emotion/styled';
 
 interface Props {
-  [key: string]: any;
+  text: any;
+  isOpenModal: boolean;
+  part: number;
+  onClick: any;
   setPart: React.Dispatch<React.SetStateAction<number>>;
 }
 

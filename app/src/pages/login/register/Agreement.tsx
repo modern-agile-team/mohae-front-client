@@ -83,9 +83,7 @@ const Agreement = ({
     agreementContentsAllClose();
   };
 
-  useEffect(() => {
-    onAllCheck();
-  }, [allCheck]);
+  useEffect(onAllCheck, [allCheck]);
 
   return (
     <Wrapper>

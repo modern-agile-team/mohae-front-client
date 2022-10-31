@@ -1,7 +1,7 @@
 /** @format */
 
-import { radius, font, color, shadow } from '../../../styles';
-import { css, cx } from '@emotion/css';
+import { color, shadow } from '../../../styles';
+import { css } from '@emotion/css';
 export const style = (isOpen: any) => css`
   height: fit-content;
   > .sub-description {

@@ -1,6 +1,6 @@
 /** @format */
 
-import { radius, font, color, shadow } from '../../../styles';
+import { radius, color, shadow } from '../../../styles';
 import { css, cx } from '@emotion/css';
 export const style = (isOpen: any) => css`
   height: fit-content;

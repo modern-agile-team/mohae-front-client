@@ -2,7 +2,6 @@ import styled from '@emotion/styled';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { changePassword } from '../../../../apis/changePassword';
-import { Img } from '../../../../components';
 import { RootState } from '../../../../redux/root';
 
 interface Props {

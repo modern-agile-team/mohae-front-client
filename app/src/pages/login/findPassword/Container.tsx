@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, { useState } from 'react';
 import { customAxios } from '../../../apis/instance';
 import { ENDPOINT } from '../../../utils/ENDPOINT';

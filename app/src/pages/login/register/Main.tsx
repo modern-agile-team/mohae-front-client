@@ -36,7 +36,6 @@ export default function Main({ text, next }: Props) {
 }
 
 const style = css`
-  /* width: 480px; */
   display: flex;
   flex-direction: column;
   align-items: center;

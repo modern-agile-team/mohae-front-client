@@ -1,5 +1,6 @@
 import { customAxios } from './instance';
 import setInterceptors from './common/setInterceptors';
+import { AxiosResponse } from 'axios';
 
 interface ChangePasswordType {
   email: string;
@@ -8,7 +9,8 @@ interface ChangePasswordType {
   confirmChangePassword: string;
 }
 
-export const changePassword = (data: ChangePasswordType) => {
-  console.log(data);
+export const changePassword = (
+  data: ChangePasswordType,
+): Promise<AxiosResponse> => {
   return setInterceptors(customAxios).patch(`/auth/change/password`, data);
 };

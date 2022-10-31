@@ -17,6 +17,7 @@ import { useLocation } from 'react-router-dom';
 import { ENDPOINT } from '../../../utils/ENDPOINT';
 import { loginCheck } from '../../../utils/loginCheck';
 import { customAxios } from '../../../apis/instance';
+import { login } from '../../../apis/auth';
 
 interface Props {
   text: {
@@ -62,17 +63,7 @@ export default function Register({ text, setFindPasswordView }: Props) {
   const requestLogin = (e: any) => {
     e.preventDefault();
 
-    customAxios
-      .post(
-        `${ENDPOINT}auth/signin`,
-        { email: inputValue.id, password: inputValue.password },
-        {
-          headers: {
-            accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-        },
-      )
+    login({ email: inputValue.id, password: inputValue.password })
       .then(res => {
         if (res.data.statusCode >= 200 && res.data.statusCode <= 204) {
           sessionStorage.setItem('access_token', res.data.response.accessToken);

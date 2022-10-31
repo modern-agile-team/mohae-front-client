@@ -1,12 +1,7 @@
 /** @format */
 
 import { Img, Box, Btn } from '../../../components';
-import React, {
-  ButtonHTMLAttributes,
-  Dispatch,
-  SetStateAction,
-  useState,
-} from 'react';
+import React, { useState } from 'react';
 
 import axios from 'axios';
 

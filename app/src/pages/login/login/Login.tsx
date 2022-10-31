@@ -2,9 +2,6 @@
 
 import { Img, Box, Btn } from '../../../components';
 import React, { useState } from 'react';
-
-import axios from 'axios';
-
 import { open_login } from '../../../redux/modal/reducer';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../redux/root';

@@ -152,14 +152,6 @@ export default function MySelf({ posts, actions, checkSelf }: MyPageProps) {
 }
 
 const Container = styled.div`
-  width: 100%;
-  height: fit-content;
-
-  > .column {
-    display: flex;
-    flex-direction: column;
-  }
-
   > .user {
     display: flex;
     width: 100%;

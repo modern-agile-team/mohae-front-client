@@ -10,7 +10,6 @@ import styled from '@emotion/styled';
 import { useSelector } from 'react-redux';
 import { editProfile, validateNickName } from '../../../../apis/profile';
 import { RootState } from '../../../../redux/root';
-
 import ChangePassword from './ChangePassword';
 
 interface Object {

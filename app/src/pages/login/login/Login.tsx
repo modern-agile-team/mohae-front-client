@@ -6,7 +6,6 @@ import { open_login } from '../../../redux/modal/reducer';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../redux/root';
 import { useLocation } from 'react-router-dom';
-import { ENDPOINT } from '../../../utils/ENDPOINT';
 import { loginCheck } from '../../../utils/loginCheck';
 import { customAxios } from '../../../apis/instance';
 import { login } from '../../../apis/auth';

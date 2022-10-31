@@ -10,10 +10,8 @@ import styled from '@emotion/styled';
 import { useSelector } from 'react-redux';
 import { editProfile, validateNickName } from '../../../../apis/profile';
 import { RootState } from '../../../../redux/root';
-import { ENDPOINT } from '../../../../utils/ENDPOINT';
-import { customAxios } from '../../../../apis/instance';
+
 import ChangePassword from './ChangePassword';
-import setInterceptors from '../../../../apis/common/setInterceptors';
 
 interface Object {
   [key: string]: any;

@@ -8,15 +8,12 @@ import ProfileBox from '../../../../components/profile/ProfileBox';
 import PhoneNumberSelectBox from '../../../../components/profileselect/PhoneNumberSelectBox';
 import styled from '@emotion/styled';
 import { useSelector } from 'react-redux';
-import { editProfile } from '../../../../apis/profile';
+import { editProfile, validateNickName } from '../../../../apis/profile';
 import { RootState } from '../../../../redux/root';
-import { ENDPOINT } from '../../../../utils/ENDPOINT';
-import { customAxios } from '../../../../apis/instance';
 import ChangePassword from './ChangePassword';
-import setInterceptors from '../../../../apis/common/setInterceptors';
 
 interface Object {
-  [key: string]: any;
+  [key: string]: boolean;
 }
 
 interface Props {
@@ -175,11 +172,7 @@ export default function ModifyProfile({ setIsOpen }: Props) {
   };
 
   const onNickNameValid = () => {
-    setInterceptors(customAxios)
-      .post(`${ENDPOINT}profile/check-nickname`, {
-        no: null,
-        nickname: userInfo.nickname,
-      })
+    validateNickName({ no: null, nickname: userInfo.nickname })
       .then(res => {
         alert(res.data.msg);
         setNickNameValid(true);

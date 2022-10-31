@@ -18,6 +18,12 @@ export default function MySelf({ posts, actions, checkSelf }: MyPageProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
 
+  useEffect(() => {
+    if (!isOpen) {
+      dispatch(getUserData(userInfo.userNo));
+    }
+  }, [isOpen]);
+
   return (
     <Container>
       {isOpen && <ModifyProfile setIsOpen={setIsOpen} />}

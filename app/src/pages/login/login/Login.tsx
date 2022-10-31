@@ -7,7 +7,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../redux/root';
 import { useLocation } from 'react-router-dom';
 import { loginCheck } from '../../../utils/loginCheck';
-import { customAxios } from '../../../apis/instance';
 import { login } from '../../../apis/auth';
 
 interface Props {

@@ -1,6 +1,6 @@
 /** @format */
 
-import { Img, FocusBar, Popup, Btn } from '../../components';
+import { Img, Popup, Btn } from '../../components';
 import AuthModal from '../../components/modal/AuthModal';
 import { radius, font, color, shadow } from '../../styles';
 import { css, cx } from '@emotion/css';
@@ -14,7 +14,10 @@ import FindPassword from './findPassword/FindPassword';
 import styled from '@emotion/styled';
 
 interface Props {
-  [key: string]: any;
+  text: any;
+  isOpenModal: boolean;
+  part: number;
+  onClick: any;
   setPart: React.Dispatch<React.SetStateAction<number>>;
 }
 

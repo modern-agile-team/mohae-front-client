@@ -14,7 +14,7 @@ import { RootState } from '../../../../redux/root';
 import ChangePassword from './ChangePassword';
 
 interface Object {
-  [key: string]: any;
+  [key: string]: boolean;
 }
 
 interface Props {

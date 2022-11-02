@@ -1,7 +1,6 @@
 import React from 'react';
 import { css, cx } from '@emotion/css';
 import { Img } from '../../../components';
-import { EditorState } from 'draft-js';
 
 interface Props {
   form: {
@@ -20,7 +19,6 @@ interface Props {
   >;
   onSubmit: () => void;
 }
-const response = 1;
 
 const articleTitle = ({ form, setForm, onSubmit }: Props) => {
   const dateObject = new Date();

@@ -10,5 +10,3 @@ export default function MyPage({ posts, actions, checkSelf }: MyPageProps) {
     return <OtherPage posts={posts} actions={actions} checkSelf={checkSelf} />;
   }
 }
-
-const response = 1;

@@ -56,8 +56,6 @@ export default function LoginModal(): ReactElement {
     },
   };
 
-  const response = 1;
-
   return (
     <Presenter
       text={text}

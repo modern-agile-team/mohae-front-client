@@ -119,8 +119,6 @@ export default function OtherPage({ posts, actions, checkSelf }: MyPageProps) {
   );
 }
 
-const response = 1;
-
 const style = css`
   width: calc(1128px - 36px);
   height: 100%;

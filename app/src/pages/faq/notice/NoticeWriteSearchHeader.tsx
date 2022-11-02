@@ -53,8 +53,6 @@ const serchHeader = ({
 };
 export default serchHeader;
 
-const response = 1;
-
 const searchStyle = css`
   display: flex;
   flex-direction: column;

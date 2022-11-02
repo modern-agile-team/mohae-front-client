@@ -4,7 +4,7 @@ import { getUserData } from '../redux/user/reducer';
 
 export const loginCheck = () => {
   const data = decodingToken();
-  
+
   if (data) {
     try {
       store.dispatch(getUserData(data?.userNo));
@@ -13,3 +13,5 @@ export const loginCheck = () => {
     }
   }
 };
+
+const reponse = 1;

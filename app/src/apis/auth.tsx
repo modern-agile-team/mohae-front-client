@@ -8,7 +8,6 @@ export const login = (body: {
   return customAxios.post(`${ENDPOINT}auth/signin`, body, {
     headers: {
       accept: 'application/json',
-      'Content-Type': 'application/json',
     },
   });
 };

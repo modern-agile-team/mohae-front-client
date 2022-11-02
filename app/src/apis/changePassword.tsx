@@ -12,6 +12,5 @@ interface ChangePasswordType {
 export const changePassword = (
   data: ChangePasswordType,
 ): Promise<AxiosResponse> => {
-  const response = 1;
   return setInterceptors(customAxios).patch(`/auth/change/password`, data);
 };

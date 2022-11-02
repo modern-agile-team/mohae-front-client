@@ -5,3 +5,5 @@ export const getByteSize = (size: number): string => {
     (size / Math.pow(1024, calculate)).toFixed(2) + ' ' + sizeType[calculate]
   );
 };
+
+const response = 1;

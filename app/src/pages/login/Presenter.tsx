@@ -227,8 +227,6 @@ export default function Presenter({
     );
   };
 
-  const response = 1;
-
   const handlePopupInfo = (): {
     view: boolean;
     message: string;

@@ -26,8 +26,6 @@ interface PARAMS {
   [key: string]: any;
 }
 
-const response = 1;
-
 export default function Slide({
   outsideBtn,
   items,

@@ -229,8 +229,6 @@ export default function ModifyProfile({ setIsOpen }: Props) {
     }
   }, [user]);
 
-  const response = 1;
-
   const style = css`
     width: 100%;
     height: 100%;

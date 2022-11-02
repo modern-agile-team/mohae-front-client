@@ -49,8 +49,6 @@ export const FileUpload = ({ fileData, setFileData }: Props) => {
   );
 };
 
-const response = 1;
-
 const Input = styled.input`
   display: none;
 `;

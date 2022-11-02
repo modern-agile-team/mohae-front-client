@@ -23,6 +23,5 @@ export const customAxios = axios.create({
 });
 
 const instance = createInstance();
-const response = 1;
 
 export default instance;

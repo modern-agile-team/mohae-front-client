@@ -15,5 +15,3 @@ export const validateNickName = (body: {
     body,
   );
 };
-
-const response = 1;

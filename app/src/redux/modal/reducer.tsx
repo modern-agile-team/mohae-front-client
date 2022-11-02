@@ -61,7 +61,6 @@ export const {
 // create actions & type
 export default modal.reducer;
 
-const response = 1;
 // action, reducer, store
 
 // response >> Array

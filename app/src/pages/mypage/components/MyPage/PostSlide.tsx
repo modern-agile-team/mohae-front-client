@@ -224,6 +224,8 @@ export default function PostSlide({
     }
   };
 
+  const response = 1;
+
   return (
     <div className={'slide'}>
       <div className={cx(style)}>

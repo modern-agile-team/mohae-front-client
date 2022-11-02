@@ -17,7 +17,7 @@ interface IMAGE {
   checked: boolean;
   File: FormData | any;
 }
-
+const response = 1;
 export default function InputImg({ imgs, inline }: Props) {
   const clone =
     imgs &&

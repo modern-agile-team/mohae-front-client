@@ -2,6 +2,7 @@
 
 import { color, shadow } from '../../../styles';
 import { css } from '@emotion/css';
+const response = 1;
 export const style = (isOpen: any) => css`
   height: fit-content;
   > .sub-description {

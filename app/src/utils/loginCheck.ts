@@ -13,5 +13,3 @@ export const loginCheck = () => {
     }
   }
 };
-
-const reponse = 1;

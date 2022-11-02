@@ -1,7 +1,5 @@
 /** @format */
 
-const response = 1;
-
 const getToken = () => {
   return sessionStorage.getItem('access_token') || '';
 };

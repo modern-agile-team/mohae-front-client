@@ -1,82 +1,35 @@
-import React, { Dispatch, useCallback, useState } from 'react';
+import React, { useRef } from 'react';
 import Presenter from './Presenter';
-
-interface ContainerProps {
-  contents: React.ReactNode[];
-  snapPageNumber: number;
-  setSnapPageNumber: Dispatch<React.SetStateAction<number>>;
-}
+import { ContainerProps } from '../../../../types/main/snapScroll/type';
 
 function Container(props: ContainerProps) {
-  const { contents, snapPageNumber, setSnapPageNumber } = props;
+  const { contents, snapPageNumber: pageNum, setSnapPageNumber } = props;
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handlePageNumber = (move: number) => {
-    contents.forEach((_, index) => {
-      if (
-        move > 0 &&
-        snapPageNumber === index &&
-        !(index === contents.length - 1)
-      ) {
-        console.log('플러스');
-        setSnapPageNumber(snapPageNumber + 1);
-      } else if (move < 0 && snapPageNumber === index && !(index === 0)) {
-        console.log('마이너스');
-        setSnapPageNumber(snapPageNumber - 1);
+    console.log(move);
+    contents.forEach((_, i) => {
+      if (move > 20 && pageNum === i && !(i === contents.length - 1)) {
+        setSnapPageNumber(prev => prev + 1);
+      } else if (move < -20 && pageNum === i && i !== 0) {
+        setSnapPageNumber(prev => prev - 1);
       }
     });
   };
 
-  const wheelHandler = useCallback(
-    (e: React.WheelEvent<HTMLDivElement>) => {
-      contents.forEach((_, index) => {
-        if (
-          e.deltaY > 10 &&
-          snapPageNumber === index &&
-          !(index === contents.length - 1)
-        ) {
-          setTimeout(() => {
-            setSnapPageNumber(snapPageNumber + 1);
-          }, 700);
-        } else if (
-          e.deltaY < -10 &&
-          snapPageNumber === index &&
-          !(index === 0)
-        ) {
-          setTimeout(() => {
-            setSnapPageNumber(snapPageNumber - 1);
-          }, 700);
-        }
-      });
-    },
-    [contents],
-  );
+  const throttlingScroll = (e: React.WheelEvent) => {
+    if ((pageNum === 0 && e.deltaY < 0) || (pageNum === 3 && e.deltaY > 0))
+      return;
 
-  return <Presenter {...props} wheelHandler={wheelHandler} />;
+    if (!timer.current) {
+      timer.current = setTimeout(() => {
+        handlePageNumber(e.deltaY);
+        timer.current = null;
+      }, 500);
+    }
+  };
+
+  return <Presenter {...props} wheelHandler={throttlingScroll} />;
 }
 
 export default Container;
-
-// const wheelHandler = useCallback(
-//     (e: React.WheelEvent<HTMLDivElement>) => {
-//       contents.forEach((_, index) => {
-//         if (
-//           e.deltaY > 10 &&
-//           snapPageNumber === index &&
-//           !(index === contents.length - 1)
-//         ) {
-//           setTimeout(() => {
-//             setSnapPageNumber(snapPageNumber + 1);
-//           }, 700);
-//         } else if (
-//           e.deltaY < -10 &&
-//           snapPageNumber === index &&
-//           !(index === 0)
-//         ) {
-//           setTimeout(() => {
-//             setSnapPageNumber(snapPageNumber - 1);
-//           }, 700);
-//         }
-//       });
-//     },
-//     [contents],
-//   );

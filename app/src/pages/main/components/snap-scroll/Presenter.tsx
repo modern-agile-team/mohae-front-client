@@ -1,83 +1,21 @@
 /** @format */
 
-import React, { Fragment, Dispatch } from 'react';
+import React, { Fragment } from 'react';
 import styled from '@emotion/styled';
-import { css, cx } from '@emotion/css';
-import { color } from '../../../../styles';
+import { PresenterProps } from '../../../../types/main/snapScroll/type';
 
-interface PresenterProps {
-  contents: React.ReactNode[];
-  snapPageNumber: number;
-  setSnapPageNumber: Dispatch<React.SetStateAction<number>>;
-  wheelHandler: (e: React.WheelEvent<HTMLDivElement>) => void;
-}
-
-function Presenter({
-  contents,
-  wheelHandler,
-  snapPageNumber,
-  setSnapPageNumber,
-}: PresenterProps) {
-  const colors = ['#F9F9F9', '#EDEDEF'];
-  // 반복할 배경 색상
-
-  const container = css`
-    overflow: auto;
-    height: fit-content;
-    &::-webkit-scrollbar {
-      display: none;
-    }
-    position: relative;
-
-    .snap-container {
-      overflow: hidden;
-      height: calc(100vh - 59px);
-      &::-webkit-scrollbar {
-        display: none;
-      }
-      position: relative;
-    }
-  `;
-
-  const circleWrapper = css`
-    position: fixed;
-    z-index: 3;
-    top: 50%;
-    transform: translateY(-50%);
-    right: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    width: 27px;
-    height: 74px;
-  `;
-
+function Presenter(props: PresenterProps) {
+  const { contents, wheelHandler, snapPageNumber, setSnapPageNumber } = props;
   const clickCircle = (e: React.MouseEvent<HTMLButtonElement>) => {
     setSnapPageNumber(Number(e.currentTarget.name));
   };
 
-  const pageCircles = contents.map((i, index) => {
-    const circle = css`
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background-color: #e7e7e8;
-      transition: all 0.5s;
-    `;
-    const target =
-      snapPageNumber === index
-        ? css`
-            background-color: #ff445e;
-            width: 14px;
-            height: 14px;
-          `
-        : null;
+  const circleButtons = contents.map((_, index) => {
     return index ? (
-      <button
-        key={`${index}`}
-        className={cx(circle, target)}
-        name={`${index}`}
+      <CircleButton
+        key={index}
+        name={String(index)}
+        target={snapPageNumber === index}
         onClick={clickCircle}
       />
     ) : (
@@ -85,51 +23,83 @@ function Presenter({
     );
   });
 
-  const showSnap = contents.map((i, index) => {
-    const pageStyle = css`
-      height: calc(100vh - 59px);
-      text-align: center;
-      background-color: ${colors[index % colors.length]};
-    `;
+  const showSnap = contents.map((_, index) => {
     return (
-      <div key={`${index}`} className={cx(pageStyle)}>
+      <PageContentWrap index={index} key={String(index)}>
         {contents[index]}
-      </div>
+      </PageContentWrap>
     );
   });
 
   return (
-    <div className={cx(container)}>
-      <div
-        className={cx(
-          circleWrapper,
-          !snapPageNumber
-            ? css`
-                display: none;
-              `
-            : null,
-        )}
-      >
-        {pageCircles}
-      </div>
-      <div className={'snap-container'} onWheel={wheelHandler}>
+    <Container>
+      <CircleWrapper snapPageNumber={snapPageNumber}>
+        {circleButtons}
+      </CircleWrapper>
+      <div className="snap-container" onWheel={wheelHandler}>
         <ContentsBox contents={contents} snapPageNumber={snapPageNumber}>
           {showSnap}
         </ContentsBox>
       </div>
-    </div>
+    </Container>
   );
 }
 
 export default Presenter;
 
+const Container = styled.div`
+  overflow: auto;
+  height: fit-content;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  position: relative;
+
+  .snap-container {
+    overflow: hidden;
+    height: calc(100vh - 59px);
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    position: relative;
+  }
+`;
+
 const ContentsBox = styled.div<{
   contents: React.ReactNode[];
   snapPageNumber: number;
 }>`
-  height: calc(calc(100vh - 59px) * ${props => props.contents.length});
+  height: calc(100% * ${props => props.contents.length});
   transition: all 0.8s cubic-bezier(0.61, 0.31, 0.36, 0.69);
   transform: translateY(
-    calc(calc(100vh - 59px) * ${props => -props.snapPageNumber})
+    calc(calc(100vh - 59px) * ${props => -Number(props.snapPageNumber)})
   );
+`;
+
+const PageContentWrap = styled.div<{ index: number }>`
+  height: calc(100vh - 59px);
+  text-align: center;
+  background-color: ${props => (props.index % 2 ? '#EDEDEF' : '#F9F9F9')};
+`;
+
+const CircleWrapper = styled.div<{ snapPageNumber: number }>`
+  position: fixed;
+  z-index: 3;
+  top: 50%;
+  right: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 27px;
+  height: 74px;
+  visibility: ${props => (props.snapPageNumber ? 'visible' : 'hidden')};
+`;
+
+const CircleButton = styled.button<{ target: boolean }>`
+  width: ${props => (props.target ? '14px' : '8px')};
+  height: ${props => (props.target ? '14px' : '8px')};
+  border-radius: 50%;
+  background-color: ${props => (props.target ? '#ff445e' : '#e7e7e8')};
+  transition: all 0.5s;
 `;

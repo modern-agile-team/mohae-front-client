@@ -2,7 +2,7 @@
 
 import Main from './main/Main';
 import { MyPage } from './mypage';
-import Resign from './resign';
+
 import ModifyProfile from './mypage/components/ModifyProfile';
 import Spec from './mypage/components/Spec';
 import LoginModal from './login';
@@ -12,7 +12,6 @@ import Post from './post/Container';
 export {
   Main,
   MyPage,
-  Resign,
   ModifyProfile,
   CreateAndEditPost,
   Board,

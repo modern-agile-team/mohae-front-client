@@ -19,6 +19,7 @@ export interface IMAGE {
   File: FormData | any;
 }
 
+const response = 1;
 export default function EditInputImg({ imgs, inline, editImages }: Props) {
   const clone =
     imgs &&

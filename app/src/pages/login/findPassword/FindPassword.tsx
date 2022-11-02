@@ -95,6 +95,8 @@ function FindPassword({ popupInfo, setPopupInfo }: Props) {
 
 export default FindPassword;
 
+const response = 1;
+
 const Container = styled.form`
   height: 329px;
   display: flex;

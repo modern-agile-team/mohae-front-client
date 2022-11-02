@@ -81,4 +81,6 @@ function ChangePassword() {
   );
 }
 
+const response = 1;
+
 export default ChangePassword;

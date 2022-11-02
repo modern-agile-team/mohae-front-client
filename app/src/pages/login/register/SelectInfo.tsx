@@ -549,6 +549,7 @@ export default function SelectInfo({ popupInfo, setPopupInfo }: Props) {
     </div>
   );
 }
+const response = 1;
 const DemoSelectBox = styled.div`
   ${radius[6]};
   ${shadow.normal};

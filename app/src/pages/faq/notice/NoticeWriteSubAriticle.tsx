@@ -112,6 +112,8 @@ function subArticle({ notice, onEdit, onDelete }: Props) {
 }
 export default subArticle;
 
+const response = 1;
+
 const wrap = css`
   display: flex;
   padding: 16px 24px;

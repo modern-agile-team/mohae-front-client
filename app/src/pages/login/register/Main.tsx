@@ -35,6 +35,8 @@ export default function Main({ text, next }: Props) {
   );
 }
 
+const response = 1;
+
 const style = css`
   display: flex;
   flex-direction: column;

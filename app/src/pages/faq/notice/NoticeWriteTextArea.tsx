@@ -36,6 +36,8 @@ const TextArea = ({ form, setForm }: FormProps) => {
 };
 export default TextArea;
 
+const response = 1;
+
 const wrap = css`
   display: flex;
   justify-content: center;

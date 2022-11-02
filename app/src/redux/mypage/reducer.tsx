@@ -11,7 +11,6 @@ const asyncThunk = (name: string, param: string | number) =>
     const response = await axios.get(`${ENDPOINT}${param}`);
     return response.data;
   });
-const response = 1;
 
 export const getHotAll = asyncThunk('getUserInfo', 5);
 

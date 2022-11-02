@@ -151,8 +151,6 @@ export default function MySelf({ posts, actions, checkSelf }: MyPageProps) {
   );
 }
 
-const response = 1;
-
 const Container = styled.div`
   width: 100%;
   height: fit-content;

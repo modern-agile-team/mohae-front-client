@@ -32,8 +32,6 @@ function Succese() {
 
 export default Succese;
 
-const response = 1;
-
 const Wrapper = styled.main`
   width: 100%;
   height: 100%;

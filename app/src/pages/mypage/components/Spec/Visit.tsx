@@ -20,7 +20,6 @@ import { ENDPOINT } from '../../../../utils/ENDPOINT';
 import setInterceptors from '../../../../apis/common/setInterceptors';
 import { customAxios } from '../../../../apis/instance';
 
-const response = 1;
 export default function Visit() {
   const isOpen = useSelector((state: RootState) => state.modal.openSpecVisit);
   const formData = useSelector((state: RootState) => state.spec.addImages);

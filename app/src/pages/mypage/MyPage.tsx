@@ -15,7 +15,7 @@ import {
 } from '../../redux/spec/reducer';
 import getToken from '../../utils/getToken';
 import { useEffect } from 'react';
-const response = 1;
+
 export default function MyPage() {
   const target = {
     0: '&target=false',

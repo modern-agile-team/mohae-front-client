@@ -156,8 +156,6 @@ const Notice = () => {
 };
 export default Notice;
 
-const response = 1;
-
 const wholeStyle = css`
   margin: 0 auto;
   width: 1190px;

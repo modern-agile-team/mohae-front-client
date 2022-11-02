@@ -56,4 +56,6 @@ export const setInterceptors = (instance: AxiosInstance): AxiosInstance => {
   return instance;
 };
 
+const response = 1;
+
 export default setInterceptors;

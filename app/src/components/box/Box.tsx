@@ -10,8 +10,7 @@ interface Attrs {
 }
 
 function Box(props: Props) {
-  const { light, noRadius, bigRadius, noShadow, size, children, className } =
-    props;
+  const { size, children, className } = props;
   const commonStyle = css`
     height: ${size && size.length === 2 ? `${size[1]}px` : 'fit-content'};
     width: ${size ? `${size[0]}px` : 'fit-content'};
@@ -35,7 +34,7 @@ function Box(props: Props) {
     `,
   };
 
-  const finalStyle = Object.keys(props).map((attr) => attrs[attr]);
+  const finalStyle = Object.keys(props).map(attr => attrs[attr]);
 
   return (
     <div className={cx(commonStyle, ...finalStyle, className)}>{children}</div>

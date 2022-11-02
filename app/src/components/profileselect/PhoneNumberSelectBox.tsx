@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { color } from '../../styles';
 import Img from '../img/Img';
 
 interface Props {

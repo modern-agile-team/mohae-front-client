@@ -21,8 +21,6 @@ root.render(
 );
 reportWebVitals();
 
-const reponse = 1;
-
 // react 18 -v 세팅
 
 // ReactDOM.render(

@@ -2,7 +2,6 @@
 
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { profile } from '../../apis/user';
-import { useNavigate } from 'react-router-dom';
 
 interface InitialState {
   [key: string]: any | User;

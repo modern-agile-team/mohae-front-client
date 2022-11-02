@@ -31,3 +31,5 @@ export function BoardGetRequest(param: string, token: string, action: any) {
       });
   }, []);
 }
+
+const response = 1;

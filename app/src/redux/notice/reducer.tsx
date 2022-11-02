@@ -7,7 +7,6 @@ import {
   editNoticePost,
   searchNoticePost,
 } from '../../apis/notice';
-import { ENDPOINT } from '../../utils/ENDPOINT';
 import { NoticePostType } from '../../apis/notice';
 
 export const getNotices = createAsyncThunk(

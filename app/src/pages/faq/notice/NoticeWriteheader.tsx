@@ -16,6 +16,7 @@ const header = ({ param }: Props) => {
   );
 };
 export default header;
+const response = 1;
 
 const topWrap = css`
   display: flex;

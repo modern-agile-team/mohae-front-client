@@ -28,6 +28,8 @@ function sideBar({ name }: Props) {
 }
 export default sideBar;
 
+const response = 1;
+
 const consumerSupport = css`
   width: 168px;
   height: 106px;

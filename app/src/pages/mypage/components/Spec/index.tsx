@@ -12,6 +12,7 @@ import {
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/root';
 
+const response = 1;
 export default function Spec() {
   const isOpen = useSelector((state: RootState) => state.modal.openSpecCreate);
 

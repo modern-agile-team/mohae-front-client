@@ -20,6 +20,7 @@ interface Props {
   >;
   onSubmit: () => void;
 }
+const response = 1;
 
 const articleTitle = ({ form, setForm, onSubmit }: Props) => {
   const dateObject = new Date();

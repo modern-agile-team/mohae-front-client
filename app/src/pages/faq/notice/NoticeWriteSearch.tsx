@@ -71,6 +71,8 @@ const search = ({
 };
 export default search;
 
+const response = 1;
+
 const container = css`
   display: flex;
   flex-direction: column;

@@ -349,6 +349,8 @@ export default function PersonalInfo({ part, next }: Object) {
   );
 }
 
+const response = 1;
+
 const Button = styled.button`
   width: 480px;
   height: 52px;

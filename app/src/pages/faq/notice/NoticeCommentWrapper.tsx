@@ -5,6 +5,7 @@ interface Props {
   onEdit: (no: number, title: string, description: string) => void;
   onDelete: (no: number) => void;
 }
+const response = 1;
 
 export interface NoticeTYPE {
   no: number;

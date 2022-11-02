@@ -66,7 +66,7 @@ const initialState: INITSTATE = {
   specNo: null,
   addImages: new FormData(),
 };
-const response = 1;
+
 export const spec = createSlice({
   name: 'spec',
   initialState,

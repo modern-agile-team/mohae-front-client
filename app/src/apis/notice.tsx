@@ -43,3 +43,5 @@ export const searchNoticePost = (data: { params?: string; search: string }) => {
     `/${params}/search?title=${search}&take=5&page=1`,
   );
 };
+
+const response = 1;

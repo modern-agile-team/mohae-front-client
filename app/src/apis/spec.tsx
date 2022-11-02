@@ -40,5 +40,3 @@ export const getWantedSpecData = (
 export const getSpecDetail = (no: number) => {
   return setInterceptors(customAxios).get(`${ENDPOINT}specs/spec/${no}`);
 };
-
-const response = 1;

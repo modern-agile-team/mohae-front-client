@@ -23,10 +23,7 @@ interface StateForEdit {
 function CreateAndEditPost({ type }: Props) {
   const { no } = useParams();
   const dispatch = useDispatch();
-  const loadingState = useSelector(
-    (state: RootState) => state.createPost.loading,
-  );
-  const form = useSelector((state: RootState) => state.createPost.form);
+  const { loading, form } = useSelector((state: RootState) => state.createPost);
   const refactorReduxData = useRefactorPostingData();
   const [stateForEdit, setStateForEdit] = useState<StateForEdit>();
   const [popupView, setPopupView] = useState(false);
@@ -99,10 +96,10 @@ function CreateAndEditPost({ type }: Props) {
         : setInterceptors(customAxios).patch;
 
     axiosPostOrPatch(URL, form, config)
-      .then(res => {
+      .then(_ => {
         setPopupView(true);
       })
-      .catch(err => {
+      .catch(_ => {
         type === 'create' ? alert('작성 실패') : alert('수정 실패');
       });
   };
@@ -153,7 +150,7 @@ function CreateAndEditPost({ type }: Props) {
 
   return (
     <>
-      {!loadingState ? (
+      {!loading ? (
         <Presenter
           view={view}
           targetChecked={targetChecked}

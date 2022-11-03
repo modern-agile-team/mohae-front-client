@@ -8,7 +8,7 @@ import {
   useSearchParams,
 } from 'react-router-dom';
 import { Poster, PostsNotExist, Spinner } from '../../../../components';
-import { categoryList } from '../../../../components/category/categoryList';
+import { categoryList } from '../../../../consts/categoryList';
 import { RootState } from '../../../../redux/root';
 import { BoardDetails, ContentsProps } from '../../../../types/board/type';
 

@@ -1,5 +1,3 @@
-/** @format */
-
 import React, { Fragment } from 'react';
 import styled from '@emotion/styled';
 import { PresenterProps } from '../../../../types/main/snapScroll/type';

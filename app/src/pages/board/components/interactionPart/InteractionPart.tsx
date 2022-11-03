@@ -7,7 +7,7 @@ import {
   Popup,
   Search,
 } from '../../../../components';
-import { categoryList } from '../../../../components/category/categoryList';
+import { categoryList } from '../../../../consts/categoryList';
 import { useNavigate, useParams } from 'react-router-dom';
 import getToken from '../../../../utils/getToken';
 import { InteractionPartProps } from '../../../../types/board/type';

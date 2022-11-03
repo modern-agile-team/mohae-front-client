@@ -4,13 +4,14 @@ import { ContainerProps } from '../../../../types/main/snapScroll/type';
 
 function Container(props: ContainerProps) {
   const { contents, snapPageNumber: pageNum, setSnapPageNumber } = props;
-  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const timer = useRef<NodeJS.Timeout | null>(null);
 
   const handlePageNumber = (move: number) => {
+    console.log(move);
     contents.forEach((_, i) => {
-      if (move > 20 && pageNum === i && !(i === contents.length - 1)) {
+      if (move > 30 && pageNum === i && !(i === contents.length - 1)) {
         setSnapPageNumber(prev => prev + 1);
-      } else if (move < -20 && pageNum === i && i !== 0) {
+      } else if (move < -30 && pageNum === i && i !== 0) {
         setSnapPageNumber(prev => prev - 1);
       }
     });

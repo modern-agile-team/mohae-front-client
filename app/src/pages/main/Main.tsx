@@ -4,7 +4,6 @@ import {
   SecondPage,
   ThirdPage,
   FourthPage,
-  SnapScroll,
   Container,
 } from './components';
 import { useSearchParams } from 'react-router-dom';

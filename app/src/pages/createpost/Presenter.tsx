@@ -154,7 +154,7 @@ function Presenter(props: Props) {
           <p className="pageTitle">
             {type === 'create' ? '게시글 작성' : '게시글 수정'}
           </p>
-          <PostImgs type={type} />
+          <PostImgs />
         </div>
         <div>
           {handleWriteBtn()}
@@ -172,7 +172,7 @@ function Presenter(props: Props) {
           </Box>
         </div>
       </div>
-      <PostBody type={type} />
+      <PostBody />
       {popupView && (
         <Popup
           visible={popupView}

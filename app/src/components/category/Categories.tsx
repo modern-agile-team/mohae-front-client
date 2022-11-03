@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { color } from '../../styles';
 import Category from './Category';
-import { categoryList } from './categoryList';
+import { categoryList } from '../../consts/categoryList';
 
 interface Props {
   num: number;

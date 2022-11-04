@@ -3,9 +3,9 @@ import { css, cx } from '@emotion/css';
 import { Box, Btn, Img, MarkBox, Popup } from '../../components';
 import SelectBox from '../../components/selectbox/SelectBox';
 import { color, font } from '../../styles';
-import { PostBody, PostImgs } from './component';
+import { Body, Imgs, Infomation } from './component';
 import { SelectBtn } from '../../components/button';
-import Input from './Input';
+import Input from '../../components/input/createPost/Input';
 import { useDispatch, useSelector } from 'react-redux';
 import { setInitialState, setTarget } from '../../redux/createpost/reducer';
 import { RootState } from '../../redux/root';
@@ -154,25 +154,14 @@ function Presenter(props: Props) {
           <p className="pageTitle">
             {type === 'create' ? '게시글 작성' : '게시글 수정'}
           </p>
-          <PostImgs />
+          <Imgs />
         </div>
         <div>
           {handleWriteBtn()}
-          <Box size={[736, 448]} className="writeWrap">
-            <div className="topWrap">
-              <div className="left">
-                <Input small />
-                <div className="markBoxWrap">{createSelectBtn()}</div>
-              </div>
-              <div className="right">{createSelectBox()}</div>
-            </div>
-            <div className="summary">
-              <Input big />
-            </div>
-          </Box>
+          <Infomation type={type} />
         </div>
       </div>
-      <PostBody />
+      <Body />
       {popupView && (
         <Popup
           visible={popupView}

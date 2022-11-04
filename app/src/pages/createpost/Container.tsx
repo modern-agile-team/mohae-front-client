@@ -39,11 +39,7 @@ function CreateAndEditPost({ type }: Props) {
   useEffect(() => {
     if (type === 'edit') {
       setInterceptors(customAxios)
-        .get(`${ENDPOINT}boards/${no}`, {
-          headers: {
-            Authorization: `Bearer ${getToken()}`,
-          },
-        })
+        .get(`${ENDPOINT}boards/${no}`)
         .then(res => {
           const data = res.data.response.board;
           const beforeEdit = {
@@ -86,7 +82,6 @@ function CreateAndEditPost({ type }: Props) {
     const config = {
       headers: {
         accept: 'application/json',
-        'Content-Type': 'multipart/form-data',
         Authorization: `Bearer ${getToken()}`,
       },
     };

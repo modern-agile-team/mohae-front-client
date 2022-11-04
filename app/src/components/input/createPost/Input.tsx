@@ -6,10 +6,14 @@ import React, {
   ReactNode,
 } from 'react';
 import { css, cx } from '@emotion/css';
-import { color, font, radius, shadow } from '../../styles';
+import { color, font, radius, shadow } from '../../../styles';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../redux/root';
-import { setPrice, setSummary, setTitle } from '../../redux/createpost/reducer';
+import { RootState } from '../../../redux/root';
+import {
+  setPrice,
+  setSummary,
+  setTitle,
+} from '../../../redux/createpost/reducer';
 
 interface Props {
   [props: string]: React.ReactNode;

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { css, cx } from '@emotion/css';
 import SelectList from './SelectList';
-import { color, font, radius, shadow } from '../../styles';
-import Img from '../img/Img';
-import { Btn } from '../button';
+import { color, font, shadow } from '../../../styles';
+import Img from '../../img/Img';
+import { WhiteButton } from '../../button';
+import styled from '@emotion/styled';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../redux/root';
+import { RootState } from '../../../redux/root';
 
 interface Contents {
   no: string;
@@ -21,26 +21,23 @@ interface Props {
 
 function SelectBox(props: Props) {
   const { view, handleView, placeholder, style, used } = props;
-  const filterSelected = useSelector(
-    (state: RootState) => state.filter.data.area.areaName,
+  const { deadline, areaNo, categoryNo } = useSelector(
+    (state: RootState) => state.createPost.data,
   );
+
   const [selected, setSelected] = useState<string>(
     placeholder ? placeholder : '전체지역',
   );
 
   const contentsStyle = () => {
-    return style !== '카테고리' ? (
-      <div className="placeholderWrap">
-        <div className="placeholder">
-          {used === 'filter' ? filterSelected : selected}
-        </div>
-      </div>
-    ) : (
+    return (
       <div className="placeholderWrap">
         <div className="category">
-          <Btn white category>
-            {selected}
-          </Btn>
+          {style !== '카테고리' ? (
+            <WhiteButton able>{selected}</WhiteButton>
+          ) : (
+            { selected }
+          )}
         </div>
       </div>
     );
@@ -48,23 +45,22 @@ function SelectBox(props: Props) {
 
   return (
     <>
-      <div className={cx(wrap(used))} onClick={handleView}>
+      <Wrap view={view} onClick={handleView}>
         {contentsStyle()}
         <div className="opener">
           <Img src="/img/arrow-down-dark3.png" />
         </div>
-      </div>
+      </Wrap>
       {view && (
         <>
           <SelectList
-            size={sizeList(used)}
             contents={list[style]}
             style={style}
             setSelected={setSelected}
             handleView={handleView}
             used={used}
           />
-          <div className={cx(overlay)} onClick={handleView}></div>
+          <Overlay onClick={handleView} />
         </>
       )}
     </>
@@ -73,7 +69,7 @@ function SelectBox(props: Props) {
 
 export default SelectBox;
 
-const overlay = css`
+const Overlay = styled.div`
   background-color: inherit;
   position: fixed;
   top: 0;
@@ -82,15 +78,23 @@ const overlay = css`
   height: 100vh;
 `;
 
-const wrap = (used: string) => css`
+const Wrap = styled.div<{ view: boolean }>`
   position: relative;
-  ${sizeStyle(used)}
-  ${sizeList(used)[0]}
-display: flex;
+  ${shadow.button}
+  ${props => (props.view ? 'border-radius: 6px 6px 0px 0px;' : '6px')}
+      padding: 0px 8px;
+  .placeholderWrap {
+    width: 106px;
+    display: flex;
+    justify-content: center;
+  }
+  width: 368px;
+  height: 62px;
+  display: flex;
   align-items: center;
   ${font.size[14]}
   ${font.weight[400]}
-cursor: pointer;
+  cursor: pointer;
   .opener {
     width: 24px;
     height: 24px;
@@ -100,7 +104,7 @@ cursor: pointer;
     height: 36px;
   }
   .placeholderWrap {
-    width: ${used !== 'filter' ? '344px' : '114px'};
+    width: 344px;
     display: flex;
     align-items: center;
   }
@@ -108,58 +112,6 @@ cursor: pointer;
     color: ${color.dark3};
   }
 `;
-
-const sizeList = (used: string): string[] => {
-  if (used !== 'filter') {
-    return [
-      css`
-        width: 368px;
-        height: 62px;
-      `,
-      css`
-        width: 368px;
-        height: 247px;
-      `,
-    ];
-  } else {
-    return [
-      css`
-        width: 138px;
-        height: 44px;
-      `,
-      css`
-        width: 138px;
-        height: 176px;
-      `,
-    ];
-  }
-};
-
-const sizeStyle = (used: string, view?: boolean): string => {
-  if (used !== 'filter') {
-    return css`
-      ${view && shadow.normal}
-      border-bottom: 2px solid ${color.light4};
-      padding: 0px 32px;
-      .placeholderWrap {
-        width: 336px;
-        display: flex;
-        justify-content: center;
-      }
-    `;
-  } else {
-    return css`
-      ${shadow.button}
-      ${view ? 'border-radius: 6px 6px 0px 0px;' : radius[6]}
-    padding: 0px 8px;
-      .placeholderWrap {
-        width: 106px;
-        display: flex;
-        justify-content: center;
-      }
-    `;
-  }
-};
 
 const list: { [placeholder: string]: Contents[] } = {
   카테고리: [

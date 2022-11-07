@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/root';
 import { SectionProps as MidSectionProps } from '../../../types/searchComponent/filter/type';
 import { SelectBtn } from '../../button';
-import SelectBox from '../../selectbox/SelectBox';
+import SelectBox from '../selectBox/SelectBox';
 
 function MidSection({ setItemCheck }: MidSectionProps) {
   const [view, setView] = useState<boolean>(false);

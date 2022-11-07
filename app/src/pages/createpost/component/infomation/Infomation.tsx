@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import { Box, MarkBox, SelectBox } from '../../../../components';
 import { SelectBtn } from '../../../../components/button';
 import Input from '../../../../components/input/createPost/Input';
@@ -7,47 +8,46 @@ import { lists } from '../../../../consts/categoryList';
 import { setTarget } from '../../../../redux/createpost/reducer';
 import { RootState } from '../../../../redux/root';
 
-function Infomation(props: { type: string }) {
-  const { type } = props;
+interface StateType {
+  [key: number]: boolean;
+}
+
+function Infomation() {
+  const { no } = useParams();
   const dispatch = useDispatch();
-  const { title, price, categoryNo, areaNo, deadline, description } =
-    useSelector((state: RootState) => state.createPost.data);
-  const [view, setView] = useState<{ [key: number]: boolean }>({
+  const { categoryNo, areaNo, deadline, target } = useSelector(
+    (state: RootState) => state.createPost.data,
+  );
+  const [view, setView] = useState<StateType>({
     0: false,
     1: false,
     2: false,
   });
-  const [targetChecked, setTargetChecked] = useState<{
-    [key: number]: boolean;
-  }>({ 0: true, 1: false });
+  const [targetChecked, setTargetChecked] = useState<StateType>({
+    0: true,
+    1: false,
+  });
+
+  useEffect(() => {
+    setTargetChecked(
+      Number(target) === 1 ? { 0: false, 1: true } : { 0: true, 1: false },
+    );
+  }, []);
 
   const selectBoxClick = (i: number) => {
     setView({ 0: false, 1: false, 2: false, [i]: !view[i] });
   };
 
-  const setTargetCheck = (i: number) => {
+  const handleSelectBtnClick = (e: React.ChangeEvent, i: number) => {
+    dispatch(setTarget(Number(e.currentTarget.id)));
     setTargetChecked({ 0: false, 1: false, [i]: !targetChecked[i] });
   };
-  const contents = [
-    <>
-      <MarkBox shape={0} state={0} size={'small'} />
-      해줄래요
-    </>,
-    <>
-      <MarkBox shape={1} state={0} size={'small'} />
-      구할래요
-    </>,
-  ];
+
   const createSelectBtn = () => {
-    return contents.map((el, i) => (
-      <div
-        className="markBox"
-        id={`${i}`}
-        key={i}
-        onClick={e => dispatch(setTarget(Number(e.currentTarget.id)))}
-      >
+    return contents.map((content, i) => (
+      <div className="markBox" id={`${i}`} key={i}>
         <SelectBtn
-          onChange={() => setTargetCheck(i)}
+          onChange={e => handleSelectBtnClick(e, i)}
           checked={targetChecked[i]}
           attributes={{
             size: 'large',
@@ -55,11 +55,12 @@ function Infomation(props: { type: string }) {
             type: 'radio',
           }}
         >
-          {el}
+          {content}
         </SelectBtn>
       </div>
     ));
   };
+
   const createSelectBox = () => {
     const placeholders: { placeholder: string; no: string | number | null }[] =
       [
@@ -83,7 +84,7 @@ function Infomation(props: { type: string }) {
       return arr;
     };
 
-    return type === 'edit'
+    return no
       ? editFor().map((el, i) => (
           <SelectBox
             placeholder={el}
@@ -105,6 +106,7 @@ function Infomation(props: { type: string }) {
           />
         ));
   };
+
   return (
     <Box size={[736, 448]} className="writeWrap">
       <div className="topWrap">
@@ -122,3 +124,14 @@ function Infomation(props: { type: string }) {
 }
 
 export default Infomation;
+
+const contents = [
+  <>
+    <MarkBox shape={0} state={0} size={'small'} />
+    해줄래요
+  </>,
+  <>
+    <MarkBox shape={1} state={0} size={'small'} />
+    구할래요
+  </>,
+];

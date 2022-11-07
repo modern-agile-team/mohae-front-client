@@ -1,14 +1,14 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import { css, cx } from '@emotion/css';
-import { Btn } from '../button';
-import { color, shadow } from '../../styles';
+import { Btn } from '../../button';
+import { color, shadow } from '../../../styles';
 import { useDispatch } from 'react-redux';
-import { setAreaName, setAreaNo } from '../../redux/filter/reducer';
+import { setAreaName, setAreaNo } from '../../../redux/filter/reducer';
 import {
   setAreaNum,
   setCategoryNum,
   setDeadline,
-} from '../../redux/createpost/reducer';
+} from '../../../redux/createpost/reducer';
 
 interface Contents {
   no: string;

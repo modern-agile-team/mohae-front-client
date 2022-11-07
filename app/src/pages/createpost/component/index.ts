@@ -1,4 +1,5 @@
-import PostBody from './body/CreatePostBody';
-import PostImgs from './imgs/CreatePostImgs';
+import Body from './body/Body';
+import Imgs from './imgs/Imgs';
+import Infomation from './infomation/Infomation';
 
-export { PostBody, PostImgs };
+export { Body, Imgs, Infomation };

@@ -13,14 +13,13 @@ interface Contents {
 }
 interface Props {
   view: boolean;
-  used: string;
   handleView: () => void;
   placeholder?: string;
   style: string;
 }
 
 function SelectBox(props: Props) {
-  const { view, handleView, placeholder, style, used } = props;
+  const { view, handleView, placeholder, style } = props;
   const { deadline, areaNo, categoryNo } = useSelector(
     (state: RootState) => state.createPost.data,
   );
@@ -58,7 +57,6 @@ function SelectBox(props: Props) {
             style={style}
             setSelected={setSelected}
             handleView={handleView}
-            used={used}
           />
           <Overlay onClick={handleView} />
         </>

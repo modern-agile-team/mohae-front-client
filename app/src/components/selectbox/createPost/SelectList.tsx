@@ -18,7 +18,6 @@ interface Props {
   style: string;
   setSelected: Dispatch<SetStateAction<string>>;
   handleView: () => void;
-  used: string;
 }
 
 function SelectList(props: Props) {

@@ -1,3 +1,3 @@
-import SelectBox from '../filter/selectBox/SelectBox';
+import SelectBox from './createPost/SelectBox';
 
 export { SelectBox };

@@ -13,6 +13,7 @@ import { RootState } from '../../redux/root';
 import { ENDPOINT } from '../../utils/ENDPOINT';
 import Presenter from './Presenter';
 import { Spinner } from '../../components';
+import { requestGetPostData } from '../../apis/post';
 
 interface Props {
   type: string;
@@ -32,8 +33,7 @@ function CreateAndEditPost({ type }: Props) {
 
   useEffect(() => {
     if (type === 'edit') {
-      setInterceptors(customAxios)
-        .get(`${ENDPOINT}boards/${no}`)
+      requestGetPostData(Number(no))
         .then(res => {
           const data = res.data.response.board;
           const beforeEdit = {
@@ -102,7 +102,7 @@ function CreateAndEditPost({ type }: Props) {
       .catch(_ => alert('작성 실패'));
   };
 
-  const postingAxios = (e: React.MouseEvent, type: string) => {
+  const handleAxios = (e: React.MouseEvent) => {
     e.preventDefault();
 
     no ? requestForEdit() : requestForCreate();
@@ -111,11 +111,7 @@ function CreateAndEditPost({ type }: Props) {
   return (
     <>
       {!loading ? (
-        <Presenter
-          popupView={popupView}
-          postingAxios={postingAxios}
-          type={type}
-        />
+        <Presenter popupView={popupView} handleAxios={handleAxios} />
       ) : (
         <Spinner size="big" />
       )}

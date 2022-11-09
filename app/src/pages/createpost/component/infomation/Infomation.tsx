@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import styled from '@emotion/styled';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
 import { Box, MarkBox, SelectBox } from '../../../../components';
 import { SelectBtn } from '../../../../components/button';
-import Input from '../../../../components/input/createPost/Input';
-import { lists } from '../../../../consts/categoryList';
+import { Inputs, TextArea } from '../../../../components/input/createPost';
 import { setTarget } from '../../../../redux/createpost/reducer';
 import { RootState } from '../../../../redux/root';
 
@@ -13,12 +12,11 @@ interface StateType {
 }
 
 function Infomation() {
-  const { no } = useParams();
   const dispatch = useDispatch();
   const { categoryNo, areaNo, deadline, target } = useSelector(
     (state: RootState) => state.createPost.data,
   );
-  const [view, setView] = useState<StateType>({
+  const [selectBoxView, setSelectBoxView] = useState<StateType>({
     0: false,
     1: false,
     2: false,
@@ -29,25 +27,23 @@ function Infomation() {
   });
 
   useEffect(() => {
-    setTargetChecked(
-      Number(target) === 1 ? { 0: false, 1: true } : { 0: true, 1: false },
-    );
+    setTarget(Number(target) ? { 0: false, 1: true } : { 0: true, 1: false });
   }, []);
 
-  const selectBoxClick = (i: number) => {
-    setView({ 0: false, 1: false, 2: false, [i]: !view[i] });
+  const handleSelectBtnClick = (checked: number) => {
+    setTargetChecked({
+      0: false,
+      1: false,
+      [checked]: !targetChecked[checked],
+    });
+    dispatch(setTarget(checked));
   };
 
-  const handleSelectBtnClick = (e: React.ChangeEvent, i: number) => {
-    dispatch(setTarget(Number(e.currentTarget.id)));
-    setTargetChecked({ 0: false, 1: false, [i]: !targetChecked[i] });
-  };
-
-  const createSelectBtn = () => {
+  const spitOutButton = () => {
     return contents.map((content, i) => (
-      <div className="markBox" id={`${i}`} key={i}>
+      <div className="markBox" key={i}>
         <SelectBtn
-          onChange={e => handleSelectBtnClick(e, i)}
+          onChange={() => handleSelectBtnClick(i)}
           checked={targetChecked[i]}
           attributes={{
             size: 'large',
@@ -61,69 +57,61 @@ function Infomation() {
     ));
   };
 
-  const createSelectBox = () => {
-    const placeholders: { placeholder: string; no: string | number | null }[] =
-      [
-        { placeholder: '카테고리', no: categoryNo },
-        { placeholder: '전체 지역', no: areaNo },
-        { placeholder: '기간', no: deadline },
-      ];
+  const handleSelectBoxClick = (i: number) => {
+    setSelectBoxView({ 0: false, 1: false, 2: false, [i]: !selectBoxView[i] });
+  };
 
-    const editFor = () => {
-      const arr = placeholders.map((placeholder, i) => {
-        return lists[placeholder.placeholder]
-          .map(list => {
-            if (Number(list.no) === placeholder.no) {
-              return list.name;
-            } else {
-              return '';
-            }
-          })
-          .filter(el => el)[0];
-      });
-      return arr;
-    };
-
-    return no
-      ? editFor().map((el, i) => (
-          <SelectBox
-            placeholder={el}
-            view={view[i]}
-            key={i}
-            handleView={() => selectBoxClick(i)}
-            style={placeholders[i].placeholder}
-            used={'createEdit'}
-          />
-        ))
-      : placeholders.map((el, i) => (
-          <SelectBox
-            placeholder={el.placeholder}
-            view={view[i]}
-            key={i}
-            handleView={() => selectBoxClick(i)}
-            style={placeholders[i].placeholder}
-            used={'createEdit'}
-          />
-        ));
+  const spitOutBox = () => {
+    const propsTable = [
+      { using: 'categoryNo', selected: categoryNo ? true : false },
+      { using: 'areaNo', selected: areaNo ? true : false },
+      { using: 'deadline', selected: deadline ? true : false },
+    ];
+    return propsTable.map((prop, i) => (
+      <SelectBox
+        key={`${i}`}
+        view={selectBoxView[i]}
+        using={prop.using}
+        handleView={() => handleSelectBoxClick(i)}
+        selected={prop.selected}
+      />
+    ));
   };
 
   return (
-    <Box size={[736, 448]} className="writeWrap">
-      <div className="topWrap">
+    <Box size={[736, 448]}>
+      <Container>
         <div className="left">
-          <Input small />
-          <div className="markBoxWrap">{createSelectBtn()}</div>
+          <Inputs />
+          <div className="mark-box-wrap">{spitOutButton()}</div>
         </div>
-        <div className="right">{createSelectBox()}</div>
-      </div>
-      <div className="summary">
-        <Input big />
-      </div>
+        <div className="right">{spitOutBox()}</div>
+      </Container>
+      <TextArea />
     </Box>
   );
 }
 
 export default Infomation;
+
+const Container = styled.article`
+  display: flex;
+  .left,
+  .right {
+    width: 368px;
+    height: calc(62px * 3);
+    input {
+      text-align: center;
+    }
+  }
+  .mark-box-wrap {
+    display: flex;
+    margin: none;
+    width: 368px;
+    height: 62px;
+    border-bottom: 2px solid #e7e7e8;
+  }
+`;
 
 const contents = [
   <>

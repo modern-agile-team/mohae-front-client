@@ -108,7 +108,7 @@ export default function Header({ setSnapPageNumber }: Props): ReactElement {
     </div>
   );
 }
-const result = 0;
+
 const wrapper = css`
   * {
     background-color: inherit;

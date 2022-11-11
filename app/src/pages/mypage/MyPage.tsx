@@ -16,7 +16,7 @@ import {
 import getToken from '../../utils/getToken';
 import { useEffect } from 'react';
 import { ACCESS_TOKEN } from '../../consts/tokenKey';
-const result = 0;
+
 export default function MyPage() {
   const target = {
     0: '&target=false',

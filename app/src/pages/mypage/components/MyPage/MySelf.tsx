@@ -13,7 +13,7 @@ import { MyPageProps } from '../../../../types/myPage/myPage';
 import { RootState } from '../../../../redux/root';
 import { removeToken } from '../../../../utils/getToken';
 import { ACCESS_TOKEN, REFESH_TOKEN } from '../../../../consts/tokenKey';
-const result = 0;
+
 export default function MySelf({ posts, actions, checkSelf }: MyPageProps) {
   const navigate = useNavigate();
   const userInfo = useSelector((state: RootState) => state.user.user);

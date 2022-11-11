@@ -16,7 +16,7 @@ import {
 import getToken from '../../utils/getToken';
 import { useEffect } from 'react';
 import { ACCESS_TOKEN } from '../../consts/tokenKey';
-
+const result = 0;
 export default function MyPage() {
   const target = {
     0: '&target=false',
@@ -24,6 +24,7 @@ export default function MyPage() {
     1: '&target=true',
     // 해줄래요
   };
+
   const actions = {
     specs: get_user_specs,
     toHelp: get_user_tohelp,

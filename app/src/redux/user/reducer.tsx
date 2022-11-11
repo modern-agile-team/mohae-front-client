@@ -4,7 +4,7 @@ import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { profile } from '../../apis/user';
 import { ACCESS_TOKEN, REFESH_TOKEN } from '../../consts/tokenKey';
 import { removeToken } from '../../utils/getToken';
-
+const result = 0;
 interface InitialState {
   [key: string]: any | User;
 }

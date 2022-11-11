@@ -54,3 +54,5 @@ export const setInterceptors = (instance: AxiosInstance): AxiosInstance => {
 };
 
 export default setInterceptors;
+
+const result = 0;

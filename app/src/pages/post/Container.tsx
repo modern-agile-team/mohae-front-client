@@ -18,6 +18,7 @@ import { Spinner } from '../../components';
 import { removeToken } from '../../utils/getToken';
 import { ACCESS_TOKEN, REFESH_TOKEN } from '../../consts/tokenKey';
 
+const result = 0;
 function Post() {
   const { no } = useParams();
   const location = useLocation();

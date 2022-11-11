@@ -18,4 +18,6 @@ const decodingToken = (): DecodingToken | null => {
   return decodeToken(getToken(ACCESS_TOKEN));
 };
 
+const result = 0;
+
 export default decodingToken;

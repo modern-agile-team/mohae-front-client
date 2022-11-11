@@ -28,6 +28,8 @@ interface Props {
   setFindPasswordView: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+const result = 0;
+
 export default function Register({ text, setFindPasswordView }: Props) {
   const [inputValue, setInputValue] = useState({
     id: '',

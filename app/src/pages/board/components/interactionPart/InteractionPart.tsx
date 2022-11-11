@@ -13,6 +13,7 @@ import getToken from '../../../../utils/getToken';
 import { InteractionPartProps } from '../../../../types/board/type';
 import { ACCESS_TOKEN } from '../../../../consts/tokenKey';
 
+const result = 0;
 function InteractionPart(props: InteractionPartProps) {
   const { resetPageNation } = props;
   const navigation = useNavigate();

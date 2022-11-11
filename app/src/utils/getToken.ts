@@ -1,25 +1,16 @@
 /** @format */
 
-const getToken = () => {
-  return sessionStorage.getItem('access_token') || '';
+export const getToken = (key: string) => {
+  const storageItem = localStorage.getItem(key);
+  return storageItem ? JSON.parse(storageItem) : '';
 };
 
-export const getAccessToken = () => {
-  if (typeof window !== 'undefined')
-    return window.sessionStorage.getItem('access_token');
-  return undefined;
+export const setToken = (key: string, token: string) => {
+  return localStorage.setItem(key, JSON.stringify(token));
 };
 
-export const getRefreshToken = () => {
-  if (typeof window !== 'undefined')
-    return window.sessionStorage.getItem('refresh_token');
-  return undefined;
-};
-
-export const setAccessToken = (token: string) => {
-  if (typeof window !== 'undefined')
-    return window.sessionStorage.setItem('access_token', token);
-  return undefined;
+export const removeToken = (key: string) => {
+  return localStorage.removeItem(key);
 };
 
 export default getToken;

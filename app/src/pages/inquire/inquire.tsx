@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import QuestionModal from '../../components/modal/QuestionModal';
 import getToken from '../../utils/getToken';
 import { color } from '../../styles';
+import { ACCESS_TOKEN } from '../../consts/tokenKey';
 
 const Inquire = () => {
   const title = useInput(45);
@@ -25,7 +26,7 @@ const Inquire = () => {
   const [modal, setModal] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
-  const token = getToken();
+  const token = getToken(ACCESS_TOKEN);
 
   const onSubmit = async () => {
     if (!token) {

@@ -11,6 +11,8 @@ import { AppDispatch } from '../../../../redux/root';
 import { useSelector } from 'react-redux';
 import { MyPageProps } from '../../../../types/myPage/myPage';
 import { RootState } from '../../../../redux/root';
+import { removeToken } from '../../../../utils/getToken';
+import { ACCESS_TOKEN, REFESH_TOKEN } from '../../../../consts/tokenKey';
 
 export default function MySelf({ posts, actions, checkSelf }: MyPageProps) {
   const navigate = useNavigate();
@@ -23,6 +25,13 @@ export default function MySelf({ posts, actions, checkSelf }: MyPageProps) {
       dispatch(getUserData(userInfo.userNo));
     }
   }, [isOpen]);
+
+  const handleLogout = () => {
+    removeToken(ACCESS_TOKEN);
+    removeToken(REFESH_TOKEN);
+    dispatch(remove_user());
+    navigate('/');
+  };
 
   return (
     <Container>
@@ -60,15 +69,7 @@ export default function MySelf({ posts, actions, checkSelf }: MyPageProps) {
             <div>가입일</div>
             <div className={'date'}>{userInfo && userInfo.createdAt}</div>
           </div>
-          <button
-            className={'logout'}
-            onClick={() => {
-              sessionStorage.removeItem('access_token');
-              sessionStorage.removeItem('refresh_token');
-              dispatch(remove_user());
-              navigate('/');
-            }}
-          >
+          <button className={'logout'} onClick={handleLogout}>
             로그아웃
           </button>
           <div className={'personal-info'}>

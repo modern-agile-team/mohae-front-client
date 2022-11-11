@@ -2,6 +2,8 @@
 
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { profile } from '../../apis/user';
+import { ACCESS_TOKEN, REFESH_TOKEN } from '../../consts/tokenKey';
+import { removeToken } from '../../utils/getToken';
 
 interface InitialState {
   [key: string]: any | User;
@@ -92,8 +94,8 @@ export const userSlice = createSlice({
       .addCase(getUserData.rejected, (state, action) => {
         if (action.error.message === 'Request failed with status code 410') {
           alert('세션이 만료되었습니다');
-          sessionStorage.removeItem('refresh_token');
-          sessionStorage.removeItem('access_token');
+          removeToken(REFESH_TOKEN);
+          removeToken(ACCESS_TOKEN);
           state.user = {};
           window.location.reload();
         }

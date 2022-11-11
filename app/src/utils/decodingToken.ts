@@ -1,5 +1,6 @@
 import getToken from './getToken';
 import { decodeToken } from 'react-jwt';
+import { ACCESS_TOKEN } from '../consts/tokenKey';
 
 interface DecodingToken {
   email: string;
@@ -14,7 +15,7 @@ interface DecodingToken {
 }
 
 const decodingToken = (): DecodingToken | null => {
-  return decodeToken(getToken());
+  return decodeToken(getToken(ACCESS_TOKEN));
 };
 
 export default decodingToken;

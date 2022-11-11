@@ -10,6 +10,7 @@ import { AppDispatch, RootState } from '../../../redux/root';
 import { Link } from 'react-router-dom';
 import getToken from '../../../utils/getToken';
 import { decodeToken } from 'react-jwt';
+import { ACCESS_TOKEN } from '../../../consts/tokenKey';
 
 type Props = {
   [key: string]: any;
@@ -27,7 +28,7 @@ export default function Header({ setSnapPageNumber }: Props): ReactElement {
     login: '로그인',
     sir: '님',
   };
-  const TOKEN = getToken();
+  const TOKEN = getToken(ACCESS_TOKEN);
   const tokenInfo: Props = decodeToken<any>(TOKEN);
   const userInfo: { [key: string]: any } = {
     nickname: TOKEN !== '' && tokenInfo.nickname,
@@ -102,7 +103,7 @@ export default function Header({ setSnapPageNumber }: Props): ReactElement {
           </Link>
         </button>
 
-        {getToken() !== '' ? userInfoBtn : loginButtons}
+        {getToken(ACCESS_TOKEN) !== '' ? userInfoBtn : loginButtons}
       </div>
     </div>
   );

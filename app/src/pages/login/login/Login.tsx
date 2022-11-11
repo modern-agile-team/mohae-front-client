@@ -7,6 +7,8 @@ import { RootState } from '../../../redux/root';
 import { useLocation } from 'react-router-dom';
 import { loginCheck } from '../../../utils/loginCheck';
 import { login } from '../../../apis/auth';
+import { setToken } from '../../../utils/getToken';
+import { ACCESS_TOKEN, REFESH_TOKEN } from '../../../consts/tokenKey';
 
 interface Props {
   text: {
@@ -55,11 +57,8 @@ export default function Register({ text, setFindPasswordView }: Props) {
     login({ email: inputValue.id, password: inputValue.password })
       .then(res => {
         if (res.data.statusCode >= 200 && res.data.statusCode <= 204) {
-          sessionStorage.setItem('access_token', res.data.response.accessToken);
-          sessionStorage.setItem(
-            'refresh_token',
-            res.data.response.refreshToken,
-          );
+          setToken(ACCESS_TOKEN, res.data.response.accessToken);
+          setToken(REFESH_TOKEN, res.data.response.refreshToken);
           window.location.replace(location.pathname);
           loginCheck();
 

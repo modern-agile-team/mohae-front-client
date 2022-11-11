@@ -25,7 +25,8 @@ import Inquire from './pages/inquire/inquire';
 import InquireSuccess from './pages/inquire/inquireSuccess';
 import Notice from './pages/faq/Notice';
 import ChangePassword from './pages/login/findPassword/Container';
-import getToken, { getAccessToken } from './utils/getToken';
+import { getToken } from './utils/getToken';
+import { ACCESS_TOKEN } from './consts/tokenKey';
 
 injectGlobal`
   * {
@@ -73,7 +74,7 @@ injectGlobal`
 `;
 
 const App: React.SFC = () => {
-  const token = getAccessToken();
+  const token = getToken(ACCESS_TOKEN);
   const [snapPageNumber, setSnapPageNumber] = useState(0);
   return (
     <Router>

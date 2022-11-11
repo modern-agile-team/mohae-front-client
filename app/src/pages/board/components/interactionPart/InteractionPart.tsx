@@ -11,13 +11,14 @@ import { categoryList } from '../../../../consts/categoryList';
 import { useNavigate, useParams } from 'react-router-dom';
 import getToken from '../../../../utils/getToken';
 import { InteractionPartProps } from '../../../../types/board/type';
+import { ACCESS_TOKEN } from '../../../../consts/tokenKey';
 
 function InteractionPart(props: InteractionPartProps) {
   const { resetPageNation } = props;
   const navigation = useNavigate();
   const { no } = useParams();
   const categoryName = categoryList[Number(no) - 1].name;
-  const localUserToken = getToken();
+  const localUserToken = getToken(ACCESS_TOKEN);
   const [loginPlz, setLoginPlz] = useState(false);
 
   const controlWriteButton = () => {

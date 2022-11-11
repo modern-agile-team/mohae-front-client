@@ -20,6 +20,7 @@ import {
   setInitialState as setInitialStateMypageProfile,
 } from '../../redux/mypage/reducer';
 import ReportModal from '../../components/modal/ReportModal';
+import { ACCESS_TOKEN } from '../../consts/tokenKey';
 
 interface Props {
   userNo: number;
@@ -34,7 +35,7 @@ export default function ModalProfile(props: Props) {
   const [reportModalView, setReportModalView] = useState(false);
   const dispatch = useDispatch();
   const userInfoInToken = useSelector((state: RootState) => state.user.user);
-  const token = getToken() || null;
+  const token = getToken(ACCESS_TOKEN);
   const checkSelf = String(userInfoInToken?.userNo === userNo);
   const take: any = {
     true: 5,

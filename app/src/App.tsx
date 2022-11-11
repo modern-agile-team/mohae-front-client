@@ -14,8 +14,8 @@ import { LoginModal, Spec } from './pages';
 import { getToken } from './utils/getToken';
 import { ACCESS_TOKEN } from './consts/tokenKey';
 
-const Edit = lazy(() => import('./pages/mypage/components/Spec/Edit'));
 const Visit = lazy(() => import('./pages/mypage/components/Spec/Visit'));
+const Edit = lazy(() => import('./pages/mypage/components/Spec/Edit'));
 const Inquire = lazy(() => import('./pages/inquire/inquire'));
 const InquireSuccess = lazy(() => import('./pages/inquire/inquireSuccess'));
 const ChangePassword = lazy(

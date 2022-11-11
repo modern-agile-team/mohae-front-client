@@ -10,7 +10,7 @@ import QuestionModal from '../../components/modal/QuestionModal';
 import getToken from '../../utils/getToken';
 import { color } from '../../styles';
 import { ACCESS_TOKEN } from '../../consts/tokenKey';
-const result = 0;
+
 const Inquire = () => {
   const title = useInput(45);
   const contents = useInput(500);

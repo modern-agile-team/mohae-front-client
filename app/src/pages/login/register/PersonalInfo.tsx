@@ -179,12 +179,6 @@ export default function PersonalInfo({ part, next }: Object) {
     setFocus(!focus);
   };
 
-  const clickCompanyHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const target = e.currentTarget.value;
-    setInputValue({ ...inputValue, emailCompany: target });
-    setFocus(false);
-  };
-
   const clickCheck = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -201,6 +195,12 @@ export default function PersonalInfo({ part, next }: Object) {
         }
       })
       .catch(err => alert(err.response.data.error.message));
+  };
+
+  const clickCompanyHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const target = e.currentTarget.value;
+    setInputValue({ ...inputValue, emailCompany: target });
+    setFocus(false);
   };
 
   const clickNext = (e: React.MouseEvent) => {

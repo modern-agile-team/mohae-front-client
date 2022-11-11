@@ -14,5 +14,3 @@ export const removeToken = (key: string) => {
 };
 
 export default getToken;
-
-const result = 0;

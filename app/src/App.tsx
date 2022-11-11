@@ -72,7 +72,7 @@ injectGlobal`
       }
 
 `;
-const result = 0;
+
 const App: React.SFC = () => {
   const token = getToken(ACCESS_TOKEN);
   const [snapPageNumber, setSnapPageNumber] = useState(0);

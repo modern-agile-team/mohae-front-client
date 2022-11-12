@@ -1,9 +1,10 @@
 import axios from 'axios';
 import { ENDPOINT } from '../utils/ENDPOINT';
 import getToken from '../utils/getToken';
+import { ACCESS_TOKEN } from '../consts/tokenKey';
 
 const createInstance = () => {
-  const TOKEN = getToken();
+  const TOKEN = getToken(ACCESS_TOKEN);
   return axios.create({
     baseURL: `${ENDPOINT}`,
     headers: {

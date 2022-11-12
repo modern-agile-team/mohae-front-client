@@ -15,6 +15,8 @@ import {
   requestPostReopening,
 } from '../../apis/post';
 import { Spinner } from '../../components';
+import { removeToken } from '../../utils/getToken';
+import { ACCESS_TOKEN, REFESH_TOKEN } from '../../consts/tokenKey';
 
 function Post() {
   const { no } = useParams();
@@ -41,8 +43,8 @@ function Post() {
       });
     } catch (err: any) {
       if (err.response.status === 410 || err.response.status === 401) {
-        sessionStorage.removeItem('access_token');
-        sessionStorage.removeItem('refresh_token');
+        removeToken(ACCESS_TOKEN);
+        removeToken(REFESH_TOKEN);
         window.location.replace(location.pathname);
       }
     }

@@ -1,5 +1,5 @@
 import { css, cx } from '@emotion/css';
-import { color, radius, font, shadow } from '../../styles';
+import { color, font } from '../../styles';
 import { ReactElement } from 'react';
 
 type Props = {
@@ -38,7 +38,7 @@ export default function Text(props: Props): ReactElement {
     star: star,
   };
 
-  const finalStyles = Object.keys(props).map((prop) => {
+  const finalStyles = Object.keys(props).map(prop => {
     return check[prop];
   });
 

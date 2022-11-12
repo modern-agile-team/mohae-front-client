@@ -15,6 +15,7 @@ import {
 } from '../../redux/spec/reducer';
 import getToken from '../../utils/getToken';
 import { useEffect } from 'react';
+import { ACCESS_TOKEN } from '../../consts/tokenKey';
 
 export default function MyPage() {
   const target = {
@@ -23,12 +24,13 @@ export default function MyPage() {
     1: '&target=true',
     // 해줄래요
   };
+
   const actions = {
     specs: get_user_specs,
     toHelp: get_user_tohelp,
     helpMe: get_user_helpme,
   };
-  const TOKEN = getToken();
+  const TOKEN = getToken(ACCESS_TOKEN);
   const userInfo = useSelector((state: RootState) => state.user.user);
   const isOpenSpecVisit = useSelector(
     (state: RootState) => state.modal.openSpecVisit,

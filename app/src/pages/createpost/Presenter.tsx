@@ -48,6 +48,7 @@ function Presenter(props: Props) {
         <div>
           <WriteButton>
             <MainButton
+              aria-label="write"
               type="button"
               able={Boolean(writeButtonAble)}
               onClick={handleAxios}

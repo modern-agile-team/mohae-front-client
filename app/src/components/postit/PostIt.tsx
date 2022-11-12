@@ -10,7 +10,11 @@ function PostIt(props: Props) {
   const { size, children } = props;
 
   const textContent = () =>
-    children ? <p>{children}</p> : <p>한 줄 요약이 존재하지 않습니다.</p>;
+    children ? (
+      <div className="description-wrap">{children}</div>
+    ) : (
+      <p className="description-wrap">한 줄 요약이 존재하지 않습니다.</p>
+    );
 
   return (
     <Container size={size}>
@@ -43,9 +47,8 @@ const Container = styled(Common)<{ size: string }>`
   color: #4f4e5c;
   ${props =>
     props.size === 'small'
-      ? `p {
+      ? `.description-wrap {
     font-size: 16px;
-    font-family: 'Regular';
     width: 704px;
     max-height: 127px;
     word-break: break-all;

@@ -10,20 +10,15 @@ import {
   setInitialState,
 } from '../../redux/createpost/reducer';
 import { RootState } from '../../redux/root';
-import { ENDPOINT } from '../../utils/ENDPOINT';
 import Presenter from './Presenter';
 import { Spinner } from '../../components';
 import { requestGetPostData } from '../../apis/post';
-
-interface Props {
-  type: string;
-}
 
 interface StateForEdit {
   [key: string]: string | number | null | string[] | never[];
 }
 
-function CreateAndEditPost({ type }: Props) {
+function CreateAndEditPost() {
   const { no } = useParams();
   const dispatch = useDispatch();
   const { loading, form } = useSelector((state: RootState) => state.createPost);
@@ -32,7 +27,7 @@ function CreateAndEditPost({ type }: Props) {
   const [popupView, setPopupView] = useState(false);
 
   useEffect(() => {
-    if (type === 'edit') {
+    if (no) {
       requestGetPostData(Number(no))
         .then(res => {
           const data = res.data.response.board;
@@ -55,7 +50,7 @@ function CreateAndEditPost({ type }: Props) {
           setStateForEdit(beforeEdit);
           dispatch(setForEdit(beforeEdit));
         })
-        .catch(err => console.log('err', err));
+        .catch(_ => alert('알 수 없는 에러 발생.'));
     } else dispatch(setLoading(false));
 
     return () => {
@@ -63,20 +58,24 @@ function CreateAndEditPost({ type }: Props) {
     };
   }, []);
 
+  const thereIsNoImg = () => {
+    const file = new File(['logo.png'], 'logo.png', {
+      type: 'image/jpg',
+    });
+    form.append('image', file);
+  };
+
   const requestForEdit = () => {
     for (const key in stateForEdit) {
       if (key !== 'imgArr') {
+        console.log(refactorReduxData[key] !== stateForEdit[key]);
         refactorReduxData[key] !== stateForEdit[key]
           ? form.set(`${key}`, JSON.stringify(refactorReduxData[key]))
           : form.set(`${key}`, JSON.stringify(null));
       }
     }
-    if (form.getAll('image').length === 0) {
-      const file = new File(['logo.png'], 'logo.png', {
-        type: 'image/jpg',
-      });
-      form.append('image', file);
-    }
+
+    if (form.getAll('image').length === 0) thereIsNoImg();
 
     setInterceptors(customAxios)
       .patch(`https://mo-hae.site/boards/${no}`, form)
@@ -89,12 +88,7 @@ function CreateAndEditPost({ type }: Props) {
       form.set(`${key}`, JSON.stringify(refactorReduxData[key]));
     }
 
-    if (form.getAll('image').length === 0) {
-      const file = new File(['logo.png'], 'logo.png', {
-        type: 'image/jpg',
-      });
-      form.append('image', file);
-    }
+    if (form.getAll('image').length === 0) thereIsNoImg();
 
     setInterceptors(customAxios)
       .post(`https://mo-hae.site/boards`, form)

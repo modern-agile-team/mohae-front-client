@@ -14,12 +14,9 @@ function Inputs() {
     if (
       price.toString().length > 8 ||
       Number(price.toString().replace(/,/g, '')) > 1000001
-    ) {
+    )
       dispatch(setPrice('1,000,000'));
-    }
-    if (title.length > 15) {
-      dispatch(setTitle(title.slice(0, 15)));
-    }
+    if (title.length > 15) dispatch(setTitle(title.slice(0, 15)));
   }, [price, title]);
 
   const onChange = {

@@ -5,24 +5,23 @@ import {
   MarkBox,
   OrderedImg as ImagesCollection,
 } from '../../../../components';
-import { radius } from '../../../../styles';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/root';
 import styled from '@emotion/styled';
 
 function PostImgs() {
+  const [targetingImgIndex, setTargetingImgIndex] = useState(0);
   const loading = useSelector((state: RootState) => state.post.loading);
   const { boardPhotoUrls, target, isDeadline } = useSelector(
     (state: RootState) => state.post.data.response.board,
   );
-  const [targetingImgIndex, setTargetingImgIndex] = useState(0);
 
   const boardPhotoURL = () => {
     if (boardPhotoUrls !== null && !loading) {
       return boardPhotoUrls.split(', ').map(el => {
         return 'https://d2ffbnf2hpheay.cloudfront.net/' + el;
       });
-    } else if (boardPhotoUrls === null) {
+    } else {
       return ['/img/logo.png'];
     }
   };
@@ -33,8 +32,8 @@ function PostImgs() {
         {!loading && (
           <ImagesCollection
             imgs={boardPhotoURL()}
-            inline
             setImgIndex={setTargetingImgIndex}
+            edit={false}
           />
         )}
       </Box>
@@ -65,7 +64,7 @@ const Container = styled.section`
   .carouselBox {
     width: 360px;
     height: 360px;
-    ${radius[6]}
+    border-radius: 6px;
     position: relative;
   }
   .markBox {

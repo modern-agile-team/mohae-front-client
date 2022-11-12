@@ -14,7 +14,7 @@ function PostImgs() {
         <Carousel postEdit />
       </Box>
       <Box size={[360, 72]}>
-        <OrderedImg inline edit imgs={editImgArr} postEdit />
+        <OrderedImg edit imgs={editImgArr} />
       </Box>
     </>
   );

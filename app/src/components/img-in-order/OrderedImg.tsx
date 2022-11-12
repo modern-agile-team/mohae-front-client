@@ -2,7 +2,6 @@
 
 import { css, cx } from '@emotion/css';
 import { useState, useEffect, Dispatch, SetStateAction } from 'react';
-import { color } from '../../styles';
 import Img from '../img/Img';
 import Style from './style';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,43 +11,38 @@ import axios from 'axios';
 import useRefactorPostingData from '../../customhook/useRefactorPostingData';
 
 interface Props {
-  [key: string]: any;
+  imgs: string[];
+  edit: boolean;
   setImgIndex?: Dispatch<SetStateAction<number>>;
 }
 
 interface IMAGE {
   img: string;
   checked: boolean;
-  File: FormData | any;
-  size: number;
+  File: string | Blob | null;
+  size?: number;
 }
 
-export default function OrderedImg({
-  imgs,
-  edit,
-  inline,
-  postEdit,
-  setImgIndex,
-}: Props) {
-  const [clone, setClone] = useState(
-    imgs &&
-      imgs.map((img: any) => ({
-        img: img,
-        checked: false,
-      })),
-  );
-  const [alarm, setAlarm] = useState(true);
-  const [myImage, setMyImage] = useState<IMAGE[]>(clone || []);
-  const formData = useSelector((state: RootState) => state.createPost.form);
+export default function OrderedImg(props: Props) {
+  const { imgs, edit, setImgIndex } = props;
   const dispatch = useDispatch();
   const refactorReduxData = useRefactorPostingData();
+  const formData = useSelector((state: RootState) => state.createPost.form);
+  const [imgBasket, setImgBasket] = useState<IMAGE[]>(
+    imgs.map((img: string) => ({
+      img: img,
+      checked: false,
+      File: '',
+    })),
+  );
 
   const addImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.currentTarget.files || [];
-    if (inline && files.length + myImage.length > 5) {
+
+    if (files.length + imgBasket.length > 5) {
       alert('사진은 최대 5개만 업로드 할 수 있습니다.');
     } else {
-      const urls = [...myImage];
+      const urls = [...imgBasket];
       for (let count = 0; count < files.length; count++) {
         const imageURL = URL.createObjectURL(files[count]);
         formData.append('image', files[count]);
@@ -59,7 +53,7 @@ export default function OrderedImg({
             File: files[count],
             size: files[count].size,
           });
-        setMyImage(urls);
+        setImgBasket(urls);
       }
 
       dispatch(setImgs(formData));
@@ -68,258 +62,162 @@ export default function OrderedImg({
   };
 
   const getImgFromS3 = async () => {
-    const newFileArr: File[] = [];
-
-    for (const el of clone) {
-      const fileName = el.img.replace(
+    const replaceImgURLs = imgBasket.map(object =>
+      object.img.replace(
         'https://d2ffbnf2hpheay.cloudfront.net/',
-        '',
-      );
-      await axios
-        .get<Blob>(
-          'https://mohae-image.s3.ap-northeast-2.amazonaws.com/' +
-            `${fileName}`,
-          { responseType: 'blob' },
-        )
-        .then(res => {
-          const file = new File([res.data], fileName.substring(20), {
+        'https://mohae-image.s3.ap-northeast-2.amazonaws.com/',
+      ),
+    );
+    const requestImgFiles = await Promise.all(
+      replaceImgURLs.map(url =>
+        axios.get<Blob>(url, { responseType: 'blob' }).then(res => {
+          return new File([res.data], url.substring(72), {
             type: res.data.type,
           });
-          return newFileArr.push(file);
-        });
-    }
-
-    const newMyimage = clone.map((el: any, i: any) => {
-      return { img: el.img, checked: false, File: newFileArr[i] };
+        }),
+      ),
+    );
+    const newImgBasket = imgBasket.map((el, i) => {
+      return { img: el.img, checked: false, File: requestImgFiles[i] };
     });
-    setMyImage(newMyimage);
-    newMyimage.map((el: any, i: any) => formData.append('image', el.File));
+    setImgBasket(newImgBasket);
+    newImgBasket.forEach(el => el.File && formData.append('image', el.File));
   };
 
   useEffect(() => {
-    setTimeout(() => {
-      setAlarm(false);
-    }, 3000);
-    if (postEdit && clone) {
-      getImgFromS3();
-    }
+    if (edit && imgBasket) getImgFromS3();
   }, []);
-  const style = Style({ inline: inline });
+  const style = Style({ inline: true });
 
   const sequence = css`
-    width: ${inline ? `15px` : `20px`};
-    height: ${inline ? `15px` : `20px`};
+    width: 15px;
+    height: 15px;
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: white;
-    border: 1px solid ${color.main};
-    color: ${color.main};
+    border: 1px solid #ff445e;
+    color: #ff445e;
     border-radius: 50%;
     position: absolute;
-    bottom: ${inline ? `${56 / 2 - 15 / 2}px` : `8px`};
-    right: ${inline ? `${56 / 2 - 15 / 2}px` : `8px`};
+    bottom: 20.5px;
+    right: 20.5px;
   `;
 
-  const selected = css`
-    background-color: ${color.main};
-    color: white;
-  `;
-
-  const orderingImg = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-
-    e.stopPropagation();
+  const handlePhotoIndex = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     const idx = Number(e.currentTarget.name);
-    const target = myImage[idx];
-    if (!target.checked) {
-      target.checked = !target.checked;
-      const newClone = myImage.filter(
-        (each: any, index: number) => index !== idx,
-      );
+    const target = imgBasket[idx];
+    target.checked = !target.checked;
+    const newImgBasket = imgBasket.filter((_, index) => index !== idx);
 
-      const section = myImage.reduce((acc: any, cur: any) => {
-        if (cur.checked) {
-          return ++acc;
-        } else {
-          return acc;
-        }
+    formData.delete('image');
+
+    if (target.checked) {
+      const newPhotoIndex = imgBasket.reduce((checkedNum, nextImg) => {
+        if (nextImg.checked) return ++checkedNum;
+        else return checkedNum;
       }, 0);
-      newClone.splice(section - 1, 0, target);
 
-      setMyImage(newClone);
-      formData.delete('image');
-      for (var i = 0; i < myImage.length; i++) {
-        formData.append('image', newClone[i].File);
-      }
-
-      dispatch(setImgArr(newClone));
-      dispatch(setImgs(formData));
+      newImgBasket.splice(newPhotoIndex - 1, 0, target);
     } else {
-      target.checked = !target.checked;
-      const newClone = myImage.filter((each: any, index: any) => index !== idx);
-
-      const section = myImage.reduce((acc: any, cur: any) => {
-        if (!cur.checked) {
-          return ++acc;
-        } else {
-          return acc;
-        }
+      const newPhotoIndex = imgBasket.reduce((noneCheckedNum, nextImg) => {
+        if (!nextImg.checked) return ++noneCheckedNum;
+        else return noneCheckedNum;
       }, 0);
-      newClone.splice(newClone.length - (section - 1), 0, target);
-      setMyImage(newClone);
-      formData.delete('image');
-      for (var i = 0; i < myImage.length; i++) {
-        formData.append('image', newClone[i].File);
-      }
 
-      dispatch(setImgArr(newClone));
-      dispatch(setImgs(formData));
+      newImgBasket.splice(newImgBasket.length - (newPhotoIndex - 1), 0, target);
     }
+
+    newImgBasket.forEach(el => el.File && formData.append('image', el.File));
+
+    setImgBasket(newImgBasket);
+    dispatch(setImgArr(newImgBasket));
+    dispatch(setImgs(formData));
   };
 
-  const deleteImg = (e: React.MouseEvent<HTMLButtonElement>, num: number) => {
-    e.preventDefault();
+  const deleteImg = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
 
     const newFormData = new FormData();
+    const newImage = [...imgBasket];
+    const index = Number(e.currentTarget.id);
+
     for (const key in refactorReduxData) {
       newFormData.set(`${key}`, JSON.stringify(refactorReduxData[key]));
     }
 
-    const index = Number(e.currentTarget.id);
-    const newImage = [...myImage];
     newImage.splice(index, 1);
-    setMyImage(newImage);
+    newImage.forEach(el => el.File && newFormData.append('image', el.File));
 
-    for (let i = 0; i < newImage.length; i++) {
-      newFormData.append('image', newImage[i].File);
-    }
-
+    setImgBasket(newImage);
     dispatch(setImgArr(newImage));
     dispatch(setImgs(newFormData));
   };
 
   const setIndex = (index: number) => {
-    if (setImgIndex) {
-      setImgIndex(index);
-    } else return () => {};
+    setImgIndex && setImgIndex(index);
   };
+
   const show = () => {
+    return imgBasket.map((each, index: number) => (
+      <button key={`${index}`} className={'item-box show'} name={`${index}`}>
+        <Img onClick={() => setIndex(index)} src={each.img} />
+      </button>
+    ));
+  };
+
+  const imgInputContainer = () => {
     return (
-      <>
-        {myImage &&
-          myImage.map((each: any, index: number) => {
-            return (
-              <button key={index} className={'item-box show'} name={`${index}`}>
-                <Img
-                  onClick={() => setIndex(index)}
-                  src={each.img}
-                />
-              </button>
-            );
-          })}
-      </>
+      <form>
+        <input
+          id="input-file"
+          type="file"
+          onChange={addImage}
+          multiple
+          accept=".jpg,.jpeg,.png"
+        />
+        <label htmlFor="input-file">
+          <div className={'item-box add'}>
+            <div className={'icon'} />
+          </div>
+        </label>
+      </form>
     );
   };
 
   const images = () => {
+    const selected = css`
+      background-color: #ff445e;
+      color: white;
+    `;
     return (
       <>
-        {myImage &&
-          myImage.map((each: any, index: number) => {
-            const order = each.checked ? selected : '';
-            return (
-              <button
-                key={index}
-                className={'item-box'}
-                name={`${index}`}
-                onClick={orderingImg}
-              >
-                <Img src={each.img} />
-                <div className={cx(sequence, order)}>{index + 1}</div>
-                <button
-                  onClick={e => deleteImg(e, index)}
-                  id={`${index}`}
-                  className={'delete'}
-                />
-              </button>
-            );
-          })}
-        {edit &&
-          ((myImage.length < 5 && inline) ||
-            (myImage.length < 10 && !inline)) && (
-            <>
-              <form>
-                <input
-                  id="input-file"
-                  type="file"
-                  onChange={addImage}
-                  multiple
-                  accept=".jpg,.jpeg,.png"
-                />
-                <label htmlFor="input-file">
-                  <div className={'item-box add'}>
-                    <div className={'icon'} />
-                  </div>
-                </label>
-              </form>
-            </>
-          )}
+        {imgBasket.map((each, i: number) => {
+          const order = each.checked && selected;
+          return (
+            <button
+              key={i}
+              className="item-box"
+              name={`${i}`}
+              onClick={handlePhotoIndex}
+            >
+              <Img src={each.img} />
+              <div className={cx(sequence, order)}>{i + 1}</div>
+              <button onClick={deleteImg} id={`${i}`} className="delete" />
+            </button>
+          );
+        })}
+        {imgBasket.length < 5 && imgInputContainer()}
       </>
     );
   };
 
-  if (edit) {
-    const maxNum = 10,
-      full = myImage.length < maxNum;
-    const countStyle = css`
-      color: ${color.dark1};
-      position: absolute;
-      bottom: 32px;
-      right: 16px;
-    `;
-    const maxNumberStyle = css`
-      color: ${full ? color.dark1 : color.main};
-    `;
-    return (
-      <>
-        <div className={cx(style)}>
-          {alarm && (
-            <div className="alarm">
-              <div>{'순서설정 및 삭제를 할 수 있습니다'}</div>
-            </div>
-          )}
-          {!inline && (
-            <div className={cx(countStyle)}>
-              <span className={cx(maxNumberStyle)}>{`${myImage.length}`}</span>
-              {` / ${maxNum}`}
-            </div>
-          )}
-          <div className={'wrapper'}>
-            <div className={'container'}>{images()}</div>
-          </div>
-        </div>
-      </>
-    );
-  } else if (imgs) {
-    return (
-      <div className={cx(style)}>
-        <div className={'wrapper'}>
-          <div className={'container'}>{show()}</div>
-        </div>
+  return (
+    <div className={cx(style)}>
+      <div className={'wrapper'}>
+        <div className={'container'}>{edit ? images() : show()}</div>
       </div>
-    );
-  } else {
-    const style = css`
-      width: 100%;
-      height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: ${color.dark1};
-    `;
-    return <div className={cx(style)}>{'등록된 사진이 없습니다'}</div>;
-  }
+    </div>
+  );
 }

@@ -103,7 +103,7 @@ const Agreement = ({
       <CheckItem>
         {allCheck ? (
           <CheckDone onClick={() => setAllCheck(!allCheck)}>
-            <Img src={'/img/check.png'} />
+            <Img src={'/img/check.png'} alt="checking-icon" />
           </CheckDone>
         ) : (
           <CheckBox onClick={() => setAllCheck(!allCheck)} />

@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useLocation, useParams, useSearchParams } from 'react-router-dom';
+import { requestCategorySelected, requestFiltering } from '../../apis/board';
 import {
   setResCategorys,
   setResArrEmpty,
@@ -7,7 +8,6 @@ import {
 } from '../../redux/board/reducer';
 import { useDispatch } from 'react-redux';
 import Presenter from './Presenter';
-import { requestCategorySelected, requestFiltering } from '../../apis/board';
 
 interface PageNation {
   category: {

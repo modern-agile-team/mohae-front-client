@@ -60,7 +60,7 @@ const Inquire = () => {
       {loading ? (
         <LoadingWrapper>
           <LoadingImg>
-            <Img src="/img/loading.gif" />
+            <Img src="/img/loading.gif" alt="loading" />
           </LoadingImg>
         </LoadingWrapper>
       ) : (
@@ -100,7 +100,7 @@ const Inquire = () => {
                   })
                 }
               >
-                <Img src="/img/close.png" />
+                <Img src="/img/close.png" alt="close-modal" />
               </CloseImg>
             </FileStorage>
           ) : (

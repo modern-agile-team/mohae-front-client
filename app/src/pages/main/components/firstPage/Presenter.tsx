@@ -27,7 +27,7 @@ function Presenter() {
       </div>
       <div className="scroll">Scroll</div>
       <div className="arrow-down">
-        <Img src={'img/scroll.png'} />
+        <Img src={'img/scroll.png'} alt="scroll-down" />
       </div>
     </Container>
   );

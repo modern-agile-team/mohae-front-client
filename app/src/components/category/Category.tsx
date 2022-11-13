@@ -108,7 +108,7 @@ export default function Category({
       {!(shape === 'row') && (
         <>
           <div className={'icon'}>
-            <Img src={img} />
+            <Img src={img} alt={`category-icon-${id}`} />
           </div>
           {shape === 'square' && <div className={'category-name'}>{name}</div>}
         </>

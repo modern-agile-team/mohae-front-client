@@ -16,7 +16,7 @@ function Tropy({ ranking }: RankingProps) {
   return (
     <Container>
       <ImgContainer ranking={ranking}>
-        <Img src={imgBasket[ranking]} />
+        <Img src={imgBasket[ranking]} alt={`tropy-${ranking}`} />
       </ImgContainer>
     </Container>
   );

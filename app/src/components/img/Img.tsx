@@ -2,23 +2,36 @@ import styled from '@emotion/styled';
 import React from 'react';
 
 interface Props {
-  src: string | any;
+  src: string;
   id?: string;
+  alt?: string;
+  loading?: 'eager' | 'lazy';
   onClick?: (e: React.MouseEvent) => void;
 }
 
 function Img(props: Props) {
-  const { src, onClick } = props;
+  const { src, alt, loading, onClick } = props;
 
-  const show = () => <Container src={src} onClick={onClick} />;
-
-  return show();
+  return (
+    <Container onClick={onClick}>
+      <source srcSet={src} type="image/avif" />
+      <source srcSet={src} type="image/webp" />
+      <img src={src} alt={alt} loading={loading} />
+    </Container>
+  );
 }
 
 export default Img;
 
-const Container = styled.div<{ src: string }>`
+const Container = styled.picture`
   width: 100%;
   height: 100%;
-  background: no-repeat center/contain url(${props => String(props.src)});
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
 `;

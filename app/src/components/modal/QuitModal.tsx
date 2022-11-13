@@ -111,7 +111,7 @@ export default function QuitModal({ isOpen, userName }: Props) {
     <BasicModal visible={isOpen}>
       <div className={cx(wrap)}>
         <div className="imgContainer">
-          <Img src={'/img/logo.png'} />
+          <Img src={'/img/logo.png'} alt="mo-hae-logo" />
         </div>
         <span className="title">회원 탈퇴</span>
         <div className="guide">

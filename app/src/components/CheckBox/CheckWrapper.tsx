@@ -36,7 +36,7 @@ const CheckWrapper = ({
           <div id="wrap">
             {article.checked ? (
               <CheckDone>
-                <Img src={'/img/check.png'} />
+                <Img src={'/img/check.png'} alt="checking-icon" />
               </CheckDone>
             ) : (
               <CheckBox />

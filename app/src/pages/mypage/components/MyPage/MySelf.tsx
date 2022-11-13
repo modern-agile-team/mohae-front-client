@@ -74,19 +74,27 @@ export default function MySelf({ posts, actions, checkSelf }: MyPageProps) {
           </button>
           <div className={'personal-info'}>
             <div className={'item'}>
-              <Img src={'/img/post.png'} />
+              <div>
+                <Img src={'/img/post.png'} />
+              </div>
               <span>{`게시물 ${userInfo && userInfo.boardNum}`}</span>
             </div>
             <div className={'item'}>
-              <Img src={'/img/heart-main.png'} />
+              <div>
+                <Img src={'/img/heart-main.png'} />
+              </div>
               <span>{`좋아요 ${userInfo && userInfo.likedUserNum}`}</span>
             </div>
             <div className={'item'}>
-              <Img src={'/img/university.png'} />
+              <div>
+                <Img src={'/img/university.png'} />
+              </div>
               <span>{(userInfo && userInfo.schoolName) || '-'}</span>
             </div>
             <div className={'item'}>
-              <Img src={'/img/study.png'} />
+              <div>
+                <Img src={'/img/study.png'} />
+              </div>
               <span>{(userInfo && userInfo.majorName) || '-'}</span>
             </div>
           </div>
@@ -253,6 +261,10 @@ const Container = styled.div`
         justify-content: space-between;
         align-items: center;
         line-height: 170%;
+        div {
+          width: 24px;
+          height: 24px;
+        }
       }
     }
     .interest {

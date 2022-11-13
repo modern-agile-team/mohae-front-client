@@ -375,7 +375,7 @@ export default function SelectInfo({ popupInfo, setPopupInfo }: Props) {
                       )}
                     </PlaceHolder>
                     <Arrow>
-                      <Img src="/img/arrow-down-dark3.png" />
+                      <Img src="/img/arrow-down-dark3.png" alt="info-opener" />
                     </Arrow>
                   </SelectButton>
                   <Option>
@@ -422,7 +422,7 @@ export default function SelectInfo({ popupInfo, setPopupInfo }: Props) {
                     </span>
                   </PlaceHolder>
                   <Arrow>
-                    <Img src="/img/arrow-down-dark3.png" />
+                    <Img src="/img/arrow-down-dark3.png" alt="info-opener" />
                   </Arrow>
                   <Option>
                     <List>
@@ -457,7 +457,7 @@ export default function SelectInfo({ popupInfo, setPopupInfo }: Props) {
                     </span>
                   </PlaceHolder>
                   <Arrow>
-                    <Img src="/img/arrow-down-dark3.png" />
+                    <Img src="/img/arrow-down-dark3.png" alt="info-opener" />
                   </Arrow>
                   <Option>
                     <List>
@@ -495,7 +495,10 @@ export default function SelectInfo({ popupInfo, setPopupInfo }: Props) {
                             >
                               {el}
                               <CloseButton onClick={() => onCategoryDelete(el)}>
-                                <Img src="/img/close-dark2.png" />
+                                <Img
+                                  src="/img/close-dark2.png"
+                                  alt="info-opener"
+                                />
                               </CloseButton>
                             </Category>
                           </CategoryWrapper>
@@ -503,7 +506,7 @@ export default function SelectInfo({ popupInfo, setPopupInfo }: Props) {
                       : text.placeholder.major}
                   </PlaceHolder>
                   <Arrow>
-                    <Img src="/img/arrow-down-dark3.png" />
+                    <Img src="/img/arrow-down-dark3.png" alt="info-opener" />
                   </Arrow>
                   <CategoryOption>
                     <div className={'sub'}>

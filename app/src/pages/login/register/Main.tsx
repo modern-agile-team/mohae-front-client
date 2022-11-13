@@ -20,7 +20,7 @@ export default function Main({ text, next }: Props) {
         <span>{text.subDesc}</span>
       </div>
       <div className={'ssary'}>
-        <Img src={'/img/hello.png'} />
+        <Img src={'/img/hello.png'} alt="wellcome-to-mo-hae" />
       </div>
       <div
         className={cx(css`

@@ -9,5 +9,3 @@ export const postQuestion = async (body: FormData) => {
 
   return response.data;
 };
-
-const response = 1;

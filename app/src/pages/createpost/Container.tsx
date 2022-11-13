@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { customAxios } from '../../apis/instance';
@@ -13,6 +13,7 @@ import { RootState } from '../../redux/root';
 import Presenter from './Presenter';
 import { Spinner } from '../../components';
 import { requestGetPostData } from '../../apis/post';
+import { PosterDetails } from '../../types/post/type';
 
 interface StateForEdit {
   [key: string]: string | number | null | string[] | never[];
@@ -26,29 +27,32 @@ function CreateAndEditPost() {
   const [stateForEdit, setStateForEdit] = useState<StateForEdit>();
   const [popupView, setPopupView] = useState(false);
 
+  const savePostInfomation = useCallback((info: PosterDetails) => {
+    const cloudFrontURL = 'https://d2ffbnf2hpheay.cloudfront.net/';
+    return {
+      price: String(Number(info.price).toLocaleString()),
+      title: info.title,
+      description: info.description || '',
+      summary: info.summary === null ? '' : info.summary,
+      target: info.target,
+      categoryNo: info.categoryNo,
+      areaNo: info.areaNo,
+      deadline: info.deadline,
+      imgArr:
+        info.boardPhotoUrls !== null
+          ? info.boardPhotoUrls
+              .split(', ')
+              .map((el: string) => cloudFrontURL + el)
+          : [],
+    };
+  }, []);
+
   useEffect(() => {
     if (no) {
       requestGetPostData(Number(no))
         .then(res => {
-          const data = res.data.response.board;
-          const beforeEdit = {
-            price: String(Number(data.price).toLocaleString()),
-            title: data.title,
-            description: data.description,
-            summary: data.summary === null ? '' : data.summary,
-            target: data.target,
-            categoryNo: data.categoryNo,
-            areaNo: data.areaNo,
-            deadline: data.deadline,
-            imgArr:
-              data.boardPhotoUrls !== null && data.boardPhotoUrls !== ''
-                ? data.boardPhotoUrls.split(', ').map((el: any) => {
-                    return 'https://d2ffbnf2hpheay.cloudfront.net/' + el;
-                  })
-                : [],
-          };
-          setStateForEdit(beforeEdit);
-          dispatch(setForEdit(beforeEdit));
+          setStateForEdit(savePostInfomation(res.data.response.board));
+          dispatch(setForEdit(savePostInfomation(res.data.response.board)));
         })
         .catch(_ => alert('알 수 없는 에러 발생.'));
     } else dispatch(setLoading(false));
@@ -58,24 +62,14 @@ function CreateAndEditPost() {
     };
   }, []);
 
-  const thereIsNoImg = () => {
-    const file = new File(['logo.png'], 'logo.png', {
-      type: 'image/jpg',
-    });
-    form.append('image', file);
-  };
-
   const requestForEdit = () => {
     for (const key in stateForEdit) {
       if (key !== 'imgArr') {
-        console.log(refactorReduxData[key] !== stateForEdit[key]);
         refactorReduxData[key] !== stateForEdit[key]
           ? form.set(`${key}`, JSON.stringify(refactorReduxData[key]))
           : form.set(`${key}`, JSON.stringify(null));
       }
     }
-
-    if (form.getAll('image').length === 0) thereIsNoImg();
 
     setInterceptors(customAxios)
       .patch(`https://mo-hae.site/boards/${no}`, form)
@@ -88,17 +82,22 @@ function CreateAndEditPost() {
       form.set(`${key}`, JSON.stringify(refactorReduxData[key]));
     }
 
-    if (form.getAll('image').length === 0) thereIsNoImg();
-
     setInterceptors(customAxios)
       .post(`https://mo-hae.site/boards`, form)
       .then(_ => setPopupView(true))
       .catch(_ => alert('작성 실패'));
   };
 
+  const thereIsNoImg = () => {
+    const file = new File(['logo.png'], 'logo.png', {
+      type: 'image/jpg',
+    });
+    form.append('image', file);
+  };
+
   const handleAxios = (e: React.MouseEvent) => {
     e.preventDefault();
-
+    if (form.getAll('image').length === 0) thereIsNoImg();
     no ? requestForEdit() : requestForCreate();
   };
 

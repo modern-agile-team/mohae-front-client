@@ -5,7 +5,7 @@ import Categories from './category/Categories';
 import Text from './text/Text';
 import Report from './check-label/CheckLabel';
 import Carousel from './img-carousel/Img-carousel';
-import OrderedImg from './img-in-order/OrderedImg';
+import ImageInput from './img-in-order/Container';
 import Img from './img/Img';
 import Box from './box/Box';
 import { Btn, WhiteButton, MainButton } from './button';
@@ -36,7 +36,7 @@ export {
   Text,
   Report,
   Carousel,
-  OrderedImg,
+  ImageInput,
   Img,
   Btn,
   Box,

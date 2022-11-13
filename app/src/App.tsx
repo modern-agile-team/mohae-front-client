@@ -1,5 +1,3 @@
-/** @format */
-
 import React, { useState, lazy, Suspense } from 'react';
 
 import {
@@ -10,9 +8,10 @@ import {
 } from 'react-router-dom';
 import { injectGlobal } from '@emotion/css';
 import { color, Layout } from './styles';
-import { LoginModal, Spec } from './pages';
+import { LoginModal } from './pages';
 import { getToken } from './utils/getToken';
 import { ACCESS_TOKEN } from './consts/tokenKey';
+import { Spinner } from './components';
 
 const Visit = lazy(() => import('./pages/mypage/components/Spec/Visit'));
 const Edit = lazy(() => import('./pages/mypage/components/Spec/Edit'));
@@ -91,7 +90,7 @@ const App: React.SFC = () => {
   const [snapPageNumber, setSnapPageNumber] = useState(0);
   return (
     <Router>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<Spinner size="big" />}>
         <Routes>
           <Route
             path={'/'}
@@ -121,7 +120,6 @@ const App: React.SFC = () => {
               />
             }
           />
-          <Route path={'/spec/:no'} element={<Layout component={<Spec />} />} />
           <Route path={'/post/:no'} element={<Layout component={<Post />} />} />
           <Route
             path={'/create/post'}

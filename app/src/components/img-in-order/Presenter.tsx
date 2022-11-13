@@ -21,7 +21,11 @@ function Presenter(props: ImageInputPresenter) {
     return imgBasket.map((each, index: number) => (
       <ImgBox name={`${index}`} key={`${index}-show`} className={`${index}`}>
         <source srcSet={each.img} />
-        <Img onClick={() => setIndex(index)} src={each.img} />
+        <Img
+          onClick={() => setIndex(index)}
+          src={each.img}
+          alt={`provide-small-img-${index}`}
+        />
       </ImgBox>
     ));
   };
@@ -32,10 +36,10 @@ function Presenter(props: ImageInputPresenter) {
         {imgBasket.map((each, i: number) => {
           return (
             <ImgBox key={`${i}-edit`} name={`${i}`} onClick={handlePhotoIndex}>
-              <Img src={each.img} loading={'lazy'} alt={'file'} />
+              <Img src={each.img} loading={'lazy'} alt={`file-img-${i}`} />
               <PhotoIndex check={each.checked}>{i + 1}</PhotoIndex>
               <DeleteButton onClick={deleteImg} id={`${i}`} name="delete">
-                <Img src="/img/delete.png" />
+                <Img src="/img/delete.png" alt="img-delete" />
               </DeleteButton>
             </ImgBox>
           );
@@ -52,7 +56,7 @@ function Presenter(props: ImageInputPresenter) {
             <label htmlFor="input-file">
               <AddImg>
                 <div className="icon">
-                  <Img src="/img/add-white.png" />
+                  <Img src="/img/add-white.png" alt="add-your-img" />
                 </div>
               </AddImg>
             </label>

@@ -63,7 +63,7 @@ const search = ({
             height: 16px;
           `)}
         >
-          <Img src="/img/search.png" />
+          <Img src="/img/search.png" alt="search" />
         </div>
       </form>
     </div>

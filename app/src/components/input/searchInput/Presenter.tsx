@@ -44,11 +44,13 @@ function Presenter(props: PresenterProps) {
         used={used}
         onClick={() => setValue('')}
       >
-        <Img src="/img/close-dark2.png" />
+        <Img src="/img/close-dark2.png" alt="search-value-delete" />
       </DeleteInputValueImg>
       <hr />
       <SearchIcon used={used} type="submit">
-        <Img src="/img/search.png" />
+        <div>
+          <Img src="/img/search.png" alt="search-magnifier" />
+        </div>
       </SearchIcon>
       {used === 'board' && (
         <FilterIcon
@@ -56,7 +58,9 @@ function Presenter(props: PresenterProps) {
           showFilter={showFilter}
           onClick={() => setShowFilter && setShowFilter(!showFilter)}
         >
-          <Img src="/img/filter.png" />
+          <div>
+            <Img src="/img/filter.png" alt="filter-opener" />
+          </div>
         </FilterIcon>
       )}
     </FormContainer>

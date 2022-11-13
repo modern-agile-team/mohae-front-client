@@ -69,6 +69,7 @@ export default function Header({ setSnapPageNumber }: Props): ReactElement {
                 'https://d2ffbnf2hpheay.cloudfront.net/' + user.photo_url) ||
               '/img/profile.png'
             }
+            alt="user-profile"
           />
         </div>
       </div>
@@ -79,10 +80,10 @@ export default function Header({ setSnapPageNumber }: Props): ReactElement {
     <div className={cx(wrapper)}>
       <Link
         className={'logo'}
-        to={'/'}
+        to={''}
         onClick={() => setSnapPageNumber && setSnapPageNumber(0)}
       >
-        <Img src={'/img/logo.png'} />
+        <Img src={'/img/logo.png'} alt="mo-hae-logo-link-to-main" />
       </Link>
       <div className={'button-wrapper'}>
         <button className={'menu'}>

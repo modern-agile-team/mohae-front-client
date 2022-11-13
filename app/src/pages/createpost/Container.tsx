@@ -10,10 +10,10 @@ import {
   setInitialState,
 } from '../../redux/createpost/reducer';
 import { RootState } from '../../redux/root';
-import Presenter from './Presenter';
-import { Spinner } from '../../components';
 import { requestGetPostData } from '../../apis/post';
 import { PosterDetails } from '../../types/post/type';
+import { Spinner } from '../../components';
+import Presenter from './Presenter';
 
 interface StateForEdit {
   [key: string]: string | number | null | string[] | never[];

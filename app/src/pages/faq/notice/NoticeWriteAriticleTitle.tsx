@@ -54,7 +54,7 @@ const articleTitle = ({ form, setForm, onSubmit }: Props) => {
             padding-left: 8px;
           `)}
         >
-          <Img src="/img/write.png" />
+          <Img src="/img/write.png" alt="write" />
         </div>
       </button>
     </div>

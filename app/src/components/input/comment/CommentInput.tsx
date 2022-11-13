@@ -40,7 +40,7 @@ function CommentInput(props: CommentInputProps) {
             <MainButton able={true} type="submit" onClick={onSubmit}>
               <p>작성</p>
               <div className="write-img">
-                <Img id="img" src="/img/write.png" />
+                <Img id="img" src="/img/write.png" alt="comment-write" />
               </div>
             </MainButton>
           </div>

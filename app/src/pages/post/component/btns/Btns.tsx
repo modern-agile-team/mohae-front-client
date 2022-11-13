@@ -88,7 +88,7 @@ function Btns(props: BtnsProps) {
       <ButtonWrap>
         <WhiteButton able={authorization} onClick={handleLikeButtonClick}>
           <div className="img-wrap">
-            <Img src={likeButtonImg} />
+            <Img src={likeButtonImg} alt="poster-like-button" />
           </div>
         </WhiteButton>
       </ButtonWrap>
@@ -98,7 +98,7 @@ function Btns(props: BtnsProps) {
           onClick={handleReportButtonClick}
         >
           <div className="img-wrap">
-            <Img src={reportButtonState.img} />
+            <Img src={reportButtonState.img} alt="poster-report-button" />
           </div>
         </WhiteButton>
       </ButtonWrap>

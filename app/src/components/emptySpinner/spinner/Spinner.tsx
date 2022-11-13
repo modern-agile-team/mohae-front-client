@@ -12,13 +12,13 @@ function Spinner({ size }: SpinnerProps) {
       {size === 'big' ? (
         <BigContainer>
           <div className="img-wrap">
-            <Img src={'/img/loading.gif'} />
+            <Img src={'/img/loading.gif'} alt="spinner" />
           </div>
         </BigContainer>
       ) : (
         <SmallContainer>
           <div className="img-wrap">
-            <Img src={'/img/loading.gif'} />
+            <Img src={'/img/loading.gif'} alt="spinner" />
           </div>
         </SmallContainer>
       )}

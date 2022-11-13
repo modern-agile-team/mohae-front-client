@@ -54,21 +54,21 @@ export default function Footer(): ReactElement {
           onClick={() => {
             window.open(
               'https://modern-agile-official-client.vercel.app/',
-              '_blank'
+              '_blank',
             );
           }}
         >
-          <Img src={'/img/medium.png'} />
+          <Img src={'/img/medium.png'} alt="modern-agile-medium" />
         </button>
         <button
           onClick={() => {
             window.open(
               'https://www.notion.so/25f5a56ccbe94545be0a4608ca55f026',
-              '_blank'
+              '_blank',
             );
           }}
         >
-          <Img src={'/img/notion.png'} />
+          <Img src={'/img/notion.png'} alt="modern-agile-notion" />
         </button>
       </div>
       <div>{text.introduce}</div>

@@ -73,7 +73,7 @@ function BottomSection(props: BottomSectionProps) {
         <div className="reset">
           <WhiteButton type="button" able={true} onClick={resetSetting}>
             <div className="resetImg">
-              <Img src={'/img/reset.png'} />
+              <Img src={'/img/reset.png'} alt="reset-setting" />
             </div>
           </WhiteButton>
         </div>

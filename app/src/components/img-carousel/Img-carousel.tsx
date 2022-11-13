@@ -219,12 +219,12 @@ export default function Carousel({
           {IMAGES.length ? (
             IMAGES.map((el: string, index: number) => (
               <div className="img" key={index}>
-                <Img src={el} />
+                <Img src={el} alt={`board-photo-${index}`} />
               </div>
             ))
           ) : (
             <div className={'altImg'}>
-              <Img src={'/img/logo.png'} />
+              <Img src={'/img/logo.png'} alt="img-is-null" />
             </div>
           )}
         </div>

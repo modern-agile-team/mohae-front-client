@@ -113,7 +113,7 @@ function AuthModal({ visible, big, children, part, onClick, setPart }: Props) {
         className={box}
       >
         <div className={cx(closeBtn, cursor)}>
-          <Img src={'/img/close.png'} onClick={close} />
+          <Img src={'/img/close.png'} onClick={close} alt="modal-close" />
         </div>
         {1 < part && (
           <div className={cx(previousBtn, cursor)}>

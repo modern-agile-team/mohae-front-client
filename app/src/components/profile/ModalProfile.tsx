@@ -172,7 +172,10 @@ export default function ModalProfile(props: Props) {
                 <div className={'row btns'}>
                   <div>
                     <Btn white onClick={handleReportModalView}>
-                      <Img src={'/img/report-main.png'} />
+                      <Img
+                        src={'/img/report-main.png'}
+                        alt="open-user-report-modal"
+                      />
                     </Btn>
                   </div>
                 </div>
@@ -181,19 +184,22 @@ export default function ModalProfile(props: Props) {
                 <div className={'row info-box '}>
                   <div className={'column item'}>
                     <div className={'icon'}>
-                      <Img src={'/img/university.png'} />
+                      <Img
+                        src={'/img/university.png'}
+                        alt="user-university-icon"
+                      />
                     </div>
                     <span>{(userInfo && userInfo.schoolName) || '-'}</span>
                   </div>
                   <div className={'column item'}>
                     <div className={'icon'}>
-                      <Img src={'/img/study.png'} />
+                      <Img src={'/img/study.png'} alt="user-major-icon" />
                     </div>
                     <span>{(userInfo && userInfo.majorName) || '-'}</span>
                   </div>
                   <div className={'column item'}>
                     <div className={'icon'}>
-                      <Img src={'/img/post.png'} />
+                      <Img src={'/img/post.png'} alt="current-poster-count" />
                     </div>
                     <div className={'text'}>
                       <span>{`${text.boards} ${
@@ -209,6 +215,7 @@ export default function ModalProfile(props: Props) {
                             ? '/img/heart-filled-main.png'
                             : '/img/heart-main.png'
                         }
+                        alt="user-like-icon"
                       />
                     </div>
                     <div className={'text'}>

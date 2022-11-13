@@ -6,11 +6,21 @@ import { ArrowButtonsProps } from '../../../../../../types/main/thirdPage/type';
 function ArrowButtons({ clickMove, usedIn }: ArrowButtonsProps) {
   return (
     <>
-      <PrevArrowButton usedIn={usedIn} onClick={clickMove} id="-">
-        <Img src="/img/arrow-left-main.png" />
+      <PrevArrowButton
+        usedIn={usedIn}
+        onClick={clickMove}
+        name="prev-button"
+        id="-"
+      >
+        <Img src="/img/arrow-left-main.png" alt="previous-button" />
       </PrevArrowButton>
-      <NextArrowButton usedIn={usedIn} onClick={clickMove} id="+">
-        <Img src="/img/arrow-right-main.png" />
+      <NextArrowButton
+        usedIn={usedIn}
+        onClick={clickMove}
+        name="next-button"
+        id="+"
+      >
+        <Img src="/img/arrow-right-main.png" alt="next-button" />
       </NextArrowButton>
     </>
   );

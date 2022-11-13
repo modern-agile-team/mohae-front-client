@@ -37,7 +37,7 @@ function InteractionPart(props: InteractionPartProps) {
           <MainButton type="button" able={true} onClick={controlWriteButton}>
             <p>글쓰기</p>
             <div className="imgWrap">
-              <Img src="/img/write.png" />
+              <Img src="/img/write.png" alt="link-to-create-post" />
             </div>
           </MainButton>
         </ButtonWrapper>

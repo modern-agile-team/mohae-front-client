@@ -36,7 +36,7 @@ function MarkBox(props: MarkBoxProps) {
   return (
     <Wrap size={size}>
       <Container shape={shape} state={state}>
-        <Img src={attrProps()} />
+        <Img src={attrProps()} alt="mark-box-icon" />
       </Container>
     </Wrap>
   );

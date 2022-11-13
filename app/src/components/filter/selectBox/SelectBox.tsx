@@ -51,7 +51,10 @@ function SelectBox(props: Props) {
       <div className={cx(wrap(used))} onClick={handleView}>
         {contentsStyle()}
         <div className="opener">
-          <Img src="/img/arrow-down-dark3.png" />
+          <Img
+            src={view ? '/img/arrow-up-dark3.png' : '/img/arrow-down-dark3.png'}
+            alt="filter-select-box-opener"
+          />
         </div>
       </div>
       {view && (

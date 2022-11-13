@@ -22,22 +22,22 @@ const Commenter = (props: CommenterProps) => {
   const createReportBtn = () => {
     return commenterNo === userInfo?.userNo ? (
       <IconWrapper>
-        <Img src="/img/report-light1.png" />
+        <Img src="/img/report-light1.png" alt="report-disable" />
       </IconWrapper>
     ) : (
       <IconWrapper onClick={handleModalView}>
-        <Img src="/img/report-main.png" />
+        <Img src="/img/report-main.png" alt="report-able" />
       </IconWrapper>
     );
   };
 
-  const handleDeailsView = () => {
+  const handleDetailsView = () => {
     setDetailsView(!detailsView);
   };
 
   const editButtonClick = () => {
     handleEditingButton();
-    handleDeailsView();
+    handleDetailsView();
   };
 
   const deleteCommentRequest = () => {
@@ -46,7 +46,7 @@ const Commenter = (props: CommenterProps) => {
         setCommentArr(commentList.filter(el => el.commentNo !== commentNo)),
       );
     });
-    handleDeailsView();
+    handleDetailsView();
   };
 
   return (
@@ -58,8 +58,8 @@ const Commenter = (props: CommenterProps) => {
         </div>
         {commenterNo === userInfo?.userNo && (
           <div className="right">
-            <IconWrapper onClick={handleDeailsView}>
-              <Img src="/img/group.svg" />
+            <IconWrapper onClick={handleDetailsView}>
+              <Img src="/img/group.svg" alt="comment-details-view" />
             </IconWrapper>
           </div>
         )}
@@ -72,7 +72,7 @@ const Commenter = (props: CommenterProps) => {
               <span onClick={deleteCommentRequest}>삭제하기</span>
             </MoreDetails>
           </RelativeWrapper>
-          <Overlay onClick={handleDeailsView} />
+          <Overlay onClick={handleDetailsView} />
         </>
       )}
     </>

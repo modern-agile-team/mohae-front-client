@@ -66,7 +66,7 @@ function UserSearchedKeys(props: UserSearchedKeysProps) {
         );
       });
     }
-  }, [queryString]);
+  }, [queryString, userSearched]);
 
   return (
     <Container used={used}>

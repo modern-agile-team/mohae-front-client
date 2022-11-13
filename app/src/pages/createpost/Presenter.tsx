@@ -9,13 +9,9 @@ import {
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/root';
 import { useParams } from 'react-router-dom';
+import { PresenterProps } from '../../types/createAndEditPost/type';
 
-interface Props {
-  popupView: boolean;
-  handleAxios: (e: React.MouseEvent) => void;
-}
-
-function Presenter(props: Props) {
+function Presenter(props: PresenterProps) {
   const { popupView, handleAxios } = props;
   const { no } = useParams();
   const { title, price, categoryNo, areaNo, deadline, description } =

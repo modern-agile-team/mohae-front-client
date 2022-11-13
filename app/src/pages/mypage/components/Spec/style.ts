@@ -1,7 +1,7 @@
 /** @format */
 
 import { convertToRaw } from 'draft-js';
-import { color, shadow, radius, font } from '../../styles';
+import { color, shadow, radius, font } from '../../../../styles';
 import { css } from '@emotion/css';
 import { keyframes } from '@emotion/react';
 

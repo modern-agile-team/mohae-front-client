@@ -4,7 +4,7 @@ import { css, cx } from '@emotion/css';
 import { useState, useEffect } from 'react';
 import { color } from '../../../../styles';
 import { Img } from '../../../../components';
-import Style from '../../../../components/img-in-order/style';
+import Style from './style';
 import { add_images } from '../../../../redux/spec/reducer';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../../redux/root';

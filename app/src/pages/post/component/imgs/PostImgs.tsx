@@ -1,10 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Box,
-  Carousel,
-  MarkBox,
-  OrderedImg as ImagesCollection,
-} from '../../../../components';
+import { Box, Carousel, MarkBox, ImageInput } from '../../../../components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/root';
 import styled from '@emotion/styled';
@@ -30,7 +25,7 @@ function PostImgs() {
     return (
       <Box className="orderImgBox" size={[360, 72]}>
         {!loading && (
-          <ImagesCollection
+          <ImageInput
             imgs={boardPhotoURL()}
             setImgIndex={setTargetingImgIndex}
             edit={false}

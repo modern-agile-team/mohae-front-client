@@ -28,8 +28,6 @@ interface Props {
   reset: () => void;
 }
 
-const result = 0;
-
 export default function ModalProfile(props: Props) {
   const { userNo, view, reset } = props;
   const userInfo = useSelector((state: RootState) => state.mypage.user.profile);

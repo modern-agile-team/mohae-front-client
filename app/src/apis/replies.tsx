@@ -6,14 +6,14 @@ import {
 import setInterceptors from './common/setInterceptors';
 import { customAxios } from './instance';
 
-export const createReply = ({
+const createReply = ({
   no,
   body,
 }: PostParameterType): Promise<AxiosResponse> => {
   return setInterceptors(customAxios).post(`comments/${no}/replies`, body);
 };
 
-export const editReply = ({
+const editReply = ({
   no,
   replyNo,
   body,
@@ -24,7 +24,7 @@ export const editReply = ({
   );
 };
 
-export const deleteReply = ({
+const deleteReply = ({
   no,
   replyNo,
 }: EditAndDeleteParameterType): Promise<AxiosResponse> => {
@@ -32,3 +32,5 @@ export const deleteReply = ({
     `comments/${no}/replies/${replyNo}`,
   );
 };
+
+export { createReply, editReply, deleteReply };

@@ -159,9 +159,9 @@ export default function Categories({ num }: Props) {
       }, 500);
     };
     target.disabled = true;
-    setSector(sector + eval(`${target.name}1`));
+    setSector(sector + eval(`${target.id}1`));
     const updatedArr = [...arr];
-    if (target.name === '+') {
+    if (target.id === '+') {
       updatedArr.push(updatedArr[0]);
       updatedArr.shift();
       updateItem(updatedArr);
@@ -175,8 +175,18 @@ export default function Categories({ num }: Props) {
   return (
     <div className={cx(style)}>
       <div className={'wrapper'}>{categories}</div>
-      <button className={'btn-arrow prev'} onClick={clickArrowBtn} name="-" />
-      <button className={'btn-arrow next'} onClick={clickArrowBtn} name="+" />
+      <button
+        className={'btn-arrow prev'}
+        onClick={clickArrowBtn}
+        id="-"
+        name="show-previous-category-button"
+      />
+      <button
+        className={'btn-arrow next'}
+        onClick={clickArrowBtn}
+        id="+"
+        name="show-next-category-button"
+      />
     </div>
   );
 }

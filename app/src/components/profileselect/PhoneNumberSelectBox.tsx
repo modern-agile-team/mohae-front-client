@@ -19,7 +19,7 @@ const PhoneNumberSelectBox = ({ onSelect, userInfo }: Props) => {
           {userInfo.phone ? userInfo.phone.slice(0, 3) : <span>선택</span>}
         </PlaceHolder>
         <Arrow>
-          <Img src="/img/arrow-down-dark3.png" />
+          <Img src="/img/arrow-down-dark3.png" alt="select-box-opener" />
         </Arrow>
       </SelectButton>
       <Option>

@@ -51,7 +51,7 @@ function Presenter(props: PresenterProps) {
             >
               <p>{no ? '수정' : '작성'}</p>
               <div className="img-wrap">
-                <Img src="/img/write.png" />
+                <Img src="/img/write.png" alt="complete-writing" />
               </div>
             </MainButton>
           </WriteButton>

@@ -83,7 +83,7 @@ export default function Register({ text, setFindPasswordView }: Props) {
     <form onSubmit={requestLogin}>
       <div className={'input'}>
         <div className={'icon'}>
-          <Img src={'/img/id.png'} />
+          <Img src={'/img/id.png'} alt="id-input-icon" />
         </div>
         <input
           placeholder={text.placeholder.id}
@@ -93,7 +93,7 @@ export default function Register({ text, setFindPasswordView }: Props) {
       </div>
       <div className={'input'}>
         <div className={'icon'}>
-          <Img src={'/img/password.png'} />
+          <Img src={'/img/password.png'} alt="password-input-icon" />
         </div>
         <input
           placeholder={text.placeholder.pw}

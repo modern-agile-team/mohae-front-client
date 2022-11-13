@@ -59,7 +59,7 @@ function UserSearchedKeys(props: UserSearchedKeysProps) {
             >
               <div id="list">{el}</div>
               <div id="delete" onClick={e => deleteList(i, e)}>
-                <Img src="/img/close.png" />
+                <Img src="/img/close.png" alt="search-key-delete" />
               </div>
             </SearchKeysContents>
           )

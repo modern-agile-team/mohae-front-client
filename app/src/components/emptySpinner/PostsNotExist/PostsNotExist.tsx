@@ -12,7 +12,7 @@ function PostsNotExist({ category, searched }: PostsNotExistProps) {
     const imgPath = searched ? '/img/search-none.png' : '/img/board-none.png';
 
     return {
-      imgElement: <Img src={imgPath} />,
+      imgElement: <Img src={imgPath} alt="there-is-no-poster" />,
       mainText: searched !== 'null' ? searched : '해당 조건',
       subText:
         searched !== 'null'

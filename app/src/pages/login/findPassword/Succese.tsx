@@ -10,10 +10,10 @@ function Succese() {
     <Wrapper>
       <Container>
         <ImgWrap width={66} height={50}>
-          <Img src="/img/logo.png" />
+          <Img src="/img/logo.png" alt="mo-hae-logo" />
         </ImgWrap>
         <ImgWrap width={42} height={42}>
-          <Img src="/img/complete.png" />
+          <Img src="/img/complete.png" alt="complete-change-password" />
         </ImgWrap>
         <div>
           <p>비밀번호 변경 완료</p>
@@ -22,7 +22,7 @@ function Succese() {
         <ButtonToLogin onClick={toLogin}>
           메인으로 가기
           <ImgWrap width={18} height={18}>
-            <Img src="/img/move.png" />
+            <Img src="/img/move.png" alt="link-to-main" />
           </ImgWrap>
         </ButtonToLogin>
       </Container>

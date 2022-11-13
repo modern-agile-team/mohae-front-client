@@ -110,7 +110,7 @@ function BasicModal({
         )}
         {!usingModalProfile && (
           <div className={cx(closeBtn, cursor)}>
-            <Img src={'/img/close.png'} onClick={close} />
+            <Img src={'/img/close.png'} onClick={close} alt="modal-close" />
           </div>
         )}
         {children}

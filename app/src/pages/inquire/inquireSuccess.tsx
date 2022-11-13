@@ -8,7 +8,7 @@ const InquireSuccess = () => {
     <Wrapper>
       <h4>문의완료</h4>
       <CheckImg>
-        <Img src="img/complete.png" />
+        <Img src="img/complete.png" alt="complete-inquiry" />
       </CheckImg>
       <p>문의하신 내용이 접수되었습니다</p>
       <TextWrapper>
@@ -16,13 +16,13 @@ const InquireSuccess = () => {
         <span>해당 답변은 가능한 빠르게 답변드리도록 하겠습니다</span>
       </TextWrapper>
       <ReportImg>
-        <Img src="img/report.png" />
+        <Img src="img/report.png" alt="report-img" />
       </ReportImg>
       <Link to="/">
         <Button>
           <span>메인 바로가기</span>
           <MoveIcon>
-            <Img src="img/move.png" />
+            <Img src="img/move.png" alt="move-to-main" />
           </MoveIcon>
         </Button>
       </Link>

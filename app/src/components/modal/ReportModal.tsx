@@ -194,7 +194,7 @@ function ReportModal({ visible, close, board, user }: Props) {
             cleanUp();
           }}
         >
-          <Img src="/img/close.png" />
+          <Img src="/img/close.png" alt="modal-close" />
         </div>
         <div className="wrap">
           <p className="title">신고 사유 선택</p>

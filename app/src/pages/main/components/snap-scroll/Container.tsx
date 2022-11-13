@@ -7,7 +7,6 @@ function Container(props: ContainerProps) {
   const timer = useRef<NodeJS.Timeout | null>(null);
 
   const handlePageNumber = (move: number) => {
-    console.log(move);
     contents.forEach((_, i) => {
       if (move > 30 && pageNum === i && !(i === contents.length - 1)) {
         setSnapPageNumber(prev => prev + 1);

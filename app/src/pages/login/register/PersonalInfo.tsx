@@ -287,7 +287,7 @@ export default function PersonalInfo({ part, next }: Object) {
             <button onClick={focusSelect}>{inputValue.emailCompany}</button>
             {selectCompany}
             <button className={'arrow-down'} onClick={focusSelect}>
-              <Img src={'/img/arrow-down-dark3.png'} />
+              <Img src={'/img/arrow-down-dark3.png'} alt="opener" />
             </button>
           </div>
         </li>

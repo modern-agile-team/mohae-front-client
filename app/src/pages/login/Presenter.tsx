@@ -270,7 +270,7 @@ export default function Presenter({
       >
         <div className={cx(style)}>
           <div className={'logo'}>
-            <Img src={'/img/logo.png'} />
+            <Img src={'/img/logo.png'} alt="mo-hae-logo" />
           </div>
           {titleTextAndFocusBarElement()}
           <div className={'container'}>

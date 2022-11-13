@@ -24,22 +24,22 @@ const Replier = (props: ReplierProps) => {
   const createReportBtn = () => {
     return replyWriterNo === userInfo?.userNo ? (
       <IconWrapper>
-        <Img src="/img/report-light1.png" />
+        <Img src="/img/report-light1.png" alt="reply-report-disable" />
       </IconWrapper>
     ) : (
       <IconWrapper onClick={handleModalView}>
-        <Img src="/img/report-main.png" />
+        <Img src="/img/report-main.png" alt="reply-report-able" />
       </IconWrapper>
     );
   };
 
-  const handleDeailsView = () => {
+  const handleDetailsView = () => {
     setDetailsView(!detailsView);
   };
 
   const editButtonClick = () => {
     handleEditingButton();
-    handleDeailsView();
+    handleDetailsView();
   };
 
   const deleteReplyRequest = () => {
@@ -67,8 +67,8 @@ const Replier = (props: ReplierProps) => {
         </div>
         {replyWriterNo === userInfo?.userNo && (
           <div className="right">
-            <IconWrapper onClick={handleDeailsView}>
-              <Img src="/img/group.svg" />
+            <IconWrapper onClick={handleDetailsView}>
+              <Img src="/img/group.svg" alt="reply-details-view" />
             </IconWrapper>
           </div>
         )}
@@ -81,7 +81,7 @@ const Replier = (props: ReplierProps) => {
               <span onClick={deleteReplyRequest}>삭제하기</span>
             </MoreDetails>
           </RelativeWrapper>
-          <Overlay onClick={handleDeailsView} />
+          <Overlay onClick={handleDetailsView} />
         </>
       )}
     </>

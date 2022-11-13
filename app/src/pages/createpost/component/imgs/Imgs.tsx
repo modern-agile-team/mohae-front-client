@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Carousel, OrderedImg } from '../../../../components';
+import { Box, Carousel, ImageInput } from '../../../../components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/root';
 
@@ -14,7 +14,7 @@ function PostImgs() {
         <Carousel postEdit />
       </Box>
       <Box size={[360, 72]}>
-        <OrderedImg edit imgs={editImgArr} />
+        <ImageInput edit imgs={editImgArr} />
       </Box>
     </>
   );

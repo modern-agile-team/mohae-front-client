@@ -85,7 +85,7 @@ function ProfileBox(props: Props) {
       {isOpen && (
         <ChangeOption>
           <Close onClick={() => setIsOpen(false)}>
-            <Img src="/img/close.png" />
+            <Img src="/img/close.png" alt="modal-close" />
           </Close>
           <Option>
             <Input

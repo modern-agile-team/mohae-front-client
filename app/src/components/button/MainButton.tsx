@@ -32,7 +32,7 @@ const Container = styled.button<{ able: boolean }>`
   &:active {
     background-color: ${props => props.able && '#D12A41'};
   }
-  *:not(:last-child) {
+  *:not(:last-child, source) {
     margin-right: 8px;
   }
 `;

@@ -63,11 +63,11 @@ function Presenter(props: PresenterProps) {
         visible={popupView}
         text1={`게시글이 성공적으로 ${no ? '수정' : '작성'}되었습니다.`}
       >
-        <ButtonWrapp>
+        <PopupButton>
           <MainButton type="button" able onClick={popupClose}>
             닫기
           </MainButton>
-        </ButtonWrapp>
+        </PopupButton>
       </Popup>
     </>
   );
@@ -75,7 +75,7 @@ function Presenter(props: PresenterProps) {
 
 export default Presenter;
 
-const ButtonWrapp = styled.div`
+const PopupButton = styled.div`
   width: 74px;
   height: 43px;
 `;

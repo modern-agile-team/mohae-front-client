@@ -6,6 +6,7 @@ import { SelectBtn } from '../../../../components/button';
 import { Inputs, TextArea } from '../../../../components/input/createPost';
 import { setTarget } from '../../../../redux/createpost/reducer';
 import { RootState } from '../../../../redux/root';
+import { PosterInfomation } from '../../../../types/createAndEditPost/type';
 
 interface StateType {
   [key: number]: boolean;
@@ -27,7 +28,9 @@ function Infomation() {
   });
 
   useEffect(() => {
-    setTarget(Number(target) ? { 0: false, 1: true } : { 0: true, 1: false });
+    setTargetChecked(
+      Number(target) ? { 0: false, 1: true } : { 0: true, 1: false },
+    );
   }, []);
 
   const handleSelectBtnClick = (checked: number) => {
@@ -62,7 +65,7 @@ function Infomation() {
   };
 
   const spitOutBox = () => {
-    const propsTable = [
+    const propsTable: { using: keyof PosterInfomation; selected: boolean }[] = [
       { using: 'categoryNo', selected: categoryNo ? true : false },
       { using: 'areaNo', selected: areaNo ? true : false },
       { using: 'deadline', selected: deadline ? true : false },

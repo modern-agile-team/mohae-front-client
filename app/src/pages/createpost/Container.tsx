@@ -1,11 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { requestCreate, requestEdit } from '../../apis/createAndEditPost';
+import useRefactorPostingData from '../../customhook/useRefactorPostingData';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { customAxios } from '../../apis/instance';
-import setInterceptors from '../../apis/common/setInterceptors';
-import useRefactorPostingData from '../../customhook/useRefactorPostingData';
 import {
-  setForEdit,
+  setInfoBeforeEdit,
   setLoading,
   setInitialState,
 } from '../../redux/createpost/reducer';
@@ -52,7 +51,9 @@ function CreateAndEditPost() {
       requestGetPostData(Number(no))
         .then(res => {
           setStateForEdit(savePostInfomation(res.data.response.board));
-          dispatch(setForEdit(savePostInfomation(res.data.response.board)));
+          dispatch(
+            setInfoBeforeEdit(savePostInfomation(res.data.response.board)),
+          );
         })
         .catch(_ => alert('알 수 없는 에러 발생.'));
     } else dispatch(setLoading(false));
@@ -71,8 +72,7 @@ function CreateAndEditPost() {
       }
     }
 
-    setInterceptors(customAxios)
-      .patch(`https://mo-hae.site/boards/${no}`, form)
+    requestEdit(Number(no), form)
       .then(_ => setPopupView(true))
       .catch(_ => alert('수정 실패'));
   };
@@ -82,8 +82,7 @@ function CreateAndEditPost() {
       form.set(`${key}`, JSON.stringify(refactorReduxData[key]));
     }
 
-    setInterceptors(customAxios)
-      .post(`https://mo-hae.site/boards`, form)
+    requestCreate(form)
       .then(_ => setPopupView(true))
       .catch(_ => alert('작성 실패'));
   };

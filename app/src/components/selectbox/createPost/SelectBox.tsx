@@ -6,19 +6,21 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/root';
 import { useParams } from 'react-router-dom';
 import { lists } from '../../../consts/categoryList';
+import { PosterInfomation } from '../../../types/createAndEditPost/type';
 
 interface Props {
   view: boolean;
   handleView: () => void;
-  using: string;
+  using: keyof PosterInfomation;
   selected: boolean;
 }
 
 function SelectBox(props: Props) {
   const { view, handleView, using, selected } = props;
   const { no } = useParams();
-  const reduxData: { [key: string]: number | string | null | string[] } =
-    useSelector((state: RootState) => state.createPost.data);
+  const reduxData: PosterInfomation = useSelector(
+    (state: RootState) => state.createPost.data,
+  );
 
   const initialPlaceholder = useMemo(() => {
     return lists[using]
@@ -48,6 +50,7 @@ function SelectBox(props: Props) {
         <Opener>
           <Img
             src={view ? '/img/arrow-up-dark3.png' : '/img/arrow-down-dark3.png'}
+            alt="select-box-opener"
           />
         </Opener>
       </Wrap>

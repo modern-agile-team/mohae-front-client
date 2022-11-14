@@ -27,9 +27,29 @@ interface ImgBasket {
   size?: number;
 }
 
+interface InitialState {
+  loading: boolean;
+  data: PosterInfomation;
+  form: FormData;
+}
+
+interface PosterInfomation {
+  price: number | string;
+  title: string;
+  description: string;
+  summary: string;
+  target: number | null;
+  categoryNo: string | number | null;
+  areaNo: string | number | null;
+  deadline: string | number | null;
+  imgArr: string[];
+}
+
 export type {
   PresenterProps,
   ImageInputContainer,
+  InitialState,
   ImageInputPresenter,
+  PosterInfomation,
   ImgBasket,
 };

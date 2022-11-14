@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { useDispatch, useSelector } from 'react-redux';
-import { Box, MarkBox, SelectBox } from '../../../../components';
+import {
+  Box,
+  MarkBox,
+  CreateEditSelectBox as SelectBox,
+} from '../../../../components';
 import { SelectBtn } from '../../../../components/button';
 import { Inputs, TextArea } from '../../../../components/input/createPost';
 import { setTarget } from '../../../../redux/createpost/reducer';

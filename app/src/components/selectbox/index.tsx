@@ -1,3 +1,4 @@
-import SelectBox from './createPost/SelectBox';
+import CreateEditSelectBox from './createPost/SelectBox';
+import FilterSelectBox from './filter/SelectBox';
 
-export { SelectBox };
+export { CreateEditSelectBox, FilterSelectBox };

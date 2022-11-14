@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { color } from '../../styles';
 import Category from './Category';
-import { categoryList } from '../../consts/categoryList';
+import { categoryList } from '../../consts/listStore';
 
 interface Props {
   num: number;
@@ -13,7 +13,9 @@ interface Props {
 
 export default function Categories({ num }: Props) {
   const param = useParams().no;
-  const [arr, setArr] = useState(categoryList.map((_, index) => index));
+  const [arr, setArr] = useState(
+    categoryList({ shift: false }).map((_, index) => index),
+  );
   const itemsize = 120;
   const margin = num === 7 ? 48 : 24;
   const showNumber = num || 7;
@@ -104,9 +106,9 @@ export default function Categories({ num }: Props) {
         <Category
           key={'first'}
           shape={'circle'}
-          name={categoryList[arr[arr.length - 1]].name}
-          id={categoryList[arr[arr.length - 1]].no}
-          img={categoryList[arr[arr.length - 1]].img}
+          name={categoryList({ shift: false })[arr[arr.length - 1]].name}
+          id={categoryList({ shift: false })[arr[arr.length - 1]].no}
+          img={categoryList({ shift: false })[arr[arr.length - 1]].img}
         />
       </div>
       {Array(showNumber)
@@ -116,9 +118,9 @@ export default function Categories({ num }: Props) {
             <Category
               key={index}
               shape={'circle'}
-              id={categoryList[arr[index]].no}
-              name={categoryList[arr[index]].name}
-              img={categoryList[arr[index]].img}
+              id={categoryList({ shift: false })[arr[index]].no}
+              name={categoryList({ shift: false })[arr[index]].name}
+              img={categoryList({ shift: false })[arr[index]].img}
             />
           </div>
         ))}
@@ -126,21 +128,23 @@ export default function Categories({ num }: Props) {
         <Category
           key={'last'}
           shape={'circle'}
-          id={categoryList[arr[showNumber]].no}
-          name={categoryList[arr[showNumber]].name}
-          img={categoryList[arr[showNumber]].img}
+          id={categoryList({ shift: false })[arr[showNumber]].no}
+          name={categoryList({ shift: false })[arr[showNumber]].name}
+          img={categoryList({ shift: false })[arr[showNumber]].img}
         />
       </div>
     </div>
   );
 
   useEffect(() => {
-    const originArray = categoryList.map((_, index) => index);
+    const originArray = categoryList({ shift: false }).map((_, index) => index);
     setArr(originArray);
     const updatedArr = [...originArray];
     for (
       let count = 0;
-      count < (Number(param) + categoryList.length - 4) % categoryList.length;
+      count <
+      (Number(param) + categoryList({ shift: false }).length - 4) %
+        categoryList({ shift: false }).length;
       count++
     ) {
       updatedArr.push(updatedArr[0]);

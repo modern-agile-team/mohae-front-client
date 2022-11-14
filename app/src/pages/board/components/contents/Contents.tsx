@@ -8,7 +8,7 @@ import {
   useSearchParams,
 } from 'react-router-dom';
 import { Poster, PostsNotExist, Spinner } from '../../../../components';
-import { categoryList } from '../../../../consts/categoryList';
+import { categoryList } from '../../../../consts/listStore';
 import { RootState } from '../../../../redux/root';
 import { BoardDetails, ContentsProps } from '../../../../types/board/type';
 
@@ -36,7 +36,7 @@ function Contents(props: ContentsProps) {
     });
 
     return {
-      categoryName: categoryList[Number(no) - 1].name,
+      categoryName: categoryList({ shift: false })[Number(no) - 1].name,
       titleSearch: searchParams.get('title'),
     };
   }, [no, queryString]);

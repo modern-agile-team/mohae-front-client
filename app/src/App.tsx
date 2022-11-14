@@ -93,7 +93,7 @@ const App: React.SFC = () => {
       <Suspense fallback={<Spinner size="big" />}>
         <Routes>
           <Route
-            path={'/'}
+            path={'/main'}
             element={
               <Layout
                 snapPageNumber={snapPageNumber}

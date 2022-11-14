@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/root';
 import { useParams } from 'react-router-dom';
-import { lists } from '../../../consts/categoryList';
+import { lists } from '../../../consts/listStore';
 import { PosterInfomation } from '../../../types/createAndEditPost/type';
 
 interface Props {
@@ -15,7 +15,7 @@ interface Props {
   selected: boolean;
 }
 
-function SelectBox(props: Props) {
+function CreateEditSelectBox(props: Props) {
   const { view, handleView, using, selected } = props;
   const { no } = useParams();
   const reduxData: PosterInfomation = useSelector(
@@ -69,7 +69,7 @@ function SelectBox(props: Props) {
   );
 }
 
-export default SelectBox;
+export default CreateEditSelectBox;
 
 const Overlay = styled.div`
   background-color: inherit;

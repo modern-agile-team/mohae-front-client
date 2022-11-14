@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import SelectList from './SelectList';
 import Img from '../../img/Img';
-import { lists } from '../../../consts/categoryList';
+import { lists } from '../../../consts/listStore';
 
 interface Props {
   view: boolean;

@@ -7,7 +7,7 @@ import {
   Popup,
   Search,
 } from '../../../../components';
-import { categoryList } from '../../../../consts/categoryList';
+import { categoryList } from '../../../../consts/listStore';
 import { useNavigate, useParams } from 'react-router-dom';
 import getToken from '../../../../utils/getToken';
 import { InteractionPartProps } from '../../../../types/board/type';
@@ -17,7 +17,7 @@ function InteractionPart(props: InteractionPartProps) {
   const { resetPageNation } = props;
   const navigation = useNavigate();
   const { no } = useParams();
-  const categoryName = categoryList[Number(no) - 1].name;
+  const categoryName = categoryList({ shift: false })[Number(no) - 1].name;
   const localUserToken = getToken(ACCESS_TOKEN);
   const [loginPlz, setLoginPlz] = useState(false);
 

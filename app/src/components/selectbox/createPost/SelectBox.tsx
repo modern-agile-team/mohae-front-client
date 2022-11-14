@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/root';
 import { useParams } from 'react-router-dom';
-import { lists } from '../../../consts/categoryList';
+import { lists } from '../../../consts/listStore';
 import { PosterInfomation } from '../../../types/createAndEditPost/type';
 
 interface Props {

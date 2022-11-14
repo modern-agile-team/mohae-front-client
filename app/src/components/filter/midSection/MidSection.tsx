@@ -3,13 +3,11 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/root';
 import { SectionProps as MidSectionProps } from '../../../types/searchComponent/filter/type';
 import { SelectBtn } from '../../button';
-import SelectBox from '../selectBox/SelectBox';
+import { FilterSelectBox as SelectBox } from '../../selectbox';
 
 function MidSection({ setItemCheck }: MidSectionProps) {
   const [view, setView] = useState<boolean>(false);
-  const checked: { [key: string]: boolean } = useSelector(
-    (state: RootState) => state.filter.data.check.date,
-  );
+  const { check, area } = useSelector((state: RootState) => state.filter.data);
 
   const handleSelectBoxView = () => {
     setView(prev => !prev);
@@ -19,7 +17,7 @@ function MidSection({ setItemCheck }: MidSectionProps) {
     return contents.map((text: string, i: number) => (
       <div key={i}>
         <SelectBtn
-          checked={checked[i]}
+          checked={check.date[i]}
           onChange={() => setItemCheck({ key: 'date', index: i })}
           attributes={{
             size: 'small',
@@ -46,8 +44,7 @@ function MidSection({ setItemCheck }: MidSectionProps) {
             <SelectBox
               view={view}
               handleView={handleSelectBoxView}
-              style="전체 지역"
-              used={'filter'}
+              selected={area.areaNo}
             />
           </div>
         </div>

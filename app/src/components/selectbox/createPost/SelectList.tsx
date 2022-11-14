@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useCallback } from 'react';
 import styled from '@emotion/styled';
 import { useDispatch } from 'react-redux';
 import {
@@ -44,13 +44,13 @@ function SelectList(props: Props) {
     },
   };
 
-  const lists = () => {
+  const lists = useCallback(() => {
     return contents.map((el, i: number) => (
       <List key={i} id={el.no} onClick={e => onClick[using](e, el.name)}>
         {el.name}
       </List>
     ));
-  };
+  }, []);
 
   return (
     <Wrapper>

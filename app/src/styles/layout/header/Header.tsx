@@ -80,7 +80,7 @@ export default function Header({ setSnapPageNumber }: Props): ReactElement {
     <div className={cx(wrapper)}>
       <Link
         className={'logo'}
-        to={''}
+        to={'/main'}
         onClick={() => setSnapPageNumber && setSnapPageNumber(0)}
       >
         <Img src={'/img/logo.png'} alt="mo-hae-logo-link-to-main" />

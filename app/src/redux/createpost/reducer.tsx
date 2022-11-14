@@ -1,20 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-interface InitialState {
-  loading: boolean;
-  data: {
-    price: number | string;
-    title: string;
-    description: string;
-    summary: string;
-    target: number | null;
-    categoryNo: string | number | null;
-    areaNo: string | number | null;
-    deadline: string | number | null;
-    imgArr: string[];
-  };
-  form: FormData;
-}
+import {
+  ImgBasket,
+  PosterInfomation,
+  InitialState,
+} from '../../types/createAndEditPost/type';
 
 const initialState: InitialState = {
   loading: true,
@@ -36,36 +25,39 @@ const createPost = createSlice({
   name: 'create',
   initialState,
   reducers: {
-    setImgs: (state, action: PayloadAction<any>) => {
+    setImgs: (state, action: PayloadAction<FormData>) => {
       state.form = action.payload;
     },
-    setAreaNum: (state, action: PayloadAction<any>) => {
+    setAreaNum: (state, action: PayloadAction<string | number | null>) => {
       state.data.areaNo = action.payload;
     },
-    setDeadline: (state, action: PayloadAction<any>) => {
+    setDeadline: (state, action: PayloadAction<string | number | null>) => {
       state.data.deadline = action.payload;
     },
-    setCategoryNum: (state, action: PayloadAction<any>) => {
+    setCategoryNum: (state, action: PayloadAction<string | number | null>) => {
       state.data.categoryNo = action.payload;
     },
-    setTitle: (state, action: PayloadAction<any>) => {
+    setTitle: (state, action: PayloadAction<string>) => {
       state.data.title = action.payload;
     },
-    setPrice: (state, action: PayloadAction<any>) => {
+    setPrice: (state, action: PayloadAction<number | string>) => {
       state.data.price = action.payload;
     },
-    setDescription: (state, action: PayloadAction<any>) => {
+    setDescription: (state, action: PayloadAction<string>) => {
       state.data.description = action.payload;
     },
-    setSummary: (state, action: PayloadAction<any>) => {
+    setSummary: (state, action: PayloadAction<string>) => {
       state.data.summary = action.payload;
     },
-    setTarget: (state, action: PayloadAction<any>) => {
+    setTarget: (state, action: PayloadAction<number | null>) => {
       state.data.target = action.payload;
     },
-    setImgArr: (state, action: PayloadAction<any>) => {
-      state.data.imgArr = [...action.payload.map((el: any) => el.img)].length
-        ? [...action.payload.map((el: any) => el.img)]
+    setImgArr: (state, action: PayloadAction<ImgBasket[]>) => {
+      const { length: img } = [
+        ...action.payload.map((el: ImgBasket) => el.img),
+      ];
+      state.data.imgArr = img
+        ? [...action.payload.map((el: ImgBasket) => el.img)]
         : ['logo.jpg'];
     },
     setInitialState: state => {
@@ -83,11 +75,11 @@ const createPost = createSlice({
       state.form = new FormData();
       state.loading = true;
     },
-    setForEdit: (state, action: PayloadAction<any>) => {
+    setInfoBeforeEdit: (state, action: PayloadAction<PosterInfomation>) => {
       state.data = action.payload;
       state.loading = false;
     },
-    setLoading: (state, action: PayloadAction<any>) => {
+    setLoading: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload;
     },
   },
@@ -105,7 +97,7 @@ export const {
   setTarget,
   setImgArr,
   setInitialState,
-  setForEdit,
+  setInfoBeforeEdit,
   setLoading,
 } = createPost.actions;
 export default createPost.reducer;

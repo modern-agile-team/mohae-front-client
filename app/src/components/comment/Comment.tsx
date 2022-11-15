@@ -6,7 +6,6 @@ import { getCommentList } from '../../apis/comment';
 import { setCommentArr } from '../../redux/comment/reducer';
 import Box from '../box/Box';
 import { MainButton } from '../button';
-import { ReportModal } from '../modal';
 import Popup from '../popup/Popup';
 import CommentInputForm from './CommentInputForm';
 import CommentList from './CommentList';
@@ -43,11 +42,6 @@ const Comment = () => {
           handlePopupView={() => handleModalView('popup')}
         />
       </Box>
-      <ReportModal
-        visible={view.report}
-        close={() => handleModalView('report')}
-        user
-      />
       {view.popup && (
         <>
           <Popup

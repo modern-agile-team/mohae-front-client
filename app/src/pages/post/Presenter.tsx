@@ -114,7 +114,6 @@ function Presenter(props: PresenterProps) {
       {!response.authorization && <Mosaic />}
       {createModal(mustLogin, '로그인 후 이용해주세요.', handleLoginModalView)}
       {createModal(isDeadline, popupText(), handleClosingPostModalView)}
-      <ReportModal visible={report} close={handleReportModalView} board />
     </>
   );
 }

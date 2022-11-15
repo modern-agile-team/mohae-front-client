@@ -2,8 +2,7 @@ import React, { useState, useEffect, Dispatch, SetStateAction } from 'react';
 import { css, cx } from '@emotion/css';
 import { Box } from '../../components';
 import Img from '../img/Img';
-import { animation } from './modalAnimation';
-import { close_all } from '../../redux/modal/reducer';
+import { close_all } from '../../redux/specModal/reducer';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from '../../redux/root';
 
@@ -55,7 +54,6 @@ function AuthModal({ visible, big, children, part, onClick, setPart }: Props) {
     justify-content: center;
     align-items: center;
     z-index: 12;
-    ${visible ? animation.basicAppear : animation.basicDissappear}
   `;
 
   const closeBtn = css`
@@ -94,7 +92,6 @@ function AuthModal({ visible, big, children, part, onClick, setPart }: Props) {
     width: 100%;
     background-color: rgba(0, 0, 0, 0.3);
     z-index: 11;
-    ${modalState || animation.dissappearOverlay};
   `;
 
   const close = (e: React.MouseEvent) => {

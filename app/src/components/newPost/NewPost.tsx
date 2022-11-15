@@ -6,7 +6,7 @@ import styled from '@emotion/styled';
 import MarkBox from '../markbox/MarkBox';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppDispatch, RootState } from '../../redux/root';
-import { spec_visit } from '../../redux/modal/reducer';
+import { spec_visit } from '../../redux/specModal/reducer';
 import { getDetailSpec } from '../../redux/spec/reducer';
 import {} from 'react-router-dom';
 

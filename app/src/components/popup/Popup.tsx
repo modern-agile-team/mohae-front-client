@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { css, cx } from '@emotion/css';
 import { font } from '../../styles';
 import { Box } from '../../components';
-import { animation } from '../modal/modalAnimation';
 
 interface Props {
   text1?: string;
@@ -21,7 +20,7 @@ function Popup({ text1, text2, visible, overlay, alarm, children }: Props) {
     if (visible) {
       setPopupState(true);
     } else {
-      timer = setTimeout(() => setPopupState(false), 800);
+      timer = setTimeout(() => setPopupState(false), 10);
     }
 
     return () => {
@@ -43,7 +42,6 @@ function Popup({ text1, text2, visible, overlay, alarm, children }: Props) {
     justify-content: center;
     align-items: center;
     z-index: 14;
-    ${visible ? animation.basicAppear : animation.basicDissappear}
   `;
 
   const text = css`

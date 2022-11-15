@@ -4,8 +4,7 @@ import { useState, useEffect } from 'react';
 import { css, cx } from '@emotion/css';
 import { Box } from '../../components';
 import Img from '../img/Img';
-import { animation } from './modalAnimation';
-import { close_all } from '../../redux/modal/reducer';
+import { close_all } from '../../redux/specModal/reducer';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../redux/root';
 
@@ -47,7 +46,6 @@ function BasicModal({
     justify-content: center;
     align-items: center;
     z-index: 12;
-    ${visible ? animation.basicAppear : animation.basicDissappear}
   `;
 
   const closeBtn = css`
@@ -74,7 +72,6 @@ function BasicModal({
     width: 100%;
     background-color: rgba(0, 0, 0, 0.3);
     z-index: 11;
-    ${modalState || animation.dissappearOverlay};
   `;
 
   const close = (e: React.MouseEvent) => {

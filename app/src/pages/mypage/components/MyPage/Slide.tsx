@@ -7,7 +7,7 @@ import { shadow } from '../../../../styles';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/root';
-import { spec_create } from '../../../../redux/modal/reducer';
+import { spec_create } from '../../../../redux/specModal/reducer';
 import { ENDPOINT } from '../../../../utils/ENDPOINT';
 import setInterceptors from '../../../../apis/common/setInterceptors';
 import { customAxios } from '../../../../apis/instance';
@@ -234,7 +234,7 @@ export default function Slide({
   };
 
   const openSpecCreate = useSelector(
-    (state: RootState) => state.modal.openSpecCreate,
+    (state: RootState) => state.specModal.openSpecCreate,
   );
 
   const openAddPostModal = (e: React.MouseEvent<HTMLButtonElement>) => {

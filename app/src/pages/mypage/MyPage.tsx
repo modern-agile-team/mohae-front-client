@@ -33,10 +33,10 @@ export default function MyPage() {
   const TOKEN = getToken(ACCESS_TOKEN);
   const userInfo = useSelector((state: RootState) => state.user.user);
   const isOpenSpecVisit = useSelector(
-    (state: RootState) => state.modal.openSpecVisit,
+    (state: RootState) => state.specModal.openSpecVisit,
   );
   const openSpecCreate = useSelector(
-    (state: RootState) => state.modal.openSpecCreate,
+    (state: RootState) => state.specModal.openSpecCreate,
   );
 
   const userNo = TOKEN !== '' && String(userInfo.userNo);

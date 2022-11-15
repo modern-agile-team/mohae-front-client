@@ -7,7 +7,9 @@ import { RootState } from '../../redux/root';
 import { useState, ReactElement } from 'react';
 
 export default function LoginModal(): ReactElement {
-  const isOpenModal = useSelector((state: RootState) => state.modal.openLogin);
+  const isOpenModal = useSelector(
+    (state: RootState) => state.specModal.openLogin,
+  );
   const [part, setPart] = useState<number>(0);
 
   const text: { [key: string]: any } = {

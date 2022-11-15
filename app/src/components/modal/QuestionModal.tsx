@@ -2,10 +2,6 @@ import { useState, useEffect } from 'react';
 import { css, cx } from '@emotion/css';
 import styled from '@emotion/styled';
 import { Box } from '../../components';
-import { animation } from './modalAnimation';
-import { Btn } from '../button';
-import Report from '../check-label/CheckLabel';
-import Img from '../img/Img';
 import { color, font } from '../../styles';
 
 interface Props {
@@ -40,7 +36,6 @@ function QuestionModal({ visible, close }: Props) {
     flex-direction: column;
     z-index: 14;
     padding: 16px 67px 24px 67px;
-    ${visible ? animation.basicAppear : animation.basicDissappear}
     .wrap {
       width: 100%;
       display: flex;
@@ -88,7 +83,6 @@ function QuestionModal({ visible, close }: Props) {
     width: 100%;
     background-color: rgba(0, 0, 0, 0.3);
     z-index: 13;
-    ${modalState || animation.dissappearOverlay};
   `;
 
   const Wrapper = styled.div`

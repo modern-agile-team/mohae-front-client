@@ -9,6 +9,7 @@ import {
 import { injectGlobal } from '@emotion/css';
 import { color, Layout } from './styles';
 import { LoginModal } from './pages';
+import ReportModal from './components/report/Container';
 import { getToken } from './utils/getToken';
 import { ACCESS_TOKEN } from './consts/tokenKey';
 import { Spinner } from './components';
@@ -150,7 +151,7 @@ const App: React.SFC = () => {
       <Visit />
       <Edit />
       <LoginModal />
-      {/* cancel this comment after test*/}
+      <ReportModal />
     </Router>
   );
 };

@@ -11,6 +11,7 @@ import { RootState } from '../../../../redux/root';
 import { PageComponetsProps as BtnsProps } from '../../../../types/post/type';
 import styled from '@emotion/styled';
 import { requestPostLike } from '../../../../apis/post';
+import { handelReportModal } from '../../../../redux/modal/reducer';
 
 function Btns(props: BtnsProps) {
   const { handleReportModalView } = props;
@@ -39,7 +40,7 @@ function Btns(props: BtnsProps) {
 
   const handleReportButtonClick = useCallback(() => {
     if (authorization && localUserNo !== board.userNo)
-      return handleReportModalView();
+      return dispatch(handelReportModal('board'));
     else return;
   }, []);
 

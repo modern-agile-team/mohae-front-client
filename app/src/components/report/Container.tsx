@@ -2,6 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import setInterceptors from '../../apis/common/setInterceptors';
 import { customAxios } from '../../apis/instance';
+import { requestReport } from '../../apis/report';
 import { handelReportModal } from '../../redux/modal/reducer';
 import { RootState } from '../../redux/root';
 import { CheckList, List, RequestForm } from '../../types/report/type';
@@ -34,7 +35,7 @@ function Container() {
   const onSubmit = (requestForm: RequestForm) => {
     const body = {
       head: reportTarget,
-      headNo: reportTarget === 'board' ? boardNo : userInfo?.userNo,
+      headNo: reportTarget === 'board' ? boardNo : Number(userInfo?.userNo),
       checks: requestForm.checksCount,
       description: requestForm.description,
     };
@@ -43,8 +44,7 @@ function Container() {
       requestForm.checksCount.length &&
       requestForm.description.replace('\\n', '').length < 100
     ) {
-      setInterceptors(customAxios)
-        .post('reports', body)
+      requestReport(body)
         .then(_ => dispatch(handelReportModal()))
         .catch(_ => alert('알 수 없는 에러 발생'));
     } else alert('항목을 세 개 이하 체크 후 사유를 작성해주세요.');

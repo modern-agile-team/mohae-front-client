@@ -1,23 +1,31 @@
+import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import Img from '../img/Img';
-import React, { useState } from 'react';
 import { deleteComment } from '../../apis/comment';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/root';
 import { setCommentArr } from '../../redux/comment/reducer';
 import { CommenterProps } from '../../types/comment/type';
+import { handelReportModal } from '../../redux/modal/reducer';
 
-const Commenter = (props: CommenterProps) => {
-  const { handleModalView, handleEditingButton, commentIndex } = props;
-  const userInfo = useSelector((state: RootState) => state.user.user);
+function Commenter(props: CommenterProps) {
+  const { handleEditingButton, commentIndex } = props;
   const [detailsView, setDetailsView] = useState(false);
-  const { no } = useParams();
+  const { userInfo, commentList, commentNo, commenterNo, commenterNickname } =
+    useSelector((state: RootState) => ({
+      userInfo: state.user.user,
+      commentList: state.comment.data,
+      commentNo: state.comment.data[commentIndex].commentNo,
+      commenterNo: state.comment.data[commentIndex].commenterNo,
+      commenterNickname: state.comment.data[commentIndex].commenterNickname,
+    }));
   const dispatch = useDispatch();
-  const commentList = useSelector((state: RootState) => state.comment.data);
-  const { commentNo, commenterNickname, commenterNo } = useSelector(
-    (state: RootState) => state.comment.data[commentIndex],
-  );
+  const { no } = useParams();
+
+  const reportModalOpen = () => {
+    dispatch(handelReportModal('user'));
+  };
 
   const createReportBtn = () => {
     return commenterNo === userInfo?.userNo ? (
@@ -25,7 +33,7 @@ const Commenter = (props: CommenterProps) => {
         <Img src="/img/report-light1.png" alt="report-disable" />
       </IconWrapper>
     ) : (
-      <IconWrapper onClick={handleModalView}>
+      <IconWrapper onClick={reportModalOpen}>
         <Img src="/img/report-main.png" alt="report-able" />
       </IconWrapper>
     );
@@ -77,7 +85,7 @@ const Commenter = (props: CommenterProps) => {
       )}
     </>
   );
-};
+}
 
 export default Commenter;
 

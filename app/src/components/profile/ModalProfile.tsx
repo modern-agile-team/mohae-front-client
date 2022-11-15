@@ -19,8 +19,8 @@ import {
   get_user_info,
   setInitialState as setInitialStateMypageProfile,
 } from '../../redux/mypage/reducer';
-import ReportModal from '../../components/modal/ReportModal';
 import { ACCESS_TOKEN } from '../../consts/tokenKey';
+import { handelReportModal } from '../../redux/modal/reducer';
 
 interface Props {
   userNo: number;
@@ -118,7 +118,7 @@ export default function ModalProfile(props: Props) {
   };
 
   const handleReportModalView = () => {
-    setReportModalView(prev => !prev);
+    dispatch(handelReportModal('user'));
   };
 
   useEffect(() => {
@@ -266,11 +266,6 @@ export default function ModalProfile(props: Props) {
           </div>
         </div>
       </BasicModal>
-      <ReportModal
-        user
-        visible={reportModalView}
-        close={handleReportModalView}
-      />
     </>
   );
 }

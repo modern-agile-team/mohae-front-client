@@ -4,7 +4,7 @@ import { Img } from '../../../components';
 
 function Succese() {
   const toLogin = () => {
-    window.location.replace('/');
+    window.location.replace('/main');
   };
   return (
     <Wrapper>

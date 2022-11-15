@@ -6,20 +6,25 @@ import { RootState } from '../../redux/root';
 import { setCommentArr } from '../../redux/comment/reducer';
 import { deleteReply } from '../../apis/replies';
 import { ReplierProps } from '../../types/replies/type';
+import { handelReportModal } from '../../redux/modal/reducer';
 
-const Replier = (props: ReplierProps) => {
-  const { handleModalView, commentIndex, replyIndex, handleEditingButton } =
-    props;
-  const userInfo = useSelector((state: RootState) => state.user.user);
-  const [detailsView, setDetailsView] = useState(false);
+function Replier(props: ReplierProps) {
   const dispatch = useDispatch();
-  const commentList = useSelector((state: RootState) => state.comment.data);
-  const { replyNo, replyWriterNo } = useSelector(
-    (state: RootState) => state.comment.data[commentIndex].replies[replyIndex],
-  );
-  const { commentNo } = useSelector(
-    (state: RootState) => state.comment.data[commentIndex],
-  );
+  const { commentIndex, replyIndex, handleEditingButton } = props;
+  const { replyNo, replyWriterNo, commentList, commentNo, userInfo } =
+    useSelector((state: RootState) => ({
+      userInfo: state.user.user,
+      commentList: state.comment.data,
+      commentNo: state.comment.data[commentIndex].commentNo,
+      replyNo: state.comment.data[commentIndex].replies[replyIndex].replyNo,
+      replyWriterNo:
+        state.comment.data[commentIndex].replies[replyIndex].replyWriterNo,
+    }));
+  const [detailsView, setDetailsView] = useState(false);
+
+  const reportModalOpen = () => {
+    dispatch(handelReportModal('user'));
+  };
 
   const createReportBtn = () => {
     return replyWriterNo === userInfo?.userNo ? (
@@ -27,7 +32,7 @@ const Replier = (props: ReplierProps) => {
         <Img src="/img/report-light1.png" alt="reply-report-disable" />
       </IconWrapper>
     ) : (
-      <IconWrapper onClick={handleModalView}>
+      <IconWrapper onClick={reportModalOpen}>
         <Img src="/img/report-main.png" alt="reply-report-able" />
       </IconWrapper>
     );
@@ -86,7 +91,7 @@ const Replier = (props: ReplierProps) => {
       )}
     </>
   );
-};
+}
 
 export default Replier;
 

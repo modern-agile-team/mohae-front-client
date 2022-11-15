@@ -4,7 +4,10 @@ import { css, cx } from '@emotion/css';
 import { color, shadow } from '../../style/palette';
 import { Dispatch, ReactElement, SetStateAction } from 'react';
 import { Img, Btn } from '../../../components';
-import { open_login, open_register_modal } from '../../../redux/modal/reducer';
+import {
+  open_login,
+  open_register_modal,
+} from '../../../redux/specModal/reducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../redux/root';
 import { Link } from 'react-router-dom';

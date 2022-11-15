@@ -3,7 +3,6 @@
 import Category from './category/Category';
 import Categories from './category/Categories';
 import Text from './text/Text';
-import Report from './check-label/CheckLabel';
 import Carousel from './img-carousel/Img-carousel';
 import ImageInput from './img-in-order/Container';
 import Img from './img/Img';
@@ -17,7 +16,8 @@ import Container from './input/searchInput/Container';
 import TextEditor from './input/text-editor/Editor';
 import { FocusBar, HalfBar } from './focusBar';
 import Profile from './profile/Profile';
-import { AlarmModal, BasicModal, ReportModal } from './modal';
+import ReportModal from './report/Container';
+import { BasicModal } from './modal';
 import Popup from './popup/Popup';
 import { Poster } from './poster';
 import NewPost from './newPost/NewPost';
@@ -34,7 +34,6 @@ export {
   Search,
   Mosaic,
   Text,
-  Report,
   Carousel,
   ImageInput,
   Img,
@@ -45,7 +44,6 @@ export {
   FocusBar,
   HalfBar,
   Profile,
-  AlarmModal,
   BasicModal,
   ReportModal,
   Popup,

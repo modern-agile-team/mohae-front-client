@@ -21,7 +21,9 @@ import setInterceptors from '../../../../apis/common/setInterceptors';
 import { customAxios } from '../../../../apis/instance';
 
 export default function Visit() {
-  const isOpen = useSelector((state: RootState) => state.modal.openSpecVisit);
+  const isOpen = useSelector(
+    (state: RootState) => state.specModal.openSpecVisit,
+  );
   const formData = useSelector((state: RootState) => state.spec.addImages);
   const visitorInfo = useSelector((state: RootState) => state.user.user);
 

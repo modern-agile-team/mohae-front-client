@@ -232,7 +232,7 @@ export default function NewPost({ page, board, linkTo }: Props) {
     <> </>
   );
   const isOpenSpecVisit = useSelector(
-    (state: RootState) => state.modal.openSpecVisit,
+    (state: RootState) => state.specModal.openSpecVisit,
   );
   const dispatch = useDispatch<AppDispatch>();
 

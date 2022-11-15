@@ -21,7 +21,7 @@ function AuthModal({ visible, big, children, part, onClick, setPart }: Props) {
   const [modalState, setModalState] = useState(visible);
   const dispatch = useDispatch<AppDispatch>();
   const isRegister = useSelector(
-    (state: RootState) => state.modal.openRegister,
+    (state: RootState) => state.specModal.openRegister,
   );
   useEffect(() => {
     let timer: any;

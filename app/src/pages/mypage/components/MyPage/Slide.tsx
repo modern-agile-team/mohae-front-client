@@ -234,7 +234,7 @@ export default function Slide({
   };
 
   const openSpecCreate = useSelector(
-    (state: RootState) => state.modal.openSpecCreate,
+    (state: RootState) => state.specModal.openSpecCreate,
   );
 
   const openAddPostModal = (e: React.MouseEvent<HTMLButtonElement>) => {

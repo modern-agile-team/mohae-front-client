@@ -35,7 +35,9 @@ export default function Register({ text, setFindPasswordView }: Props) {
     id: '',
     password: '',
   });
-  const isOpenLogin = useSelector((state: RootState) => state.modal.openLogin);
+  const isOpenLogin = useSelector(
+    (state: RootState) => state.specModal.openLogin,
+  );
   const dispatch = useDispatch();
   const location = useLocation();
 

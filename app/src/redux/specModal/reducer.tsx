@@ -21,8 +21,8 @@ const initialState = {
 };
 // store (state)
 
-export const modal = createSlice({
-  name: 'modal',
+export const specModal = createSlice({
+  name: 'specModal',
   initialState,
   // reducer function
   reducers: {
@@ -57,9 +57,9 @@ export const {
   spec_edit,
   spec_create,
   open_register_modal,
-} = modal.actions;
+} = specModal.actions;
 // create actions & type
-export default modal.reducer;
+export default specModal.reducer;
 
 // action, reducer, store
 

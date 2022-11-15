@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import userReducer from './user/reducer';
 import mypageReducer from './mypage/reducer';
-import modalReducer from './modal/reducer';
+import modalReducer from './specModal/reducer';
 import specReducer from './spec/reducer';
 import filterReducer from './filter/reducer';
 import boardReducer from './board/reducer';

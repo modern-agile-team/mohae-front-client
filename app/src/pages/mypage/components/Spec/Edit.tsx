@@ -7,7 +7,7 @@ import { Box, FocusBar, BasicModal, Btn } from '../../../../components';
 import InputImg from './InputImg';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../../redux/root';
-import { spec_create } from '../../../../redux/modal/reducer';
+import { spec_create } from '../../../../redux/specModal/reducer';
 import { ENDPOINT } from '../../../../utils/ENDPOINT';
 import setInterceptors from '../../../../apis/common/setInterceptors';
 import { customAxios } from '../../../../apis/instance';

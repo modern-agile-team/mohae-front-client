@@ -1,7 +1,7 @@
 /** @format */
 import { Img, Box } from '../../../components';
 import React, { useState } from 'react';
-import { open_login } from '../../../redux/modal/reducer';
+import { open_login } from '../../../redux/specModal/reducer';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../redux/root';
 import { useLocation } from 'react-router-dom';

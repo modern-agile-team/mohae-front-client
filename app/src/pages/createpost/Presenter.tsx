@@ -34,6 +34,8 @@ function Presenter(props: PresenterProps) {
     window.location.replace('/boards/categories/1');
   };
 
+  // text1={`게시글이 성공적으로 ${no ? '수정' : '작성'}되었습니다.`}
+
   return (
     <>
       <Container>
@@ -59,16 +61,15 @@ function Presenter(props: PresenterProps) {
         </div>
       </Container>
       <TextEditor />
-      <Popup
+      {/* <Popup
         visible={popupView}
-        text1={`게시글이 성공적으로 ${no ? '수정' : '작성'}되었습니다.`}
       >
         <PopupButton>
           <MainButton type="button" able onClick={popupClose}>
             닫기
           </MainButton>
         </PopupButton>
-      </Popup>
+      </Popup> */}
     </>
   );
 }

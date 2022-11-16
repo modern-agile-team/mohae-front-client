@@ -1,25 +1,28 @@
 import styled from '@emotion/styled';
-import axios from 'axios';
-import React, { Dispatch, SetStateAction, useState } from 'react';
-import { ENDPOINT } from '../../../utils/ENDPOINT';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { customAxios } from '../../../apis/instance';
+import { MainButton } from '../../../components';
+import { handlePopup } from '../../../redux/modal/reducer';
 
-interface PopupInfo {
-  view: boolean;
-  message: string;
-}
-
-interface Props {
-  popupInfo: { register: PopupInfo; findPassword: PopupInfo };
-  setPopupInfo: Dispatch<
-    SetStateAction<{ register: PopupInfo; findPassword: PopupInfo }>
-  >;
-}
-
-function FindPassword({ popupInfo, setPopupInfo }: Props) {
+function FindPassword() {
+  const dispatch = useDispatch();
   const [userInputValue, setUserInputValue] = useState({
     name: '',
     email: '',
   });
+
+  const popupContents = (
+    <BtnWrapper>
+      <MainButton type="button" able onClick={() => dispatch(handlePopup())}>
+        닫기
+      </MainButton>
+    </BtnWrapper>
+  );
+
+  const handlePopupShow = (text: string) => {
+    dispatch(handlePopup({ text: text, children: popupContents }));
+  };
 
   const handleOnChange = (
     str: string,
@@ -41,20 +44,14 @@ function FindPassword({ popupInfo, setPopupInfo }: Props) {
   ) => {
     e.preventDefault();
     try {
-      await axios
-        .post(`${ENDPOINT}email/forget/password`, userInputValue)
+      await customAxios
+        .post(`email/forget/password`, userInputValue)
         .then(res => {
-          setPopupInfo({
-            ...popupInfo,
-            findPassword: { view: true, message: res.data.msg },
-          });
           setUserInputValue({ name: '', email: '' });
+          handlePopupShow(res.data.msg);
         });
     } catch (err: any) {
-      setPopupInfo({
-        ...popupInfo,
-        findPassword: { view: true, message: err.response.data.error.message },
-      });
+      handlePopupShow(err.response.data.error.message);
     }
   };
 
@@ -153,4 +150,9 @@ const SubmitButton = styled.button<{ able: boolean }>`
   font-size: 14px;
   border-radius: 6px;
   box-shadow: 0px 0px 8px rgba(132, 131, 141, 0.5);
+`;
+
+const BtnWrapper = styled.button`
+  width: 74px;
+  height: 43px;
 `;

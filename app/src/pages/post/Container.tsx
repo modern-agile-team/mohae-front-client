@@ -15,24 +15,28 @@ import {
   requestPostClosing,
   requestPostReopening,
 } from '../../apis/post';
-import { Spinner, WhiteButton } from '../../components';
+import { MainButton, Spinner } from '../../components';
 import { removeToken } from '../../utils/getToken';
 import { ACCESS_TOKEN, REFESH_TOKEN } from '../../consts/tokenKey';
 import { PosterDetails } from '../../types/post/type';
+import { open_login } from '../../redux/specModal/reducer';
 
 function Post() {
   const { no } = useParams();
   const location = useLocation();
   const dispatch = useDispatch();
   const loading = useSelector((state: RootState) => state.post.loading);
-  const popupClose = () => dispatch(handlePopup());
+  const popupClosing = () => {
+    dispatch(handlePopup());
+    dispatch(open_login(true));
+  };
   const { text, children } = {
     text: '로그인 후 이용해주세요.',
     children: (
       <PopupButton>
-        <WhiteButton type="button" able={true} onClick={popupClose}>
+        <MainButton type="button" able={true} onClick={popupClosing}>
           닫기
-        </WhiteButton>
+        </MainButton>
       </PopupButton>
     ),
   };
@@ -50,7 +54,7 @@ function Post() {
         removeToken(ACCESS_TOKEN);
         removeToken(REFESH_TOKEN);
         window.location.replace(location.pathname);
-      }
+      } else dispatch(handlePopup({ text: text, children: children }));
     }
   };
 

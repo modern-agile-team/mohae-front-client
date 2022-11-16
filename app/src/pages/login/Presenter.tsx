@@ -52,8 +52,8 @@ export default function Presenter({
       next={onClick.agreement}
     />,
     <PersonalInfo text={text} part={part} next={onClick.finishedInputInfo} />,
-    <SelectInfo popupInfo={popupInfo} setPopupInfo={setPopupInfo} />,
-    <FindPassword popupInfo={popupInfo} setPopupInfo={setPopupInfo} />,
+    <SelectInfo setPart={setPart} />,
+    <FindPassword />,
   ];
 
   const style = css`
@@ -278,24 +278,6 @@ export default function Presenter({
           </div>
         </div>
       </AuthModal>
-      {handlePopupInfo().view && (
-        <Popup
-          visible={handlePopupInfo().view}
-          text1={handlePopupInfo().message}
-          overlay={() => handlePopupInfo().close()}
-        >
-          <BtnImgWrapper>
-            <Btn main onClick={() => handlePopupInfo().close()}>
-              닫기
-            </Btn>
-          </BtnImgWrapper>
-        </Popup>
-      )}
     </>
   );
 }
-
-const BtnImgWrapper = styled.button`
-  width: 74px;
-  height: 43px;
-`;

@@ -10,27 +10,19 @@ interface ReplyList {
   replyCreatedAt: string;
 }
 
-interface RepliesProps extends TypeForExtends {
-  handleModalView: () => void;
-  handlePopupView: () => void;
-}
-
 interface RepliesInputFromProps extends TypeForExtends {
-  handlePopupView: () => void;
+  popupContents: { text: string; children: React.ReactNode };
 }
 
 interface RepliesListProps extends TypeForExtends {
-  handleModalView: () => void;
   replies: ReplyList[];
 }
 
 interface ReplyItemProps extends TypeForExtends {
-  handleModalView: () => void;
   replyIndex: number;
 }
 
 interface ReplierProps extends TypeForExtends {
-  handleModalView: () => void;
   handleEditingButton: () => void;
   replyIndex: number;
 }
@@ -42,17 +34,23 @@ interface ExtendsTypeUsedInAPI {
   };
 }
 
+interface ErrorState {
+  message: string;
+  errorOccurred: boolean;
+}
+
 interface EditAndDeleteParameterType extends ExtendsTypeUsedInAPI {
   replyNo: number;
 }
 
 export type {
-  ReplyList,
-  RepliesProps,
   RepliesInputFromProps,
   RepliesListProps,
   ReplyItemProps,
   ReplierProps,
+  ReplyList,
   EditAndDeleteParameterType,
+  TypeForExtends as RepliesCommonProps,
   ExtendsTypeUsedInAPI as PostParameterType,
+  ErrorState,
 };

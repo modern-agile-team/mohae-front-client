@@ -1,8 +1,5 @@
+import React from 'react';
 import { ReplyList } from '../replies/type';
-
-interface TypeForExtends {
-  handleModalView: () => void;
-}
 
 interface CommentList {
   commentContent: string;
@@ -15,18 +12,16 @@ interface CommentList {
   replies: ReplyList[];
 }
 
-interface CommenterProps extends TypeForExtends {
+interface CommentInputFormProps {
+  popupContents: { text: string; children: React.ReactNode };
+}
+interface CommenterProps {
   commentIndex: number;
   handleEditingButton: () => void;
 }
 
-interface CommentItemProps extends TypeForExtends {
-  handlePopupView: () => void;
+interface CommentItemProps {
   commentIndex: number;
-}
-
-interface CommentListProps extends TypeForExtends {
-  handlePopupView: () => void;
 }
 
 interface CommentInputProps {
@@ -46,6 +41,11 @@ interface ExtendsTypeUsedInAPI {
   };
 }
 
+interface ErrorState {
+  message: string;
+  errorOccurred: boolean;
+}
+
 interface EditAndDeleteParameterType extends ExtendsTypeUsedInAPI {
   commentNo: number;
 }
@@ -53,10 +53,10 @@ interface EditAndDeleteParameterType extends ExtendsTypeUsedInAPI {
 export type {
   CommentList,
   CommenterProps,
-  TypeForExtends as CommentInputFormProps,
   CommentItemProps,
-  CommentListProps,
   CommentInputProps,
+  CommentInputFormProps,
   EditAndDeleteParameterType,
   ExtendsTypeUsedInAPI as PostParameterType,
+  ErrorState,
 };

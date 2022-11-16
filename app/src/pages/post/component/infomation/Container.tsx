@@ -1,63 +1,53 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
-import { MainButton, Popup, WhiteButton } from '../../../../components';
+import { MainButton, WhiteButton } from '../../../../components';
 import styled from '@emotion/styled';
 import PostUserInteraction from './presenter/PostUserInteraction';
 import PostDetails from './presenter/PostDetails';
 import { requestDeletePost } from '../../../../apis/post';
+import { useDispatch } from 'react-redux';
+import { handlePopup } from '../../../../redux/modal/reducer';
 
 function Container() {
   const { no } = useParams();
-  const [popupView, setPopupView] = useState(false);
-
-  const handleDeletePopupView = () => {
-    setPopupView(prev => !prev);
-  };
-
-  const showPopup = () => {
-    return (
-      popupView && (
-        <Popup
-          visible={popupView}
-          text1={'정말 삭제 하시겠습니까? '}
-          text2={'삭제 시 게시판으로 이동합니다.'}
-        >
-          <PopupButton>
-            <WhiteButton
-              type="button"
-              able={true}
-              onClick={handleDeletePopupView}
-            >
-              닫기
-            </WhiteButton>
-          </PopupButton>
-          <PopupButton>
-            <MainButton type="button" able={true} onClick={clickDeleteButton}>
-              삭제하기
-            </MainButton>
-          </PopupButton>
-        </Popup>
-      )
-    );
-  };
+  const dispatch = useDispatch();
+  const popupClose = () => dispatch(handlePopup());
 
   const clickDeleteButton = () => {
     try {
       requestDeletePost(Number(no)).then(_ =>
         window.location.replace('/boards/categories/1'),
       );
+      popupClose();
     } catch (err) {
       alert('알 수 없는 에러가 발생하였습니다.');
     }
+  };
+
+  const popupContents = {
+    text: '정말 삭제 하시겠습니까?',
+    children: (
+      <>
+        <PopupButton>
+          <WhiteButton type="button" able={true} onClick={popupClose}>
+            닫기
+          </WhiteButton>
+        </PopupButton>
+        <PopupButton>
+          <MainButton type="button" able={true} onClick={clickDeleteButton}>
+            삭제하기
+          </MainButton>
+        </PopupButton>
+      </>
+    ),
   };
 
   return (
     <>
       <Wrap>
         <PostDetails />
-        <PostUserInteraction requestDeleteFunc={handleDeletePopupView} />
+        <PostUserInteraction popupContents={popupContents} />
       </Wrap>
-      {showPopup()}
     </>
   );
 }

@@ -1,7 +1,5 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import setInterceptors from '../../apis/common/setInterceptors';
-import { customAxios } from '../../apis/instance';
 import { requestReport } from '../../apis/report';
 import { handelReportModal } from '../../redux/modal/reducer';
 import { RootState } from '../../redux/root';
@@ -32,18 +30,15 @@ function Container() {
     };
   };
 
-  const onSubmit = (requestForm: RequestForm) => {
+  const onSubmit = ({ checksCount, description }: RequestForm) => {
     const body = {
       head: reportTarget,
       headNo: reportTarget === 'board' ? boardNo : Number(userInfo?.userNo),
-      checks: requestForm.checksCount,
-      description: requestForm.description,
+      checks: checksCount,
+      description: description,
     };
 
-    if (
-      requestForm.checksCount.length &&
-      requestForm.description.replace('\\n', '').length < 100
-    ) {
+    if (checksCount.length && description.replace('\\n', '').length < 100) {
       requestReport(body)
         .then(_ => dispatch(handelReportModal()))
         .catch(_ => alert('알 수 없는 에러 발생'));

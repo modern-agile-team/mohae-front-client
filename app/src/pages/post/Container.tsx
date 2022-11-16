@@ -26,7 +26,7 @@ function Post() {
   const location = useLocation();
   const dispatch = useDispatch();
   const loading = useSelector((state: RootState) => state.post.loading);
-  const popupClose = () => {
+  const popupClosing = () => {
     dispatch(handlePopup());
     dispatch(open_login(true));
   };
@@ -34,7 +34,7 @@ function Post() {
     text: '로그인 후 이용해주세요.',
     children: (
       <PopupButton>
-        <MainButton type="button" able={true} onClick={popupClose}>
+        <MainButton type="button" able={true} onClick={popupClosing}>
           닫기
         </MainButton>
       </PopupButton>

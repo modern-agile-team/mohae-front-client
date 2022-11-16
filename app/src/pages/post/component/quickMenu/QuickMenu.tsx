@@ -4,10 +4,8 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/root';
 import styled from '@emotion/styled';
 import DecimalDay from '../DDAY/DecimalDay';
-import { PageComponetsProps as QuickMenuProps } from '../../../../types/post/type';
 
-function QuickMenu(props: QuickMenuProps) {
-  const { handleReportModalView } = props;
+function QuickMenu() {
   const { price, title } = useSelector(
     (state: RootState) => state.post.data.response.board,
   );
@@ -21,7 +19,7 @@ function QuickMenu(props: QuickMenuProps) {
         </FlexWrapper>
         <Price price={price}>{price ? price.toLocaleString() : '무료'}</Price>
       </div>
-      <PostWriter handleReportModalView={handleReportModalView} />
+      <PostWriter />
     </Container>
   );
 }

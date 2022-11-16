@@ -1,30 +1,40 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from '@emotion/styled';
-import {
-  Categories,
-  Img,
-  MainButton,
-  Popup,
-  Search,
-} from '../../../../components';
+import { Categories, Img, MainButton, Search } from '../../../../components';
 import { categoryList } from '../../../../consts/listStore';
 import { useNavigate, useParams } from 'react-router-dom';
 import getToken from '../../../../utils/getToken';
 import { InteractionPartProps } from '../../../../types/board/type';
 import { ACCESS_TOKEN } from '../../../../consts/tokenKey';
+import { useDispatch } from 'react-redux';
+import { handlePopup } from '../../../../redux/modal/reducer';
 
 function InteractionPart(props: InteractionPartProps) {
   const { resetPageNation } = props;
   const navigation = useNavigate();
   const { no } = useParams();
+  const dispatch = useDispatch();
   const categoryName = categoryList({ shift: false })[Number(no) - 1].name;
   const localUserToken = getToken(ACCESS_TOKEN);
-  const [loginPlz, setLoginPlz] = useState(false);
-
+  const popupContents = {
+    text: '게시글 작성은 로그인 후 이용 가능합니다.',
+    children: (
+      <PopupButtonWrapper>
+        <MainButton
+          type="button"
+          able={true}
+          onClick={() => controlWriteButton}
+        >
+          닫기
+        </MainButton>
+      </PopupButtonWrapper>
+    ),
+  };
   const controlWriteButton = () => {
+    const { text, children } = popupContents;
     if (localUserToken && localUserToken !== null) {
       navigation('/create/post');
-    } else setLoginPlz(prev => !prev);
+    } else dispatch(handlePopup({ text: text, children: children }));
   };
 
   return (
@@ -42,21 +52,6 @@ function InteractionPart(props: InteractionPartProps) {
           </MainButton>
         </ButtonWrapper>
       </FlexWrapper>
-      <Popup
-        visible={loginPlz}
-        text1={'게시글 작성은 로그인 후 이용 가능합니다.'}
-        overlay={controlWriteButton}
-      >
-        <PopupButtonWrapper>
-          <MainButton
-            type="button"
-            able={true}
-            onClick={() => controlWriteButton}
-          >
-            닫기
-          </MainButton>
-        </PopupButtonWrapper>
-      </Popup>
     </>
   );
 }

@@ -32,7 +32,6 @@ export default function ModalProfile(props: Props) {
   const { userNo, view, reset } = props;
   const userInfo = useSelector((state: RootState) => state.mypage.user.profile);
   const posts = useSelector((state: RootState) => state.spec);
-  const [reportModalView, setReportModalView] = useState(false);
   const dispatch = useDispatch();
   const userInfoInToken = useSelector((state: RootState) => state.user.user);
   const token = getToken(ACCESS_TOKEN);

@@ -12,7 +12,7 @@ import { useParams } from 'react-router-dom';
 import { setCommentArr } from '../../redux/comment/reducer';
 
 const CommentItem = (props: CommentItemProps) => {
-  const { commentIndex, handleModalView, handlePopupView } = props;
+  const { commentIndex } = props;
   const {
     commentContent,
     commenterPhotoUrl,
@@ -30,6 +30,7 @@ const CommentItem = (props: CommentItemProps) => {
     willEdit: false,
     value: commentContent,
   });
+
   const [errorState, setErrorState] = useState<{
     message: string;
     errorOccurred: boolean;
@@ -37,6 +38,7 @@ const CommentItem = (props: CommentItemProps) => {
     message: '대댓글 수정에 실패하였습니다.',
     errorOccurred: false,
   });
+
   const handleErrorState = (occurs: boolean) => {
     setErrorState(prev => {
       return { ...prev, errorOccurred: occurs };
@@ -106,7 +108,6 @@ const CommentItem = (props: CommentItemProps) => {
           <Commenter
             handleEditingButton={handleEditingButton}
             commentIndex={commentIndex}
-            handleModalView={handleModalView}
           />
           <span id="comment-created-date">{commentCreatedAt}</span>
           {!editingComment.willEdit ? (
@@ -130,11 +131,7 @@ const CommentItem = (props: CommentItemProps) => {
             </EditInputWrapper>
           )}
         </CommentHeader>
-        <Replies
-          commentIndex={commentIndex}
-          handleModalView={handleModalView}
-          handlePopupView={handlePopupView}
-        />
+        <Replies commentIndex={commentIndex} />
       </CommentSection>
     </Wrapper>
   );

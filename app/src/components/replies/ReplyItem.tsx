@@ -3,14 +3,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/root';
 import Replier from './Replier';
 import Profile from '../profile/Profile';
-import { ReplyItemProps } from '../../types/replies/type';
+import { ErrorState, ReplyItemProps } from '../../types/replies/type';
 import { useState } from 'react';
 import ReplyInput from '../input/comment/CommentInput';
 import { editReply } from '../../apis/replies';
 import { setCommentArr } from '../../redux/comment/reducer';
 
 const ReplyItem = (props: ReplyItemProps) => {
-  const { commentIndex, handleModalView, replyIndex } = props;
+  const { commentIndex, replyIndex } = props;
+  const dispatch = useDispatch();
   const commentArr = useSelector((state: RootState) => state.comment.data);
   const {
     replyContent,
@@ -21,7 +22,6 @@ const ReplyItem = (props: ReplyItemProps) => {
   } = useSelector(
     (state: RootState) => state.comment.data[commentIndex].replies[replyIndex],
   );
-  const dispatch = useDispatch();
   const [editingReply, setEditingingReply] = useState<{
     willEdit: boolean;
     value: string;
@@ -29,39 +29,30 @@ const ReplyItem = (props: ReplyItemProps) => {
     willEdit: false,
     value: replyContent,
   });
-  const [errorState, setErrorState] = useState<{
-    message: string;
-    errorOccurred: boolean;
-  }>({
+  const [errorState, setErrorState] = useState<ErrorState>({
     message: '대댓글 수정에 실패하였습니다.',
     errorOccurred: false,
   });
   const handleErrorState = (occurs: boolean) => {
-    setErrorState(prev => {
-      return { ...prev, errorOccurred: occurs };
-    });
+    setErrorState(prev => ({ ...prev, errorOccurred: occurs }));
   };
 
   const handleEditingButton = () => {
     setEditingingReply(prev => {
-      if (prev.willEdit) {
-        return { willEdit: !prev.willEdit, value: replyContent };
-      } else {
-        return { willEdit: !prev.willEdit, value: prev.value };
-      }
+      return prev.willEdit
+        ? { willEdit: !prev.willEdit, value: replyContent }
+        : { willEdit: !prev.willEdit, value: prev.value };
     });
   };
 
   const newRepliesArr = () => {
-    const newCommentArr = commentArr.filter((_, i) => {
-      return i !== commentIndex;
-    });
+    const newCommentArr = commentArr.filter((_, i) => i !== commentIndex);
 
-    const newReplyArr = commentArr[commentIndex].replies.map((el, _) => {
-      return el.replyNo === replyNo
+    const newReplyArr = commentArr[commentIndex].replies.map((el, _) =>
+      el.replyNo === replyNo
         ? { ...el, replyContent: editingReply.value }
-        : { ...el };
-    });
+        : { ...el },
+    );
 
     newCommentArr.splice(commentIndex, 0, {
       ...commentArr[commentIndex],
@@ -74,9 +65,7 @@ const ReplyItem = (props: ReplyItemProps) => {
   const handleOnChangeForEditing = (
     e: React.ChangeEvent<HTMLTextAreaElement>,
   ) => {
-    setEditingingReply(prev => {
-      return { ...prev, value: e.target.value };
-    });
+    setEditingingReply(prev => ({ ...prev, value: e.target.value }));
   };
 
   const handleOnSubmit = async () => {
@@ -117,7 +106,6 @@ const ReplyItem = (props: ReplyItemProps) => {
         <Replier
           commentIndex={commentIndex}
           replyIndex={replyIndex}
-          handleModalView={handleModalView}
           handleEditingButton={handleEditingButton}
         />
         <ReplyHeader>

@@ -8,13 +8,11 @@ import {
   setIsLike,
 } from '../../../../redux/post/reducer';
 import { RootState } from '../../../../redux/root';
-import { PageComponetsProps as BtnsProps } from '../../../../types/post/type';
 import styled from '@emotion/styled';
 import { requestPostLike } from '../../../../apis/post';
 import { handelReportModal } from '../../../../redux/modal/reducer';
 
-function Btns(props: BtnsProps) {
-  const { handleReportModalView } = props;
+function Btns() {
   const { no } = useParams();
   const dispatch = useDispatch();
   const localUserNo = useSelector((state: RootState) => state.user.user.userNo);

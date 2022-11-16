@@ -5,23 +5,22 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAddCommentArr } from '../../redux/comment/reducer';
 import { RootState } from '../../redux/root';
-import { CommentInputFormProps } from '../../types/comment/type';
 import CommentInput from '../input/comment/CommentInput';
+import { CommentInputFormProps, ErrorState } from '../../types/comment/type';
+import { handlePopup } from '../../redux/modal/reducer';
 
-const CommentInputForm = (props: CommentInputFormProps) => {
-  const { handleModalView } = props;
+function CommentInputForm({ popupContents }: CommentInputFormProps) {
+  const { text, children } = popupContents;
   const [comment, setComment] = useState<string>('');
   const { no } = useParams();
   const dispatch = useDispatch();
   const userInfo = useSelector((state: RootState) => state.user.user);
   const commentList = useSelector((state: RootState) => state.comment.data);
-  const [errorState, setErrorState] = useState<{
-    message: string;
-    errorOccurred: boolean;
-  }>({
+  const [errorState, setErrorState] = useState<ErrorState>({
     message: '댓글 작성에 실패하였습니다.',
     errorOccurred: false,
   });
+
   const handleErrorState = (occurs: boolean) => {
     setErrorState(prev => {
       return { ...prev, errorOccurred: occurs };
@@ -58,7 +57,7 @@ const CommentInputForm = (props: CommentInputFormProps) => {
             replies: [],
           };
           dispatch(setAddCommentArr(newComment));
-          handleModalView();
+          dispatch(handlePopup({ text: text, children: children }));
           handleErrorState(false);
         });
         setComment('');
@@ -84,7 +83,7 @@ const CommentInputForm = (props: CommentInputFormProps) => {
       />
     </Wrapper>
   );
-};
+}
 
 export default CommentInputForm;
 

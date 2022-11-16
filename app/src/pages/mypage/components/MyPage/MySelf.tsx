@@ -30,7 +30,7 @@ export default function MySelf({ posts, actions, checkSelf }: MyPageProps) {
     removeToken(ACCESS_TOKEN);
     removeToken(REFESH_TOKEN);
     dispatch(remove_user());
-    navigate('/main');
+    navigate('/');
   };
 
   return (

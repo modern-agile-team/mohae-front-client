@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
-import React, { Dispatch, SetStateAction } from 'react';
-import { Popup } from '../../../components';
+import React from 'react';
 
 interface Props {
   inputValue: {
@@ -93,17 +92,6 @@ function Presenter(props: Props) {
           </SubmitButton>
         </Container>
       </Wrapper>
-      {popupInfo.view && (
-        <Popup
-          visible={popupInfo.view}
-          text1={popupInfo.message}
-          overlay={() => closePopup()}
-        >
-          <PopupCloseButton type="submit" onClick={closePopup}>
-            닫기
-          </PopupCloseButton>
-        </Popup>
-      )}
     </>
   );
 }

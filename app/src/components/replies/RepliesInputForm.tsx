@@ -4,33 +4,40 @@ import ReplyInput from '../input/comment/CommentInput';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCommentArr } from '../../redux/comment/reducer';
 import { RootState } from '../../redux/root';
-import { RepliesInputFromProps, ReplyList } from '../../types/replies/type';
+import {
+  RepliesInputFromProps,
+  ReplyList,
+  ErrorState,
+} from '../../types/replies/type';
 import { createReply } from '../../apis/replies';
+import { handlePopup } from '../../redux/modal/reducer';
 
-const RepliesInputForm = (props: RepliesInputFromProps) => {
-  const { handlePopupView, commentIndex } = props;
+function RepliesInputForm({
+  commentIndex,
+  popupContents,
+}: RepliesInputFromProps) {
+  const { text, children } = popupContents;
   const [reply, setReply] = useState<string>('');
-  const [errorState, setErrorState] = useState<{
-    message: string;
-    errorOccurred: boolean;
-  }>({
+  const [errorState, setErrorState] = useState<ErrorState>({
     message: '대댓글 작성에 실패하였습니다.',
     errorOccurred: false,
   });
   const handleErrorState = (occurs: boolean) => {
-    setErrorState(prev => {
-      return { ...prev, errorOccurred: occurs };
-    });
+    setErrorState(prev => ({ ...prev, errorOccurred: occurs }));
   };
   const dispatch = useDispatch();
-  const userInfo = useSelector((state: RootState) => state.user.user);
+  const { userInfo, comments } = useSelector((state: RootState) => ({
+    userInfo: state.user.user,
+    comments: state.comment.data,
+  }));
+
   const day = new Date();
   const today = {
     year: day.getFullYear(),
     month: day.getMonth() + 1,
     date: day.getDate(),
   };
-  const comments = useSelector((state: RootState) => state.comment.data);
+
   const handleChangeComment = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setReply(e.target.value);
   };
@@ -65,7 +72,7 @@ const RepliesInputForm = (props: RepliesInputFromProps) => {
             }월 ${today.date >= 10 ? today.date : '0' + today.date}일`,
           };
           dispatch(setCommentArr(addNewRelpy(newReply)));
-          handlePopupView();
+          dispatch(handlePopup({ text: text, children: children }));
         });
         setReply('');
         handleErrorState(false);
@@ -89,7 +96,7 @@ const RepliesInputForm = (props: RepliesInputFromProps) => {
       </ReplyInputWrapper>
     </Wrapper>
   );
-};
+}
 
 export default RepliesInputForm;
 

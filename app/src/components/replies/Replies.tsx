@@ -1,18 +1,32 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/root';
 import Img from '../img/Img';
 import RepliesList from './RepliesList';
 import RepliesInputForm from './RepliesInputForm';
-import { RepliesProps } from '../../types/replies/type';
+import { RepliesCommonProps as RepliesProps } from '../../types/replies/type';
+import { MainButton } from '../button';
+import { handlePopup } from '../../redux/modal/reducer';
 
 function Replies(props: RepliesProps) {
-  const { commentIndex, handleModalView, handlePopupView } = props;
+  const { commentIndex } = props;
+  const dispatch = useDispatch();
+  const [repliesView, setRepliesView] = useState(false);
+  const closePopup = () => dispatch(handlePopup());
   const replies = useSelector(
     (state: RootState) => state.comment.data[commentIndex].replies,
   );
-  const [repliesView, setRepliesView] = useState(false);
+  const popupContents = {
+    text: '댓글이 작성 되었습니다.',
+    children: (
+      <BtnImgWrapper>
+        <MainButton type="button" able={true} onClick={closePopup}>
+          닫기
+        </MainButton>
+      </BtnImgWrapper>
+    ),
+  };
 
   const handleOpener = () => {
     setRepliesView(prev => !prev);
@@ -36,14 +50,10 @@ function Replies(props: RepliesProps) {
         </FlexWrapper>
         {repliesView && (
           <>
-            <RepliesList
-              commentIndex={commentIndex}
-              replies={replies}
-              handleModalView={handleModalView}
-            />
+            <RepliesList commentIndex={commentIndex} replies={replies} />
             <RepliesInputForm
+              popupContents={popupContents}
               commentIndex={commentIndex}
-              handlePopupView={handlePopupView}
             />
           </>
         )}
@@ -51,6 +61,9 @@ function Replies(props: RepliesProps) {
     </>
   );
 }
+
+export default Replies;
+
 const RepliesWrapper = styled.div`
   #replies {
     font-style: normal;
@@ -72,4 +85,7 @@ const FlexWrapper = styled.div`
   gap: 2px;
 `;
 
-export default Replies;
+const BtnImgWrapper = styled.div`
+  width: 74px;
+  height: 43px;
+`;

@@ -1,11 +1,6 @@
+import React from 'react';
 import styled from '@emotion/styled';
-import {
-  ReportModal,
-  Mosaic,
-  Popup,
-  Comment,
-  MainButton,
-} from '../../components';
+import { Mosaic, Comment, MainButton } from '../../components';
 import {
   PostImgs,
   PostInfo,
@@ -15,41 +10,24 @@ import {
   Summary,
 } from './component';
 import useScroll from '../../customhook/useScroll';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/root';
 import { PresenterProps } from '../../types/post/type';
+import { handlePopup } from '../../redux/modal/reducer';
+
+interface PopupContents {
+  text: string;
+  children: React.ReactNode;
+}
 
 function Presenter(props: PresenterProps) {
-  const { requestHandleDeadline, modalView, setModalView } = props;
-  const { isDeadline, mustLogin, report } = modalView;
-  const { response } = useSelector((state: RootState) => state.post.data);
-  const { userNo } = useSelector((state: RootState) => state.user.user);
+  const { requestHandleDeadline } = props;
+  const dispatch = useDispatch();
+  const { response, userNo } = useSelector((state: RootState) => ({
+    response: state.post.data.response,
+    userNo: state.user.user.userNo,
+  }));
   const scrollY = useScroll().scrollY;
-
-  const handleClosingPostModalView = () => {
-    setModalView(prev => {
-      return { ...prev, isDeadline: !prev.isDeadline };
-    });
-  };
-
-  const handleLoginModalView = () => {
-    setModalView(prev => {
-      return { ...prev, mustLogin: !prev.mustLogin };
-    });
-  };
-
-  const handleReportModalView = () => {
-    setModalView(prev => {
-      return { ...prev, report: !prev.report };
-    });
-  };
-
-  const closingPostBtnClick = () => {
-    requestHandleDeadline(response.board);
-    setModalView(prev => {
-      return { ...prev, isDeadline: !prev.isDeadline };
-    });
-  };
 
   const popupText = () => {
     const date = new Date().toISOString();
@@ -57,33 +35,38 @@ function Presenter(props: PresenterProps) {
       return '작성 시에 설정하신 기간이 지난 후에는 불가합니다.';
     }
     if (response.board.isDeadline) {
-      return '마감 되었습니다.';
-    } else {
       return '마감 취소 되었습니다.';
+    } else {
+      return '마감 되었습니다.';
     }
   };
 
-  const createModal = (visible: boolean, text: string, overlay: () => void) => {
-    return (
-      visible && (
-        <Popup visible={visible} text1={text} overlay={() => overlay}>
-          <ButtonWrap>
-            <MainButton type="button" able={true} onClick={overlay}>
-              닫기
-            </MainButton>
-          </ButtonWrap>
-        </Popup>
-      )
-    );
+  const handlePopupShow = (e: React.MouseEvent, contents?: PopupContents) => {
+    dispatch(handlePopup(contents));
+  };
+
+  const { text, children } = {
+    text: popupText(),
+    children: (
+      <ButtonWrap>
+        <MainButton type="button" able={true} onClick={handlePopupShow}>
+          닫기
+        </MainButton>
+      </ButtonWrap>
+    ),
+  };
+
+  const requestPostClosing = () => {
+    requestHandleDeadline(response.board);
+    dispatch(handlePopup({ text: text, children: children }));
   };
 
   const createQuickMenu = () => {
     if (!response.authorization) return;
-
     return (
       scrollY > 490 && (
         <QuickMenuWrapper>
-          <QuickMenu handleReportModalView={handleReportModalView} />
+          <QuickMenu />
         </QuickMenuWrapper>
       )
     );
@@ -96,14 +79,14 @@ function Presenter(props: PresenterProps) {
           <PostImgs />
           <div className="sectionWrap">
             <PostInfo />
-            <PostWriter handleReportModalView={handleReportModalView} />
+            <PostWriter />
             <Summary />
           </div>
         </div>
         <PostBody />
         <Comment />
         {userNo === response.board.userNo && (
-          <PostClosingButtonWrap onClick={closingPostBtnClick}>
+          <PostClosingButtonWrap onClick={requestPostClosing}>
             <MainButton type="button" able={true}>
               {response.board.isDeadline ? '마감 취소' : '마감 하기'}
             </MainButton>
@@ -112,8 +95,6 @@ function Presenter(props: PresenterProps) {
       </Wrapper>
       {createQuickMenu()}
       {!response.authorization && <Mosaic />}
-      {createModal(mustLogin, '로그인 후 이용해주세요.', handleLoginModalView)}
-      {createModal(isDeadline, popupText(), handleClosingPostModalView)}
     </>
   );
 }

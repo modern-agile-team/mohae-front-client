@@ -1,19 +1,29 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { Link, useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../../../redux/root';
 import { User } from '../../../../../types/user/type';
 import { PostUserInteractionProps } from '../../../../../types/post/type';
+import { handlePopup } from '../../../../../redux/modal/reducer';
 
 function PostUserInteraction(props: PostUserInteractionProps) {
-  const { requestDeleteFunc } = props;
-  const decoded: User = useSelector((state: RootState) => state.user.user);
-  const { userNo, likeCount, hit } = useSelector(
-    (state: RootState) => state.post.data.response.board,
+  const { text, children } = props.popupContents;
+  const { decoded, userNo, likeCount, hit } = useSelector(
+    (state: RootState) => ({
+      decoded: state.user.user,
+      userNo: state.post.data.response.board.userNo,
+      likeCount: state.post.data.response.board.likeCount,
+      hit: state.post.data.response.board.hit,
+    }),
   );
+
+  const dispatch = useDispatch();
   const { no } = useParams();
 
+  const requestDeleteFunc = () => {
+    dispatch(handlePopup({ text: text, children: children }));
+  };
   return (
     <>
       <Wrap>

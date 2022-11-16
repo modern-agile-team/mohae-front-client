@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 
 // ******Posting DATA TYPES******
 interface PostData {
@@ -39,26 +39,15 @@ interface PosterDetails {
   userPhotoUrl: string;
 }
 
-interface ModalViewState {
-  report: boolean;
-  isDeadline: boolean;
-  mustLogin: boolean;
-}
 // ******Posting DATA TYPES******
 
 // ******ComponentsProps TYPES******
 interface PresenterProps {
   requestHandleDeadline: (data: PosterDetails) => void;
-  modalView: { report: boolean; isDeadline: boolean; mustLogin: boolean };
-  setModalView: Dispatch<SetStateAction<ModalViewState>>;
-}
-
-interface PageComponetsProps {
-  handleReportModalView: () => void;
 }
 
 interface PostUserInteractionProps {
-  requestDeleteFunc: () => void;
+  popupContents: { text: string; children: JSX.Element };
 }
 // ******ComponentsProps TYPES******
 
@@ -66,8 +55,6 @@ export type {
   PostData,
   PostResponse,
   PosterDetails,
-  ModalViewState,
   PresenterProps,
-  PageComponetsProps,
   PostUserInteractionProps,
 };

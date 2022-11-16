@@ -4,10 +4,8 @@ import Profile from '../../../../components/profile/Profile';
 import Btns from '../btns/Btns';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/root';
-import { PageComponetsProps as PostWriterProps } from '../../../../types/post/type';
 
-function PostWriter(props: PostWriterProps) {
-  const { handleReportModalView } = props;
+function PostWriter() {
   const { authorization, board } = useSelector(
     (state: RootState) => state.post.data.response,
   );
@@ -34,7 +32,7 @@ function PostWriter(props: PostWriterProps) {
             <p>{board.majorName}</p>
           </div>
         </WriterID>
-        <Btns handleReportModalView={handleReportModalView} />
+        <Btns />
       </Container>
     </>
   );

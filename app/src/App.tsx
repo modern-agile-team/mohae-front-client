@@ -12,7 +12,7 @@ import { LoginModal } from './pages';
 import ReportModal from './components/report/Container';
 import { getToken } from './utils/getToken';
 import { ACCESS_TOKEN } from './consts/tokenKey';
-import { Spinner } from './components';
+import { Popup, Spinner } from './components';
 
 const Visit = lazy(() => import('./pages/mypage/components/Spec/Visit'));
 const Edit = lazy(() => import('./pages/mypage/components/Spec/Edit'));
@@ -94,7 +94,7 @@ const App: React.SFC = () => {
       <Suspense fallback={<Spinner size="big" />}>
         <Routes>
           <Route
-            path={'/main'}
+            path={'/'}
             element={
               <Layout
                 snapPageNumber={snapPageNumber}
@@ -152,6 +152,7 @@ const App: React.SFC = () => {
       <Edit />
       <LoginModal />
       <ReportModal />
+      <Popup />
     </Router>
   );
 };

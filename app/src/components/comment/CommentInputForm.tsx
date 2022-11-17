@@ -6,11 +6,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setAddCommentArr } from '../../redux/comment/reducer';
 import { RootState } from '../../redux/root';
 import CommentInput from '../input/comment/CommentInput';
-import { CommentInputFormProps, ErrorState } from '../../types/comment/type';
+import { ErrorState } from '../../types/comment/type';
 import { handlePopup } from '../../redux/modal/reducer';
 
-function CommentInputForm({ popupContents }: CommentInputFormProps) {
-  const { text, children } = popupContents;
+function CommentInputForm() {
   const [comment, setComment] = useState<string>('');
   const { no } = useParams();
   const dispatch = useDispatch();
@@ -57,7 +56,7 @@ function CommentInputForm({ popupContents }: CommentInputFormProps) {
             replies: [],
           };
           dispatch(setAddCommentArr(newComment));
-          dispatch(handlePopup({ text: text, children: children }));
+          dispatch(handlePopup({ text: '댓글이 작성 되었습니다.' }));
           handleErrorState(false);
         });
         setComment('');

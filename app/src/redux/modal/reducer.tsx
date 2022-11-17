@@ -6,8 +6,8 @@ interface ReportModal {
 }
 
 interface Popup {
-  textContents: string;
-  children: React.ReactNode;
+  textContents: string | null;
+  sub: { action: (() => void) | null; text: string | null };
   view: boolean;
 }
 interface InitialState {
@@ -17,7 +17,11 @@ interface InitialState {
 }
 
 const initialState: InitialState = {
-  popup: { view: false, textContents: '', children: null },
+  popup: {
+    view: false,
+    sub: { action: null, text: null },
+    textContents: null,
+  },
   reportModal: { user: false, board: false },
   modalProfile: false,
 };
@@ -43,19 +47,25 @@ const modal = createSlice({
     handlePopup(
       state,
       action: PayloadAction<
-        { text: string; children: React.ReactNode } | undefined
+        { text: string; sub?: { action: () => void; text: string } } | undefined
       >,
     ) {
       if (action.payload) {
+        const { text, sub } = action.payload;
         state.popup = {
-          children: action.payload.children,
-          textContents: action.payload.text,
+          ...state.popup,
           view: true,
+          textContents: text,
+          sub: {
+            ...state.popup.sub,
+            action: sub?.action || null,
+            text: sub?.text || null,
+          },
         };
       } else {
         state.popup.view = false;
+        state.popup.sub = { action: null, text: null };
         state.popup.textContents = '';
-        state.popup.children = null;
       }
     },
   },

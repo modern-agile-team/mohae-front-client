@@ -5,18 +5,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setCommentArr } from '../../redux/comment/reducer';
 import { RootState } from '../../redux/root';
 import {
-  RepliesInputFromProps,
+  RepliesCommonProps as RepliesInputFromProps,
   ReplyList,
   ErrorState,
 } from '../../types/replies/type';
 import { createReply } from '../../apis/replies';
 import { handlePopup } from '../../redux/modal/reducer';
 
-function RepliesInputForm({
-  commentIndex,
-  popupContents,
-}: RepliesInputFromProps) {
-  const { text, children } = popupContents;
+function RepliesInputForm({ commentIndex }: RepliesInputFromProps) {
   const [reply, setReply] = useState<string>('');
   const [errorState, setErrorState] = useState<ErrorState>({
     message: '대댓글 작성에 실패하였습니다.',
@@ -72,7 +68,7 @@ function RepliesInputForm({
             }월 ${today.date >= 10 ? today.date : '0' + today.date}일`,
           };
           dispatch(setCommentArr(addNewRelpy(newReply)));
-          dispatch(handlePopup({ text: text, children: children }));
+          dispatch(handlePopup({ text: '댓글이 작성 되었습니다.' }));
         });
         setReply('');
         handleErrorState(false);

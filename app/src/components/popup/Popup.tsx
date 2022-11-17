@@ -2,12 +2,12 @@ import React from 'react';
 import { handlePopup } from '../../redux/modal/reducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/root';
-import { Box } from '../../components';
+import { Box, MainButton, WhiteButton } from '../../components';
 import styled from '@emotion/styled';
 
 function Popup() {
   const dispatch = useDispatch();
-  const { view, textContents, children } = useSelector(
+  const { view, textContents, sub } = useSelector(
     (state: RootState) => state.modal.popup,
   );
 
@@ -16,13 +16,34 @@ function Popup() {
     dispatch(handlePopup());
   };
 
+  const createSubButton = () => {
+    return sub.action && sub.text ? (
+      <BtnWrapper>
+        <WhiteButton able type="button" onClick={sub.action}>
+          {sub.text}
+        </WhiteButton>
+      </BtnWrapper>
+    ) : null;
+  };
+
   return (
     <>
       {view && (
         <>
-          <Container size={[360, 205]} onClick={closePopup}>
+          <Container size={[360, 205]}>
             <Text>{textContents}</Text>
-            <ButtonWrap>{children}</ButtonWrap>
+            <ButtonsWrap>
+              <BtnWrapper>
+                <MainButton
+                  type="button"
+                  able
+                  onClick={() => dispatch(handlePopup())}
+                >
+                  닫기
+                </MainButton>
+              </BtnWrapper>
+              {createSubButton()}
+            </ButtonsWrap>
           </Container>
           <Overlay onClick={closePopup}></Overlay>
         </>
@@ -58,7 +79,7 @@ const Text = styled.div`
   font-family: 'Regular';
 `;
 
-const ButtonWrap = styled.div`
+const ButtonsWrap = styled.div`
   width: 156px;
   margin-top: 32px;
   display: flex;
@@ -67,6 +88,11 @@ const ButtonWrap = styled.div`
   & :not(:first-of-type) {
     margin-left: 8px;
   }
+`;
+
+const BtnWrapper = styled.div`
+  width: 74px;
+  height: 43px;
 `;
 
 const Overlay = styled.div`

@@ -15,7 +15,7 @@ import {
   requestPostClosing,
   requestPostReopening,
 } from '../../apis/post';
-import { MainButton, Spinner } from '../../components';
+import { Spinner } from '../../components';
 import { removeToken } from '../../utils/getToken';
 import { ACCESS_TOKEN, REFESH_TOKEN } from '../../consts/tokenKey';
 import { PosterDetails } from '../../types/post/type';
@@ -30,22 +30,16 @@ function Post() {
     dispatch(handlePopup());
     dispatch(open_login(true));
   };
-  const { text, children } = {
+  const popupContents = {
     text: '로그인 후 이용해주세요.',
-    children: (
-      <PopupButton>
-        <MainButton type="button" able={true} onClick={popupClosing}>
-          닫기
-        </MainButton>
-      </PopupButton>
-    ),
+    sub: { action: popupClosing, text: '로그인' },
   };
 
   const getPostingData = async () => {
     try {
       await requestGetPostData(Number(no)).then(res => {
         if (!res.data.response.authorization) {
-          dispatch(handlePopup({ text: text, children: children }));
+          dispatch(handlePopup(popupContents));
         }
         dispatch(setPostData({ ...res.data }));
       });
@@ -54,7 +48,7 @@ function Post() {
         removeToken(ACCESS_TOKEN);
         removeToken(REFESH_TOKEN);
         window.location.replace(location.pathname);
-      } else dispatch(handlePopup({ text: text, children: children }));
+      } else dispatch(handlePopup(popupContents));
     }
   };
 
@@ -95,8 +89,3 @@ function Post() {
 }
 
 export default Post;
-
-const PopupButton = styled.div`
-  width: 74px;
-  height: 43px;
-`;

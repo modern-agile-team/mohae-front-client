@@ -15,11 +15,6 @@ import { RootState } from '../../redux/root';
 import { PresenterProps } from '../../types/post/type';
 import { handlePopup } from '../../redux/modal/reducer';
 
-interface PopupContents {
-  text: string;
-  children: React.ReactNode;
-}
-
 function Presenter(props: PresenterProps) {
   const { requestHandleDeadline } = props;
   const dispatch = useDispatch();
@@ -41,24 +36,9 @@ function Presenter(props: PresenterProps) {
     }
   };
 
-  const handlePopupShow = (e: React.MouseEvent, contents?: PopupContents) => {
-    dispatch(handlePopup(contents));
-  };
-
-  const { text, children } = {
-    text: popupText(),
-    children: (
-      <ButtonWrap>
-        <MainButton type="button" able={true} onClick={handlePopupShow}>
-          닫기
-        </MainButton>
-      </ButtonWrap>
-    ),
-  };
-
   const requestPostClosing = () => {
     requestHandleDeadline(response.board);
-    dispatch(handlePopup({ text: text, children: children }));
+    dispatch(handlePopup({ text: popupText() }));
   };
 
   const createQuickMenu = () => {
@@ -127,11 +107,6 @@ const QuickMenuWrapper = styled.div`
   position: fixed;
   top: 59px;
   animation: fadeInDown 1s;
-`;
-
-const ButtonWrap = styled.button`
-  width: 100px;
-  height: 43px;
 `;
 
 const PostClosingButtonWrap = styled.div`

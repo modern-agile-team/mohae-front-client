@@ -1,6 +1,5 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { MainButton, WhiteButton } from '../../../../components';
 import styled from '@emotion/styled';
 import PostUserInteraction from './presenter/PostUserInteraction';
 import PostDetails from './presenter/PostDetails';
@@ -26,20 +25,7 @@ function Container() {
 
   const popupContents = {
     text: '정말 삭제 하시겠습니까?',
-    children: (
-      <>
-        <PopupButton>
-          <WhiteButton type="button" able={true} onClick={popupClose}>
-            닫기
-          </WhiteButton>
-        </PopupButton>
-        <PopupButton>
-          <MainButton type="button" able={true} onClick={clickDeleteButton}>
-            삭제하기
-          </MainButton>
-        </PopupButton>
-      </>
-    ),
+    sub: { action: clickDeleteButton, text: '삭제하기' },
   };
 
   return (
@@ -60,9 +46,4 @@ const Wrap = styled.section`
   color: #4f4e5c;
   font-family: 'Regular';
   border-bottom: 1px solid #e7e7e8;
-`;
-
-const PopupButton = styled.div`
-  width: 74px;
-  height: 43px;
 `;

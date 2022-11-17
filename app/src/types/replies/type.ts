@@ -10,10 +10,6 @@ interface ReplyList {
   replyCreatedAt: string;
 }
 
-interface RepliesInputFromProps extends TypeForExtends {
-  popupContents: { text: string; children: React.ReactNode };
-}
-
 interface RepliesListProps extends TypeForExtends {
   replies: ReplyList[];
 }
@@ -44,7 +40,6 @@ interface EditAndDeleteParameterType extends ExtendsTypeUsedInAPI {
 }
 
 export type {
-  RepliesInputFromProps,
   RepliesListProps,
   ReplyItemProps,
   ReplierProps,

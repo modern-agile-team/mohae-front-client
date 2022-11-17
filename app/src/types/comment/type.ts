@@ -12,9 +12,6 @@ interface CommentList {
   replies: ReplyList[];
 }
 
-interface CommentInputFormProps {
-  popupContents: { text: string; children: React.ReactNode };
-}
 interface CommenterProps {
   commentIndex: number;
   handleEditingButton: () => void;
@@ -55,7 +52,6 @@ export type {
   CommenterProps,
   CommentItemProps,
   CommentInputProps,
-  CommentInputFormProps,
   EditAndDeleteParameterType,
   ExtendsTypeUsedInAPI as PostParameterType,
   ErrorState,

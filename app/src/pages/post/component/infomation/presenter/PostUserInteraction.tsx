@@ -7,8 +7,7 @@ import { User } from '../../../../../types/user/type';
 import { PostUserInteractionProps } from '../../../../../types/post/type';
 import { handlePopup } from '../../../../../redux/modal/reducer';
 
-function PostUserInteraction(props: PostUserInteractionProps) {
-  const { text, children } = props.popupContents;
+function PostUserInteraction({ popupContents }: PostUserInteractionProps) {
   const { decoded, userNo, likeCount, hit } = useSelector(
     (state: RootState) => ({
       decoded: state.user.user,
@@ -22,8 +21,9 @@ function PostUserInteraction(props: PostUserInteractionProps) {
   const { no } = useParams();
 
   const requestDeleteFunc = () => {
-    dispatch(handlePopup({ text: text, children: children }));
+    dispatch(handlePopup(popupContents));
   };
+
   return (
     <>
       <Wrap>

@@ -47,7 +47,10 @@ interface PresenterProps {
 }
 
 interface PostUserInteractionProps {
-  popupContents: { text: string; children: JSX.Element };
+  popupContents: {
+    text: string;
+    sub: { action: VoidFunction; text: string };
+  };
 }
 // ******ComponentsProps TYPES******
 

@@ -1,32 +1,18 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/root';
 import Img from '../img/Img';
 import RepliesList from './RepliesList';
 import RepliesInputForm from './RepliesInputForm';
 import { RepliesCommonProps as RepliesProps } from '../../types/replies/type';
-import { MainButton } from '../button';
-import { handlePopup } from '../../redux/modal/reducer';
 
 function Replies(props: RepliesProps) {
   const { commentIndex } = props;
-  const dispatch = useDispatch();
   const [repliesView, setRepliesView] = useState(false);
-  const closePopup = () => dispatch(handlePopup());
   const replies = useSelector(
     (state: RootState) => state.comment.data[commentIndex].replies,
   );
-  const popupContents = {
-    text: '댓글이 작성 되었습니다.',
-    children: (
-      <BtnImgWrapper>
-        <MainButton type="button" able={true} onClick={closePopup}>
-          닫기
-        </MainButton>
-      </BtnImgWrapper>
-    ),
-  };
 
   const handleOpener = () => {
     setRepliesView(prev => !prev);
@@ -51,10 +37,7 @@ function Replies(props: RepliesProps) {
         {repliesView && (
           <>
             <RepliesList commentIndex={commentIndex} replies={replies} />
-            <RepliesInputForm
-              popupContents={popupContents}
-              commentIndex={commentIndex}
-            />
+            <RepliesInputForm commentIndex={commentIndex} />
           </>
         )}
       </RepliesWrapper>
@@ -83,9 +66,4 @@ const FlexWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 2px;
-`;
-
-const BtnImgWrapper = styled.div`
-  width: 74px;
-  height: 43px;
 `;

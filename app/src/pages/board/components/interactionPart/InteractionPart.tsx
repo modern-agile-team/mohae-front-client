@@ -16,25 +16,12 @@ function InteractionPart(props: InteractionPartProps) {
   const dispatch = useDispatch();
   const categoryName = categoryList({ shift: false })[Number(no) - 1].name;
   const localUserToken = getToken(ACCESS_TOKEN);
-  const popupContents = {
-    text: '게시글 작성은 로그인 후 이용 가능합니다.',
-    children: (
-      <PopupButtonWrapper>
-        <MainButton
-          type="button"
-          able={true}
-          onClick={() => controlWriteButton}
-        >
-          닫기
-        </MainButton>
-      </PopupButtonWrapper>
-    ),
-  };
+
   const controlWriteButton = () => {
-    const { text, children } = popupContents;
+    const text = '게시글 작성은 로그인 후 이용 가능합니다.';
     if (localUserToken && localUserToken !== null) {
       navigation('/create/post');
-    } else dispatch(handlePopup({ text: text, children: children }));
+    } else dispatch(handlePopup({ text: text }));
   };
 
   return (
@@ -84,9 +71,4 @@ const ButtonWrapper = styled.div`
     width: 15px;
     height: 15px;
   }
-`;
-
-const PopupButtonWrapper = styled.div`
-  width: 74px;
-  height: 43px;
 `;

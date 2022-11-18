@@ -1,6 +1,6 @@
 /** @format */
 
-import { Img, Popup, Btn } from '../../components';
+import { Img } from '../../components';
 import AuthModal from '../../components/modal/AuthModal';
 import { radius, font, color, shadow } from '../../styles';
 import { css, cx } from '@emotion/css';
@@ -10,8 +10,7 @@ import Agreement from './register/Agreement';
 import Main from './register/Main';
 import PersonalInfo from './register/PersonalInfo';
 import SelectInfo from './register/SelectInfo';
-import FindPassword from './findPassword/FindPassword';
-import styled from '@emotion/styled';
+import FindPassword from './findPassword/findPassword/Container';
 
 interface Props {
   text: any;

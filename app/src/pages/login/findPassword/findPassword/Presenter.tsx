@@ -1,53 +1,27 @@
+import React from 'react';
 import styled from '@emotion/styled';
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { customAxios } from '../../../apis/instance';
-import { handlePopup } from '../../../redux/modal/reducer';
 
-function FindPassword() {
-  const dispatch = useDispatch();
-  const [userInputValue, setUserInputValue] = useState({
-    name: '',
-    email: '',
-  });
-
-  const handlePopupShow = (text: string) => {
-    dispatch(handlePopup({ text: text }));
+interface Props {
+  userInputValue: {
+    name: string;
+    email: string;
   };
+  handleOnChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  requestSendEmail: (
+    e: React.FormEvent<HTMLFormElement> | React.FormEvent<HTMLButtonElement>,
+  ) => void;
+}
 
-  const handleOnChange = (
-    str: string,
-    e: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    setUserInputValue({ ...userInputValue, [str]: e.target.value });
-  };
+function Presenter(props: Props) {
+  const { userInputValue, handleOnChange, requestSendEmail } = props;
 
   const submitAble = () => {
-    if (userInputValue.email.length && userInputValue.name.length) {
-      return true;
-    } else {
-      return false;
-    }
-  };
-
-  const sendEmail = async (
-    e: React.FormEvent<HTMLFormElement> | React.FormEvent<HTMLButtonElement>,
-  ) => {
-    e.preventDefault();
-    try {
-      await customAxios
-        .post(`email/forget/password`, userInputValue)
-        .then(res => {
-          setUserInputValue({ name: '', email: '' });
-          handlePopupShow(res.data.msg);
-        });
-    } catch (err: any) {
-      handlePopupShow(err.response.data.error.message);
-    }
+    if (userInputValue.email.length && userInputValue.name.length) return true;
+    else return false;
   };
 
   return (
-    <Container onSubmit={e => sendEmail(e)}>
+    <Container onSubmit={requestSendEmail}>
       <section>
         <p>비밀번호 찾기</p>
         <p>가입 시 입력하신 이메일을 통해 찾을 수 있습니다.</p>
@@ -57,23 +31,25 @@ function FindPassword() {
         <label>이름</label>
         <Input
           placeholder="이름을 입력해 주세요."
+          name="name"
           value={userInputValue.name}
-          onChange={e => handleOnChange('name', e)}
+          onChange={handleOnChange}
         />
       </section>
       <section>
         <label>이메일</label>
         <Input
           placeholder="이메일을 입력해 주세요."
-          type={'email'}
+          name="email"
+          type="email"
           value={userInputValue.email}
-          onChange={e => handleOnChange('email', e)}
+          onChange={handleOnChange}
         />
       </section>
       <SubmitButton
         able={submitAble()}
         type="submit"
-        onSubmit={e => sendEmail(e)}
+        onSubmit={requestSendEmail}
       >
         비밀번호 찾기
       </SubmitButton>
@@ -81,7 +57,7 @@ function FindPassword() {
   );
 }
 
-export default FindPassword;
+export default Presenter;
 
 const Container = styled.form`
   height: 329px;

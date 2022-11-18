@@ -19,7 +19,7 @@ const Edit = lazy(() => import('./pages/mypage/components/Spec/Edit'));
 const Inquire = lazy(() => import('./pages/inquire/inquire'));
 const InquireSuccess = lazy(() => import('./pages/inquire/inquireSuccess'));
 const ChangePassword = lazy(
-  () => import('./pages/login/findPassword/Container'),
+  () => import('./pages/login/findPassword/setNewPassword/Container'),
 );
 const Notice = lazy(() => import('./pages/faq/Notice'));
 const Board = lazy(() =>

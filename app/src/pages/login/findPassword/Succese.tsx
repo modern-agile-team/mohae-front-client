@@ -3,9 +3,8 @@ import styled from '@emotion/styled';
 import { Img } from '../../../components';
 
 function Succese() {
-  const toLogin = () => {
-    window.location.replace('/');
-  };
+  const toLogin = () => window.location.replace('/');
+
   return (
     <Wrapper>
       <Container>

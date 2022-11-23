@@ -9,8 +9,28 @@ interface ChangePasswordType {
   confirmChangePassword: string;
 }
 
-export const changePassword = (
-  data: ChangePasswordType,
-): Promise<AxiosResponse> => {
+const changePassword = (data: ChangePasswordType): Promise<AxiosResponse> => {
   return setInterceptors(customAxios).patch(`/auth/change/password`, data);
 };
+
+const requestEmail = (body: {
+  name: string;
+  email: string;
+}): Promise<AxiosResponse> => {
+  return customAxios.post(`email/forget/password`, body);
+};
+
+const setNewPassword = (
+  body: {
+    email: string;
+    changePassword: string;
+    confirmChangePassword: string;
+  },
+  headers: string,
+): Promise<AxiosResponse> => {
+  return customAxios.patch(`auth/forget/password`, body, {
+    headers: { key: headers },
+  });
+};
+
+export { changePassword, requestEmail, setNewPassword };

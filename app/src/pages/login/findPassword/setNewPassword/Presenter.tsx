@@ -1,34 +1,14 @@
-import styled from '@emotion/styled';
 import React from 'react';
+import styled from '@emotion/styled';
+import { SetNewPasswordProps } from '../../../../types/findPassword/type';
 
-interface Props {
-  inputValue: {
-    email: string;
-    changePassword: string;
-    confirmChangePassword: string;
-  };
-  showHidenPassword: { [key: string]: boolean };
-  handleHidenPassword: (key: string) => void;
-  handleOnChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onSubmit: (
-    e: React.FormEvent<HTMLFormElement> | React.FormEvent<HTMLButtonElement>,
-  ) => void;
-}
-
-function Presenter(props: Props) {
-  const {
-    inputValue,
-    showHidenPassword,
-    handleHidenPassword,
-    handleOnChange,
-    onSubmit,
-  } = props;
+function Presenter(props: SetNewPasswordProps) {
+  const { inputValue, showHiden, handleHiden, handleOnChange, onSubmit } =
+    props;
   const { email, changePassword, confirmChangePassword } = inputValue;
 
   const toggleImgSrc = (key: string) => {
-    return showHidenPassword[key]
-      ? '/img/hide-password.png'
-      : '/img/show-password.png';
+    return showHiden[key] ? '/img/hide-password.png' : '/img/show-password.png';
   };
 
   const submitAble = () => {
@@ -62,7 +42,7 @@ function Presenter(props: Props) {
               <Input
                 password
                 name="changePassword"
-                type={showHidenPassword.new ? 'text' : 'password'}
+                type={showHiden.new ? 'text' : 'password'}
                 value={inputValue.changePassword}
                 placeholder="새로운 비밀번호를 입력해 주세요. (8~15자)"
                 onChange={handleOnChange}
@@ -70,21 +50,21 @@ function Presenter(props: Props) {
               <img
                 id="new"
                 src={toggleImgSrc('new')}
-                onClick={() => handleHidenPassword('new')}
+                onClick={() => handleHiden('new')}
               />
             </ShadowLabel>
             <ShadowLabel>
               <Input
                 password
                 name="confirmChangePassword"
-                type={showHidenPassword.check ? 'text' : 'password'}
+                type={showHiden.check ? 'text' : 'password'}
                 value={inputValue.confirmChangePassword}
                 placeholder="새로운 비밀번호를 다시 한 번 입력해 주세요."
                 onChange={handleOnChange}
               />
               <img
                 src={toggleImgSrc('check')}
-                onClick={() => handleHidenPassword('check')}
+                onClick={() => handleHiden('check')}
               />
             </ShadowLabel>
           </div>
@@ -163,10 +143,9 @@ const Input = styled.input<{ password?: boolean }>`
   width: 384px;
   height: 52px;
   border-radius: 6px;
-  ${props =>
-    !props.password
-      ? 'box-shadow: inset 0px 0px 8px rgba(132, 131, 141, 0.2);'
-      : 'background-color: initial;'}
+  box-shadow: ${props =>
+    !props.password && 'inset 0px 0px 8px rgba(132, 131, 141, 0.2);'};
+  background-color: ${props => props.password && 'initial'};
   padding: 16px;
 `;
 
@@ -192,13 +171,4 @@ const ShadowLabel = styled.label`
     height: 25px;
     cursor: pointer;
   }
-`;
-
-const PopupCloseButton = styled.button`
-  width: 74px;
-  height: 43px;
-  background-color: #ff445e;
-  color: white;
-  border-radius: 6px;
-  box-shadow: 0px 0px 8px rgba(132, 131, 141, 0.5);
 `;

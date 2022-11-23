@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { customAxios } from '../../../../apis/instance';
+import { requestEmail } from '../../../../apis/changePassword';
 import { handlePopup } from '../../../../redux/modal/reducer';
 import Presenter from './Presenter';
 
@@ -27,12 +27,10 @@ function Container() {
   ) => {
     e.preventDefault();
     try {
-      await customAxios
-        .post(`email/forget/password`, userInputValue)
-        .then(res => {
-          setUserInputValue({ name: '', email: '' });
-          handlePopupText(res.data.msg);
-        });
+      await requestEmail(userInputValue).then(res => {
+        setUserInputValue({ name: '', email: '' });
+        handlePopupText(res.data.msg);
+      });
     } catch (err: any) {
       handlePopupText(err.response.data.error.message);
     }

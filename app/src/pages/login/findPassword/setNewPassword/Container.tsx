@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { customAxios } from '../../../../apis/instance';
 import { useDispatch } from 'react-redux';
 import { handlePopup } from '../../../../redux/modal/reducer';
-import { ENDPOINT } from '../../../../utils/ENDPOINT';
+import { setNewPassword } from '../../../../apis/changePassword';
 import Presenter from './Presenter';
 import Succese from '../Succese';
 
@@ -32,11 +31,9 @@ function ChangePassword() {
     e.preventDefault();
 
     try {
-      await customAxios
-        .patch(`${ENDPOINT}auth/forget/password`, inputValue, {
-          headers: { key: inputValue.email },
-        })
-        .then(_ => setToSuccesePage(true));
+      await setNewPassword(inputValue, inputValue.email).then(_ =>
+        setToSuccesePage(true),
+      );
     } catch (err: any) {
       dispatch(handlePopup({ text: '죄송합니다. 다시 시도해주세요.' }));
     }
@@ -45,8 +42,8 @@ function ChangePassword() {
   return !toSuccesePage ? (
     <Presenter
       inputValue={inputValue}
-      showHidenPassword={showHidenPassword}
-      handleHidenPassword={handleHidenPassword}
+      showHiden={showHidenPassword}
+      handleHiden={handleHidenPassword}
       handleOnChange={handleOnChange}
       onSubmit={onSubmit}
     />

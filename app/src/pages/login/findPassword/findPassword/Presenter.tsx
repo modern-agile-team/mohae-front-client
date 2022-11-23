@@ -1,20 +1,9 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import { FindPasswordProps } from '../../../../types/findPassword/type';
 
-interface Props {
-  userInputValue: {
-    name: string;
-    email: string;
-  };
-  handleOnChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  requestSendEmail: (
-    e: React.FormEvent<HTMLFormElement> | React.FormEvent<HTMLButtonElement>,
-  ) => void;
-}
-
-function Presenter(props: Props) {
+function Presenter(props: FindPasswordProps) {
   const { userInputValue, handleOnChange, requestSendEmail } = props;
-
   const submitAble = () => {
     if (userInputValue.email.length && userInputValue.name.length) return true;
     else return false;

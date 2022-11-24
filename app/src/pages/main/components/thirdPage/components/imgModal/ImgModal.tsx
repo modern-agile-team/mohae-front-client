@@ -1,6 +1,7 @@
-import React, { Dispatch } from 'react';
+import React from 'react';
 import styled from '@emotion/styled';
 import ArrowButtons from '../arrowButtons/ArrowButtons';
+import { Img } from '../../../../../../components';
 import { ImgComponentsProps as ImgModalProps } from '../../../../../../types/main/thirdPage/type';
 
 function ImgModal(props: ImgModalProps) {
@@ -33,7 +34,7 @@ function ImgModal(props: ImgModalProps) {
         >
           <ArrowButtons usedIn={'modal'} clickMove={clickMove} />
           <div className="contents-wrapper">
-            <Contents src={imgs[target]}></Contents>
+            <Img src={imgs[target]} />
           </div>
           <div className="btn-wrap">{createCircleBtn}</div>
         </ModalImg>
@@ -105,14 +106,4 @@ const CircleBtn = styled.button<{ targeted: boolean }>`
   background-color: ${props => (props.targeted ? '#FF445E' : '#E7E7E8')};
   margin-right: 16px;
   border-radius: 50%;
-`;
-
-const Contents = styled.div<{ src: string }>`
-  @media (max-height: 640px) {
-    height: 400px;
-    background: ${props => `no-repeat center/80% url(${String(props.src)})`};
-  }
-  width: 840px;
-  height: 508px;
-  background: ${props => `no-repeat center/100% url(${String(props.src)})`};
 `;

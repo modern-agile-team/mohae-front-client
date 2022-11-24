@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import ArrowButtons from '../arrowButtons/ArrowButtons';
+import { Img } from '../../../../../../components';
 import { ImgComponentsProps as ImgCarouselProps } from '../../../../../../types/main/thirdPage/type';
 
 function ImgCarousel(props: ImgCarouselProps) {
@@ -16,7 +17,7 @@ function ImgCarousel(props: ImgCarouselProps) {
 
   const imgCarousel = imgs.map((url: string, index: number) => (
     <ImgWrapper key={index} onClick={e => handleContentsClick(e, index)}>
-      <ImgContainer src={url} />
+      <Img src={url} alt={`how to use ${index}`} />
     </ImgWrapper>
   ));
 
@@ -73,14 +74,7 @@ const ImgWrapper = styled.article`
   width: 456px;
   height: 274px;
   box-shadow: 0px 0px 4px rgba(132, 131, 141, 0.25);
-  &,
-  div {
-    border-radius: 6px;
-  }
-`;
-
-const ImgContainer = styled.div<{ src: string }>`
-  width: 100%;
-  height: 100%;
-  background: no-repeat center/90% url(${props => String(props.src)}) white;
+  padding: 12px;
+  background-color: white;
+  border-radius: 6px;
 `;

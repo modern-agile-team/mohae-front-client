@@ -16,14 +16,29 @@ function Popup() {
     dispatch(handlePopup());
   };
 
-  const createSubButton = () => {
+  const createButtons = () => {
     return sub.action && sub.text ? (
-      <BtnWrapper>
-        <WhiteButton able type="button" onClick={sub.action}>
-          {sub.text}
-        </WhiteButton>
-      </BtnWrapper>
-    ) : null;
+      <ButtonsWrap>
+        <BtnWrapper>
+          <WhiteButton type="button" able onClick={closePopup}>
+            닫기
+          </WhiteButton>
+        </BtnWrapper>
+        <BtnWrapper>
+          <MainButton type="button" able onClick={sub.action}>
+            {sub.text}
+          </MainButton>
+        </BtnWrapper>
+      </ButtonsWrap>
+    ) : (
+      <ButtonsWrap>
+        <BtnWrapper>
+          <MainButton type="button" able onClick={closePopup}>
+            닫기
+          </MainButton>
+        </BtnWrapper>
+      </ButtonsWrap>
+    );
   };
 
   return (
@@ -32,18 +47,7 @@ function Popup() {
         <>
           <Container size={[360, 205]}>
             <Text>{textContents}</Text>
-            <ButtonsWrap>
-              <BtnWrapper>
-                <MainButton
-                  type="button"
-                  able
-                  onClick={() => dispatch(handlePopup())}
-                >
-                  닫기
-                </MainButton>
-              </BtnWrapper>
-              {createSubButton()}
-            </ButtonsWrap>
+            {createButtons()}
           </Container>
           <Overlay onClick={closePopup}></Overlay>
         </>

@@ -3,6 +3,7 @@ import { requestCreate, requestEdit } from '../../apis/createAndEditPost';
 import useRefactorPostingData from '../../customhook/useRefactorPostingData';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { handlePopup } from '../../redux/modal/reducer';
 import {
   setInfoBeforeEdit,
   setLoading,
@@ -19,14 +20,20 @@ interface StateForEdit {
 }
 
 function CreateAndEditPost() {
-  const { no } = useParams();
   const dispatch = useDispatch();
-  const { loading, form } = useSelector((state: RootState) => state.createPost);
+  const { no } = useParams();
   const refactorReduxData = useRefactorPostingData();
+  const { loading, form } = useSelector((state: RootState) => state.createPost);
   const [stateForEdit, setStateForEdit] = useState<StateForEdit>();
-  const [popupView, setPopupView] = useState(false);
+  const popupContents = {
+    text: `게시글이 ${no ? '수정' : '작성'} 되었습니다.`,
+    sub: {
+      action: () => window.location.replace('/boards/categories/1'),
+      text: '게시판으로',
+    },
+  };
 
-  const savePostInfomation = useCallback((info: PosterDetails) => {
+  const savePostInfo = useCallback((info: PosterDetails) => {
     const cloudFrontURL = 'https://d2ffbnf2hpheay.cloudfront.net/';
     return {
       price: String(Number(info.price).toLocaleString()),
@@ -41,7 +48,7 @@ function CreateAndEditPost() {
         info.boardPhotoUrls !== null
           ? info.boardPhotoUrls
               .split(', ')
-              .map((el: string) => cloudFrontURL + el)
+              .map((url: string) => cloudFrontURL + url)
           : [],
     };
   }, []);
@@ -50,10 +57,8 @@ function CreateAndEditPost() {
     if (no) {
       requestGetPostData(Number(no))
         .then(res => {
-          setStateForEdit(savePostInfomation(res.data.response.board));
-          dispatch(
-            setInfoBeforeEdit(savePostInfomation(res.data.response.board)),
-          );
+          setStateForEdit(savePostInfo(res.data.response.board));
+          dispatch(setInfoBeforeEdit(savePostInfo(res.data.response.board)));
         })
         .catch(_ => alert('알 수 없는 에러 발생.'));
     } else dispatch(setLoading(false));
@@ -73,7 +78,7 @@ function CreateAndEditPost() {
     }
 
     requestEdit(Number(no), form)
-      .then(_ => setPopupView(true))
+      .then(_ => dispatch(handlePopup(popupContents)))
       .catch(_ => alert('수정 실패'));
   };
 
@@ -83,13 +88,13 @@ function CreateAndEditPost() {
     }
 
     requestCreate(form)
-      .then(_ => setPopupView(true))
+      .then(_ => dispatch(handlePopup(popupContents)))
       .catch(_ => alert('작성 실패'));
   };
 
   const thereIsNoImg = () => {
     const file = new File(['logo.png'], 'logo.png', {
-      type: 'image/jpg',
+      type: 'image/png',
     });
     form.append('image', file);
   };
@@ -103,7 +108,7 @@ function CreateAndEditPost() {
   return (
     <>
       {!loading ? (
-        <Presenter popupView={popupView} handleAxios={handleAxios} />
+        <Presenter handleAxios={handleAxios} />
       ) : (
         <Spinner size="big" />
       )}

@@ -8,14 +8,14 @@ function Summary() {
   const { summary } = useSelector(
     (state: RootState) => state.post.data.response.board,
   );
+
   return (
     <PostItWrapper summary={summary}>
       <PostIt size="small">
-        <div
+        <textarea
           className="summary-container"
-          dangerouslySetInnerHTML={{
-            __html: summary ? summary.replace(/\n/g, '<br/>') : '',
-          }}
+          defaultValue={summary ? summary : '한 줄 요약이 존재 하지 않습니다.'}
+          disabled
         />
       </PostIt>
     </PostItWrapper>
@@ -29,6 +29,9 @@ const PostItWrapper = styled.div<{ summary: string | null }>`
   .summary-container {
     width: 704px;
     height: 127px;
-    overflow-y: ${props => (props.summary ? 'scroll' : 'auto')};
+    background-color: white;
+    font-size: 14px;
+    padding-top: 4px;
+    overflow-y: auto;
   }
 `;

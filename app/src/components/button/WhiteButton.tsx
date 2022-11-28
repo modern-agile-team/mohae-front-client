@@ -5,7 +5,7 @@ interface Props {
   able: boolean;
   type?: 'button' | 'reset' | 'submit' | undefined;
   children: React.ReactNode;
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent) => void;
 }
 
 function WhiteButton(props: Props) {

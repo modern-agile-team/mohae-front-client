@@ -1,7 +1,6 @@
 import React, { Dispatch } from 'react';
 
 interface PresenterProps {
-  popupView: boolean;
   handleAxios: (e: React.MouseEvent) => void;
 }
 

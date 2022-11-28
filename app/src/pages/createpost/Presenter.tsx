@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import styled from '@emotion/styled';
-import { Img, MainButton, Popup } from '../../components';
+import { Img, MainButton } from '../../components';
 import {
   Imgs as ImgsComponent,
   Infomation,
@@ -12,7 +12,7 @@ import { useParams } from 'react-router-dom';
 import { PresenterProps } from '../../types/createAndEditPost/type';
 
 function Presenter(props: PresenterProps) {
-  const { popupView, handleAxios } = props;
+  const { handleAxios } = props;
   const { no } = useParams();
   const { title, price, categoryNo, areaNo, deadline, description } =
     useSelector((state: RootState) => state.createPost.data);
@@ -29,12 +29,6 @@ function Presenter(props: PresenterProps) {
       description.replace(/<[^>]*>?/g, '').length < 1000
     );
   }, [title, price, categoryNo, areaNo, deadline, description]);
-
-  const popupClose = () => {
-    window.location.replace('/boards/categories/1');
-  };
-
-  // text1={`게시글이 성공적으로 ${no ? '수정' : '작성'}되었습니다.`}
 
   return (
     <>
@@ -61,25 +55,11 @@ function Presenter(props: PresenterProps) {
         </div>
       </Container>
       <TextEditor />
-      {/* <Popup
-        visible={popupView}
-      >
-        <PopupButton>
-          <MainButton type="button" able onClick={popupClose}>
-            닫기
-          </MainButton>
-        </PopupButton>
-      </Popup> */}
     </>
   );
 }
 
 export default Presenter;
-
-const PopupButton = styled.div`
-  width: 74px;
-  height: 43px;
-`;
 
 const Container = styled.article`
   display: flex;

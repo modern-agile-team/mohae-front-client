@@ -109,14 +109,9 @@ const ReplyItem = (props: ReplyItemProps) => {
           handleEditingButton={handleEditingButton}
         />
         <ReplyHeader>
-          <span id="comment-created-date">{replyCreatedAt}</span>
+          <span className="comment-created-date">{replyCreatedAt}</span>
           {!editingReply.willEdit ? (
-            <p
-              id="content"
-              dangerouslySetInnerHTML={{
-                __html: replyContent.replace(/\n/g, '<br />'),
-              }}
-            />
+            <pre className="content">{replyContent}</pre>
           ) : (
             <EditInputWrapper>
               <ReplyInput
@@ -161,7 +156,7 @@ const ReplyHeader = styled.div`
     font-size: 12px;
     color: #a7a7ad;
   }
-  #content {
+  .content {
     font-style: normal;
     font-weight: 500;
     font-size: 14px;

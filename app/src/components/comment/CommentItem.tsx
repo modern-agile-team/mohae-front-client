@@ -40,9 +40,7 @@ const CommentItem = (props: CommentItemProps) => {
   });
 
   const handleErrorState = (occurs: boolean) => {
-    setErrorState(prev => {
-      return { ...prev, errorOccurred: occurs };
-    });
+    setErrorState(prev => ({ ...prev, errorOccurred: occurs }));
   };
 
   const profileImg =
@@ -52,11 +50,9 @@ const CommentItem = (props: CommentItemProps) => {
 
   const handleEditingButton = () => {
     setEditingingComment(prev => {
-      if (prev.willEdit) {
-        return { willEdit: !prev.willEdit, value: commentContent };
-      } else {
-        return { willEdit: !prev.willEdit, value: prev.value };
-      }
+      return prev.willEdit
+        ? { willEdit: !prev.willEdit, value: commentContent }
+        : { willEdit: !prev.willEdit, value: prev.value };
     });
   };
 
@@ -78,11 +74,11 @@ const CommentItem = (props: CommentItemProps) => {
             content: editingComment.value,
           },
         }).then(_ => {
-          const newCommentArr = commentArr.map((el, i) => {
-            if (el.commentNo === commentNo) {
-              return { ...el, commentContent: editingComment.value };
-            } else return { ...el };
-          });
+          const newCommentArr = commentArr.map((comment, _) =>
+            comment.commentNo === commentNo
+              ? { ...comment, commentContent: editingComment.value }
+              : { ...comment },
+          );
           handleEditingButton();
           dispatch(setCommentArr(newCommentArr));
           handleErrorState(false);
@@ -109,14 +105,9 @@ const CommentItem = (props: CommentItemProps) => {
             handleEditingButton={handleEditingButton}
             commentIndex={commentIndex}
           />
-          <span id="comment-created-date">{commentCreatedAt}</span>
+          <span className="comment-created-date">{commentCreatedAt}</span>
           {!editingComment.willEdit ? (
-            <p
-              id="content"
-              dangerouslySetInnerHTML={{
-                __html: commentContent.replace(/\n/g, '<br />'),
-              }}
-            />
+            <pre className="content">{commentContent}</pre>
           ) : (
             <EditInputWrapper>
               <CommentInput
@@ -163,7 +154,7 @@ const CommentHeader = styled.div`
     font-size: 12px;
     color: #a7a7ad;
   }
-  #content {
+  .content {
     font-style: normal;
     font-weight: 500;
     font-size: 14px;

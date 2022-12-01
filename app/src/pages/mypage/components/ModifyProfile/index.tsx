@@ -304,7 +304,7 @@ export default function ModifyProfile({ setIsOpen }: Props) {
           width: 240px;
           text-align: center;
           font-size: 20px;
-          > :first-child {
+          > :first-of-type {
             font-size: 24px;
             ${font.weight[700]};
             margin-right: 4px;

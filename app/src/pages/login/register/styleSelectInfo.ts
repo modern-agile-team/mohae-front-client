@@ -8,7 +8,7 @@ export const style = (isOpen: any) => css`
   > .sub-description {
     margin-top: 16px;
     font-size: 14px;
-    > :first-child {
+    > :first-of-type {
       color: ${color.main};
       margin-right: 16px;
     }
@@ -78,7 +78,7 @@ export const style = (isOpen: any) => css`
             background-color: ${color.lighter};
           }
         }
-        > :first-child {
+        > :first-of-type {
           padding: 14px 0 14px 16px;
           /* z-index: 1; */
           text-align: left;
@@ -89,7 +89,7 @@ export const style = (isOpen: any) => css`
       > .phone {
         height: ${`${isOpen.phone ? '200px' : '52px'}`};
         z-index: ${`${isOpen.phone ? '5' : '2'}`};
-        > :first-child {
+        > :first-of-type {
           z-index: ${`${isOpen.phone ? '6' : '3'}`};
         }
         .arrow-down {
@@ -99,7 +99,7 @@ export const style = (isOpen: any) => css`
       > .school {
         height: ${`${isOpen.school ? '156px' : '52px'}`};
         z-index: ${`${isOpen.school ? '5' : '2'}`};
-        > :first-child {
+        > :first-of-type {
           z-index: ${`${isOpen.school ? '6' : '3'}`};
         }
         .arrow-down {
@@ -109,7 +109,7 @@ export const style = (isOpen: any) => css`
       > .major {
         height: ${`${isOpen.major ? '240px' : '52px'}`};
         z-index: ${`${isOpen.major ? '5' : '2'}`};
-        > :first-child {
+        > :first-of-type {
           z-index: ${`${isOpen.major ? '6' : '3'}`};
         }
         .arrow-down {

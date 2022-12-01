@@ -57,7 +57,7 @@ export default function PersonalInfo({ part, next }: Object) {
     > .sub-description {
       margin-top: 16px;
       font-size: 14px;
-      > :first-child {
+      > :first-of-type {
         color: ${color.main};
         margin-right: 16px;
       }
@@ -126,7 +126,7 @@ export default function PersonalInfo({ part, next }: Object) {
               background-color: ${color.lighter};
             }
           }
-          > :first-child {
+          > :first-of-type {
             padding: 16px 0 12px 16px;
             z-index: 1;
             text-align: left;
@@ -150,7 +150,7 @@ export default function PersonalInfo({ part, next }: Object) {
           right: 14px;
         }
       }
-      > .email > :not(:first-child, :last-child) {
+      > .email > :not(:first-of-type, :last-child) {
         margin-right: 16px;
       }
 

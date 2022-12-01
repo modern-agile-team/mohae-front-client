@@ -82,7 +82,7 @@ const Container = styled.article`
   & > * {
     margin: 0 6px;
   }
-  & > :first-child {
+  & > :first-of-type {
     margin: 0 6px 0 8px;
   }
   & > :nth-of-type(5) {

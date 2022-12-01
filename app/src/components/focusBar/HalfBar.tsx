@@ -35,7 +35,7 @@ function HalfBar({ alarm, focus }: Props) {
       cursor: pointer;
     }
 
-    & > :first-child {
+    & > :first-of-type {
       color: ${focusMenu ? color.main : color.dark1};
     }
 
@@ -93,7 +93,8 @@ function HalfBar({ alarm, focus }: Props) {
         </span>
         <span
           onClick={clickedSecond}
-          className={cx(secondIsHover && hoverColor)}>
+          className={cx(secondIsHover && hoverColor)}
+        >
           {alarm ? '찜하기' : '회원가입'}
         </span>
       </div>
@@ -102,12 +103,14 @@ function HalfBar({ alarm, focus }: Props) {
           onMouseEnter={firstToggleHover}
           onMouseLeave={firstToggleHover}
           onClick={clickedFirst}
-          className={cx(firstBar)}></div>
+          className={cx(firstBar)}
+        ></div>
         <div
           onMouseEnter={secondToggleHover}
           onMouseLeave={secondToggleHover}
           onClick={clickedSecond}
-          className={cx(secondBar)}></div>
+          className={cx(secondBar)}
+        ></div>
       </div>
     </div>
   );

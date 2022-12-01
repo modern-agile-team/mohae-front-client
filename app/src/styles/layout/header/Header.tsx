@@ -215,7 +215,7 @@ const wrapper = css`
       display: flex;
       justify-content: space-between;
       align-items: center;
-      > :first-child {
+      > :first-of-type {
         margin-right: 4px;
       }
       .photo {

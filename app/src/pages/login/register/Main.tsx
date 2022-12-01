@@ -56,7 +56,7 @@ const style = css`
       * {
         font-size: 24px;
       }
-      > :first-child {
+      > :first-of-type {
         ${font.weight[700]};
         margin-right: 4px;
       }

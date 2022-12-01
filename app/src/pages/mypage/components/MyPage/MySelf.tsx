@@ -248,7 +248,7 @@ const Container = styled.div`
       display: flex;
       justify-content: space-around;
       flex-wrap: wrap;
-      > :first-child {
+      > :first-of-type {
         margin-bottom: 24px;
       }
       .item {

@@ -205,7 +205,7 @@ const wrapper = css`
         width: 100px;
         height: 43px;
       }
-      & > :not(:last-child) {
+      & > :not(:last-of-type) {
         margin-right: 8px;
       }
     }

@@ -303,7 +303,7 @@ const style = css`
       justify-content: space-between;
       margin-bottom: 16px;
       .sub-title {
-        > * :not(:last-child) {
+        > * :not(:last-of-type) {
           margin-right: 8px;
         }
       }
@@ -311,7 +311,7 @@ const style = css`
         font-family: Bold;
         font-size: 24px;
       }
-      > div > div:not(:last-child) {
+      > div > div:not(:last-of-type) {
         margin-right: 8px;
       }
       .sir {
@@ -350,7 +350,7 @@ const style = css`
       }
     }
     .text {
-      > :not(:last-child) {
+      > :not(:last-of-type) {
         margin-right: 4px;
       }
     }

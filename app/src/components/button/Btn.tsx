@@ -34,7 +34,7 @@ function Btn(props: Props) {
     ${radius[6]}
     ${small ? font.size[12] : font.size[14]}
     ${bold ? font.weight[700] : font.weight[400]}
-    *:not(:last-child, source) {
+    *:not(:last-of-type, source) {
       margin-right: 8px;
     }
   `;

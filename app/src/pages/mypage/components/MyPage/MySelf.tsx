@@ -278,7 +278,7 @@ const Container = styled.div`
       display: flex;
       justify-content: center;
       align-items: center;
-      > :not(:last-child) {
+      > :not(:last-of-type) {
         margin-right: 8px;
       }
     }
@@ -286,7 +286,7 @@ const Container = styled.div`
       width: 748px;
       height: fit-content;
 
-      > :not(:last-child) {
+      > :not(:last-of-type) {
         margin-bottom: 32px;
       }
       > .section {

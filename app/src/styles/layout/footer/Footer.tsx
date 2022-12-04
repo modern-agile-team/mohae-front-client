@@ -35,7 +35,7 @@ const style = css`
       width: 24px;
       height: 24px;
     }
-    & > :not(:last-child) {
+    & > :not(:last-of-type) {
       margin-right: 24px;
     }
   }

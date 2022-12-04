@@ -39,7 +39,7 @@ function HalfBar({ alarm, focus }: Props) {
       color: ${focusMenu ? color.main : color.dark1};
     }
 
-    & > :last-child {
+    & > :last-of-type {
       color: ${focusMenu ? color.dark1 : color.main};
     }
 

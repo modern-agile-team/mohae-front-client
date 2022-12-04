@@ -137,7 +137,7 @@ const MoreDetails = styled.div`
   position: absolute;
   top: 0px;
   right: 0px;
-  span:last-child {
+  span:last-of-type {
     border-top: 1px solid #e7e7e8;
     padding-top: 8px;
   }

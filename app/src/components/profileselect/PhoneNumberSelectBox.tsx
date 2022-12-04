@@ -73,7 +73,7 @@ const PlaceHolder = styled.div`
   width: fit-content;
   height: fit-content;
   display: flex;
-  > :not(:last-child) {
+  > :not(:last-of-type) {
     margin-right: 8px;
   }
 `;

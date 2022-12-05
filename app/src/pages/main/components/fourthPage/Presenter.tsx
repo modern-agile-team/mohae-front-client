@@ -77,7 +77,7 @@ const Container = styled.section`
     & > * {
       display: inline-block;
     }
-    & > :not(:last-child) {
+    & > :not(:last-of-type) {
       margin-right: 24px;
     }
   }

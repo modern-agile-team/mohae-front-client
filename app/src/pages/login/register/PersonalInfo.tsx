@@ -150,7 +150,7 @@ export default function PersonalInfo({ part, next }: Object) {
           right: 14px;
         }
       }
-      > .email > :not(:first-of-type, :last-child) {
+      > .email > :not(:first-of-type, :last-of-type) {
         margin-right: 16px;
       }
 

@@ -38,7 +38,7 @@ function Presenter(props: PresenterProps) {
   );
 }
 
-export default Presenter;
+export default React.memo(Presenter);
 
 const Container = styled.section`
   height: 100%;

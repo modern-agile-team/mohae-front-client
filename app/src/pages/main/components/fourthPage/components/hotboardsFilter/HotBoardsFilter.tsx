@@ -52,7 +52,7 @@ const Container = styled.div<{ focus: number }>`
     top: 50%;
   }
 
-  & > :not(:last-child) {
+  & > :not(:last-of-type) {
     margin-right: 4px;
   }
 

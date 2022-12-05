@@ -267,7 +267,7 @@ export default function SelectInfo({ setPart }: Props) {
     }
     /* padding-bottom: 8px; */
     > .wrapper {
-      > *:not(:last-child) {
+      > *:not(:last-of-type) {
         margin-bottom: 8px;
       }
       > .description {
@@ -578,7 +578,7 @@ const PlaceHolder = styled.div`
   width: fit-content;
   height: fit-content;
   display: flex;
-  > :not(:last-child) {
+  > :not(:last-of-type) {
     margin-right: 8px;
   }
 `;

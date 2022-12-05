@@ -76,7 +76,7 @@ export default function Presenter({
       * {
         font-size: 24px;
       }
-      > *:not(:last-child) {
+      > *:not(:last-of-type) {
         margin-right: 161px;
       }
       > .login {
@@ -171,7 +171,7 @@ export default function Presenter({
         & > * {
           width: 480px;
         }
-        & > *:not(:last-child) {
+        & > *:not(:last-of-type) {
           margin-right: 16px;
         }
       }

@@ -32,7 +32,7 @@ const Container = styled.div`
   width: 182px;
   height: fit-content;
   position: relative;
-  & > :not(:last-child) {
+  & > :not(:last-of-type) {
     margin: 0 8px 0 0;
   }
   .star {

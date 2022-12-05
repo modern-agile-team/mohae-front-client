@@ -196,7 +196,7 @@ const Container = styled.div`
           * {
             display: inline-block;
           }
-          > :nth-child(1) {
+          > :nth-of-type(1) {
             font-size: 22px;
             line-height: 170%;
             font-family: 'Bold';

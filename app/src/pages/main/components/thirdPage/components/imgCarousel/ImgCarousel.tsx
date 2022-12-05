@@ -17,7 +17,7 @@ function ImgCarousel(props: ImgCarouselProps) {
 
   const imgCarousel = imgs.map((url: string, index: number) => (
     <ImgWrapper key={index} onClick={e => handleContentsClick(e, index)}>
-      <Img src={url} alt={`how to use ${index}`} />
+      <Img src={url} alt={`how to use ${index}`} loading="lazy" />
     </ImgWrapper>
   ));
 

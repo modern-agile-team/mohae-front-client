@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import Presenter from './Presenter';
 
 function Container() {
@@ -17,13 +17,16 @@ function Container() {
   const [target, setTarget] = useState(1);
   const [carouselContentsViewBig, setCarouselContentsViewBig] = useState(false);
 
-  const clickMove = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (e.currentTarget.id === '+') {
-      target === imgs.length - 1 ? setTarget(0) : setTarget(target + 1);
-    } else if (e.currentTarget.id === '-') {
-      !target ? setTarget(imgs.length - 1) : setTarget(target - 1);
-    }
-  };
+  const clickMove = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      if (e.currentTarget.id === '+') {
+        target === imgs.length - 1 ? setTarget(0) : setTarget(target + 1);
+      } else if (e.currentTarget.id === '-') {
+        !target ? setTarget(imgs.length - 1) : setTarget(target - 1);
+      }
+    },
+    [target],
+  );
 
   return (
     <Presenter

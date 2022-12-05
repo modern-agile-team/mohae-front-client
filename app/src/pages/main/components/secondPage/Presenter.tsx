@@ -51,7 +51,7 @@ function Presenter() {
   );
 }
 
-export default Presenter;
+export default React.memo(Presenter);
 
 const Wrapper = styled.section`
   height: 100%;

@@ -33,7 +33,7 @@ function Presenter() {
   );
 }
 
-export default Presenter;
+export default React.memo(Presenter);
 
 const Container = styled.section`
   padding: calc((100vh - 59px - 647px) / 2) calc((100% - 1128px) / 2);

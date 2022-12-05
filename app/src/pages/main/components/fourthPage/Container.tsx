@@ -1,7 +1,10 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { requestHotBoards } from '../../../../apis/hotBoards';
-import { HotBoard, HotBoardsBasket } from '../../../../types/main/fourthPage/type';
+import {
+  HotBoard,
+  HotBoardsBasket,
+} from '../../../../types/main/fourthPage/type';
 import Presenter from './Presenter';
 
 function Container() {
@@ -64,4 +67,4 @@ function Container() {
   );
 }
 
-export default Container;
+export default React.memo(Container);

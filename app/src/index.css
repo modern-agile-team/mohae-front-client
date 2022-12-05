@@ -15,7 +15,7 @@ code {
 }
 
 @font-face {
-  font-display: fallback;
+  font-display: optional;
   font-family: 'Black';
   font-weight: 900;
   src: url(./asset/Roboto-Black.ttf);
@@ -25,7 +25,7 @@ code {
 }
 
 @font-face {
-  font-display: fallback;
+  font-display: optional;
   font-family: 'Bold';
   font-weight: 700;
   src: url(./asset/Roboto-Bold.ttf);
@@ -35,7 +35,7 @@ code {
 }
 
 @font-face {
-  font-display: fallback;
+  font-display: optional;
   font-family: 'Medium';
   font-weight: 500;
   src: url(./asset/Roboto-Medium.ttf);
@@ -45,7 +45,7 @@ code {
 }
 
 @font-face {
-  font-display: fallback;
+  font-display: optional;
   font-family: 'Regular';
   font-weight: 400;
   src: url(./asset/Roboto-Regular.ttf);
@@ -55,7 +55,7 @@ code {
 }
 
 @font-face {
-  font-display: fallback;
+  font-display: optional;
   font-family: 'Light';
   font-weight: 300;
   src: url(./asset/Roboto-Light.ttf);
@@ -65,7 +65,7 @@ code {
 }
 
 @font-face {
-  font-display: fallback;
+  font-display: optional;
   font-family: 'Thin';
   font-weight: 100;
   src: url(./asset/Roboto-Thin.ttf);

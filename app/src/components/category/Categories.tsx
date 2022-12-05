@@ -1,7 +1,7 @@
 /** @format */
 
 import { cx, css } from '@emotion/css';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { color } from '../../styles';
 import Category from './Category';
@@ -11,7 +11,7 @@ interface Props {
   num: number;
 }
 
-export default function Categories({ num }: Props) {
+function Categories({ num }: Props) {
   const param = useParams().no;
   const [arr, setArr] = useState(
     categoryList({ shift: false }).map((_, index) => index),
@@ -194,3 +194,4 @@ export default function Categories({ num }: Props) {
     </div>
   );
 }
+export default React.memo(Categories);

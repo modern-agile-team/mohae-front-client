@@ -34,7 +34,7 @@ function ImgModal(props: ImgModalProps) {
         >
           <ArrowButtons usedIn={'modal'} clickMove={clickMove} />
           <div className="contents-wrapper">
-            <Img src={imgs[target]} />
+            <Img src={imgs[target]} loading="lazy" />
           </div>
           <div className="btn-wrap">{createCircleBtn}</div>
         </ModalImg>

@@ -45,7 +45,7 @@ function InteractionPart(props: InteractionPartProps) {
 
 export default InteractionPart;
 
-const CategoryBoard = styled.p`
+const CategoryBoard = styled.h1`
   width: 100%;
   height: 36px;
   font-size: 28px;

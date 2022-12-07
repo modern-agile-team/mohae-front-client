@@ -49,6 +49,7 @@ const Container = styled.section`
     font-size: 14px;
     &:nth-of-type(1) {
       font-family: 'Bold';
+      font-weight: 700;
       margin-bottom: 4px;
     }
     &:nth-of-type(2) {

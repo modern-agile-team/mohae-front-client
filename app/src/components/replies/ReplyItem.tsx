@@ -157,10 +157,13 @@ const ReplyHeader = styled.div`
     color: #a7a7ad;
   }
   .content {
+    width: 978px;
     font-style: normal;
     font-weight: 500;
     font-size: 14px;
     color: #4f4e5c;
+    white-space: pre-wrap;
+    word-wrap: break-word;
   }
 `;
 

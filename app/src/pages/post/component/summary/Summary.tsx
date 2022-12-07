@@ -12,11 +12,15 @@ function Summary() {
   return (
     <PostItWrapper summary={summary}>
       <PostIt size="small">
-        <textarea
-          className="summary-container"
-          defaultValue={summary ? summary : '한 줄 요약이 존재 하지 않습니다.'}
-          disabled
-        />
+        <label>
+          <textarea
+            className="summary-container"
+            defaultValue={
+              summary ? summary : '한 줄 요약이 존재 하지 않습니다.'
+            }
+            disabled
+          />
+        </label>
       </PostIt>
     </PostItWrapper>
   );

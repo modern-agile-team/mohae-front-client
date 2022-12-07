@@ -63,6 +63,7 @@ const Title = styled.div`
   height: 27px;
   font-size: 18px;
   font-family: 'Bold';
+  font-weight: 700;
   padding: 0px 0px 8px 0px;
 `;
 

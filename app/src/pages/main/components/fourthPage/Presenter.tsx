@@ -25,7 +25,7 @@ function Presenter({ focus, setFocus, hotBoardsBasket }: PresenterProps) {
 
   return (
     <Container>
-      <span className="title">인기 게시글 Top3</span>
+      <h1 className="title">인기 게시글 Top3</h1>
       <HotBoardsFilter focus={focus} setFocus={setFocus} />
       <div className="ranking">
         <Tropy ranking={2} />
@@ -52,7 +52,7 @@ const Container = styled.section`
   }
 
   .title {
-    font-family: 'Bold';
+    font-weight: 700;
     font-size: 28px;
     line-height: 36px;
     margin: 0 0 40px;

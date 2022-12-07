@@ -50,14 +50,14 @@ const FlexWrapper = styled.div`
 const Title = styled.p`
   display: flex;
   align-items: center;
-  font-family: 'Bold';
+  font-weight: 800;
   font-size: 24px;
 `;
 
 const Price = styled.p<{ price: number }>`
   margin-bottom: 16px;
   font-size: 24px;
-  font-family: 'Bold';
+  font-weight: 800;
   :after {
     font-size: 22px;
     content: '${props => (props.price ? '원' : '')}';

@@ -44,6 +44,5 @@ const Wrap = styled.section`
   display: flex;
   justify-content: space-between;
   color: #4f4e5c;
-  font-family: 'Regular';
   border-bottom: 1px solid #e7e7e8;
 `;

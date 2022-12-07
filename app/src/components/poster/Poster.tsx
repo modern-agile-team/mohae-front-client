@@ -101,7 +101,7 @@ const Container = styled.div<Props>`
       text-overflow: ellipsis;
       white-space: nowrap;
       font-size: ${props => (props.size !== 'medium' ? '14px' : '12px')};
-      font-family: 'Bold';
+      font-weight: 600;
       margin-bottom: 0px;
       align-items: center;
     }
@@ -110,7 +110,6 @@ const Container = styled.div<Props>`
     }
     .price {
       font-size: 14px;
-      font-family: 'Bold';
       display: flex;
       align-items: center;
       color: ${props => (props.data.price !== null ? '#4F4E5C' : '#ff445e')};

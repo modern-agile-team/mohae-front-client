@@ -14,24 +14,6 @@ code {
 @font-face {
   font-display: optional;
   font-family: 'Black';
-  font-weight: 1100;
-  src: url(./asset/Roboto.ttf);
-  src: url(./asset/NotoSansKR.otf);
-  unicode-range: U+AC00-D7A3, U+0041-005A, U+0061-007A, U+0030-0039;
-}
-
-@font-face {
-  font-display: optional;
-  font-family: 'Bold';
-  font-weight: 1000;
-  src: url(./asset/Roboto.ttf);
-  src: url(./asset/NotoSansKR.otf);
-  unicode-range: U+AC00-D7A3, U+0041-005A, U+0061-007A, U+0030-0039;
-}
-
-@font-face {
-  font-display: optional;
-  font-family: 'Medium';
   font-weight: 900;
   src: url(./asset/Roboto.ttf);
   src: url(./asset/NotoSansKR.otf);
@@ -40,8 +22,26 @@ code {
 
 @font-face {
   font-display: optional;
+  font-family: 'Bold';
+  font-weight: 700;
+  src: url(./asset/Roboto.ttf);
+  src: url(./asset/NotoSansKR.otf);
+  unicode-range: U+AC00-D7A3, U+0041-005A, U+0061-007A, U+0030-0039;
+}
+
+@font-face {
+  font-display: optional;
+  font-family: 'Medium';
+  font-weight: 500;
+  src: url(./asset/Roboto.ttf);
+  src: url(./asset/NotoSansKR.otf);
+  unicode-range: U+AC00-D7A3, U+0041-005A, U+0061-007A, U+0030-0039;
+}
+
+@font-face {
+  font-display: optional;
   font-family: 'Regular';
-  font-weight: 800;
+  font-weight: 400;
   src: url(./asset/Roboto.ttf);
   src: url(./asset/NotoSansKR.otf);
   unicode-range: U+AC00-D7A3, U+0041-005A, U+0061-007A, U+0030-0039;
@@ -50,7 +50,7 @@ code {
 @font-face {
   font-display: optional;
   font-family: 'Light';
-  font-weight: 700;
+  font-weight: 300;
   src: url(./asset/Roboto.ttf);
   src: url(./asset/NotoSansKR.otf);
   unicode-range: U+AC00-D7A3, U+0041-005A, U+0061-007A, U+0030-0039;

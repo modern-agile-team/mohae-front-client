@@ -4,23 +4,35 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/root';
 import styled from '@emotion/styled';
 import DecimalDay from '../DDAY/DecimalDay';
+import useScroll from '../../../../customhook/useScroll';
 
 function QuickMenu() {
-  const { price, title } = useSelector(
-    (state: RootState) => state.post.data.response.board,
-  );
+  const { price, title, authorization } = useSelector((state: RootState) => ({
+    authorization: state.post.data.response.authorization,
+    title: state.post.data.response.board.title,
+    price: state.post.data.response.board.price,
+  }));
+  const scrollY = useScroll().scrollY;
+
+  if (!authorization && scrollY < 490) return null;
 
   return (
-    <Container>
-      <div>
-        <FlexWrapper>
-          <Title>{title}</Title>
-          <DecimalDay />
-        </FlexWrapper>
-        <Price price={price}>{price ? price.toLocaleString() : '무료'}</Price>
-      </div>
-      <PostWriter />
-    </Container>
+    <>
+      {scrollY > 490 && (
+        <Container>
+          <div>
+            <FlexWrapper>
+              <Title>{title}</Title>
+              <DecimalDay />
+            </FlexWrapper>
+            <Price price={price}>
+              {price ? price.toLocaleString() : '무료'}
+            </Price>
+          </div>
+          <PostWriter />
+        </Container>
+      )}
+    </>
   );
 }
 
@@ -37,6 +49,20 @@ const Container = styled.section`
   box-shadow: 0px 4px 4px 0px #0000001a;
   padding: 0px 24px 20px 24px;
   color: #4f4e5c;
+
+  @keyframes fadeInDown {
+    0% {
+      opacity: 0;
+      transform: translate3d(0, -8px, 0);
+    }
+    100% {
+      opacity: 1;
+      transform: translateZ(0);
+    }
+  }
+  position: fixed;
+  top: 59px;
+  animation: fadeInDown 1s;
   .user-data {
     margin-right: 16px;
   }

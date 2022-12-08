@@ -22,7 +22,6 @@ function Presenter(props: PresenterProps) {
     response: state.post.data.response,
     userNo: state.user.user.userNo,
   }));
-  const scrollY = useScroll().scrollY;
 
   const popupText = () => {
     const date = new Date().toISOString();
@@ -39,17 +38,6 @@ function Presenter(props: PresenterProps) {
   const requestPostClosing = () => {
     requestHandleDeadline(response.board);
     dispatch(handlePopup({ text: popupText() }));
-  };
-
-  const createQuickMenu = () => {
-    if (!response.authorization) return;
-    return (
-      scrollY > 490 && (
-        <QuickMenuWrapper>
-          <QuickMenu />
-        </QuickMenuWrapper>
-      )
-    );
   };
 
   return (
@@ -73,7 +61,7 @@ function Presenter(props: PresenterProps) {
           </PostClosingButtonWrap>
         )}
       </Wrapper>
-      {createQuickMenu()}
+      <QuickMenu />
       {!response.authorization && <Mosaic />}
     </>
   );
@@ -91,22 +79,6 @@ const Wrapper = styled.main`
     padding: 16px 24px 24px 24px;
     margin-bottom: 16px;
   }
-`;
-
-const QuickMenuWrapper = styled.div`
-  @keyframes fadeInDown {
-    0% {
-      opacity: 0;
-      transform: translate3d(0, -8px, 0);
-    }
-    100% {
-      opacity: 1;
-      transform: translateZ(0);
-    }
-  }
-  position: fixed;
-  top: 59px;
-  animation: fadeInDown 1s;
 `;
 
 const PostClosingButtonWrap = styled.div`

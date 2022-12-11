@@ -50,7 +50,7 @@ function Presenter(props: PresenterProps) {
   );
 }
 
-export default Presenter;
+export default React.memo(Presenter);
 
 const Wrapper = styled.div`
   width: fit-content;

@@ -156,12 +156,12 @@ function Container() {
     return () => observer.disconnect();
   }, [handleIntersect, target]);
 
-  const resetPageNation = () => {
+  const resetPageNation = useCallback(() => {
     setPageNation({
       category: { page: 1, totalPage: 1 },
       filtering: { page: 1, totalPage: 1 },
     });
-  };
+  }, []);
 
   return <Presenter resetPageNation={resetPageNation} setTarget={setTarget} />;
 }

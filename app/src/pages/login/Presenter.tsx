@@ -226,38 +226,6 @@ export default function Presenter({
     );
   };
 
-  const handlePopupInfo = (): {
-    view: boolean;
-    message: string;
-    close: () => void;
-  } => {
-    if (popupInfo.findPassword.view) {
-      return {
-        view: popupInfo.findPassword.view,
-        message: popupInfo.findPassword.message,
-        close: () => {
-          setPopupInfo({
-            ...popupInfo,
-            findPassword: { view: false, message: '' },
-          });
-        },
-      };
-    } else if (popupInfo.register.view) {
-      return {
-        view: popupInfo.register.view,
-        message: popupInfo.register.message,
-        close: () => {
-          setPopupInfo({
-            ...popupInfo,
-            register: { ...popupInfo.register, view: false },
-          });
-          setPart(0);
-        },
-      };
-    }
-    return { view: false, message: '', close: () => {} };
-  };
-
   return (
     <>
       <AuthModal

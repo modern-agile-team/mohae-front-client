@@ -9,6 +9,7 @@ import { loginCheck } from '../../../utils/loginCheck';
 import { login } from '../../../apis/auth';
 import { setToken } from '../../../utils/getToken';
 import { ACCESS_TOKEN, REFESH_TOKEN } from '../../../consts/tokenKey';
+import styled from '@emotion/styled';
 
 interface Props {
   text: {
@@ -27,8 +28,6 @@ interface Props {
   };
   setFindPasswordView: React.Dispatch<React.SetStateAction<boolean>>;
 }
-
-const result = 0;
 
 export default function Register({ text, setFindPasswordView }: Props) {
   const [inputValue, setInputValue] = useState({
@@ -105,9 +104,9 @@ export default function Register({ text, setFindPasswordView }: Props) {
         />
       </div>
       <div className={'loginoption'}>
-        <button id="find-password" type="button" onClick={e => findPassword(e)}>
+        <FindPwBtn id="find-password" type="button" onClick={findPassword}>
           {text.forgotPw}
-        </button>
+        </FindPwBtn>
       </div>
       <Box size={[480, 52]}>
         <button id="submit-btn" type="submit" onClick={requestLogin}>
@@ -117,3 +116,7 @@ export default function Register({ text, setFindPasswordView }: Props) {
     </form>
   );
 }
+
+const FindPwBtn = styled.button`
+  color: #4f4e5c;
+`;

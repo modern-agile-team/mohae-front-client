@@ -1,4 +1,3 @@
-/** @format */
 import { Img, Box } from '../../../components';
 import React, { useState } from 'react';
 import { open_login } from '../../../redux/specModal/reducer';

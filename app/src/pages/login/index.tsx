@@ -1,5 +1,3 @@
-/** @format */
-
 import { useSelector } from 'react-redux';
 import Presenter from './Presenter';
 

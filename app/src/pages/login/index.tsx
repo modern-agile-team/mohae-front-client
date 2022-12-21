@@ -48,7 +48,7 @@ export default function LoginModal(): ReactElement {
     finishedInputInfo: (e: React.MouseEvent) => {
       setPart(4);
     },
-    finishedAll: (e: React.MouseEvent) => {
+    finishedAll: () => {
       setPart(0);
     },
     findPassword: (e: React.MouseEvent) => {

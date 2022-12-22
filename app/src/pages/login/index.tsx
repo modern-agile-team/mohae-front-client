@@ -42,16 +42,16 @@ export default function LoginModal(): ReactElement {
       e.stopPropagation();
       setPart(2);
     },
-    agreement: (e: React.MouseEvent) => {
+    agreement: () => {
       setPart(3);
     },
-    finishedInputInfo: (e: React.MouseEvent) => {
+    finishedInputInfo: () => {
       setPart(4);
     },
-    finishedAll: (e: React.MouseEvent) => {
+    finishedAll: () => {
       setPart(0);
     },
-    findPassword: (e: React.MouseEvent) => {
+    findPassword: () => {
       setPart(5);
     },
   };

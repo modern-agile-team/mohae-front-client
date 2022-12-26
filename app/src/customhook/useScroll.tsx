@@ -14,7 +14,6 @@ function useScroll() {
     });
     return () => {
       mounted = false;
-      // window.removeEventListener('scroll', debounce(listener, delay));
     };
   }, []);
 

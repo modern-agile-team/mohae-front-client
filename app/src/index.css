@@ -12,56 +12,56 @@ code {
 }
 
 @font-face {
-  font-display: optional;
+  font-display: fallback;
   font-family: 'Black';
   font-weight: 900;
-  src: url(./asset/Roboto.ttf);
-  src: url(./asset/NotoSansKR.otf);
+  src: url(./asset/Roboto.ttf) format('truetype');
+  src: url(./asset/NotoSansKR.otf) format('opentype');
   unicode-range: U+AC00-D7A3, U+0041-005A, U+0061-007A, U+0030-0039;
 }
 
 @font-face {
-  font-display: optional;
+  font-display: fallback;
   font-family: 'Bold';
   font-weight: 700;
-  src: url(./asset/Roboto.ttf);
-  src: url(./asset/NotoSansKR.otf);
+  src: url(./asset/Roboto.ttf) format('truetype');
+  src: url(./asset/NotoSansKR.otf) format('opentype');
   unicode-range: U+AC00-D7A3, U+0041-005A, U+0061-007A, U+0030-0039;
 }
 
 @font-face {
-  font-display: optional;
+  font-display: fallback;
   font-family: 'Medium';
   font-weight: 500;
-  src: url(./asset/Roboto.ttf);
-  src: url(./asset/NotoSansKR.otf);
+  src: url(./asset/Roboto.ttf) format('truetype');
+  src: url(./asset/NotoSansKR.otf) format('opentype');
   unicode-range: U+AC00-D7A3, U+0041-005A, U+0061-007A, U+0030-0039;
 }
 
 @font-face {
-  font-display: optional;
+  font-display: fallback;
   font-family: 'Regular';
   font-weight: 400;
-  src: url(./asset/Roboto.ttf);
-  src: url(./asset/NotoSansKR.otf);
+  src: url(./asset/Roboto.ttf) format('truetype');
+  src: url(./asset/NotoSansKR.otf) format('opentype');
   unicode-range: U+AC00-D7A3, U+0041-005A, U+0061-007A, U+0030-0039;
 }
 
 @font-face {
-  font-display: optional;
+  font-display: fallback;
   font-family: 'Light';
   font-weight: 300;
-  src: url(./asset/Roboto.ttf);
-  src: url(./asset/NotoSansKR.otf);
+  src: url(./asset/Roboto.ttf) format('truetype');
+  src: url(./asset/NotoSansKR.otf) format('opentype');
   unicode-range: U+AC00-D7A3, U+0041-005A, U+0061-007A, U+0030-0039;
 }
 
 @font-face {
-  font-display: optional;
+  font-display: fallback;
   font-family: 'Thin';
   font-weight: 100;
-  src: url(./asset/Roboto.ttf);
-  src: url(./asset/NotoSansKR.otf);
+  src: url(./asset/Roboto.ttf) format('truetype');
+  src: url(./asset/NotoSansKR.otf) format('opentype');
   unicode-range: U+AC00-D7A3, U+0041-005A, U+0061-007A, U+0030-0039;
 }
 

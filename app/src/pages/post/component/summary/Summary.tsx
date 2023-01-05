@@ -12,15 +12,9 @@ function Summary() {
   return (
     <PostItWrapper summary={summary}>
       <PostIt size="small">
-        <label>
-          <textarea
-            className="summary-container"
-            defaultValue={
-              summary ? summary : '한 줄 요약이 존재 하지 않습니다.'
-            }
-            disabled
-          />
-        </label>
+        <p className="summary-container">
+          {summary ? summary : '한 줄 요약이 존재 하지 않습니다.'}
+        </p>
       </PostIt>
     </PostItWrapper>
   );
@@ -37,5 +31,7 @@ const PostItWrapper = styled.div<{ summary: string | null }>`
     font-size: 14px;
     padding-top: 4px;
     overflow-y: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
   }
 `;

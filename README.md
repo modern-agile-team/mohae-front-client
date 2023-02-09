@@ -80,8 +80,8 @@
 
 <table>
   <tr>
-     <td align="center"><a href="https://github.com/tjdwp0211"><img src="https://user-images.githubusercontent.com/75163050/203497559-bc92d59c-a1e9-4983-8682-1dcb3e64ac4a.jpeg" width="100px;" height="100px"; alt=""/><br /><sub><b>김성제</b></sub></a><br /><a href="https://github.com/tjdwp0211" title="Packaging/porting to new platform">프런트 개발자</a></td>
-    <td align="center"><a href="https://github.com/Bsfla"><img src="https://www.notion.so/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Faca0f375-4b97-43f0-9126-361d2a9aaa34%2F.jpeg?table=block&id=59652cb8-402c-4dea-b067-63ad97437916&spaceId=065109dd-4d22-4e3f-9455-ff3805b7d264&width=1920&userId=601054f0-a611-49e0-84b9-04831ec920f4&cache=v2" width="100px;" height="100px"; alt=""/><br /><sub><b>배범수</b></sub></a><br /><a href="https://github.com/Bsfla" title="Packaging/porting to new platform">프런트 개발자</a></td>
+     <td align="center"><a href="https://github.com/tjdwp0211"><img src="https://user-images.githubusercontent.com/75163050/203497559-bc92d59c-a1e9-4983-8682-1dcb3e64ac4a.jpeg" width="100px;" height="100px"; alt=""/><br /><sub><b>김성제</b></sub></a><br /><a href="https://github.com/tjdwp0211" title="Packaging/porting to new platform">프론트 개발자</a></td>
+    <td align="center"><a href="https://github.com/Bsfla"><img src="https://www.notion.so/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Faca0f375-4b97-43f0-9126-361d2a9aaa34%2F.jpeg?table=block&id=59652cb8-402c-4dea-b067-63ad97437916&spaceId=065109dd-4d22-4e3f-9455-ff3805b7d264&width=1920&userId=601054f0-a611-49e0-84b9-04831ec920f4&cache=v2" width="100px;" height="100px"; alt=""/><br /><sub><b>배범수</b></sub></a><br /><a href="https://github.com/Bsfla" title="Packaging/porting to new platform">프론트 개발자</a></td>
   </tr>
 </table>
 
